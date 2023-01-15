@@ -1,12 +1,12 @@
-import Head from "next/head";
+import Head from 'next/head';
 
-export interface IUserLayout extends React.ComponentPropsWithoutRef<"div"> {
-  justify?: "items-center" | "items-start";
+export interface IUserLayout extends React.ComponentPropsWithoutRef<'div'> {
+  justify?: 'items-center' | 'items-start';
 }
 
 const UserLayout: React.FC<IUserLayout> = ({
   children,
-  justify = "items-center",
+  justify = 'items-center',
   ...divProps
 }) => {
   return (

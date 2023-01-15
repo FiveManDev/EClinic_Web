@@ -1,22 +1,11 @@
 import axios, {
-  AxiosError,
   AxiosHeaders,
   AxiosInstance,
   AxiosRequestConfig,
   CancelTokenSource,
-} from "axios";
-import { authService } from "services/auth";
-import { token } from "./utils/token";
-
-let isRefreshing = false;
-
-function rejectErrorAndClearToken(error: AxiosError) {
-  token.deleteToken();
-  window.location.href = "/";
-
-  return Promise.reject(error);
-}
-//call api
+} from 'axios';
+import { authService } from 'services/auth';
+import { token } from './utils/token';
 class Http {
   instance: AxiosInstance;
   cancelTokenSource: CancelTokenSource;
@@ -31,7 +20,7 @@ class Http {
       baseURL: process.env.NEXT_PUBLIC_APP_URL,
       timeout: 10000,
       headers: {
-        "Content-Type": "application/json",
+        'Content-Type': 'application/json',
       },
       cancelToken: this.cancelTokenSource.token,
     });
@@ -41,7 +30,7 @@ class Http {
         const _token = token.getToken();
         if (_token.access_token) {
           config.headers = { ...config.headers } as AxiosHeaders;
-          config.headers.set("Authorization", `Bearer ${_token.access_token}`);
+          config.headers.set('Authorization', `Bearer ${_token.access_token}`);
         }
         return config;
       },
@@ -58,7 +47,7 @@ class Http {
         if (error.response.status === 403 && !originalRequest._retry) {
           originalRequest._retry = true;
           const access_token = await authService.refreshToken();
-          originalRequest.headers["Authorization"] = `Bearer ${access_token}`;
+          originalRequest.headers['Authorization'] = `Bearer ${access_token}`;
           return this.instance(originalRequest);
         }
         return Promise.reject(error);

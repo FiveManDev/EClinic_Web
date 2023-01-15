@@ -9,4 +9,4 @@ export interface User {
   btc_address: string;
 }
 
-export type Users = Pick<User, "id" | "email" | "avatar" | "last_name">[];
+export type Users = Pick<User, 'id' | 'email' | 'avatar' | 'last_name'>[];

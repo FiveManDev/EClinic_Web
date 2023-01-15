@@ -1,4 +1,4 @@
-import Cookies from "js-cookie";
+import Cookies from 'js-cookie';
 class Token {
   objCookies = {
     expires: 30,
@@ -24,12 +24,12 @@ class Token {
     } else {
       Cookies.remove(process.env.NEXT_PUBLIC_ACCESS_TOKEN_NAME as string, {
         ...this.objCookies,
-        path: "/",
+        path: '/',
         domain: process.env.COOKIE_DOMAIN,
       });
       Cookies.remove(process.env.NEXT_PUBLIC_REFRESH_TOKEN_NAME as string, {
         ...this.objCookies,
-        path: "/",
+        path: '/',
         domain: process.env.COOKIE_DOMAIN,
       });
     }
@@ -54,12 +54,12 @@ class Token {
     if (access_token) {
       Cookies.remove(process.env.NEXT_PUBLIC_ACCESS_TOKEN_NAME as string, {
         ...this.objCookies,
-        path: "/",
+        path: '/',
         domain: process.env.COOKIE_DOMAIN,
       });
       Cookies.remove(process.env.NEXT_PUBLIC_REFRESH_TOKEN_NAME as string, {
         ...this.objCookies,
-        path: "/",
+        path: '/',
         domain: process.env.COOKIE_DOMAIN,
       });
     }
