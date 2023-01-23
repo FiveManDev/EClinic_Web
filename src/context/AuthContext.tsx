@@ -1,33 +1,31 @@
-import React, { createContext, useState } from 'react';
+import React, { createContext, useState } from "react"
 
 interface IAuthContext {
-  authenticated: boolean;
-  login: () => void;
-  logOut: () => void;
+  authenticated: boolean
+  login: () => void
+  logOut: () => void
 }
 
 const defaultValue: IAuthContext = {
   authenticated: false,
   login: () => undefined,
-  logOut: () => undefined,
-};
+  logOut: () => undefined
+}
 
-const AuthContext = createContext<IAuthContext>(defaultValue);
+const AuthContext = createContext<IAuthContext>(defaultValue)
 
 export const AuthProvider: React.FC = ({
-  children,
+  children
 }: React.PropsWithChildren) => {
-  const [authenticated, setAuthenticated] = useState(
-    defaultValue.authenticated
-  );
-  const login = () => setAuthenticated(true);
-  const logOut = () => setAuthenticated(false);
+  const [authenticated, setAuthenticated] = useState(defaultValue.authenticated)
+  const login = () => setAuthenticated(true)
+  const logOut = () => setAuthenticated(false)
 
   return (
     <AuthContext.Provider value={{ authenticated, login, logOut }}>
       {children}
     </AuthContext.Provider>
-  );
-};
+  )
+}
 
-export default AuthContext;
+export default AuthContext
