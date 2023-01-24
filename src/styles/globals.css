@@ -7,4 +7,13 @@
   html {
     @apply font-primary;
   }
+  .page-wrapper {
+    @apply max-w-[1920px] w-full mx-auto;
+  }
+  .banner-wrapper {
+    @apply w-full h-[600px] bg-[#E8F1FF];
+  }
+  .container {
+    @apply max-w-[1440px] mx-auto w-full;
+  }
 }
