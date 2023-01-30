@@ -1,5 +1,5 @@
 import { ClickAwayListener, Popper } from "@mui/material"
-import { MouseEvent, ReactNode, useState } from "react"
+import { ReactNode, useState } from "react"
 
 type IProps = {
   children: ReactNode

@@ -1,6 +1,4 @@
-type Props = {}
-
-const Serices = (props: Props) => {
+const Serices = () => {
   return <div>Serices</div>
 }
 
