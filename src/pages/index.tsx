@@ -1,5 +1,5 @@
 import UserLayout from "layout/User/UserLayout"
-import HomePage from "module/User/Home/Home"
+import HomePage from "module/User/Home/HomePage"
 import { NextPageWithLayout } from "./page"
 
 const Home: NextPageWithLayout = () => {

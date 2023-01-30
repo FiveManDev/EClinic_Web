@@ -1,4 +1,3 @@
-import { Chip, ChipProps } from "@mui/material"
 import classNames from "classnames"
 
 interface Props {

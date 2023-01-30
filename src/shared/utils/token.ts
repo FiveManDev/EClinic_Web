@@ -1,8 +1,7 @@
 import Cookies from "js-cookie"
 class Token {
   objCookies = {
-    expires: 30,
-    domain: process.env.NEXT_PUBLIC_APP_URL
+    expires: 30
   }
 
   saveToken = (access_token: string, refresh_token: string) => {

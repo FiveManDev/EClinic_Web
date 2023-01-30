@@ -1,9 +1,7 @@
 import Head from "next/head"
 import FormSignup from "./components/Form"
 
-type Props = {}
-
-const SignupPage = (props: Props) => {
+const SignupPage = () => {
   return (
     <>
       <Head>

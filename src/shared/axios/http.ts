@@ -5,6 +5,7 @@ import axios, {
   CancelTokenSource
 } from "axios"
 import { authService } from "services/auth.service"
+import { VERSION } from "shared/constant/constant"
 import { token } from "shared/utils/token"
 class Http {
   instance: AxiosInstance
@@ -17,7 +18,7 @@ class Http {
      */
     this.cancelTokenSource = axios.CancelToken.source()
     this.instance = axios.create({
-      baseURL: process.env.NEXT_PUBLIC_APP_URL,
+      baseURL: `${process.env.NEXT_PUBLIC_API_URL}/api/v${VERSION}/`,
       timeout: 10000,
       headers: {
         "Content-Type": "application/json"

@@ -1,5 +1,5 @@
-import { Header } from "layout/User/Components"
 import Image from "next/image"
+import Link from "next/link"
 import { ReactNode } from "react"
 
 type Props = {
@@ -12,12 +12,14 @@ const AuthLayout = ({ children }: Props) => {
       <header className="w-full h-[84px] bg-white">
         <div className="flex items-center justify-between px-4 md:px-[60px] max-w-[1440px] w-full h-full mx-auto">
           <div className="relative scale-90 md:scale-100 w-[130px] h-9">
-            <Image
-              src={"/images/logo.png"}
-              fill
-              alt="elinic"
-              className="cursor-pointer object-contain"
-            />
+            <Link href={"/"}>
+              <Image
+                src={"/images/logo.png"}
+                fill
+                alt="elinic"
+                className="cursor-pointer object-contain"
+              />
+            </Link>
           </div>
         </div>
       </header>

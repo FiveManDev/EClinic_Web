@@ -1,6 +1,4 @@
-type Props = {}
-
-const Footer = (props: Props) => {
+const Footer = () => {
   return <div>Footer</div>
 }
 export default Footer

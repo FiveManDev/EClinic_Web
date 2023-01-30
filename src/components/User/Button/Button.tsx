@@ -1,10 +1,10 @@
-import React from "react"
-import { Button, ButtonTypeMap, ButtonProps } from "@mui/material"
+import { Button, ButtonProps } from "@mui/material"
+import classNames from "classnames"
 interface Props extends ButtonProps {
   kind: "primary" | "secondary" | "tertiary`"
 }
 
-const CustomButton = ({ kind, ...props }: Props) => {
+const CustomButton = ({ kind, className, ...props }: Props) => {
   const variant =
     kind === "primary"
       ? "contained"
@@ -14,11 +14,14 @@ const CustomButton = ({ kind, ...props }: Props) => {
   return (
     <Button
       variant={variant}
-      className={`rounded-[10px] flex items-center justify-center h-11 min-w-[95px] ${
-        kind === "primary"
-          ? "bg-primary hover:bg-opacity-90"
-          : "border-primary outline-primary text-primary"
-      }`}
+      className={classNames(
+        `rounded-[10px] flex items-center justify-center h-11 min-w-[95px] ${
+          kind === "primary"
+            ? "bg-primary hover:bg-opacity-90"
+            : "border-primary outline-primary text-primary"
+        }`,
+        className
+      )}
       disableElevation
       {...props}
     >

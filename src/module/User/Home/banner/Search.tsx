@@ -1,6 +1,4 @@
 import {
-  Button,
-  Chip,
   IconButton,
   InputAdornment,
   MenuItem,
@@ -12,9 +10,7 @@ import ChipCustom from "components/Common/Chip/Chip"
 import React from "react"
 import { SearchWrapper } from "./Search.stype"
 
-type Props = {}
-
-const Search = (props: Props) => {
+const Search = () => {
   const [age, setAge] = React.useState("")
 
   const handleChange = (event: SelectChangeEvent) => {
@@ -58,8 +54,8 @@ const Search = (props: Props) => {
         <h4 className="text-h1 text-[20px]">Tìm kiếm nhiều nhất</h4>
         <ul className="list-none flex items-center space-x-4 w-full overflow-auto">
           {new Array(7).fill(null).map((item, index) => (
-            <li>
-              <ChipCustom label="Covid-19" key={index} />
+            <li key={index}>
+              <ChipCustom label="Covid-19" />
             </li>
           ))}
         </ul>
@@ -74,13 +70,13 @@ function IconSearch() {
         xmlns="http://www.w3.org/2000/svg"
         fill="none"
         viewBox="0 0 24 24"
-        stroke-width="1.5"
+        strokeWidth="1.5"
         stroke="currentColor"
         className="w-9 h-w-9"
       >
         <path
-          stroke-linecap="round"
-          stroke-linejoin="round"
+          strokeLinecap="round"
+          strokeLinejoin="round"
           d="M21 21l-5.197-5.197m0 0A7.5 7.5 0 105.196 5.196a7.5 7.5 0 0010.607 10.607z"
         />
       </svg>

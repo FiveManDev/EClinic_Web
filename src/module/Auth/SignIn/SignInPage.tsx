@@ -2,9 +2,7 @@ import Head from "next/head"
 import React from "react"
 import FormLogin from "./components/Form"
 
-type Props = {}
-
-const LoginPage = (props: Props) => {
+const SignInPage = () => {
   return (
     <>
       <Head>
@@ -25,4 +23,4 @@ const LoginPage = (props: Props) => {
     </>
   )
 }
-export default LoginPage
+export default SignInPage

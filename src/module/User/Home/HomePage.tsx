@@ -1,11 +1,8 @@
 import Head from "next/head"
+import Appoiment from "./appoiment/Appoiment"
 import Banner from "./banner/Banner"
 
-type Props = {
-  data?: string
-}
-
-export default function HomePage({ data }: Props) {
+export default function HomePage() {
   return (
     <>
       <Head>
@@ -16,6 +13,9 @@ export default function HomePage({ data }: Props) {
       </Head>
       <main className="page-wrapper">
         <Banner />
+        <div className="page-container">
+          <Appoiment />
+        </div>
       </main>
     </>
   )

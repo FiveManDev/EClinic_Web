@@ -21,9 +21,7 @@ import Link from "next/link"
 import React from "react"
 import { HiOutlineEye, HiOutlineEyeSlash } from "react-icons/hi2"
 
-type Props = {}
-
-const FormSignup = (props: Props) => {
+const FormSignup = () => {
   const [value, setValue] = React.useState<Dayjs | null>(
     dayjs("2014-08-18T21:11:54")
   )

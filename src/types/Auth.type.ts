@@ -1,6 +1,9 @@
-import { ICurrentUser } from "./User.type"
+import { IUser } from "./User.type"
 export interface IAuthState {
-  isAuthenticated: boolean
-  isFetched: boolean
-  me: ICurrentUser
+  isLoggedIn: boolean
+  user: IUser
+}
+export interface ILogin {
+  userName: string
+  password: string
 }

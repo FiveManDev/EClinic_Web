@@ -1,16 +1,8 @@
-export interface User {
-  id?: number
-  first_name?: string
-  last_name?: string
-  email?: string
-  gender?: string
-  country?: string
-  avatar?: string
-  btc_address?: string
+export interface IUser {
+  userId?: string
+  userName?: string
+  role?: string
 }
 
-export type Users = Pick<User, "id" | "email" | "avatar" | "last_name">[]
-
-export interface ICurrentUser extends User {
-  role_codes?: string[]
-}
+// export type Users = Pick<User, "id" | "email" | "avatar" | "last_name">[]
+// export interface ICurrentUser extends User {}
