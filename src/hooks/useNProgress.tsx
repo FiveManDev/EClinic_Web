@@ -16,17 +16,14 @@ export const useNProgress = () => {
 
   useEffect(() => {
     router.events.on("routeChangeStart", () => {
-      appLibrary.showloading()
       NProgress.start()
     })
 
     router.events.on("routeChangeComplete", () => {
       NProgress.done()
-      appLibrary.hideloading()
     })
     router.events.on("routeChangeError", () => {
       NProgress.done()
-      appLibrary.hideloading()
     })
   }, [router.events])
 

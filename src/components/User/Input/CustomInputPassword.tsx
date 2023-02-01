@@ -41,7 +41,7 @@ const CustomInputPassword = ({
       fullWidth={fullWidth}
       {...props}
     >
-      <InputLabel htmlFor="outlined-adornment-password">Password</InputLabel>
+      <InputLabel htmlFor="outlined-adornment-password">{label}</InputLabel>
       <OutlinedInput
         {...field}
         id="outlined-adornment-password"
@@ -60,9 +60,7 @@ const CustomInputPassword = ({
         }
       />
       {errorMessage && (
-        <FormHelperText className="text-[#d32f2f]">
-          {errorMessage}
-        </FormHelperText>
+        <FormHelperText className="text-error">{errorMessage}</FormHelperText>
       )}
     </FormControl>
   )

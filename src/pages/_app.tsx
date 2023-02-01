@@ -27,12 +27,12 @@ const cache = createCache({
 //checking is authenticated
 const queryClient = new QueryClient()
 
+if (isBrowser()) {
+  store.dispatch(checkLogin())
+}
 export default function App({ Component, pageProps }: AppPropsWithLayout) {
   useNProgress()
   const getLayout = Component.getLayout || ((page) => page)
-  if (isBrowser()) {
-    store.dispatch(checkLogin())
-  }
   return (
     <>
       <Provider store={store}>

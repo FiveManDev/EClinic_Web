@@ -4,7 +4,7 @@ import {
   createSlice,
   createAsyncThunk
 } from "@reduxjs/toolkit"
-import http from "shared/axios/http"
+import axiosClient from "shared/axios/axiosClientClient"
 import { Post } from "types/Post.type"
 
 type GenericAsyncThunk = AsyncThunk<unknown, unknown, any>
@@ -30,7 +30,7 @@ const initialState: BlogState = {
 export const getPostList = createAsyncThunk(
   "blog/getPostList",
   async (_, thunkAPI) => {
-    const response = await http.get<Post[]>("posts", {
+    const response = await axiosClient.get<Post[]>("posts", {
       signal: thunkAPI.signal
     })
     return response.data
@@ -41,7 +41,7 @@ export const addPost = createAsyncThunk(
   "blog/addPost",
   async (body: Omit<Post, "id">, thunkAPI) => {
     try {
-      const response = await http.post<Post>("posts", body, {
+      const response = await axiosClient.post<Post>("posts", body, {
         signal: thunkAPI.signal
       })
       return response.data
@@ -58,7 +58,7 @@ export const updatePost = createAsyncThunk(
   "blog/updatePost",
   async ({ postId, body }: { postId: string; body: Post }, thunkAPI) => {
     try {
-      const response = await http.put<Post>(`posts/${postId}`, body, {
+      const response = await axiosClient.put<Post>(`posts/${postId}`, body, {
         signal: thunkAPI.signal
       })
       return response.data
@@ -74,7 +74,7 @@ export const updatePost = createAsyncThunk(
 export const deletePost = createAsyncThunk(
   "blog/deletePost",
   async (postId: string, thunkAPI) => {
-    const response = await http.delete<Post>(`posts/${postId}`, {
+    const response = await axiosClient.delete<Post>(`posts/${postId}`, {
       signal: thunkAPI.signal
     })
     return response.data

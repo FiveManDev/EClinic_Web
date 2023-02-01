@@ -1,3 +1,4 @@
+import jwt_decode from "jwt-decode"
 import { IUser } from "./../../../types/User.type"
 import { AppDispatch } from "./../../store"
 import { token } from "shared/utils/token"
@@ -14,6 +15,14 @@ export const logoutUser = () => async (dispatch: AppDispatch) => {
 }
 
 export const checkLogin = () => async (dispatch: AppDispatch) => {
+  if (!token.getToken().access_token && token.getToken().refresh_token) {
+    const result = await authService.refreshToken()
+    if (result.isSuccess) {
+      token.saveToken(result.data.accessToken, result.data.refreshToken)
+    } else {
+      token.deleteToken()
+    }
+  }
   const accessToken = token.getToken().access_token
   const isAuthenticated = !!accessToken
   if (isAuthenticated) {

@@ -7,7 +7,7 @@ import axios, {
 import { authService } from "services/auth.service"
 import { VERSION } from "shared/constant/constant"
 import { token } from "shared/utils/token"
-class Http {
+class HttpClient {
   instance: AxiosInstance
   cancelTokenSource: CancelTokenSource
 
@@ -45,11 +45,23 @@ class Http {
       },
       async (error) => {
         const originalRequest = error.config
-        if (error.response.status === 403 && !originalRequest._retry) {
+        if (
+          error.response &&
+          error.response.status === 403 &&
+          !originalRequest._retry
+        ) {
           originalRequest._retry = true
-          const access_token = await authService.refreshToken()
-          originalRequest.headers["Authorization"] = `Bearer ${access_token}`
-          return this.instance(originalRequest)
+          const res = await authService.refreshToken()
+          /**
+           * If response is success then save token to cookies and re-fetch
+           */
+          if (res.isSuccess) {
+            token.saveToken(res.data.accessToken, res.data.refreshToken)
+            originalRequest.headers[
+              "Authorization"
+            ] = `Bearer ${res.data.accessToken}`
+            return this.instance(originalRequest)
+          }
         }
         return Promise.reject(error)
       }
@@ -57,6 +69,6 @@ class Http {
   }
 }
 
-const http = new Http().instance
+const axiosClient = new HttpClient().instance
 
-export default http
+export default axiosClient

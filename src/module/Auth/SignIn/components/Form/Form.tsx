@@ -1,7 +1,7 @@
 import { yupResolver } from "@hookform/resolvers/yup"
 import { Alert } from "@mui/material"
 import GoogleIcon from "components/Common/Icon/GoogleIcon"
-import LoadingIcon from "components/Common/Loading/LoadingIcon"
+import Spinner from "components/Common/Loading/LoadingIcon"
 import CustomButton from "components/User/Button"
 import { CustomInput, CustomInputPassword } from "components/User/Input"
 import jwt_decode from "jwt-decode"
@@ -67,7 +67,7 @@ const FormLogin = () => {
       <ButtonIcon text="Log in with Google" icon={<GoogleIcon />} />
       <form
         onSubmit={handleSubmit(handleSignIn)}
-        className="flex flex-col space-y-5 mt-3 md:mt-5"
+        className="flex flex-col mt-3 space-y-5 md:mt-5"
       >
         <CustomInput
           label="User name"
@@ -93,14 +93,14 @@ const FormLogin = () => {
           className="rounded-md md:h-[42px]"
           type="submit"
         >
-          {isSubmitting ? <LoadingIcon /> : "Sign In"}
+          {isSubmitting ? <Spinner /> : "Sign In"}
         </CustomButton>
       </form>
       <p className="text-center mt-5 text-[#4E5D78">
         {"You haven't any account?"}{" "}
         <Link
           href={"/sign-up"}
-          className="no-underline  hover:underline hover:decoration-primary"
+          className="no-underline hover:underline hover:decoration-primary"
         >
           <span className="text-primary">Sign Up</span>
         </Link>

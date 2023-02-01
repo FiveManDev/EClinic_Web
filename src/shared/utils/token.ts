@@ -1,8 +1,6 @@
 import Cookies from "js-cookie"
 class Token {
-  objCookies = {
-    expires: 30
-  }
+  objCookies = {}
 
   saveToken = (access_token: string, refresh_token: string) => {
     if (access_token && refresh_token) {
@@ -10,14 +8,14 @@ class Token {
         process.env.NEXT_PUBLIC_ACCESS_TOKEN_NAME as string,
         access_token,
         {
-          ...this.objCookies
+          expires: 1
         }
       )
       Cookies.set(
         process.env.NEXT_PUBLIC_REFRESH_TOKEN_NAME as string,
         refresh_token,
         {
-          ...this.objCookies
+          expires: 30
         }
       )
     } else {
@@ -47,21 +45,8 @@ class Token {
     }
   }
   deleteToken = () => {
-    const access_token = Cookies.get(
-      process.env.NEXT_PUBLIC_ACCESS_TOKEN_NAME as string
-    )
-    if (access_token) {
-      Cookies.remove(process.env.NEXT_PUBLIC_ACCESS_TOKEN_NAME as string, {
-        ...this.objCookies,
-        path: "/",
-        domain: process.env.COOKIE_DOMAIN
-      })
-      Cookies.remove(process.env.NEXT_PUBLIC_REFRESH_TOKEN_NAME as string, {
-        ...this.objCookies,
-        path: "/",
-        domain: process.env.COOKIE_DOMAIN
-      })
-    }
+    Cookies.remove(process.env.NEXT_PUBLIC_ACCESS_TOKEN_NAME as string)
+    Cookies.remove(process.env.NEXT_PUBLIC_REFRESH_TOKEN_NAME as string)
   }
 }
 export const token = new Token()

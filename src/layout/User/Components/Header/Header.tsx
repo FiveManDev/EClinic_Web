@@ -12,13 +12,15 @@ const Header = () => {
     <header className="w-full h-[80px] bg-white shadow-[0px_4px_4px_rgba(0,_0,_0,_0.08)]  ">
       <div className="flex items-center justify-between px-[60px] max-w-[1440px] w-full h-full mx-auto">
         <div className="relative w-[130px] h-9">
-          <Image
-            src={"/images/logo.png"}
-            width={130}
-            height={36}
-            alt="elinic"
-            className="cursor-pointer"
-          />
+          <Link href="/">
+            <Image
+              src={"/images/logo.png"}
+              width={130}
+              height={36}
+              alt="elinic"
+              className="cursor-pointer"
+            />
+          </Link>
         </div>
         <ul className="flex space-x-11 list-none">
           <li key={1}>Cổng thông tin</li>
