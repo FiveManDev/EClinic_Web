@@ -15,3 +15,11 @@ yarn dev
 ```
 
 Third, change file env to .env.local:
+
+Before commit, Please run
+
+```bash
+yarn lint
+#and
+yarn prettier
+```

@@ -1,7 +1,6 @@
-import { useEffect } from "react"
 import { useRouter } from "next/router"
 import NProgress from "nprogress"
-import { appLibrary } from "shared/utils/appLibrary"
+import { useEffect } from "react"
 
 // show progres when change route
 NProgress.configure({

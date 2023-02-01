@@ -1,8 +1,8 @@
 import {
-  PayloadAction,
   AsyncThunk,
+  createAsyncThunk,
   createSlice,
-  createAsyncThunk
+  PayloadAction
 } from "@reduxjs/toolkit"
 import axiosClient from "shared/axios/axiosClientClient"
 import { Post } from "types/Post.type"

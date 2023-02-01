@@ -12,7 +12,7 @@ import { NextPageWithLayout } from "./page"
 //   }
 // }
 
-const Home: NextPageWithLayout = (props) => {
+const Home: NextPageWithLayout = () => {
   return <HomePage />
 }
 Home.getLayout = (page) => {
