@@ -11,8 +11,6 @@ const UserAvatar = () => {
   const { user } = useSelector((state: RootState) => state.auth)
   const dispatch = useAppDispatch()
   const logout = () => {
-    console.log("dang")
-
     dispatch(logoutUser())
   }
   return (

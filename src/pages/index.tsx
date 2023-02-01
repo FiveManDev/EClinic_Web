@@ -1,8 +1,18 @@
 import UserLayout from "layout/User/UserLayout"
 import HomePage from "module/User/Home/HomePage"
+// import { GetServerSideProps } from "next"
 import { NextPageWithLayout } from "./page"
 
-const Home: NextPageWithLayout = () => {
+// export const getServerSideProps: GetServerSideProps = async (context) => {
+//   // const cookies = context.req.cookies
+//   return {
+//     props: {
+//       test: ""
+//     }
+//   }
+// }
+
+const Home: NextPageWithLayout = (props) => {
   return <HomePage />
 }
 Home.getLayout = (page) => {
