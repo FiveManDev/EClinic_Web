@@ -1,9 +1,8 @@
-import jwt_decode from "jwt-decode"
+import { authService } from "services/auth.service"
+import { token } from "shared/utils/token"
 import { IUser } from "./../../../types/User.type"
 import { AppDispatch } from "./../../store"
-import { token } from "shared/utils/token"
 import { authenticate, deleteAuthenticate } from "./auth-slice"
-import { authService } from "services/auth.service"
 
 export const loginUser = (user: IUser) => async (dispatch: AppDispatch) => {
   dispatch(authenticate(user))
@@ -18,7 +17,7 @@ export const checkLogin = () => async (dispatch: AppDispatch) => {
   if (!token.getToken().access_token && token.getToken().refresh_token) {
     const result = await authService.refreshToken()
     if (result.isSuccess) {
-      token.saveToken(result.data.accessToken, result.data.refreshToken)
+      token.saveToken(result.data!.accessToken, result.data!.refreshToken)
     } else {
       token.deleteToken()
     }
