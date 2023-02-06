@@ -1,6 +1,9 @@
 import Head from "next/head"
-import Appoiment from "./appoiment/Appoiment"
-import Banner from "./banner/Banner"
+import Appoiment from "./section/appoiment/Appoiment"
+import Banner from "./section/banner/Banner"
+import Blog from "./section/blog"
+import Forum from "./section/forum"
+import Services from "./section/services/Services"
 
 export default function HomePage() {
   return (
@@ -11,10 +14,13 @@ export default function HomePage() {
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
-      <main className="page-wrapper">
+      <main className="mb-20 page-wrapper pt-16 md:pt-[72px] overflow-hidden">
         <Banner />
-        <div className="page-container">
+        <div className="space-y-10 md:space-y-16 page-container page-container--child">
           <Appoiment />
+          <Services />
+          <Blog />
+          <Forum />
         </div>
       </main>
     </>

@@ -1,0 +1,34 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+@import url(./reset.css);
+
+@layer base {
+  html {
+    @apply font-primary;
+  }
+  body {
+    @apply leading-tight;
+  }
+  li {
+    @apply list-none;
+  }
+  .page-wrapper {
+    @apply max-w-[1920px] w-full md:h-auto mx-auto;
+  }
+  .banner-wrapper {
+    @apply w-full h-[360px] px-[10px] md:px-0 md:h-[600px] bg-[#E8F1FF];
+  }
+  .page-container {
+    @apply max-w-[1195px] h-full md:h-auto mx-auto w-full;
+    &--child {
+      @apply px-3 md:px-0;
+    }
+  }
+  .heading-section {
+    @apply text-h1 text-2xl font-bold md:text-[44px] md:leading-tight;
+  }
+  .desc-section {
+    @apply text-[#777781] text-sm md:text-base md:leading-tight;
+  }
+}

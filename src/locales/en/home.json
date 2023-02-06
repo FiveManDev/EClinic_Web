@@ -1,0 +1,25 @@
+{
+  "banner": {
+    "menu": {
+      "Portal": "Portal",
+      "Services": "Services",
+      "Booking": "Booking",
+      "Contact": "Contact"
+    },
+    "title": "Understand, Track, Improve Health",
+    "description": "A platform for booking health services and products for you and your family",
+    "search": {
+      "keyword": "Most searched",
+      "placeholder": "Find disease, doctor, question and answer,...."
+    },
+    "button": {
+      "signup": "Sign Up",
+      "signin": "Sign In"
+    }
+  },
+  "service": {
+    "title": "Book an appointment online",
+    "desc": "Make an appointment with good doctors who are dedicated to taking care of you and your family's health.",
+    "btn": "Booking"
+  }
+}

@@ -1,0 +1,25 @@
+{
+  "banner": {
+    "menu": {
+      "Portal": "Cổng thông tin",
+      "Services": "Dịch vụ",
+      "Booking": "Đặt Khám",
+      "Contact": "Liên hệ"
+    },
+    "title": "Hiểu, theo dõi, cải thiện sức khỏe",
+    "description": "Nền tảng đặt dịch vụ và sản phẩm y tế dành cho bạn và gia đình",
+    "search": {
+      "keyword": "Tìm kiếm nhiều nhất",
+      "placeholder": "Tìm bệnh, bác sĩ, hỏi đáp,...."
+    },
+    "button": {
+      "signup": "Đăng kí",
+      "signin": "Đăng nhập"
+    }
+  },
+  "service": {
+    "title": "Đăt lịch khám trực tuyến",
+    "desc": "Đặt lịch hẹn với các bác sĩ giỏi, luôn tận tâm chăm sóc sức khỏe của bạn và gia đình.",
+    "btn": "Đặt lịch khám"
+  }
+}
