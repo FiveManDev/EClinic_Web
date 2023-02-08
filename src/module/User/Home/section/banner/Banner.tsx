@@ -7,11 +7,11 @@ const Banner = () => {
     <section className="banner-wrapper ">
       <div className="relative page-container">
         <div className="flex items-center justify-between pt-10">
-          <div className="max-w-[200px] w-full">
+          <div className="max-w-[200px] md:max-w-[600px] w-full">
             <h1 className="font-bold text-4xl md:text-[70px] md:leading-tight text-h1">
               {t("banner.title")}
             </h1>
-            <h3 className="text-xs leading-snug md:text-[20px] text-[#7B7E90] leading-tight  mt-4">
+            <h3 className="text-xs leading-snug md:text-[20px] text-[#7B7E90] md:leading-tight  mt-4">
               {t("banner.description")}
             </h3>
           </div>
