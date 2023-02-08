@@ -11,10 +11,10 @@ const Appoiment = () => {
         <Image alt="image-appoiment" src="/images/image-1.png" fill />
       </div>
       <div className="flex flex-col space-y-3 text-center md:space-y-7 max-w-[700px]">
-        <h3 className="heading-section ">{t("service.title")}</h3>
-        <p className="desc-section">{t("service.desc")}</p>
+        <h3 className="heading-section ">{t("appoiment.title")}</h3>
+        <p className="desc-section">{t("appoiment.desc")}</p>
         <CustomButton kind="secondary" className="mx-auto md:mx-0max-w-[200px]">
-          {t("service.btn")}
+          {t("appoiment.btn")}
         </CustomButton>
       </div>
     </section>

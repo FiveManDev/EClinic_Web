@@ -17,9 +17,23 @@
       "signin": "Sign In"
     }
   },
-  "service": {
+  "appoiment": {
     "title": "Book an appointment online",
     "desc": "Make an appointment with good doctors who are dedicated to taking care of you and your family's health.",
     "btn": "Booking"
+  },
+  "service": {
+    "title": "Popular Services",
+    "desc": "We can provide over 30 services for you",
+    "btn": "All Services"
+  },
+  "blog": {
+    "title": "Daily Health News Updates",
+    "btn": "View All News"
+  },
+  "forum": {
+    "title": "Doctor Q&A",
+    "btn1": "Ask a Question",
+    "btn2": "View All"
   }
 }

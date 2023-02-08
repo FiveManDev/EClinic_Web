@@ -17,9 +17,23 @@
       "signin": "Đăng nhập"
     }
   },
-  "service": {
+  "appoiment": {
     "title": "Đăt lịch khám trực tuyến",
     "desc": "Đặt lịch hẹn với các bác sĩ giỏi, luôn tận tâm chăm sóc sức khỏe của bạn và gia đình.",
     "btn": "Đặt lịch khám"
+  },
+  "service": {
+    "title": "Các dịch vu phổ biến",
+    "desc": "Hơn 30 dịch vụ chúng tôi có thể cung cấp cho bạn",
+    "btn": "Tất cả dịch vụ"
+  },
+  "blog": {
+    "title": "Tin tức sức khỏe cập nhật hàng ngày",
+    "btn": "Xem tất cả tin tức"
+  },
+  "forum": {
+    "title": "Hỏi đáp bác sĩ",
+    "btn1": "Đặt câu hỏi miễn phí",
+    "btn2": "Xem tất cả"
   }
 }

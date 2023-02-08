@@ -1,11 +1,14 @@
 import CustomButton from "components/User/Button"
 import React from "react"
 import CardForum from "./components/CardForum"
+import { useTranslation } from "react-i18next"
 
 const Forum = () => {
+  const { t } = useTranslation("home")
+
   return (
     <section className="flex flex-col w-full ">
-      <h3 className="mb-3 text-center heading-section ">Hỏi đáp với Bác sĩ</h3>
+      <h3 className="mb-3 text-center heading-section ">{t("forum.title")}</h3>
       <div className="grid grid-cols-1 gap-y-4 md:gap-x-6 md:grid-cols-3">
         <CardForum />
         <CardForum />
@@ -13,10 +16,10 @@ const Forum = () => {
       </div>
       <div className="flex items-center mt-6 space-x-2">
         <CustomButton kind="primary" className="max-w-[200px] ">
-          Đặt câu hỏi miễn phí
+          {t("forum.btn1")}
         </CustomButton>
-        <CustomButton kind="tertiary" className="max-w-[200px] ">
-          Xem tất cả câu hỏi
+        <CustomButton kind="tertiary" className="max-w-[200px] space-x-2 ">
+          <span>{t("forum.btn2")}</span>
           <span>
             <svg
               xmlns="http://www.w3.org/2000/svg"
