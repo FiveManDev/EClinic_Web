@@ -38,7 +38,7 @@ class AuthService {
         }
       }
     )
-    const data = (await res.json()) as IServerResponse<IToken>
+    const data: IServerResponse<IToken> = await res.json()
     return data
   }
   async signIn(userName: string, password: string) {

@@ -6,16 +6,19 @@ const Banner = () => {
   return (
     <section className="banner-wrapper ">
       <div className="relative page-container">
-        <div className="flex items-center justify-between pt-10">
-          <div className="max-w-[200px] md:max-w-[600px] w-full">
-            <h1 className="font-bold text-4xl md:text-[70px] md:leading-tight text-h1">
+        <div className="grid grid-cols-2 pt-10">
+          <div className="">
+            <h1 className="font-bold text-4xl md:text-5xl lg:text-[70px] md:leading-tight text-h1">
               {t("banner.title")}
             </h1>
             <h3 className="text-xs leading-snug md:text-[20px] text-[#7B7E90] md:leading-tight  mt-4">
               {t("banner.description")}
             </h3>
           </div>
-          <div className="relative flex-shrink-0 w-[200px] h-[200px]  md:w-[600px] md:h-[600px]">
+          <div
+            className="relative flex-shrink-0 w-[230px] h-[230px] md:w-[400px]
+md:h-[400px] lg:w-[600px] lg:h-[600px]"
+          >
             <Image alt="banner" src="/images/banner.png" fill />
           </div>
         </div>

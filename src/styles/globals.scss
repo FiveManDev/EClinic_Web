@@ -17,12 +17,12 @@
     @apply max-w-[1920px] w-full md:h-auto mx-auto;
   }
   .banner-wrapper {
-    @apply w-full h-[360px] px-[10px] md:px-0 md:h-[600px] bg-[#E8F1FF];
+    @apply w-full h-[360px] px-[10px] md:px-4 md:max-h-[600px] md:h-full bg-[#E8F1FF];
   }
   .page-container {
     @apply max-w-[1195px] h-full md:h-auto mx-auto w-full;
     &--child {
-      @apply px-3 md:px-0;
+      @apply px-3 md:px-6;
     }
   }
   .heading-section {
