@@ -1,7 +1,7 @@
 import { Button, ButtonProps } from "@mui/material"
 import classNames from "classnames"
 interface Props extends ButtonProps {
-  kind: "primary" | "secondary" | "tertiary`"
+  kind: "primary" | "secondary" | "tertiary"
 }
 
 const CustomButton = ({ kind, className, ...props }: Props) => {

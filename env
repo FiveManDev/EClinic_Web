@@ -1,6 +1,0 @@
-NEXT_PUBLIC_APP_URL=http://localhost:3000
-# Authenticate
-NEXT_PUBLIC_ACCESS_TOKEN_NAME=elinic_access_token
-NEXT_PUBLIC_REFRESH_TOKEN_NAME=elinic_refresh_token
-# API URL
-NEXT_PUBLIC_API_URL=http://localhost:3000

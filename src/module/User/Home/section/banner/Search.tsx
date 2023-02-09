@@ -8,20 +8,22 @@ import {
 } from "@mui/material"
 import ChipCustom from "components/Common/Chip/Chip"
 import React from "react"
-import { SearchWrapper } from "./Search.stype"
+import { useTranslation } from "react-i18next"
+import { SearchWrapper } from "./Search.styles"
 
 const Search = () => {
+  const { t } = useTranslation("home")
   const [age, setAge] = React.useState("")
 
   const handleChange = (event: SelectChangeEvent) => {
     setAge(event.target.value)
   }
   return (
-    <SearchWrapper className="absolute bottom-0 translate-y-2/4 w-full h-[240px] mx-auto bg-white rounded-xl p-8 shadow-[0px_1px_4px_rgba(0,_0,_0,_0.15)]">
-      <div className="flex items-center justify-between space-x-4 h-[72px]">
+    <SearchWrapper className="absolute bottom-0 translate-y-2/4 w-full p-4  mx-auto bg-white rounded-xl md:p-8 shadow-[0px_1px_4px_rgba(0,_0,_0,_0.15)]">
+      <div className="flex items-center justify-between space-x-2 md:space-x-4 h-11 md:h-[72px]">
         <OutlinedInput
-          placeholder="Tìm bệnh, bác sĩ, hỏi đáp,...."
-          className="h-full bg-[#FAFBFE] rounded-lg border-none outline-none"
+          placeholder={t("banner.search.placeholder")}
+          className="h-full bg-[#FAFBFE] text-xs md:text-base rounded-lg border-none outline-none"
           fullWidth
           startAdornment={
             <InputAdornment position="start">
@@ -30,7 +32,7 @@ const Search = () => {
           }
         />
         <Select
-          className="h-full bg-[#FAFBFE] rounded-lg border-none outline-none max-w-[300px] w-full"
+          className=" text-xs md:text-base h-full bg-[#FAFBFE] rounded-lg border-none outline-none max-w-[300px] w-full"
           value={age}
           onChange={handleChange}
           displayEmpty
@@ -45,14 +47,16 @@ const Search = () => {
         </Select>
         <IconButton
           aria-label="delete"
-          className="text-white h-full w-[72px] flex items-center justify-center rounded-[10px] bg-primary hover:bg-primary"
+          className="text-white h-full w-14 md:w-[72px] flex items-center justify-center rounded-[10px] bg-primary hover:bg-primary"
         >
           <IconSearch />
         </IconButton>
       </div>
-      <div className="flex flex-col mt-4 space-y-2 w-full">
-        <h4 className="text-h1 text-[20px]">Tìm kiếm nhiều nhất</h4>
-        <ul className="list-none flex items-center space-x-4 w-full overflow-auto">
+      <div className="flex flex-col w-full mt-4 space-y-2">
+        <h4 className="text-h1 text-base md:text-[20px]">
+          {t("banner.search.keyword")}
+        </h4>
+        <ul className="flex items-center w-full space-x-4 overflow-auto list-none">
           {new Array(7).fill(null).map((item, index) => (
             <li key={index}>
               <ChipCustom label="Covid-19" />
@@ -72,7 +76,7 @@ function IconSearch() {
         viewBox="0 0 24 24"
         strokeWidth="1.5"
         stroke="currentColor"
-        className="w-9 h-w-9"
+        className="w-5 h-5 md:w-9 md:h-9"
       >
         <path
           strokeLinecap="round"
