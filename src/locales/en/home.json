@@ -25,7 +25,8 @@
   "service": {
     "title": "Popular Services",
     "desc": "We can provide over 30 services for you",
-    "btn": "All Services"
+    "btn": "All Services",
+    "btnCard": "Watch live"
   },
   "blog": {
     "title": "Daily Health News Updates",

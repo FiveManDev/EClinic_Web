@@ -22,8 +22,7 @@ const Footer = () => {
                 </div>
               </h6>
               <p className="leading-7">
-                TripGuide Công ty công nghệ cung cấp giải pháp y tế, duy nhất
-                tại Việt Nam
+                Công ty công nghệ cung cấp giải pháp y tế, duy nhất tại Việt Nam
               </p>
             </div>
             <div>
@@ -140,15 +139,15 @@ const Footer = () => {
             </div>
           </div>
         </div>
-        <div className="p-6 text-center bg-gray-200">
-          <span>© 2023 Copyright:</span>
-          <a
-            className="font-semibold text-gray-600"
-            href="https://tailwind-elements.com/"
-          >
-            Elinic
-          </a>
-        </div>
+      </div>
+      <div className="p-6 text-center bg-gray-200">
+        <span>© 2023 Copyright:</span>
+        <a
+          className="font-semibold text-gray-600"
+          href="https://tailwind-elements.com/"
+        >
+          Elinic
+        </a>
       </div>
     </footer>
   )

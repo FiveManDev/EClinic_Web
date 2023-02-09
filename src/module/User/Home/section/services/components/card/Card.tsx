@@ -3,8 +3,11 @@ import CustomButton from "components/User/Button"
 import Image from "next/image"
 import Link from "next/link"
 import React from "react"
+import { useTranslation } from "react-i18next"
 
 const Card = () => {
+  const { t } = useTranslation("home")
+
   return (
     <div className="h-[334px] w-full p-3 flex flex-col space-y-4 bg-white rounded-2xl border border-solid border-[#E7ECF3]">
       <div className="w-full h-[152px] relative">
@@ -45,7 +48,7 @@ const Card = () => {
             kind="primary"
             className="h-[33px] rounded-md"
           >
-            <span className="text-sm">Xem trực tiếp</span>
+            <span className="text-sm">{t("service.btnCard")}</span>
           </CustomButton>
         </Link>
       </div>

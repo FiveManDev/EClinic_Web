@@ -25,7 +25,8 @@
   "service": {
     "title": "Các dịch vu phổ biến",
     "desc": "Hơn 30 dịch vụ chúng tôi có thể cung cấp cho bạn",
-    "btn": "Tất cả dịch vụ"
+    "btn": "Tất cả dịch vụ",
+    "btnCard": "Xem trực tiếp"
   },
   "blog": {
     "title": "Tin tức sức khỏe cập nhật hàng ngày",
