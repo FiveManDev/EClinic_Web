@@ -1,6 +1,5 @@
 import CustomButton from "components/User/Button"
-import React from "react"
-import CardForum from "./components/CardForum"
+import CardForum from "module/User/components/CardForum"
 import { useTranslation } from "react-i18next"
 
 const Forum = () => {

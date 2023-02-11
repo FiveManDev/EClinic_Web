@@ -1,0 +1,13 @@
+{
+  "questionTitleHeading": "Ask a free question",
+  "inputTitle": "Name of the question...",
+  "textareaDesc": "Ask your detailed question here...",
+  "upload": "Upload image",
+  "btnUpload": "Submit a question",
+  "search": {
+    "heading": "Popular items",
+    "input": "Search by keyword"
+  },
+  "questionHeadingFav": "Featured Question",
+  "allquestion": "All questions"
+}

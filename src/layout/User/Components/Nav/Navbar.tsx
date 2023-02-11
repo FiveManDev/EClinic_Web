@@ -54,10 +54,10 @@ const Navbar = ({ show = false, onClose }: Props) => {
           </Link>
         </div>
         <ul className="flex flex-col items-center space-y-6 list-none md:flex-row md:space-y-0 md:space-x-10">
-          <MenuItem>{t("banner.menu.Portal")}</MenuItem>
-          <MenuItem>{t("banner.menu.Services")}</MenuItem>
-          <MenuItem>{t("banner.menu.Booking")}</MenuItem>
-          <MenuItem>{t("banner.menu.Contact")}</MenuItem>
+          <MenuItem href="/forum">{t("banner.menu.Portal")}</MenuItem>
+          <MenuItem href="/">{t("banner.menu.Services")}</MenuItem>
+          <MenuItem href="/">{t("banner.menu.Booking")}</MenuItem>
+          <MenuItem href="/">{t("banner.menu.Contact")}</MenuItem>
         </ul>
       </div>
       <div className="flex flex-col items-center justify-start w-full h-auto space-x-0 space-y-3 md:space-x-4 md:justify-start md:space-y-0 md:h-full md:flex-row md:w-auto">
