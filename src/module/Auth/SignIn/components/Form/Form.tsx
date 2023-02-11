@@ -1,5 +1,5 @@
 import { yupResolver } from "@hookform/resolvers/yup"
-import { Alert } from "@mui/material"
+import { Alert, Divider } from "@mui/material"
 import GoogleIcon from "components/Common/Icon/GoogleIcon"
 import Spinner from "components/Common/Loading/LoadingIcon"
 import CustomButton from "components/User/Button"
@@ -65,6 +65,9 @@ const FormLogin = () => {
   return (
     <div className="md:max-w-[580px] w-full  bg-white rounded-md shadow-[1.69138px_-2.81897px_19.7328px_rgba(205,_205,_212,_0.1)] px-4 py-6 mt-7">
       <ButtonIcon text="Log in with Google" icon={<GoogleIcon />} />
+      <Divider className="my-[30px]">
+        <span className="text-[10px] text-[#4E5D78] md:text-lg">OR</span>
+      </Divider>
       <form
         onSubmit={handleSubmit(handleSignIn)}
         className="flex flex-col mt-3 space-y-5 md:mt-5"
@@ -77,7 +80,7 @@ const FormLogin = () => {
           helperText={errors.username?.message?.toString()}
         />
         <CustomInputPassword
-          label="password"
+          label="Password"
           control={control}
           name="password"
           error={!!errors.password}

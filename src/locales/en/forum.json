@@ -9,5 +9,9 @@
     "input": "Search by keyword"
   },
   "questionHeadingFav": "Featured Question",
-  "allquestion": "All questions"
+  "allquestion": "All questions",
+  "card": {
+    "by": "Answered by",
+    "exp": "years of experience"
+  }
 }

@@ -15,7 +15,7 @@ const BreadcrumsCustom: React.FC<BreadcrumbsProps> = ({ items }) => (
     {items.map((item, index) =>
       item.href ? (
         <Link key={index} className="text-inherit" href="/">
-          Trang chủ
+          {item.label}
         </Link>
       ) : (
         <Typography key={index} color="text.primary">

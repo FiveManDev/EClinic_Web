@@ -1,4 +1,4 @@
-import { Pagination, Stack } from "@mui/material"
+import { Pagination } from "@mui/material"
 import BreadcrumsCustom from "components/Common/Breadcrums"
 import Head from "next/head"
 import { useTranslation } from "react-i18next"
@@ -7,7 +7,7 @@ import CreateQuestion from "./section/create"
 import Search from "./section/search"
 
 const ForumPage = () => {
-  const { t } = useTranslation("forum")
+  const { t } = useTranslation(["base", "forum"])
 
   return (
     <>
@@ -21,7 +21,10 @@ const ForumPage = () => {
         <div className="grid grid-cols-3 gap-4 mt-10 md:gap-7">
           <div className="col-span-3">
             <BreadcrumsCustom
-              items={[{ label: "Trang chủ", href: "/" }, { label: "Câu hỏi" }]}
+              items={[
+                { label: t("base:pages.home"), href: "/" },
+                { label: t("base:pages.forum") }
+              ]}
             />
           </div>
           <div className="grid grid-cols-3 col-span-3 gap-7">
@@ -52,7 +55,7 @@ const ForumPage = () => {
                     />
                   </svg>
                 </span>
-                <span> {t("questionHeadingFav")}</span>
+                <span> {t("forum:questionHeadingFav")}</span>
               </div>
               <div className="grid grid-cols-1 gap-y-4 md:gap-x-6 md:grid-cols-3">
                 <CardForum />
@@ -62,7 +65,7 @@ const ForumPage = () => {
             </div>
           </div>
           <div className="w-full col-span-3 space-y-4 md:col-span-2 background-primary">
-            <h4 className="text-xl "> {t("allquestion")}</h4>
+            <h4 className="text-xl "> {t("forum:allquestion")}</h4>
             <div className="grid grid-cols-1 gap-8 md:grid-cols-2">
               <CardForum />
               <CardForum />

@@ -9,5 +9,9 @@
     "input": "Tìm kiếm theo từ khóa"
   },
   "questionHeadingFav": "Câu hỏi nổi bật",
-  "allquestion": "Tất cả câu hỏi"
+  "allquestion": "Tất cả câu hỏi",
+  "card": {
+    "by": "Được trả lời bởi",
+    "exp": "Năm kinh nghiệm"
+  }
 }
