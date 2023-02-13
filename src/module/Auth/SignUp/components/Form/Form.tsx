@@ -102,7 +102,7 @@ const FormSignup = () => {
 
   return (
     <div className="md:max-w-[580px] w-full  bg-white rounded-md shadow-[1.69138px_-2.81897px_19.7328px_rgba(205,_205,_212,_0.1)] px-4 py-6 mt-7">
-      <ButtonIcon text="Log in with Google" icon={<GoogleIcon />} />
+      <ButtonIcon text="Log up with Google" icon={<GoogleIcon />} />
       <Divider className="my-[30px]">
         <span className="text-[10px] text-[#4E5D78] md:text-lg">OR</span>
       </Divider>
@@ -145,7 +145,7 @@ const FormSignup = () => {
           errorMessage={errors.password?.message?.toString()}
         />
         <CustomInputPassword
-          label="Confirm passowrd"
+          label="Confirm password"
           placeholder="Confirm password"
           control={control}
           name="confirmPassword"
@@ -185,11 +185,6 @@ const FormSignup = () => {
               value="male"
               control={<Radio size="small" />}
               label="Male"
-            />
-            <FormControlLabel
-              value="other"
-              control={<Radio size="small" />}
-              label="Other"
             />
           </RadioGroup>
         </FormControl>

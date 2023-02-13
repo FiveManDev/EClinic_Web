@@ -7,7 +7,7 @@ const Banner = () => {
     <section className="banner-wrapper ">
       <div className="relative page-container">
         <div className="grid grid-cols-2 pt-10">
-          <div className="">
+          <div className="md:mt-20">
             <h1 className="font-bold text-4xl md:text-5xl lg:text-[70px] md:leading-tight text-h1">
               {t("banner.title")}
             </h1>

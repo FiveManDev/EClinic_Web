@@ -5,7 +5,13 @@ import { NextResponse } from "next/server"
 import { authService } from "services/auth.service"
 import { ROLE } from "shared/constant/constant"
 import { ITokenDecode } from "types/Token.type"
-const unprotectedPaths: string[] = ["/", `/sign-in`, `/sign-up`, "/services"]
+const unprotectedPaths: string[] = [
+  "/",
+  `/sign-in`,
+  `/sign-up`,
+  "/services",
+  "/forum"
+]
 
 // This function can be marked `async` if using `await` inside
 export async function middleware(req: NextRequest) {
@@ -15,11 +21,9 @@ export async function middleware(req: NextRequest) {
   const { cookies } = req
 
   const accessToken =
-    cookies.get(process.env.NEXT_PUBLIC_ACCESS_TOKEN_NAME as string)?.value ||
-    ""
+    cookies.get(process.env.NEXT_PUBLIC_ACCESS_TOKEN_NAME as string)?.value
   const refreshToken =
-    cookies.get(process.env.NEXT_PUBLIC_REFRESH_TOKEN_NAME as string)?.value ||
-    ""
+    cookies.get(process.env.NEXT_PUBLIC_REFRESH_TOKEN_NAME as string)?.value
   if (!accessToken && refreshToken) {
     const result = await authService.refreshToken()
     if (result.isSuccess) {

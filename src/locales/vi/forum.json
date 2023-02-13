@@ -1,0 +1,17 @@
+{
+  "questionTitleHeading": "Đặt câu hỏi miễn phí",
+  "inputTitle": "Tên của câu hỏi...",
+  "textareaDesc": "Hãy đưa ra câu hỏi chi tiết của bạn tại đây...",
+  "upload": "Tải hình",
+  "btnUpload": "Gửi câu hỏi",
+  "search": {
+    "heading": "Mục phổ biến",
+    "input": "Tìm kiếm theo từ khóa"
+  },
+  "questionHeadingFav": "Câu hỏi nổi bật",
+  "allquestion": "Tất cả câu hỏi",
+  "card": {
+    "by": "Được trả lời bởi",
+    "exp": "Năm kinh nghiệm"
+  }
+}
