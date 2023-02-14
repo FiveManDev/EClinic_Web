@@ -105,7 +105,9 @@ const FormSignup = () => {
   }
   useEffect(() => {
     if (error) {
-      message.error("Unable to register, please try again!!!")
+      message.error({
+        content: "Unable to register, please try again!!!"
+      })
     }
   }, [error])
   return (

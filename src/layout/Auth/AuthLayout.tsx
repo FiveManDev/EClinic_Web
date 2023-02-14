@@ -8,10 +8,8 @@ type Props = {
 }
 
 const AuthLayout = ({ children }: Props) => {
-  const [_, contextHolder] = message.useMessage()
   return (
     <>
-      {contextHolder}
       <div className="min-h-screen flex flex-col bg-[linear-gradient(180deg,_rgba(255,_255,_255,_0.4)_0%,_rgba(255,_255,_255,_0.1)_100%)]">
         <header className="w-full h-[84px] bg-white">
           <div className="flex items-center justify-between px-4 md:px-[60px] max-w-[1440px] w-full h-full mx-auto">

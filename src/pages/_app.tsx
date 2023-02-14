@@ -9,6 +9,7 @@ import {
 } from "@tanstack/react-query"
 import { useNProgress } from "hooks/useNProgress"
 import "i18n/i18n"
+import LayoutBase from "layout/LayoutBase"
 import type { AppProps } from "next/app"
 import { useEffect } from "react"
 import { useTranslation } from "react-i18next"
@@ -47,25 +48,27 @@ export default function App({ Component, pageProps }: AppPropsWithLayout) {
   }, [])
   return (
     <>
-      <GoogleOAuthProvider
-        clientId={process.env.NEXT_PUBLIC_GOOGLE_CLIENT_ID as string}
-      >
-        <Provider store={store}>
-          {getLayout(
-            <QueryClientProvider client={queryClient}>
-              <Hydrate state={pageProps.dehydratedState}>
-                <CacheProvider value={cache}>
-                  <StyledEngineProvider injectFirst>
-                    <ThemeProvider theme={theme}>
-                      <Component {...pageProps} />
-                    </ThemeProvider>
-                  </StyledEngineProvider>
-                </CacheProvider>
-              </Hydrate>
-            </QueryClientProvider>
-          )}
-        </Provider>
-      </GoogleOAuthProvider>
+      <LayoutBase>
+        <GoogleOAuthProvider
+          clientId={process.env.NEXT_PUBLIC_GOOGLE_CLIENT_ID as string}
+        >
+          <Provider store={store}>
+            {getLayout(
+              <QueryClientProvider client={queryClient}>
+                <Hydrate state={pageProps.dehydratedState}>
+                  <CacheProvider value={cache}>
+                    <StyledEngineProvider injectFirst>
+                      <ThemeProvider theme={theme}>
+                        <Component {...pageProps} />
+                      </ThemeProvider>
+                    </StyledEngineProvider>
+                  </CacheProvider>
+                </Hydrate>
+              </QueryClientProvider>
+            )}
+          </Provider>
+        </GoogleOAuthProvider>
+      </LayoutBase>
     </>
   )
 }

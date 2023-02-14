@@ -66,7 +66,10 @@ const FormLogin = () => {
   }
   useEffect(() => {
     if (error) {
-      message.error("Login failed")
+      // message.error("Login failed")
+      message.error({
+        content: "Login failed, please try again!!!"
+      })
     }
   }, [error])
   return (
