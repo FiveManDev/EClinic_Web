@@ -102,7 +102,11 @@ const FormSignup = () => {
 
   return (
     <div className="md:max-w-[580px] w-full  bg-white rounded-md shadow-[1.69138px_-2.81897px_19.7328px_rgba(205,_205,_212,_0.1)] px-4 py-6 mt-7">
-      <ButtonIcon text="Log up with Google" icon={<GoogleIcon />} />
+      <ButtonIcon
+        text="Log in with Google"
+        icon={<GoogleIcon />}
+        onClick={() => {}}
+      />
       <Divider className="my-[30px]">
         <span className="text-[10px] text-[#4E5D78] md:text-lg">OR</span>
       </Divider>

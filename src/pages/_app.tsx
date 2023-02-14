@@ -20,7 +20,7 @@ import "i18n/i18n"
 import { useTranslation } from "react-i18next"
 import { useEffect } from "react"
 import { LANGUAGE, LOCALSTORAGE } from "shared/constant/constant"
-
+import { GoogleOAuthProvider } from "@react-oauth/google"
 interface AppPropsWithLayout extends AppProps {
   Component: NextPageWithLayout
 }
@@ -47,21 +47,25 @@ export default function App({ Component, pageProps }: AppPropsWithLayout) {
   }, [])
   return (
     <>
-      <Provider store={store}>
-        {getLayout(
-          <QueryClientProvider client={queryClient}>
-            <Hydrate state={pageProps.dehydratedState}>
-              <CacheProvider value={cache}>
-                <StyledEngineProvider injectFirst>
-                  <ThemeProvider theme={theme}>
-                    <Component {...pageProps} />
-                  </ThemeProvider>
-                </StyledEngineProvider>
-              </CacheProvider>
-            </Hydrate>
-          </QueryClientProvider>
-        )}
-      </Provider>
+      <GoogleOAuthProvider
+        clientId={process.env.NEXT_PUBLIC_GOOGLE_CLIENT_ID as string}
+      >
+        <Provider store={store}>
+          {getLayout(
+            <QueryClientProvider client={queryClient}>
+              <Hydrate state={pageProps.dehydratedState}>
+                <CacheProvider value={cache}>
+                  <StyledEngineProvider injectFirst>
+                    <ThemeProvider theme={theme}>
+                      <Component {...pageProps} />
+                    </ThemeProvider>
+                  </StyledEngineProvider>
+                </CacheProvider>
+              </Hydrate>
+            </QueryClientProvider>
+          )}
+        </Provider>
+      </GoogleOAuthProvider>
     </>
   )
 }
