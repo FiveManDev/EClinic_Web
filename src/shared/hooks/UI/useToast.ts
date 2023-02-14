@@ -1,16 +1,25 @@
-import { Button, message } from "antd"
+import { message } from "antd"
+import { ArgsProps } from "antd/es/message"
+interface Props extends ArgsProps {}
 
 export const useToast = () => {
   const [messageApi, contextHolder] = message.useMessage()
 
-  const success = () => {
+  const triggerToast = ({
+    type = "success",
+    content,
+    className,
+    ...props
+  }: Props) => {
     messageApi.open({
-      type: "success",
-      content: "This is a prompt message with custom className and style",
-      className: "custom-class",
-      style: {
-        marginTop: "20vh"
-      }
+      ...props,
+      type,
+      content,
+      className
     })
+  }
+  return {
+    triggerToast,
+    contextHolder
   }
 }

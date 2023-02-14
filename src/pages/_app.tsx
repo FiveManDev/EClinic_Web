@@ -1,26 +1,26 @@
 import createCache from "@emotion/cache"
 import { CacheProvider } from "@emotion/react"
 import { StyledEngineProvider, ThemeProvider } from "@mui/material"
+import { GoogleOAuthProvider } from "@react-oauth/google"
 import {
   Hydrate,
   QueryClient,
   QueryClientProvider
 } from "@tanstack/react-query"
 import { useNProgress } from "hooks/useNProgress"
+import "i18n/i18n"
 import type { AppProps } from "next/app"
+import { useEffect } from "react"
+import { useTranslation } from "react-i18next"
 import { Provider } from "react-redux"
+import { LANGUAGE, LOCALSTORAGE } from "shared/constant/constant"
 import { isBrowser } from "shared/helpers/helper"
 import { theme } from "shared/theme/theme"
 import { checkLogin } from "store/module/auth/action-creators"
 import { store } from "store/store"
 import "styles/globals.scss"
-import { NextPageWithLayout } from "./page"
 import "../assets/styles/app.scss"
-import "i18n/i18n"
-import { useTranslation } from "react-i18next"
-import { useEffect } from "react"
-import { LANGUAGE, LOCALSTORAGE } from "shared/constant/constant"
-import { GoogleOAuthProvider } from "@react-oauth/google"
+import { NextPageWithLayout } from "./page"
 interface AppPropsWithLayout extends AppProps {
   Component: NextPageWithLayout
 }

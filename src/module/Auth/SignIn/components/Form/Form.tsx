@@ -1,5 +1,6 @@
 import { yupResolver } from "@hookform/resolvers/yup"
 import { Alert, Divider } from "@mui/material"
+import { message } from "antd"
 import GoogleIcon from "components/Common/Icon/GoogleIcon"
 import Spinner from "components/Common/Loading/LoadingIcon"
 import CustomButton from "components/User/Button"
@@ -28,7 +29,7 @@ const schema = yup.object({
     .required("Please enter your password")
 })
 const FormLogin = () => {
-  const { action, profile, errorMessage } = useUserGoogle()
+  const { action, profile, error } = useUserGoogle()
   const dispatch = useAppDispatch()
   const router = useRouter()
   const [isError, setIsError] = useState(false)
@@ -63,11 +64,11 @@ const FormLogin = () => {
       console.log("handleSignIn ~ error", error)
     }
   }
-  // useEffect(() => {
-  //   if (errorMessage) {
-
-  //  }
-  // }, [errorMessage])
+  useEffect(() => {
+    if (error) {
+      message.error("Login failed")
+    }
+  }, [error])
   return (
     <div className="md:max-w-[580px] w-full  bg-white rounded-md shadow-[1.69138px_-2.81897px_19.7328px_rgba(205,_205,_212,_0.1)] px-4 py-6 mt-7">
       <ButtonIcon

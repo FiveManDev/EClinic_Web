@@ -1,5 +1,5 @@
-import { Footer } from "./Components"
 import dynamic from "next/dynamic"
+import { Footer } from "./Components"
 const Header = dynamic(
   () => import("./Components").then((module) => module.Header),
   {

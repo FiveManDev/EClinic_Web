@@ -11,4 +11,5 @@ export const getUserGoogle = async (access_token: string) => {
     }
   )
   return data
+  
 }
