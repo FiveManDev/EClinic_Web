@@ -13,5 +13,13 @@
   "card": {
     "by": "Answered by",
     "exp": "years of experience"
-  }
+  },
+  "question": "Question",
+  "anwers": "Answered here",
+  "tags": "Tags",
+  "discussion": "Disscussion",
+  "writeComment": "Write your comment here...",
+  "btnComment": "Post",
+  "reply": "Reply",
+  "related": "Related question"
 }

@@ -10,6 +10,8 @@ export default function useUserGoogle() {
   })
   const action = useGoogleLogin({
     onSuccess: (codeResponse) => {
+      console.log(codeResponse)
+
       return mutate(codeResponse.access_token, {
         onSuccess: (data: any) => {
           setProfile(data)
