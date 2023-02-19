@@ -67,12 +67,11 @@ const ForumPage = () => {
           <div className="w-full col-span-3 space-y-4 md:col-span-2 background-primary">
             <h4 className="text-xl "> {t("forum:allquestion")}</h4>
             <div className="grid grid-cols-1 gap-8 md:grid-cols-2">
-              <CardForum />
-              <CardForum />
-              <CardForum />
-              <CardForum />
-              <CardForum />
-              <CardForum />
+              {Array(6)
+                .fill(0)
+                .map((item, index) => (
+                  <CardForum key={index} />
+                ))}
             </div>
             <Pagination
               count={10}

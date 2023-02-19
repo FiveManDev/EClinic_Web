@@ -22,12 +22,6 @@ const Menu = () => {
             />
           </Link>
         </div>
-        {show && (
-          <div
-            className="fixed top-0 right-0 w-full h-full bg-black md:w-0 md:h-0 bg-opacity-20"
-            onClick={() => handlerNav()}
-          ></div>
-        )}
         <Navbar show={show} onClose={handlerNav} />
         {/* Humberger */}
         <span className="cursor-pointer md:hidden" onClick={() => handlerNav()}>
