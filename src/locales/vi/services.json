@@ -1,0 +1,17 @@
+{
+  "search": {
+    "label": "Tìm kiếm dịch vụ",
+    "input": "Tìm dịch vụ"
+  },
+  "specialist": {
+    "label": "Chuyên khoa"
+  },
+  "range": {
+    "label": "Khảng giá"
+  },
+  "rate": {
+    "label": "Đánh giá"
+  },
+  "btn": "Đặt lại",
+  "btnItem": "Chi tiết"
+}

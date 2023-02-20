@@ -1,0 +1,17 @@
+{
+  "search": {
+    "label": "Search for services",
+    "input": "Find service"
+  },
+  "specialist": {
+    "label": "Specialization"
+  },
+  "range": {
+    "label": "Price range"
+  },
+  "rate": {
+    "label": "Review"
+  },
+  "btn": "Reset",
+  "btnItem": "Details"
+}

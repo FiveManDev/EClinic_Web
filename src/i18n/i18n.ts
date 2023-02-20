@@ -6,14 +6,17 @@ import FORUM_EN from "locales/en/forum.json"
 import HOME_VI from "locales/vi/home.json"
 import BASE_VI from "locales/vi/base.json"
 import BASE_EN from "locales/en/base.json"
-
+import SER_VI from "locales/vi/services.json"
+import SER_EN from "locales/en/services.json"
 export const resources = {
   en: {
+    ser: SER_EN,
     base: BASE_EN,
     home: HOME_EN,
     forum: FORUM_EN
   },
   vi: {
+    ser: SER_VI,
     base: BASE_VI,
     home: HOME_VI,
     forum: FORUM_VI
@@ -23,7 +26,7 @@ export const defaultNS = "home"
 i18n.use(initReactI18next).init({
   resources,
   lng: "en",
-  ns: ["home", "forum", "base"],
+  ns: ["home", "forum", "base", "ser"],
   defaultNS,
   fallbackLng: "en",
   interpolation: {
