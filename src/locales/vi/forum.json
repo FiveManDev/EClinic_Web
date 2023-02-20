@@ -13,5 +13,13 @@
   "card": {
     "by": "Được trả lời bởi",
     "exp": "Năm kinh nghiệm"
-  }
+  },
+  "question": "Câu hỏi",
+  "anwers": "Trả lời",
+  "tags": "Thẻ",
+  "discussion": "Bàn luận",
+  "writeComment": "Viết bình luận tại đây...",
+  "btnComment": "Đăng",
+  "reply": "Trả lời",
+  "related": "Câu hỏi liên quan"
 }

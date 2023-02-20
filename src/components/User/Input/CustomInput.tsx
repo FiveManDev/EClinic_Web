@@ -13,6 +13,7 @@ const CustomInput = ({
   fullWidth = true,
   size = "small",
   control,
+  className,
   ...props
 }: Props) => {
   const { field } = useController({
@@ -22,6 +23,7 @@ const CustomInput = ({
   })
   return (
     <TextField
+      className={className}
       label={label}
       fullWidth={fullWidth}
       size={size}

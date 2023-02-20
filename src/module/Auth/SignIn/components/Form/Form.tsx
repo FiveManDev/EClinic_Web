@@ -1,14 +1,16 @@
 import { yupResolver } from "@hookform/resolvers/yup"
 import { Alert, Divider } from "@mui/material"
+import { message } from "antd"
 import GoogleIcon from "components/Common/Icon/GoogleIcon"
 import Spinner from "components/Common/Loading/LoadingIcon"
 import CustomButton from "components/User/Button"
 import { CustomInput, CustomInputPassword } from "components/User/Input"
+import useUserGoogle from "hooks/auth/useUserGoogle"
 import jwt_decode from "jwt-decode"
 import ButtonIcon from "module/Auth/components/ButtonIcon"
 import Link from "next/link"
 import { useRouter } from "next/router"
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import { FieldValues, useForm } from "react-hook-form"
 import { AiOutlineExclamationCircle } from "react-icons/ai"
 import { authService } from "services/auth.service"
@@ -27,6 +29,7 @@ const schema = yup.object({
     .required("Please enter your password")
 })
 const FormLogin = () => {
+  const { action, profile, error } = useUserGoogle()
   const dispatch = useAppDispatch()
   const router = useRouter()
   const [isError, setIsError] = useState(false)
@@ -61,10 +64,21 @@ const FormLogin = () => {
       console.log("handleSignIn ~ error", error)
     }
   }
-
+  useEffect(() => {
+    if (error) {
+      // message.error("Login failed")
+      message.error({
+        content: "Login failed, please try again!!!"
+      })
+    }
+  }, [error])
   return (
     <div className="md:max-w-[580px] w-full  bg-white rounded-md shadow-[1.69138px_-2.81897px_19.7328px_rgba(205,_205,_212,_0.1)] px-4 py-6 mt-7">
-      <ButtonIcon text="Log in with Google" icon={<GoogleIcon />} />
+      <ButtonIcon
+        text="Log in with Google"
+        icon={<GoogleIcon />}
+        onClick={() => action()}
+      />
       <Divider className="my-[30px]">
         <span className="text-[10px] text-[#4E5D78] md:text-lg">OR</span>
       </Divider>

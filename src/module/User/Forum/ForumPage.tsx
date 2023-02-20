@@ -1,14 +1,19 @@
 import { Pagination } from "@mui/material"
-import BreadcrumsCustom from "components/Common/Breadcrums"
+import UserSecondaryLayout from "layout/User/UserSecondaryLayout"
 import Head from "next/head"
 import { useTranslation } from "react-i18next"
+import { IBreadcrum } from "types/Base.type"
 import CardForum from "../components/CardForum"
 import CreateQuestion from "./section/create"
+import ListCardForum from "./section/list/ListCardForum"
 import Search from "./section/search"
 
 const ForumPage = () => {
   const { t } = useTranslation(["base", "forum"])
-
+  const breadrums: IBreadcrum[] = [
+    { label: t("base:pages.home"), href: "/" },
+    { label: t("base:pages.forum") }
+  ]
   return (
     <>
       <Head>
@@ -17,16 +22,8 @@ const ForumPage = () => {
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
-      <main className="mb-20 page-container page-container--child px-2 pt-16 md:pt-[72px] ">
+      <UserSecondaryLayout breadrums={breadrums}>
         <div className="grid grid-cols-3 gap-4 mt-10 md:gap-7">
-          <div className="col-span-3">
-            <BreadcrumsCustom
-              items={[
-                { label: t("base:pages.home"), href: "/" },
-                { label: t("base:pages.forum") }
-              ]}
-            />
-          </div>
           <div className="grid grid-cols-3 col-span-3 gap-7">
             <div className="order-last col-span-3 md:order-first md:col-span-2">
               <CreateQuestion />
@@ -58,31 +55,19 @@ const ForumPage = () => {
                 <span> {t("forum:questionHeadingFav")}</span>
               </div>
               <div className="grid grid-cols-1 gap-y-4 md:gap-x-6 md:grid-cols-3">
-                <CardForum />
-                <CardForum />
-                <CardForum />
+                {Array(3)
+                  .fill(0)
+                  .map((item, index) => (
+                    <CardForum key={index} />
+                  ))}
               </div>
             </div>
           </div>
-          <div className="w-full col-span-3 space-y-4 md:col-span-2 background-primary">
-            <h4 className="text-xl "> {t("forum:allquestion")}</h4>
-            <div className="grid grid-cols-1 gap-8 md:grid-cols-2">
-              <CardForum />
-              <CardForum />
-              <CardForum />
-              <CardForum />
-              <CardForum />
-              <CardForum />
-            </div>
-            <Pagination
-              count={10}
-              color="primary"
-              className="pt-6 md:ml-auto md:w-fit"
-              shape="rounded"
-            />
+          <div className="col-span-3 space-y-4 md:col-span-2 background-primary">
+            <ListCardForum title={t("forum:allquestion")} />
           </div>
         </div>
-      </main>
+      </UserSecondaryLayout>
     </>
   )
 }
