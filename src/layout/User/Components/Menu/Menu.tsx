@@ -11,7 +11,6 @@ const Menu = () => {
   return (
     <>
       <div className="flex items-center justify-between px-5 md:px-[60px] lg:max-w-[1440px]  w-full h-full mx-auto">
-<<<<<<< HEAD
         <div className="relative scale-90 md:scale-100 w-[130px] h-9 md:hidden ">
           <Link href="/">
             <Image
@@ -23,28 +22,6 @@ const Menu = () => {
             />
           </Link>
         </div>
-=======
-        <Link
-          href="/"
-          className="relative scale-90 md:scale-100 w-[130px] h-9 md:hidden "
-        >
-          <Image
-            src={"/images/logo.png"}
-            fill
-            sizes="(max-width: 768px) 100vw,
-              (max-width: 1200px) 50vw,
-              33vw"
-            alt="elinic"
-            className="cursor-pointer"
-          />
-        </Link>
-        {show && (
-          <div
-            className="fixed top-0 right-0 w-full h-full bg-black md:w-0 md:h-0 bg-opacity-20"
-            onClick={() => handlerNav()}
-          ></div>
-        )}
->>>>>>> main
         <Navbar show={show} onClose={handlerNav} />
         {/* Humberger */}
         <span className="cursor-pointer md:hidden" onClick={() => handlerNav()}>
