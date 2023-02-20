@@ -19,7 +19,14 @@ const Banner = () => {
             className="relative flex-shrink-0 w-[230px] h-[230px] md:w-[400px]
 md:h-[400px] lg:w-[600px] lg:h-[600px]"
           >
-            <Image alt="banner" src="/images/banner.png" fill />
+            <Image
+              alt="banner"
+              src="/images/banner.png"
+              fill
+              sizes="(max-width: 768px) 100vw,
+              (max-width: 1200px) 50vw,
+              33vw"
+            />
           </div>
         </div>
         <Search />

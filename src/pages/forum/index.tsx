@@ -1,7 +1,7 @@
 import UserLayout from "layout/User/UserLayout"
 import ForumPage from "module/User/Forum/ForumPage"
+import { NextPageWithLayout } from "pages/page"
 import React from "react"
-import { NextPageWithLayout } from "./page"
 
 const Forum: NextPageWithLayout = () => {
   return <ForumPage />

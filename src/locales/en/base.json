@@ -2,6 +2,7 @@
   "pages": {
     "home": "Home",
     "forum": "Forum",
-    "servies": "Services"
+    "servies": "Services",
+    "detailForm": "Detail"
   }
 }

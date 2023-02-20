@@ -8,7 +8,14 @@ const Appoiment = () => {
   return (
     <section className="flex flex-col-reverse md:flex-row items-center justify-between mt-28 md:mt-[180px]">
       <div className="w-[300px] h-[300px] md:w-[570px] md:h-[570px] relative flex-shrink-0">
-        <Image alt="image-appoiment" src="/images/image-1.png" fill />
+        <Image
+          alt="image-appoiment"
+          src="/images/image-1.png"
+          fill
+          sizes="(max-width: 768px) 100vw,
+              (max-width: 1200px) 50vw,
+              33vw"
+        />
       </div>
       <div className="flex flex-col space-y-3 text-center md:space-y-7 max-w-[700px]">
         <h3 className="heading-section ">{t("appoiment.title")}</h3>

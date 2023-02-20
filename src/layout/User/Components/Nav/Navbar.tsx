@@ -22,17 +22,17 @@ const Navbar = ({ show = false, onClose }: Props) => {
       className="flex flex-col items-center space-y-5 md:flex-row md:space-y-0 md:justify-between w-[260px] md:w-full px-5 py-4 md:p-0"
     >
       <div className="flex flex-col items-center justify-between w-full space-y-5 md:space-x-8 md:space-y-0 md:flex-row md:justify-start">
-        <div className="relative scale-90 md:scale-100 w-[130px] h-9 ">
-          <Link href="/">
-            <Image
-              src={"/images/logo.png"}
-              fill
-              sizes=""
-              alt="elinic"
-              className="cursor-pointer"
-            />
-          </Link>
-        </div>
+        <Link href="/" className="relative scale-90 md:scale-100 w-[130px] h-9">
+          <Image
+            src={"/images/logo.png"}
+            fill
+            sizes="(max-width: 768px) 100vw,
+              (max-width: 1200px) 50vw,
+              33vw"
+            alt="elinic"
+            className="cursor-pointer"
+          />
+        </Link>
         <ul className="flex flex-col items-center space-y-6 list-none md:flex-row md:space-y-0 md:space-x-10">
           <MenuItem href="/forum">{t("banner.menu.Portal")}</MenuItem>
           <MenuItem href="/services">{t("banner.menu.Services")}</MenuItem>

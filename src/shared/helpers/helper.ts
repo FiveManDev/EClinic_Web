@@ -1,4 +1,5 @@
 import { RcFile } from "antd/es/upload"
+import axios, { AxiosError } from "axios"
 import { ITokenDecode } from "types/Token.type"
 
 export const isProduction = () => {
@@ -46,3 +47,6 @@ export const getBase64 = (file: any): Promise<string> =>
     reader.onload = () => resolve(reader.result as string)
     reader.onerror = (error) => reject(error)
   })
+export const isAxiosError = <T>(error: unknown): error is AxiosError<T> => {
+  return axios.isAxiosError(error)
+}

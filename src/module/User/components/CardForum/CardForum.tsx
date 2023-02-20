@@ -1,5 +1,6 @@
 import classNames from "classnames"
 import Image from "next/image"
+import Link from "next/link"
 import React from "react"
 import { useTranslation } from "react-i18next"
 interface Props {
@@ -9,7 +10,8 @@ const CardForum = ({ kind = "medium" }: Props) => {
   const { t } = useTranslation("forum")
 
   return (
-    <div
+    <Link
+      href={"forum/1"}
       className={classNames(
         "grid w-full rounded-md overflow-hidden",
         kind === "large" && "md:grid-cols-8 md:gap-x-4",
@@ -65,7 +67,7 @@ const CardForum = ({ kind = "medium" }: Props) => {
           </div>
         </div>
       </div>
-    </div>
+    </Link>
   )
 }
 

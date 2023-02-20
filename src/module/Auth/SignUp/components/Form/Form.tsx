@@ -7,6 +7,7 @@ import {
   Radio,
   RadioGroup
 } from "@mui/material"
+import { message } from "antd"
 import DatePickerCustom from "components/Common/DatePicker/DatePickerCustom"
 import GoogleIcon from "components/Common/Icon/GoogleIcon"
 import Spinner from "components/Common/Loading/LoadingIcon"
@@ -14,9 +15,10 @@ import SnakbarCustom from "components/Common/Snackbar/SnakbarCustom"
 import CustomButton from "components/User/Button"
 import { CustomInput, CustomInputPassword } from "components/User/Input"
 import dayjs from "dayjs"
+import useUserGoogle from "hooks/auth/useUserGoogle"
 import ButtonIcon from "module/Auth/components/ButtonIcon"
 import Link from "next/link"
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import { FieldValues, useForm } from "react-hook-form"
 import { authService } from "services/auth.service"
 import * as yup from "yup"
@@ -46,6 +48,8 @@ const schema = yup.object({
   gender: yup.string().required("Please choose your gender")
 })
 const FormSignup = () => {
+  const { action, profile, error } = useUserGoogle()
+
   const [success, setSuccess] = useState<{
     message: string
     state: "success" | "error"
@@ -99,10 +103,20 @@ const FormSignup = () => {
       }))
     }
   }
-
+  useEffect(() => {
+    if (error) {
+      message.error({
+        content: "Unable to register, please try again!!!"
+      })
+    }
+  }, [error])
   return (
     <div className="md:max-w-[580px] w-full  bg-white rounded-md shadow-[1.69138px_-2.81897px_19.7328px_rgba(205,_205,_212,_0.1)] px-4 py-6 mt-7">
-      <ButtonIcon text="Log up with Google" icon={<GoogleIcon />} />
+      <ButtonIcon
+        text="Log in with Google"
+        icon={<GoogleIcon />}
+        onClick={() => action()}
+      />
       <Divider className="my-[30px]">
         <span className="text-[10px] text-[#4E5D78] md:text-lg">OR</span>
       </Divider>
