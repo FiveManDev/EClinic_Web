@@ -41,19 +41,7 @@
     "@tailwindcss/line-clamp": "^0.4.2",
     "@tanstack/react-query": "^4.23.0",
     "nprogress": "^0.2.0",
-<<<<<<< HEAD
-    "react": "18.2.0",
-    "react-dom": "18.2.0",
-    "react-hook-form": "^7.42.1",
-    "react-i18next": "^12.1.5",
-    "react-icons": "^4.7.1",
-    "react-redux": "^8.0.5",
-    "yup": "^0.32.11"
-  },
-  "devDependencies": {
-=======
     "classnames": "^2.3.2",
->>>>>>> main
     "@types/js-cookie": "^3.0.2",
     "@types/jsonwebtoken": "^9.0.1",
     "@types/node": "18.11.18",
