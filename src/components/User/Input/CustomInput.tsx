@@ -1,5 +1,4 @@
 import { BaseTextFieldProps, TextField } from "@mui/material"
-import classNames from "classnames"
 import { Control, useController } from "react-hook-form"
 
 interface Props extends BaseTextFieldProps {
@@ -24,7 +23,7 @@ const CustomInput = ({
   })
   return (
     <TextField
-      className={classNames("", className)}
+      className={className}
       label={label}
       fullWidth={fullWidth}
       size={size}

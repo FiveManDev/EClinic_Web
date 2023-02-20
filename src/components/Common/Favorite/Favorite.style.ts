@@ -1,6 +1,6 @@
 import { css, keyframes } from "@emotion/react"
 import styled from "@emotion/styled"
-const addAnimation = keyframes`
+const animationUp = keyframes`
   0% {
     transform: scale(1) rotate(0deg);
   }
@@ -9,7 +9,7 @@ const addAnimation = keyframes`
   }
 `
 
-const removeAnimation = keyframes`
+const animationDown = keyframes`
   0% {
     transform: scale(1.34) rotateY(90deg);
   }
@@ -19,11 +19,11 @@ const removeAnimation = keyframes`
 `
 
 const AddAnimation = css`
-  animation: ${addAnimation} 0.4s cubic-bezier(0.38, 0.7, 0.6, 0.29);
+  animation: ${animationUp} 0.4s cubic-bezier(0.38, 0.7, 0.6, 0.29);
 `
 
 const RemoveAnimation = css`
-  animation: ${removeAnimation} 0.55s cubic-bezier(0.38, 0.7, 0.6, 0.29);
+  animation: ${animationDown} 0.55s cubic-bezier(0.38, 0.7, 0.6, 0.29);
 `
 
 const FavoriteWrapper = styled.button`
