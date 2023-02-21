@@ -13,5 +13,10 @@
     "label": "Review"
   },
   "btn": "Reset",
-  "btnItem": "Details"
+  "btnItem": "Details",
+  "btnRegis": "Register service",
+  "price": "Price",
+  "totalSell": "Total number of buyers",
+  "inforDetail": "Details",
+  "specialService": "Outstanding Service"
 }
