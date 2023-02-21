@@ -1,8 +1,9 @@
-import BreadcrumsCustom from "components/Common/Breadcrums"
 import CustomButton from "components/User/Button"
+import UserSecondaryLayout from "layout/User/UserSecondaryLayout"
 import Head from "next/head"
 import React, { useEffect } from "react"
 import { useTranslation } from "react-i18next"
+import { IBreadcrum } from "types/Base.type"
 import FilterBar from "./section/filterBar/FilterBar"
 import ListServices from "./section/ListServices/ListServices"
 
@@ -14,7 +15,10 @@ const ServicesPage = () => {
       setShowFilter(true)
     }
   }, [])
-
+  const breadrums: IBreadcrum[] = [
+    { label: t("base:pages.home"), href: "/" },
+    { label: t("base:pages.servies") }
+  ]
   return (
     <>
       <Head>
@@ -23,16 +27,8 @@ const ServicesPage = () => {
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
-      <main className="mb-20 page-container page-container--child px-2 pt-16 md:pt-[72px] ">
-        <div className="grid grid-cols-3 gap-2 mt-10 md:gap-7">
-          <div className="col-span-3">
-            <BreadcrumsCustom
-              items={[
-                { label: t("base:pages.home"), href: "/" },
-                { label: t("base:pages.servies") }
-              ]}
-            />
-          </div>
+      <UserSecondaryLayout breadrums={breadrums}>
+        <div className="grid grid-cols-3 gap-2 mt-6 md:mt-10 md:gap-7 md:hidden">
           <div className="col-span-3 md:hidden">
             <CustomButton
               kind="secondary"
@@ -71,7 +67,7 @@ const ServicesPage = () => {
             <ListServices />
           </div>
         </div>
-      </main>
+      </UserSecondaryLayout>
     </>
   )
 }
