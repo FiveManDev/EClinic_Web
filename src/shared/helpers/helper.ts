@@ -1,4 +1,3 @@
-import { RcFile } from "antd/es/upload"
 import axios, { AxiosError } from "axios"
 import { ITokenDecode } from "types/Token.type"
 

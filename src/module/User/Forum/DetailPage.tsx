@@ -9,7 +9,7 @@ const DetailPage = () => {
   const breadrums: IBreadcrum[] = [
     { label: t("base:pages.home"), href: "/" },
     { label: t("base:pages.forum"), href: "/forum" },
-    { label: t("base:pages.detailForm") }
+    { label: t("base:pages.detail") }
   ]
 
   return (

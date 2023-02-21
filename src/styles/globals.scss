@@ -10,6 +10,9 @@
   body {
     @apply leading-tight;
   }
+  a {
+    @apply text-inherit;
+  }
   li {
     @apply list-none;
   }
