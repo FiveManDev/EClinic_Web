@@ -1,4 +1,3 @@
-import { Pagination } from "@mui/material"
 import UserSecondaryLayout from "layout/User/UserSecondaryLayout"
 import Head from "next/head"
 import { useTranslation } from "react-i18next"

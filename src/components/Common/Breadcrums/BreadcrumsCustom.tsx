@@ -14,11 +14,11 @@ const BreadcrumsCustom: React.FC<BreadcrumbsProps> = ({ items }) => (
   <Breadcrumbs>
     {items.map((item, index) =>
       item.href ? (
-        <Link key={index} className="text-inherit" href="/">
+        <Link key={index} className="text-inherit" href={item.href}>
           {item.label}
         </Link>
       ) : (
-        <Typography key={index} color="text.primary">
+        <Typography key={index} className="text-primary">
           {item.label}
         </Typography>
       )
