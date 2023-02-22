@@ -2,7 +2,7 @@ This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next
 
 ## Getting Started
 
-## Set up enviroment -> change `env` file to `.env` file
+## Set up enviroment -> copy `env` file to `.env` file
 
 First, install dependencies:
 
