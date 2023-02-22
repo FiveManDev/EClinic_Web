@@ -1,8 +1,13 @@
 ## Getting Started
+
 ---
+
 ## After clone this project you need to do:
-## 1. Set up enviroment -> change `env` file to `.env` file
+
+## 1. Set up enviroment -> copy `env` file to `.env` file
+
 ## 2. Build this project:
+
 ```bash
 docker compose build
 ```
@@ -12,7 +17,9 @@ docker compose build
 ```bash
 docker compose up
 ```
+
 ---
+
 # Before commit, please run
 
 ```bash
