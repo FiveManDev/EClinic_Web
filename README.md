@@ -1,24 +1,26 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
-
 ## Getting Started
 
-## Set up enviroment -> copy `env` file to `.env` file
+---
 
-First, install dependencies:
+## After clone this project you need to do:
 
-```bash
-yarn
-```
+## 1. Set up enviroment -> copy `env` file to `.env` file
 
-Second, run the development server:
+## 2. Build this project:
 
 ```bash
-yarn dev
+docker compose build
 ```
 
-Third, change file env to .env.local:
+## 3. Next, to run and develop this project you need to run:
 
-Before commit, Please run
+```bash
+docker compose up
+```
+
+---
+
+# Before commit, please run
 
 ```bash
 yarn lint
