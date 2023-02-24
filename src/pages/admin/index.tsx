@@ -1,7 +1,11 @@
-import React from "react"
+import AdminLayout from "layout/Admin/AdminLayout"
+import HomePage from "module/Admin/Home/HomePage"
+import { NextPageWithLayout } from "../page"
 
-const Page = () => {
-  return <div>Admin page</div>
+const Home: NextPageWithLayout = () => {
+  return <HomePage />
 }
-
-export default Page
+Home.getLayout = (page) => {
+  return <AdminLayout>{page}</AdminLayout>
+}
+export default Home
