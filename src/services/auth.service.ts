@@ -65,6 +65,18 @@ class AuthService {
     )
     return res.data as IServerResponse<any>
   }
+  async signInWithGoogle(access_token: string) {
+    const res: AxiosResponse = await axiosClient.post(
+      `${URL_API.AUTH}/SignInWithGoogle`,
+      access_token,
+      {
+        validateStatus: function (status) {
+          return status < 500
+        }
+      }
+    )
+    return res.data as IServerResponse<IToken>
+  }
   async logout() {
     const res = await axiosClient.post("auth/logout", null, {
       withCredentials: true

@@ -23,10 +23,7 @@ import * as yup from "yup"
 
 const schema = yup.object({
   username: yup.string().required("Please enter your user name"),
-  password: yup
-    .string()
-    // .min(8, "Your password must be at least 8 characters or greater")
-    .required("Please enter your password")
+  password: yup.string().required("Please enter your password")
 })
 const FormLogin = () => {
   const { action, profile, error } = useUserGoogle()
@@ -45,16 +42,7 @@ const FormLogin = () => {
     try {
       const result = await authService.signIn(values.username, values.password)
       if (result.isSuccess) {
-        token.saveToken(result.data.accessToken, result.data.refreshToken)
-        const payload = jwt_decode(result.data.accessToken) as ITokenDecode
-        dispatch(
-          loginUser({
-            userName: "User",
-            userId: payload.UserID,
-            role: payload.role
-          })
-        )
-        router.push(routerByRole(payload.role), undefined, { shallow: true })
+        handleNavigate(result.data.accessToken, result.data.refreshToken)
         setIsError(false)
       } else {
         setIsError(true)
@@ -64,14 +52,45 @@ const FormLogin = () => {
       console.log("handleSignIn ~ error", error)
     }
   }
+  const handleNavigate = (accessToken: string, refreshToken: string) => {
+    token.saveToken(accessToken, refreshToken)
+    const payload = jwt_decode(accessToken) as ITokenDecode
+    dispatch(
+      loginUser({
+        userName: payload.role,
+        userId: payload.UserID,
+        role: payload.role
+      })
+    )
+    router.push(routerByRole(payload.role), undefined, { shallow: true })
+  }
   useEffect(() => {
     if (error) {
-      // message.error("Login failed")
-      message.error({
-        content: "Login failed, please try again!!!"
-      })
+      message.error("Login failed, please try again!!!")
     }
   }, [error])
+  useEffect(() => {
+    if (profile) {
+      const login = async () => {
+        const res = await authService.signInWithGoogle(profile.access_token)
+        console.log("login ~ res:", res)
+        try {
+          if (res.isSuccess) {
+            console.log("login ~ res:", res)
+            handleNavigate(res.data.accessToken, res.data.refreshToken)
+            message.success("Sign in successfuly")
+          } else {
+            message.error(res.message || "Login failed, please try again!!!")
+          }
+        } catch (error) {
+          console.error("login ~ error:", error)
+          message.error("Login failed, please try again!!!")
+        }
+      }
+      login()
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [profile])
   return (
     <div className="md:max-w-[580px] w-full  bg-white rounded-md shadow-[1.69138px_-2.81897px_19.7328px_rgba(205,_205,_212,_0.1)] px-4 py-6 mt-7">
       <ButtonIcon
