@@ -1,4 +1,5 @@
 import axios, { AxiosError } from "axios"
+import dayjs from "dayjs"
 import { ITokenDecode } from "types/Token.type"
 
 export const isProduction = () => {
@@ -48,4 +49,7 @@ export const getBase64 = (file: any): Promise<string> =>
   })
 export const isAxiosError = <T>(error: unknown): error is AxiosError<T> => {
   return axios.isAxiosError(error)
+}
+export const getCurrentDate = (date: string) => {
+  return dayjs(date, "ddd, DD MMM YYYY HH:mm:ss [GMT]").toISOString()
 }

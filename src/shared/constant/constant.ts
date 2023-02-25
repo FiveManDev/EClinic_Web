@@ -9,8 +9,9 @@ export const ROLE = {
   SUPPORTER: "Supporter"
 } as const
 export const URL_API = {
-  AUTH: "Authentication",
-  ACCOUNT: "Account"
+  AUTH: "identity/Authentication",
+  ACCOUNT: "identity/Account",
+  MAIL: "mail/Mail"
 } as const
 export const LANGUAGE = {
   VIETNAM: "vi",
