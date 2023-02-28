@@ -1,5 +1,4 @@
 import axios, {
-  AxiosHeaders,
   AxiosInstance,
   AxiosRequestConfig,
   CancelTokenSource
@@ -10,7 +9,6 @@ import { token } from "shared/utils/token"
 class HttpClient {
   instance: AxiosInstance
   cancelTokenSource: CancelTokenSource
-
   constructor() {
     /**
      * cancelTokenSource
@@ -30,8 +28,9 @@ class HttpClient {
       (config: AxiosRequestConfig) => {
         const _token = token.getToken()
         if (_token.access_token) {
-          config.headers = { ...config.headers } as AxiosHeaders
-          config.headers.set("Authorization", `Bearer ${_token.access_token}`)
+          config.headers = Object.assign({}, config.headers, {
+            Authorization: `Bearer ${_token.access_token}`
+          })
         }
         return config
       },
@@ -40,21 +39,12 @@ class HttpClient {
       }
     )
     this.instance.interceptors.response.use(
-      (response) => {
-        return response
-      },
+      (response) => response,
       async (error) => {
         const originalRequest = error.config
-        if (
-          error.response &&
-          error.response.status === 403 &&
-          !originalRequest._retry
-        ) {
+        if (error.response?.status === 403 && !originalRequest._retry) {
           originalRequest._retry = true
           const res = await authService.refreshToken()
-          /**
-           * If response is success then save token to cookies and re-fetch
-           */
           if (res.isSuccess) {
             token.saveToken(res.data.accessToken, res.data.refreshToken)
             originalRequest.headers[
@@ -68,7 +58,6 @@ class HttpClient {
     )
   }
 }
-
 const axiosClient = new HttpClient().instance
 
 export default axiosClient

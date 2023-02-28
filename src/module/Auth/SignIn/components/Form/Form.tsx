@@ -57,7 +57,6 @@ const FormLogin = () => {
     const payload = jwt_decode(accessToken) as ITokenDecode
     dispatch(
       loginUser({
-        userName: payload.role,
         userId: payload.UserID,
         role: payload.role
       })

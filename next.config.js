@@ -3,7 +3,7 @@ const path = require("path")
 const nextConfig = {
   reactStrictMode: true,
   images: {
-    domains: ["images.unsplash.com"]
+    domains: ["images.unsplash.com", "cdn.printgo.vn"]
   },
   sassOptions: {
     includePaths: [path.join(__dirname, "styles")]
