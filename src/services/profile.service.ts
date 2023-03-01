@@ -12,6 +12,12 @@ class ProfileService {
     )
     return res.data as IServerResponse<(IProfile & IRelationShip)[]>
   }
+  async getSimpleProfile(userId: string) {
+    const res: AxiosResponse = await axiosClient.get(
+      `${URL_API.PROFILE}/GetSimpleProfile?UserID=${userId}`
+    )
+    return res.data as IServerResponse<any>
+  }
   async getAllRelationshisp() {
     const res: AxiosResponse = await axiosClient.get(
       `${URL_API.RELATIONSHIPS}/GetAllRelationship`
@@ -37,11 +43,11 @@ class ProfileService {
   async createUserProfile(profile: IProfile & IRelationShip) {
     const formData = new FormData()
     for (const [key, value] of Object.entries(profile)) {
-      if (key !== "relationshipName") {
+      if (key !== "relationshipName" && key !== "profieID") {
         formData.append(key, value)
       }
     }
-    const res: AxiosResponse = await axiosClient.put(
+    const res: AxiosResponse = await axiosClient.post(
       `${URL_API.PROFILE}/CreateUserProfile`,
       formData,
       {

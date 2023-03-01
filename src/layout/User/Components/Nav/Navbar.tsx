@@ -1,3 +1,6 @@
+import { Badge } from "@mui/material"
+import { MdNotificationsNone } from "react-icons/md"
+
 import ChangeLanguage from "components/Common/ChangeLanguage"
 import CustomButton from "components/User/Button"
 import DrawerCustom from "components/User/Drawer"
@@ -44,6 +47,9 @@ const Navbar = ({ show = false, onClose }: Props) => {
         <ChangeLanguage />
         {auth.isLoggedIn ? (
           <>
+            <Badge badgeContent={4} color="primary">
+              <MdNotificationsNone className="text-2xl cursor-pointer" />
+            </Badge>
             <UserAvatar />
           </>
         ) : (

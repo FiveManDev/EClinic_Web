@@ -1,4 +1,3 @@
-import { message } from "antd"
 import Image from "next/image"
 import Link from "next/link"
 import { ReactNode } from "react"

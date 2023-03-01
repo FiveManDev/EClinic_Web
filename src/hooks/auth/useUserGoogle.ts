@@ -1,7 +1,8 @@
 import { useGoogleLogin } from "@react-oauth/google"
 import { useMutation } from "@tanstack/react-query"
-import { message } from "antd"
+
 import { useState } from "react"
+import { toast } from "react-hot-toast"
 import { getUserGoogle } from "services/google.service"
 
 export default function useUserGoogle() {
@@ -11,10 +12,10 @@ export default function useUserGoogle() {
   })
   const action = useGoogleLogin({
     onSuccess: (codeResponse) => {
-      message.loading({
-        content: "Loading....",
-        duration: 0
-      })
+      // toast.loading({
+      //   content: "Loading....",
+      //   duration: 0
+      // })
       return mutate(codeResponse.access_token, {
         onSuccess: (data: any) => {
           setProfile({
@@ -25,7 +26,7 @@ export default function useUserGoogle() {
       })
     },
     onError: (_) => {
-      message.destroy()
+      toast.dismiss()
       console.log("error")
     }
   })

@@ -1,5 +1,4 @@
-import { Slider } from "@mui/material"
-import { Rate } from "antd"
+import { Rating, Slider } from "@mui/material"
 import CheckBoxCustom from "components/Common/Checkbox"
 import InputCustom from "components/Common/Input"
 import CustomButton from "components/User/Button"
@@ -13,6 +12,7 @@ interface Props {
 }
 const FilterBar = ({ show, onClose }: Props) => {
   const { t } = useTranslation(["ser"])
+  const [rating, setRating] = React.useState<number | null>(2)
 
   const [state, setState] = React.useState({
     tieuhoa: false,
@@ -68,7 +68,13 @@ const FilterBar = ({ show, onClose }: Props) => {
         </div>
         <div className="space-y-2">
           <h3>{t("ser:rate.label")}</h3>
-          <Rate />
+          <Rating
+            name="simple-controlled"
+            value={rating}
+            onChange={(event, newValue) => {
+              setRating(newValue)
+            }}
+          />
         </div>
         <CustomButton
           kind="primary"

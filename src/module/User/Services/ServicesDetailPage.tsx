@@ -1,4 +1,4 @@
-import { Carousel, Tag } from "antd"
+import Tag from "components/Common/Tag"
 import CustomButton from "components/User/Button"
 import UserSecondaryLayout from "layout/User/UserSecondaryLayout"
 import Head from "next/head"
@@ -38,9 +38,7 @@ const ServicesDetailPage = () => {
               </div>
               <div className="flex flex-col justify-between flex-1">
                 <div className="flex flex-col gap-y-4">
-                  <Tag color="blue" className="w-fit">
-                    Tim mạch
-                  </Tag>
+                  <Tag>Tim mạch</Tag>
                   <h4 className="text-2xl font-semibold text-h1 line-clamp-2">
                     Gói Xét nghiệm kiểm tra men gan mỡ máu
                   </h4>
@@ -126,43 +124,16 @@ const ServicesDetailPage = () => {
           </div>
           <div className="mt-12 space-y-3">
             <h3 className="text-2xl font-semibold text-h1">
+              {" "}
               {t("ser:specialService")}
             </h3>
-            <Carousel
-              responsive={[
-                {
-                  breakpoint: 1024,
-                  settings: {
-                    slidesToShow: 3
-                  }
-                },
-                {
-                  breakpoint: 600,
-                  settings: {
-                    slidesToShow: 2
-                  }
-                },
-                {
-                  breakpoint: 480,
-                  settings: {
-                    slidesToShow: 1,
-                    slidesToScroll: 1
-                  }
-                }
-              ]}
-              slidesToShow={4}
-              slidesToScroll={4}
-            >
-              {Array(10)
+            <div className="grid grid-cols-1 md:grid-cols-4">
+              {Array(4)
                 .fill(0)
                 .map((_, index) => (
-                  <CardService
-                    isDetail={false}
-                    className="!max-w-full md:!max-w-[315px]"
-                    key={index}
-                  />
+                  <CardService isDetail={false} key={index} />
                 ))}
-            </Carousel>
+            </div>
           </div>
         </section>
       </UserSecondaryLayout>

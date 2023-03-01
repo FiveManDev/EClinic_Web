@@ -1,17 +1,16 @@
-import { useQueryClient } from "@tanstack/react-query"
-import { message } from "antd"
 import InputCustom from "components/Common/Input"
 import CustomButton from "components/User/Button"
 import {
+  useCreateProfileMutation,
   useDeleteProfileMutation,
   useProfieId,
   useUpdateProfileMutation
-} from "hooks/query/profile/useProfileId"
-import { useEffect, useState } from "react"
+} from "hooks/query/profile/useProfile"
+import { useState } from "react"
 import { FieldValues } from "react-hook-form"
+import { toast } from "react-hot-toast"
 import { HiMagnifyingGlass } from "react-icons/hi2"
 import { useSelector } from "react-redux"
-import { RELATIONSHIPS } from "shared/constant/constant"
 import { RootState } from "store/store"
 import { IProfile, IRelationShip } from "types/Profile.type"
 import Edit from "./components/form/Edit"
@@ -27,49 +26,55 @@ const Profile = () => {
   const [mode, setMode] = useState<Action>("view")
 
   //query
-  const queryClient = useQueryClient()
+  const { data, isSuccess, isError, isLoading, refetch } = useProfieId(
+    auth.user.userId
+  )
   const deleteProfileMutation = useDeleteProfileMutation()
-  const { data, isError, isLoading } = useProfieId(auth.user.userId)
   const updateProfileMutaiton = useUpdateProfileMutation()
+  const createProfileMutaiton = useCreateProfileMutation()
 
-  useEffect(() => {
-    if (data) {
-      const owner = data.data.find(
-        (item) => item.relationshipName === RELATIONSHIPS.ME
-      )
-      setOwnerProfile(owner)
-    }
-  }, [data])
   if (isError) {
     return <p>error</p>
-  }
-  if (isLoading) {
-    return <p>...loading</p>
   }
   const handleSubmitForm = (value: FieldValues) => {
     if (mode === "edit") {
       updateProfileMutaiton.mutate(value as IProfile & IRelationShip, {
         onSuccess: (data) => {
           if (data.isSuccess) {
-            message.success("Update successfuly")
-            queryClient.invalidateQueries({ queryKey: ["useProfieId"] })
+            toast.success("Successfully toasted!")
+            refetch()
           } else {
-            message.error("Update error")
+            toast.error("Create error")
           }
         },
         onError: () => {
-          message.error("Update error")
+          toast.error("Create error")
         }
       })
     } else if (mode === "add") {
-      console.log("handleSubmitForm ~ mode:", mode)
+      createProfileMutaiton.mutate(
+        { ...value, userID: auth.user.userId } as IProfile & IRelationShip,
+        {
+          onSuccess: (data) => {
+            if (data.isSuccess) {
+              toast.success("Add successfuly")
+              refetch()
+            } else {
+              toast.error("Add error")
+            }
+          },
+          onError: () => {
+            toast.error("Add error")
+          }
+        }
+      )
     }
   }
   const handleChangeForm = (profileID: string | null, mode: Action) => {
     if (mode == "add") {
       setOwnerProfile(undefined)
     } else if (mode === "edit" || mode === "view") {
-      const owner = data.data.find((item) => {
+      const owner = data?.data.find((item) => {
         return item.profileID === profileID
       })
       setOwnerProfile(owner)
@@ -80,21 +85,21 @@ const Profile = () => {
     deleteProfileMutation.mutate(profileId, {
       onSuccess: (data) => {
         if (data.isSuccess) {
-          message.success("Delete successfuly")
-          queryClient.invalidateQueries({ queryKey: ["useProfieId"] })
+          toast.success("Delete successfuly")
+          refetch()
           setMode("view")
         } else {
-          message.error("Delete error")
+          toast.error("Delete error")
         }
       },
       onError: () => {
-        message.error("Delete error")
+        toast.error("Delete error")
       }
     })
   }
 
   return (
-    <div className="flex w-full p-6 bg-white rounded-md shadow-md background-primary">
+    <div className="flex w-full bg-white ">
       <div className="w-[340px] flex flex-col space-y-4">
         <InputCustom
           icon={<HiMagnifyingGlass />}
@@ -102,13 +107,21 @@ const Profile = () => {
           placeholder="Tìm nhanh hồ sơ"
         />
         <ul className="max-h-[600px] overflow-auto space-y-2">
-          {data.data.map((item, index) => (
-            <ProfileItem
-              data={item}
-              key={index}
-              onClick={() => handleChangeForm(item.profileID, "view")}
-            />
-          ))}
+          {isSuccess &&
+            data.data.map((item, index) => (
+              <ProfileItem
+                data={item}
+                key={index}
+                loading={false}
+                onClick={() => handleChangeForm(item.profileID, "view")}
+              />
+            ))}
+          {isLoading &&
+            Array(2)
+              .fill(0)
+              .map((_, index) => (
+                <ProfileItem onClick={() => {}} key={index} loading={true} />
+              ))}
         </ul>
         <CustomButton
           kind="primary"

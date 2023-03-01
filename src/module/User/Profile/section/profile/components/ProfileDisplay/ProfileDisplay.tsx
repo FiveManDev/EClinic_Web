@@ -4,6 +4,7 @@ import Image from "next/image"
 import { IProfile, IRelationShip } from "types/Profile.type"
 interface Props {
   profile?: IProfile & IRelationShip
+  // eslint-disable-next-line no-unused-vars
   onEdit: (profileId: string) => void
 }
 const ProfileDisplay = ({ profile, onEdit }: Props) => {

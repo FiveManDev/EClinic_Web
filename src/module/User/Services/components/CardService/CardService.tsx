@@ -1,5 +1,5 @@
-import { Tag } from "antd"
 import classNames from "classnames"
+import Tag from "components/Common/Tag"
 import CustomButton from "components/User/Button"
 import Image from "next/image"
 import Link from "next/link"
@@ -33,11 +33,7 @@ const CardService = ({ isDetail = true, className }: IProps) => {
         <h4 className="text-sm font-semibold md:text-lg text-h1 line-clamp-2">
           Gói xét nghiệm tổng quát
         </h4>
-        {isDetail && (
-          <Tag color="blue" className="mt-2 ">
-            Tim mạch
-          </Tag>
-        )}
+        {isDetail && <Tag className="w-fit">Tim mạch</Tag>}
         {isDetail && (
           <div className="flex items-center justify-between mt-4 md:mt-6">
             <div className="flex items-center gap-x-1">

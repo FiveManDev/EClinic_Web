@@ -13,9 +13,9 @@ import {
 import DatePickerCustom from "components/Common/DatePicker/DatePickerCustom"
 import CustomButton from "components/User/Button"
 import { CustomInput } from "components/User/Input"
-import { useAllRelationship } from "hooks/query/profile/useProfileId"
+import { useAllRelationship } from "hooks/query/profile/useProfile"
 import Image from "next/image"
-import { ChangeEvent, useState } from "react"
+import { ChangeEvent, useEffect, useState } from "react"
 import { FieldValues, useForm } from "react-hook-form"
 import { RELATIONSHIPS } from "shared/constant/constant"
 import { IProfile, IRelationShip } from "types/Profile.type"
@@ -61,6 +61,7 @@ const Edit = ({ onSubmit, onDelete, labelForm, profile }: Props) => {
     control,
     setError,
     watch,
+    reset,
     setValue,
     formState: { errors }
   } = useForm({
@@ -75,6 +76,20 @@ const Edit = ({ onSubmit, onDelete, labelForm, profile }: Props) => {
   const onFileChange = (file: File) => {
     setValue("avatar", file)
   }
+  useEffect(() => {
+    if (profile === undefined) {
+      reset({
+        firstName: "",
+        lastName: "",
+        email: "",
+        address: "",
+        phone: "",
+        bloodType: "A",
+        weight: 0,
+        height: 0
+      })
+    }
+  }, [profile])
   return (
     <>
       <h3 className="pb-4 text-lg font-medium">{labelForm}</h3>
@@ -230,7 +245,7 @@ const Edit = ({ onSubmit, onDelete, labelForm, profile }: Props) => {
               profile?.relationshipName !== RELATIONSHIPS.ME && (
                 <CustomButton
                   kind="secondary"
-                  className="text-red-400 border-red-500 hover:border-red-500 "
+                  className="text-red-600 border-red-600 hover:border-red-500 "
                   onClick={() => onDelete(profile?.profileID)}
                 >
                   Delete
@@ -238,7 +253,7 @@ const Edit = ({ onSubmit, onDelete, labelForm, profile }: Props) => {
               )}
 
             <CustomButton kind="primary" type="submit">
-              Add new profile
+              {profile ? "Update profile" : "Add new profile"}
             </CustomButton>
           </div>
         </form>
@@ -267,8 +282,10 @@ const Uploadfile = ({ imageUrl, onFileChange }: IFileProps) => {
       <div className="flex justify-center mt-8">
         <div className="rounded-lg lg:w-1/2">
           <div className="flex items-center justify-center w-full">
-            <label className="relative flex flex-col w-full h-32 border-2 border-dashed cursor-pointer hover:bg-gray-100 hover:border-gray-300">
-              {image && <Image src={image} fill alt="avatrt" />}
+            <label className="relative flex flex-col w-40 h-40 border-2 border-gray-400 border-dashed rounded-full cursor-pointer hover:bg-gray-100 hover:border-gray-300">
+              {image && (
+                <Image src={image} fill alt="avatar" className="rounded-full" />
+              )}
               <div className="flex flex-col items-center justify-center pt-7">
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
