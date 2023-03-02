@@ -7,7 +7,7 @@ import {
   Radio,
   RadioGroup
 } from "@mui/material"
-import { message } from "antd"
+
 import DatePickerCustom from "components/Common/DatePicker/DatePickerCustom"
 import GoogleIcon from "components/Common/Icon/GoogleIcon"
 import Spinner from "components/Common/Loading/LoadingIcon"
@@ -18,6 +18,7 @@ import ButtonIcon from "module/Auth/components/ButtonIcon"
 import Link from "next/link"
 import { useEffect, useState } from "react"
 import { FieldValues, useForm } from "react-hook-form"
+import { toast } from "react-hot-toast"
 import { authService } from "services/auth.service"
 import { emailService } from "services/mail.service"
 import { getCurrentDate } from "shared/helpers/helper"
@@ -83,10 +84,10 @@ const FormSignup = () => {
         setCode(res.data)
         setEmailVerify(email)
       } else {
-        message.error(res.message)
+        toast.error(res?.message || "Sign up failed")
       }
     } catch (error) {
-      message.error("Sign up failed")
+      toast.error("Sign up failed")
     }
   }
   const signUp = async () => {
@@ -100,24 +101,24 @@ const FormSignup = () => {
       try {
         const data = await authService.signUp(result)
         if (data.isSuccess) {
-          message.success(data.message || "Sign up successfuly!!")
+          toast.success(data.message || "Sign up successfuly!!")
         } else {
-          message.error(data.message || SIGN_UP_FAILED)
+          toast.error(data.message || SIGN_UP_FAILED)
         }
       } catch (error) {
-        message.error("Sign up failed!!")
+        toast.error("Sign up failed!!")
       }
     } else if (loginMethod === "google") {
       try {
         const data = await authService.signInWithGoogle(profile.access_token)
         console.log("signUp ~ data:", data)
         if (data.isSuccess) {
-          message.success(data.message || "Sign up successfuly!!")
+          toast.success(data.message || "Sign up successfuly!!")
         } else {
-          message.error(data.message || SIGN_UP_FAILED)
+          toast.error(data.message || SIGN_UP_FAILED)
         }
       } catch (error) {
-        message.error(SIGN_UP_FAILED)
+        toast.error(SIGN_UP_FAILED)
       }
     }
     reset()
@@ -132,12 +133,12 @@ const FormSignup = () => {
       setIsVerify(true)
       getCodeFromEmail(profile?.data.email)
       setLoginMethod("google")
-      message.destroy()
+      toast.dismiss()
     }
   }, [profile])
   useEffect(() => {
     if (error) {
-      message.error(SIGN_UP_FAILED)
+      toast.error(SIGN_UP_FAILED)
     }
   }, [error])
   return (

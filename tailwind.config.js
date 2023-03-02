@@ -4,7 +4,6 @@ module.exports = {
   corePlugins: {
     preflight: false
   },
-  important: "#__next",
   theme: {
     fontFamily: {
       primary: ['"Lexend Deca"', "sans-serif"]

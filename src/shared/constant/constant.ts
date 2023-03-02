@@ -11,7 +11,9 @@ export const ROLE = {
 export const URL_API = {
   AUTH: "identity/Authentication",
   ACCOUNT: "identity/Account",
-  MAIL: "mail/Mail"
+  MAIL: "mail/Mail",
+  PROFILE: "profile/Profile",
+  RELATIONSHIPS: "profile/Relationship"
 } as const
 export const LANGUAGE = {
   VIETNAM: "vi",
@@ -20,3 +22,12 @@ export const LANGUAGE = {
 export const LOCALSTORAGE = {
   LANGUAGE: "lng"
 } as const
+export const RELATIONSHIPS = {
+  PARENTS: "Cha Mẹ",
+  SIBLINGS: "Anh Chị",
+  COUPLE: "Vợ Chồng",
+  GRANDPARENTS: "Ông Bà",
+  BROTHER: "Em",
+  ME: "Me",
+  CHILREN: "Con cái"
+}

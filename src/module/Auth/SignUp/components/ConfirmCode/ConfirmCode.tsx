@@ -1,6 +1,6 @@
-import { message } from "antd"
 import CustomButton from "components/User/Button"
 import { useState } from "react"
+import { toast } from "react-hot-toast"
 import VerificationInput from "react-verification-input"
 
 interface Props {
@@ -16,7 +16,7 @@ const ConfirmCode = ({ code, onSubmit, email, handleBack }: Props) => {
     if (otp === code) {
       onSubmit()
     } else {
-      message.error("Invalid authentication code.")
+      toast.error("Invalid authentication code.")
     }
   }
   return (

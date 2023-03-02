@@ -48,13 +48,13 @@ export default function App({ Component, pageProps }: AppPropsWithLayout) {
   }, [])
   return (
     <>
-      <LayoutBase>
-        <GoogleOAuthProvider
-          clientId={process.env.NEXT_PUBLIC_GOOGLE_CLIENT_ID as string}
-        >
-          <Provider store={store}>
-            {getLayout(
-              <QueryClientProvider client={queryClient}>
+      <QueryClientProvider client={queryClient}>
+        <LayoutBase>
+          <GoogleOAuthProvider
+            clientId={process.env.NEXT_PUBLIC_GOOGLE_CLIENT_ID as string}
+          >
+            <Provider store={store}>
+              {getLayout(
                 <Hydrate state={pageProps.dehydratedState}>
                   <CacheProvider value={cache}>
                     <StyledEngineProvider injectFirst>
@@ -64,11 +64,11 @@ export default function App({ Component, pageProps }: AppPropsWithLayout) {
                     </StyledEngineProvider>
                   </CacheProvider>
                 </Hydrate>
-              </QueryClientProvider>
-            )}
-          </Provider>
-        </GoogleOAuthProvider>
-      </LayoutBase>
+              )}
+            </Provider>
+          </GoogleOAuthProvider>
+        </LayoutBase>
+      </QueryClientProvider>
     </>
   )
 }

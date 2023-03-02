@@ -1,6 +1,6 @@
 import { yupResolver } from "@hookform/resolvers/yup"
 import { Alert, Divider } from "@mui/material"
-import { message } from "antd"
+
 import GoogleIcon from "components/Common/Icon/GoogleIcon"
 import Spinner from "components/Common/Loading/LoadingIcon"
 import CustomButton from "components/User/Button"
@@ -12,6 +12,7 @@ import Link from "next/link"
 import { useRouter } from "next/router"
 import { useEffect, useState } from "react"
 import { FieldValues, useForm } from "react-hook-form"
+import { toast } from "react-hot-toast"
 import { AiOutlineExclamationCircle } from "react-icons/ai"
 import { authService } from "services/auth.service"
 import { routerByRole } from "shared/helpers/helper"
@@ -57,7 +58,6 @@ const FormLogin = () => {
     const payload = jwt_decode(accessToken) as ITokenDecode
     dispatch(
       loginUser({
-        userName: payload.role,
         userId: payload.UserID,
         role: payload.role
       })
@@ -66,7 +66,7 @@ const FormLogin = () => {
   }
   useEffect(() => {
     if (error) {
-      message.error("Login failed, please try again!!!")
+      toast.error("Login failed, please try again!!!")
     }
   }, [error])
   useEffect(() => {
@@ -78,13 +78,13 @@ const FormLogin = () => {
           if (res.isSuccess) {
             console.log("login ~ res:", res)
             handleNavigate(res.data.accessToken, res.data.refreshToken)
-            message.success("Sign in successfuly")
+            toast.success("Sign in successfuly")
           } else {
-            message.error(res.message || "Login failed, please try again!!!")
+            toast.error(res.message || "Login failed, please try again!!!")
           }
         } catch (error) {
           console.error("login ~ error:", error)
-          message.error("Login failed, please try again!!!")
+          toast.error("Login failed, please try again!!!")
         }
       }
       login()

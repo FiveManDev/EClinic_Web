@@ -1,7 +1,11 @@
-import React from "react"
+import UserLayout from "layout/User/UserLayout"
+import ProfilePage from "module/User/Profile/ProfilePage"
+import { NextPageWithLayout } from "pages/page"
 
-const Profile = () => {
-  return <div>profile</div>
+const Profile: NextPageWithLayout = () => {
+  return <ProfilePage />
 }
-
+Profile.getLayout = (page) => {
+  return <UserLayout>{page}</UserLayout>
+}
 export default Profile

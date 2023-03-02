@@ -1,13 +1,10 @@
-import { message, notification } from "antd"
 import React from "react"
+import { Toaster } from "react-hot-toast"
 
 const LayoutBase = ({ children }: React.PropsWithChildren) => {
-  const [_, contextNotiHolder] = notification.useNotification()
-  const [__, contextMessageHolder] = message.useMessage()
   return (
     <>
-      {contextMessageHolder}
-      {contextNotiHolder}
+      <Toaster />
       <>{children}</>
     </>
   )

@@ -83,22 +83,21 @@ class AuthService {
     })
     return res.data as IServerResponse<any>
   }
-  async currentUser() {
-    // const res = await http.post("auth/logout", null, {
-    //   withCredentials: true
-    // })
-    const res = {
-      data: {
-        isSuccess: true,
-        data: {
-          userId: "1",
-          userName: "user",
-          role: "User"
-        }
-      }
-    }
-    return res.data as IServerResponse<IUser>
-  }
+  // async currentUser() {
+  //   // const res = await http.post("auth/logout", null, {
+  //   //   withCredentials: true
+  //   // })
+  //   const res = {
+  //     data: {
+  //       isSuccess: true,
+  //       data: {
+  //         userId: "42ce372a-7078-4a4c-93a3-c5000d58bff1",
+  //         role: "User"
+  //       }
+  //     }
+  //   }
+  //   return res.data as IServerResponse<IUser>
+  // }
   async test() {
     const res = await axiosClient.get(`${URL_API.AUTH}/GetID`)
     return res.data as IServerResponse<any>
