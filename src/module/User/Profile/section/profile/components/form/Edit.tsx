@@ -70,8 +70,8 @@ const Edit = ({ onSubmit, onDelete, labelForm, profile }: Props) => {
     defaultValues: profile
   })
   watch("avatar", null)
-  const watchBlood = watch("bloodType", "A")
-  const watchGender = watch("gender", true)
+  const watchBlood = watch("bloodType", profile?.bloodType || "A")
+  const watchGender = watch("gender", profile?.gender || true)
   const watchRelationship = watch("relationshipID", profile?.relationshipID)
   const onFileChange = (file: File) => {
     setValue("avatar", file)
@@ -119,6 +119,9 @@ const Edit = ({ onSubmit, onDelete, labelForm, profile }: Props) => {
             />
           </div>
           <CustomInput
+            disabled={
+              profile?.relationshipName === RELATIONSHIPS.ME ? true : false
+            }
             label="Email"
             control={control}
             name="email"
