@@ -50,12 +50,19 @@ const UserAvatar = () => {
 
   return (
     <>
-      {isLoading && <Skeleton variant="circular" width={32} height={32} />}
+      {isLoading && (
+        <Skeleton
+          variant="circular"
+          width={32}
+          height={32}
+          className="flex-shrink-0"
+        />
+      )}
       {data && (
         <>
           <Tooltip title="Open settings">
             <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
-              <div className=" relaitve w-9 h-9">
+              <div className="relative w-9 h-9">
                 <Image
                   className="overflow-hidden rounded-full"
                   src={data?.data?.avatar || "/images/default.jpeg"}

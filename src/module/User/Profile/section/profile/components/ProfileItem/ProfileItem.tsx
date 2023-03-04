@@ -23,7 +23,10 @@ const ProfileItem = ({ data, onClick, loading = false }: Props) => {
           <div className="relative w-20 h-20">
             <Image
               src={data.avatar as string}
-              alt=""
+              alt={data.lastName}
+              sizes="(max-width: 768px) 100vw,
+              (max-width: 1200px) 50vw,
+              33vw"
               fill
               className="rounded-md"
             />
@@ -36,17 +39,13 @@ const ProfileItem = ({ data, onClick, loading = false }: Props) => {
           {data && (
             <Tag
               // data.relationshipName === RELATIONSHIPS.ME ? "green" : "blue"
-              className="w-fit"
+              className={`w-fit text-sm ${
+                data.relationshipName === RELATIONSHIPS.ME
+                  ? "bg-green-500 text-green-500"
+                  : "text-primary"
+              }`}
             >
-              <span
-                className={`text-xs ${
-                  data.relationshipName === RELATIONSHIPS.ME
-                    ? ""
-                    : "text-primary"
-                }`}
-              >
-                {data.relationshipName}
-              </span>
+              {data.relationshipName}
             </Tag>
           )}
           {loading && (

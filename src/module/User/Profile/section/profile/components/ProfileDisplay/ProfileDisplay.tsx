@@ -16,7 +16,7 @@ const ProfileDisplay = ({ profile, onEdit }: Props) => {
         <div className="flex flex-col items-center justify-center gap-y-5 max-w-[460px] mx-auto">
           <div className="relative w-32 h-32 rounded-full shadow-sm">
             <Image
-              src={profile.avatar}
+              src={profile.avatar as string}
               fill
               alt={profile.firstName}
               sizes="(max-width: 768px) 100vw,
@@ -25,7 +25,7 @@ const ProfileDisplay = ({ profile, onEdit }: Props) => {
               className="object-cover border border-gray-200 border-solid rounded-full"
             />
           </div>
-          <div className="self-start w-full space-y-3 ">
+          <div className="self-start w-full space-y-4 ">
             <h3 className="text-lg font-bold text-h1">Thông tin </h3>
             <ProfileItem
               label="Full name"
