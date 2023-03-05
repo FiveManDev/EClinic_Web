@@ -1,9 +1,12 @@
 import { Tab, Tabs } from "@mui/material"
 import { SyntheticEvent, useMemo, useState } from "react"
+import { MdOutlineHistory, MdOutlinePeopleAlt } from "react-icons/md"
 import LayoutItem from "../../components/layout"
+import ChangePassword from "../change-password"
 import HistoryQuestion from "../history-question"
 import Profile from "../profile"
 import { TabsWrapper } from "./Tabs.style"
+import { RiLockPasswordLine } from "react-icons/ri"
 
 const SiderBar = () => {
   const [tabIndex, setTabIndex] = useState(0)
@@ -20,6 +23,7 @@ const SiderBar = () => {
       {
         key: 0,
         label: `Profile`,
+        icon: <MdOutlinePeopleAlt />,
         children: (
           <LayoutItem label="Profile">
             <Profile />
@@ -28,7 +32,18 @@ const SiderBar = () => {
       },
       {
         key: 1,
+        label: `Change password`,
+        icon: <RiLockPasswordLine />,
+        children: (
+          <LayoutItem label="Change password">
+            <ChangePassword />
+          </LayoutItem>
+        )
+      },
+      {
+        key: 2,
         label: `History of question`,
+        icon: <MdOutlineHistory />,
         children: (
           <LayoutItem label="History of question">
             <HistoryQuestion />
@@ -44,14 +59,14 @@ const SiderBar = () => {
         orientation="vertical"
         value={tabIndex}
         onChange={handleTabChange}
-        className="w-[300px] shadow-md h-fit "
+        className="shadow-md h-fit"
       >
         {tabs.map((tab) => (
           <Tab
+            icon={tab.icon}
             label={tab.label}
             key={tab.key}
             value={tab.key}
-            className="font-semibold"
           />
         ))}
       </Tabs>

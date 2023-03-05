@@ -16,8 +16,8 @@ const unprotectedPaths: string[] = [
 // This function can be marked `async` if using `await` inside
 export async function middleware(req: NextRequest) {
   const { pathname } = req.nextUrl
-
   if (pathname.startsWith("/_next")) return NextResponse.next()
+
   const { cookies } = req
   const accessToken = cookies.get(
     process.env.NEXT_PUBLIC_ACCESS_TOKEN_NAME as string
@@ -64,7 +64,16 @@ export async function middleware(req: NextRequest) {
       return NextResponse.redirect(req.nextUrl)
     }
   }
-  if (unprotectedPaths.some((path) => pathname.startsWith(path))) {
+  const checkRouter = unprotectedPaths.some((path) => {
+    console.log("checkRouter ~ pathname:", pathname)
+    if (pathname === "/") {
+      return true
+    } else {
+      return path.includes(pathname)
+    }
+  })
+  console.log("checkRouter ~ checkRouter:", checkRouter)
+  if (checkRouter) {
     return NextResponse.next()
   } else {
     req.nextUrl.pathname = "/sign-in"

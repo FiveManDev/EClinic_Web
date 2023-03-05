@@ -153,7 +153,7 @@ const FormSignup = () => {
       ) : (
         <div className="md:max-w-[580px] w-full  bg-white rounded-md px-4 py-6 mt-7">
           <ButtonIcon
-            text="Log in with Google"
+            text="Sign up with Google"
             icon={<GoogleIcon />}
             onClick={() => action()}
           />

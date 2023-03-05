@@ -1,23 +1,19 @@
-import { IUser } from "./../types/User.type"
 import { AxiosResponse } from "axios"
+import { IChangePassowrd } from "hooks/query/account/useAccount"
+import axiosClient from "shared/axios/httpClient"
+import { URL_API, VERSION } from "shared/constant/constant"
 import { token as Token } from "shared/utils/token"
 import { IServerResponse } from "types/server/IServerResponse"
 import { IToken } from "types/Token.type"
-import axiosClient from "shared/axios/httpClient"
-import { URL_API, VERSION } from "shared/constant/constant"
 
 class AuthService {
-  async changePassword(
-    oldPassword: string,
-    newPassword: string,
-    confirmPassword: string
-  ) {
+  async changePassword(value: IChangePassowrd) {
     const res: AxiosResponse = await axiosClient.put(
       `${URL_API.ACCOUNT}/ChangePassword`,
       {
-        oldPassword,
-        newPassword,
-        confirmPassword
+        oldPassword: value.oldPassword,
+        newPassword: value.newPassword,
+        confirmPassword: value.confirmPassword
       }
     )
     return res.data as IServerResponse<any>

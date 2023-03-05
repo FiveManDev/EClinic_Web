@@ -119,6 +119,12 @@ const FormLogin = () => {
           error={!!errors.password}
           errorMessage={errors.password?.message?.toString()}
         />
+        <Link
+          href={"/reset-password"}
+          className="!mt-2 text-right no-underline hover:underline hover:decoration-primary"
+        >
+          <span className="text-primary">Forgot password!</span>
+        </Link>
         {isError && (
           <Alert icon={<AiOutlineExclamationCircle />} severity="error">
             User Name or password incorrect
