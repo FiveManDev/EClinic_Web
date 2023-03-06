@@ -7,6 +7,7 @@ import { ROLE } from "shared/constant/constant"
 import { ITokenDecode } from "types/Token.type"
 const unprotectedPaths: string[] = [
   "/",
+  "/search",
   `/sign-in`,
   `/sign-up`,
   "/services",

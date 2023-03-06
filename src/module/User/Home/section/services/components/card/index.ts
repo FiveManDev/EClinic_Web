@@ -1,3 +1,3 @@
-import Card from "./Card"
+import CardService from "./CardService"
 
-export default Card
+export default CardService

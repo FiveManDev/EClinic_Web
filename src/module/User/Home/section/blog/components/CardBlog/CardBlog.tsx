@@ -1,18 +1,17 @@
-import Image from "next/image"
-import React from "react"
+import ImageCustom from "components/Common/ImageCustom"
 
 const CardBlog = () => {
   return (
     <div className="flex flex-col w-full space-y-4">
-      <div className="relative w-full h-[334px]">
-        <Image
+      <div className="relative w-full h-[280px]">
+        <ImageCustom
           src={"/images/sample.png"}
           alt="image"
           sizes="(max-width: 768px) 100vw,
               (max-width: 1200px) 50vw,
               33vw"
           fill
-          className="object-cover rounded-lg"
+          classNameImage="object-cover rounded-lg"
         />
       </div>
       <div className="flex flex-col space-y-3">

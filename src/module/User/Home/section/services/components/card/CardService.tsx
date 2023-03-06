@@ -5,7 +5,7 @@ import Link from "next/link"
 import React from "react"
 import { useTranslation } from "react-i18next"
 
-const Card = () => {
+const CardService = () => {
   const { t } = useTranslation("home")
 
   return (
@@ -59,4 +59,4 @@ const Card = () => {
   )
 }
 
-export default Card
+export default CardService
