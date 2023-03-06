@@ -6,6 +6,7 @@ import {
   styled,
   Tooltip
 } from "@mui/material"
+import ImageCustom from "components/Common/ImageCustom"
 import { useSimpleProfile } from "hooks/query/profile/useProfile"
 import Image from "next/image"
 import Link from "next/link"
@@ -62,9 +63,9 @@ const UserAvatar = () => {
         <>
           <Tooltip title="Open settings">
             <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
-              <div className="relative w-9 h-9">
-                <Image
-                  className="overflow-hidden rounded-full"
+              <div className="relative overflow-hidden w-9 h-9">
+                <ImageCustom
+                  classNameImage="overflow-hidden rounded-full"
                   src={data?.data?.avatar || "/images/default.jpeg"}
                   fill
                   sizes="(max-width: 768px) 100vw,
