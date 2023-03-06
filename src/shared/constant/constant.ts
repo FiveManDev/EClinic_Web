@@ -1,5 +1,8 @@
 export const VERSION = 1
 export const DEFAULT_URL_API = "https://localhost:8888"
+export const routers = {
+  signIn: "/sign-in"
+}
 export const QUERY_KEYS = {
   LOGIN: "LOGIN"
 } as const
