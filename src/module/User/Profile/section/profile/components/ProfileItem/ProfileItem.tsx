@@ -1,4 +1,5 @@
 import { Skeleton } from "@mui/material"
+import ImageCustom from "components/Common/ImageCustom"
 import Tag from "components/Common/Tag"
 import dayjs from "dayjs"
 import Image from "next/image"
@@ -20,15 +21,15 @@ const ProfileItem = ({ data, onClick, loading = false }: Props) => {
       >
         {loading && <Skeleton variant="rounded" width={64} height={64} />}
         {data && (
-          <div className="relative w-20 h-20">
-            <Image
+          <div className="relative w-20 h-20 overflow-hidden">
+            <ImageCustom
               src={data.avatar as string}
               alt={data.lastName}
               sizes="(max-width: 768px) 100vw,
               (max-width: 1200px) 50vw,
               33vw"
               fill
-              className="rounded-md"
+              classNameImage="rounded-md"
             />
           </div>
         )}
