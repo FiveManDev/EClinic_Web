@@ -10,8 +10,10 @@ import ImageCustom from "components/Common/ImageCustom"
 import { useSimpleProfile } from "hooks/query/profile/useProfile"
 import Image from "next/image"
 import Link from "next/link"
+import { useRouter } from "next/router"
 import { useState } from "react"
 import { useSelector } from "react-redux"
+import { routers } from "shared/constant/constant"
 import { logoutUser } from "store/module/auth/action-creators"
 import { RootState, useAppDispatch } from "store/store"
 
@@ -35,6 +37,7 @@ const MENU = [
 ]
 
 const UserAvatar = () => {
+  const router = useRouter()
   const { user } = useSelector((state: RootState) => state.auth)
   const dispatch = useAppDispatch()
   const [anchorElUser, setAnchorElUser] = useState<null | HTMLElement>(null)
@@ -47,6 +50,7 @@ const UserAvatar = () => {
   }
   const logout = () => {
     dispatch(logoutUser())
+    router.push(routers.signIn)
   }
 
   return (

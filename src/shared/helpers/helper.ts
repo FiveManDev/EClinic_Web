@@ -47,9 +47,6 @@ export const getBase64 = (file: any): Promise<string> =>
     reader.onload = () => resolve(reader.result as string)
     reader.onerror = (error) => reject(error)
   })
-export const isAxiosError = <T>(error: unknown): error is AxiosError<T> => {
-  return axios.isAxiosError(error)
-}
 export const getCurrentDate = (date: string) => {
   return dayjs(date, "ddd, DD MMM YYYY HH:mm:ss [GMT]").toISOString()
 }
