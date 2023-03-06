@@ -20,8 +20,8 @@ export const URL_API = {
   RELATIONSHIPS: "profile/Relationship"
 } as const
 export const LANGUAGE = {
-  VIETNAM: "vi",
-  ENGLISH: "en"
+  VIETNAM: "Vi",
+  ENGLISH: "En"
 } as const
 export const LOCALSTORAGE = {
   LANGUAGE: "lng"

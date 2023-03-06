@@ -11,7 +11,7 @@ const ImageCustom = ({ classNameImage, ...props }: IProps) => {
   }
   return (
     <Image
-      className={`${classNameImage}bg-gray-400 transition duration-1000 ${
+      className={`${classNameImage} bg-gray-400 transition duration-1000 ${
         isReady ? "scale-100 bg-gray-400 blur-0" : "scale-120 blur-2xl"
       }`}
       {...props}
