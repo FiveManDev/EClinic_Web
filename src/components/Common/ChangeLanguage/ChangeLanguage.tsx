@@ -3,28 +3,38 @@ import classNames from "classnames"
 import React from "react"
 import { useTranslation } from "react-i18next"
 import { LANGUAGE, LOCALSTORAGE } from "shared/constant/constant"
-interface Props {
-  className?: string
-}
-const ChangeLanguage = ({ className }: Props) => {
+
+const ChangeLanguage = () => {
   const { i18n } = useTranslation()
-  const handleChange = (event: SelectChangeEvent) => {
-    localStorage.setItem(LOCALSTORAGE.LANGUAGE, event.target.value)
-    i18n.changeLanguage(event.target.value)
+  const handleChange = (value: string) => {
+    localStorage.setItem(LOCALSTORAGE.LANGUAGE, value)
+    i18n.changeLanguage(value)
   }
   return (
     <>
-      <Select
-        className={classNames("w-[110px] text-sm", className)}
-        value={i18n.language}
-        size="small"
-        onChange={handleChange}
-        displayEmpty
-        inputProps={{ "aria-label": "Without label" }}
-      >
-        <MenuItem value={LANGUAGE.VIETNAM}>Tiếng Việt</MenuItem>
-        <MenuItem value={LANGUAGE.ENGLISH}>EngLish</MenuItem>
-      </Select>
+      <ul className="flex items-center space-x-1 text-gray-300 font-extralight">
+        <li
+          onClick={() => handleChange(LANGUAGE.ENGLISH)}
+          className={`cursor-pointer transition-all ${
+            i18n.language === LANGUAGE.ENGLISH
+              ? "text-primary font-semibold"
+              : ""
+          }`}
+        >
+          {LANGUAGE.ENGLISH}
+        </li>
+        <li>|</li>
+        <li
+          onClick={() => handleChange(LANGUAGE.VIETNAM)}
+          className={`cursor-pointer transition-all ${
+            i18n.language === LANGUAGE.VIETNAM
+              ? "text-primary font-semibold"
+              : ""
+          }`}
+        >
+          {LANGUAGE.VIETNAM}
+        </li>
+      </ul>
     </>
   )
 }

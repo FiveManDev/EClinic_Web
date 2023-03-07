@@ -1,3 +1,4 @@
+import { LANGUAGE } from "shared/constant/constant"
 import i18n from "i18next"
 import { initReactI18next } from "react-i18next"
 import HOME_EN from "locales/en/home.json"
@@ -9,13 +10,13 @@ import BASE_EN from "locales/en/base.json"
 import SER_VI from "locales/vi/services.json"
 import SER_EN from "locales/en/services.json"
 export const resources = {
-  en: {
+  [LANGUAGE.ENGLISH]: {
     ser: SER_EN,
     base: BASE_EN,
     home: HOME_EN,
     forum: FORUM_EN
   },
-  vi: {
+  [LANGUAGE.VIETNAM]: {
     ser: SER_VI,
     base: BASE_VI,
     home: HOME_VI,
@@ -25,10 +26,10 @@ export const resources = {
 export const defaultNS = "home"
 i18n.use(initReactI18next).init({
   resources,
-  lng: "en",
+  lng: LANGUAGE.ENGLISH,
   ns: ["home", "forum", "base", "ser"],
   defaultNS,
-  fallbackLng: "en",
+  fallbackLng: LANGUAGE.ENGLISH,
   interpolation: {
     escapeValue: false
   }

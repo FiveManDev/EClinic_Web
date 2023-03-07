@@ -1,27 +1,23 @@
-import {
-  IconButton,
-  InputAdornment,
-  MenuItem,
-  OutlinedInput,
-  Select,
-  SelectChangeEvent
-} from "@mui/material"
+import { IconButton, InputAdornment, OutlinedInput } from "@mui/material"
 import ChipCustom from "components/Common/Chip/Chip"
-import React from "react"
+import { useRouter } from "next/router"
+import { useState } from "react"
 import { useTranslation } from "react-i18next"
 import { SearchWrapper } from "./Search.styles"
 
 const Search = () => {
   const { t } = useTranslation("home")
-  const [age, setAge] = React.useState("")
+  const [searchValue, setSearchValue] = useState("")
+  const router = useRouter()
 
-  const handleChange = (event: SelectChangeEvent) => {
-    setAge(event.target.value)
+  const handleSubmit = () => {
+    router.push(`/search?keyword=${searchValue}`)
   }
   return (
     <SearchWrapper className="absolute bottom-0 translate-y-2/4 w-full p-4  mx-auto bg-white rounded-xl md:p-8 shadow-[0px_1px_4px_rgba(0,_0,_0,_0.15)]">
       <div className="flex items-center justify-between space-x-2 md:space-x-4 h-11 md:h-[72px]">
         <OutlinedInput
+          onChange={(e) => setSearchValue(e.target.value)}
           placeholder={t("banner.search.placeholder")}
           className="h-full bg-[#FAFBFE] text-xs md:text-base rounded-lg border-none outline-none"
           fullWidth
@@ -31,21 +27,8 @@ const Search = () => {
             </InputAdornment>
           }
         />
-        <Select
-          className=" text-xs md:text-base h-full bg-[#FAFBFE] rounded-lg border-none outline-none max-w-[300px] w-full"
-          value={age}
-          onChange={handleChange}
-          displayEmpty
-          inputProps={{ "aria-label": "Without label" }}
-        >
-          <MenuItem value="">
-            <em>None</em>
-          </MenuItem>
-          <MenuItem value={10}>Ten</MenuItem>
-          <MenuItem value={20}>Twenty</MenuItem>
-          <MenuItem value={30}>Thirty</MenuItem>
-        </Select>
         <IconButton
+          onClick={handleSubmit}
           aria-label="delete"
           className="text-white h-full w-14 md:w-[72px] flex items-center justify-center rounded-[10px] bg-primary hover:bg-primary"
         >
@@ -67,7 +50,7 @@ const Search = () => {
     </SearchWrapper>
   )
 }
-function IconSearch() {
+export const IconSearch = () => {
   return (
     <>
       <svg

@@ -1,4 +1,5 @@
 import classNames from "classnames"
+import ImageCustom from "components/Common/ImageCustom"
 import Image from "next/image"
 import Link from "next/link"
 import React from "react"
@@ -25,11 +26,11 @@ const CardForum = ({ kind = "medium" }: Props) => {
           kind === "medium" && "col-span-5 h-[140px] md:h-[200px]"
         )}
       >
-        <Image
+        <ImageCustom
           src={"/images/sample.png"}
           fill
           alt="image"
-          className="object-cover"
+          classNameImage="object-cover"
         />
       </div>
       <div className={classNames(kind === "large" && "space-y-4 col-span-3")}>
