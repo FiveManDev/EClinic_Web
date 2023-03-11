@@ -14,6 +14,9 @@ const ImageCustom = ({ classNameImage, ...props }: IProps) => {
       className={`${classNameImage} bg-gray-400 transition duration-1000 ${
         isReady ? "scale-100 bg-gray-400 blur-0" : "scale-120 blur-2xl"
       }`}
+      sizes="(max-width: 768px) 100vw,
+        (max-width: 1200px) 50vw,
+        33vw"
       {...props}
       onLoadingComplete={onLoadCallback}
       alt={props.alt}

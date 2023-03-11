@@ -1,8 +1,8 @@
 import jwt_decode from "jwt-decode"
 import { authService } from "services/auth.service"
 import { token } from "shared/utils/token"
-import { ITokenDecode } from "types/Token.type"
-import { IUser } from "./../../../types/User.type"
+import { ITokenDecode } from "types/Token"
+import { IUser } from "../../../types/User"
 import { AppDispatch } from "./../../store"
 import { authenticate, deleteAuthenticate } from "./auth-slice"
 

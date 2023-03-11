@@ -4,7 +4,7 @@ import axiosClient from "shared/axios/httpClient"
 import { URL_API, VERSION } from "shared/constant/constant"
 import { token as Token } from "shared/utils/token"
 import { IServerResponse } from "types/server/IServerResponse"
-import { IToken } from "types/Token.type"
+import { IToken } from "types/Token"
 
 class AuthService {
   async changePassword(value: IChangePassowrd) {

@@ -1,6 +1,6 @@
 import axios, { AxiosError } from "axios"
 import dayjs from "dayjs"
-import { ITokenDecode } from "types/Token.type"
+import { ITokenDecode } from "types/Token"
 
 export const isProduction = () => {
   return process.env.NODE_ENV === "production"
@@ -49,4 +49,10 @@ export const getBase64 = (file: any): Promise<string> =>
   })
 export const getCurrentDate = (date: string) => {
   return dayjs(date, "ddd, DD MMM YYYY HH:mm:ss [GMT]").toISOString()
+}
+export const combineName = (lastName: string, firstName: string) => {
+  return lastName + " " + firstName
+}
+export const dayformat = (date: string) => {
+  return dayjs(date).format("DD/MM/YYYY")
 }

@@ -30,7 +30,13 @@ const cache = createCache({
   prepend: true
 })
 //checking is authenticated
-const queryClient = new QueryClient()
+const queryClient = new QueryClient({
+  defaultOptions: {
+    queries: {
+      refetchOnWindowFocus: false
+    }
+  }
+})
 
 if (isBrowser()) {
   store.dispatch(checkLogin())

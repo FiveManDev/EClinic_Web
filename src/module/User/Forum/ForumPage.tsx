@@ -31,7 +31,7 @@ const ForumPage = () => {
               <Search />
             </div>
           </div>
-          <div className="w-full col-span-3 md:col-span-2 background-primary">
+          {/* <div className="w-full col-span-3 md:col-span-2 background-primary">
             <CardForum kind="large" />
             <div className="flex flex-col mt-6 space-y-3">
               <div className="flex items-center space-x-2 text-xl">
@@ -61,7 +61,7 @@ const ForumPage = () => {
                   ))}
               </div>
             </div>
-          </div>
+          </div> */}
           <div className="col-span-3 space-y-4 md:col-span-2 background-primary">
             <ListCardForum title={t("forum:allquestion")} />
           </div>

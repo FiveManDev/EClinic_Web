@@ -1,4 +1,4 @@
-import { IUser } from "./User.type"
+import { IUser } from "./User"
 export interface IAuthState {
   isLoggedIn: boolean
   user: IUser

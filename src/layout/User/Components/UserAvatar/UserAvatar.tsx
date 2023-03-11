@@ -67,9 +67,8 @@ const UserAvatar = () => {
         <>
           <Tooltip title="Open settings">
             <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
-              <div className="relative overflow-hidden w-9 h-9">
+              <div className="relative overflow-hidden rounded-full w-9 h-9">
                 <ImageCustom
-                  classNameImage="overflow-hidden rounded-full"
                   src={data?.data?.avatar || "/images/default.jpeg"}
                   fill
                   sizes="(max-width: 768px) 100vw,

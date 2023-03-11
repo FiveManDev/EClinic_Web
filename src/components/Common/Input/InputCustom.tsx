@@ -1,5 +1,5 @@
 import classNames from "classnames"
-import { InputHTMLAttributes, ReactNode } from "react"
+import { ChangeEvent, InputHTMLAttributes, ReactNode } from "react"
 
 interface Props extends InputHTMLAttributes<HTMLInputElement> {
   icon?: ReactNode

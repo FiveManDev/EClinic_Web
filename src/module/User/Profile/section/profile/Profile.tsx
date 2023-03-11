@@ -38,7 +38,6 @@ const Profile = () => {
   }
   const handleSubmitForm = (value: FieldValues) => {
     if (mode === "edit") {
-      console.log("handleSubmitForm ~ value:", value)
       updateProfileMutaiton.mutate(value as IProfile & IRelationShip, {
         onSuccess: (data) => {
           if (data.isSuccess) {

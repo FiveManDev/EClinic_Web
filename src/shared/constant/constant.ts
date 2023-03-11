@@ -17,7 +17,9 @@ export const URL_API = {
   ACCOUNT: "identity/Account",
   MAIL: "mail/Mail",
   PROFILE: "profile/Profile",
-  RELATIONSHIPS: "profile/Relationship"
+  RELATIONSHIPS: "profile/Relationship",
+  FORUM_POST: "forum/Post",
+  FORUM_POST_COMMENT: "forum/Comment"
 } as const
 export const LANGUAGE = {
   VIETNAM: "Vi",
