@@ -4,13 +4,17 @@ import ImageCustom from "components/Common/ImageCustom"
 import {
   useCreateCommentForumMutation,
   useCreateReplyCommentForumMutation,
+  useDeleteCommnetForumMutation,
+  useDeleteReplyCommnetForumMutation,
   useGetAllCommentForumQuery
 } from "hooks/query/forum/useForum"
 import Info from "module/User/components/Info/Info"
 import dynamic from "next/dynamic"
 import { toast } from "react-hot-toast"
 import { useTranslation } from "react-i18next"
-import { IPost } from "types/Post"
+import { useSelector } from "react-redux"
+import { RootState } from "store/store"
+import { DeleteActionType, IPost } from "types/Post"
 import ListCardForum from "../list/ListCardForum"
 
 const Comment = dynamic(
@@ -24,11 +28,14 @@ interface Props {
 }
 const DetailForum = ({ post }: Props) => {
   const { t } = useTranslation(["base", "forum"])
+  const auth = useSelector((state: RootState) => state.auth)
   const { data, isLoading, isError, refetch } = useGetAllCommentForumQuery(
     post.id
   )
   const createCommentForumMutation = useCreateCommentForumMutation()
   const createReplyCommentForumMutation = useCreateReplyCommentForumMutation()
+  const deleteReplyCommnetForumMutation = useDeleteReplyCommnetForumMutation()
+  const deleteCommnetForumMutation = useDeleteCommnetForumMutation()
   if (isLoading) {
     return <p>Loading...</p>
   }
@@ -37,12 +44,14 @@ const DetailForum = ({ post }: Props) => {
   }
   const handleCreateComment = (value: string) => {
     if (value) {
-      console.log("handleCreateComment ~ post:", post)
       createCommentForumMutation.mutate(
         {
           postId: post.id,
           content: value,
-          author: post.author
+          author: {
+            ...post.author,
+            userID: auth.user.userId
+          }
         },
         {
           onSuccess: () => {
@@ -63,7 +72,10 @@ const DetailForum = ({ post }: Props) => {
       {
         postId: id,
         content: value,
-        author: post.author
+        author: {
+          ...post.author,
+          userID: auth.user.userId
+        }
       },
       {
         onSuccess: () => {
@@ -75,6 +87,30 @@ const DetailForum = ({ post }: Props) => {
         }
       }
     )
+  }
+  const handleDeleteComment = (data: DeleteActionType) => {
+    console.log("handleDeleteComment ~ data:", data)
+    if (data.ParentCommentID) {
+      deleteReplyCommnetForumMutation.mutate(data, {
+        onSuccess: () => {
+          refetch()
+          toast.success("Delete Comment sucessfully!")
+        },
+        onError: () => {
+          toast.error("Delete comment failed!")
+        }
+      })
+    } else {
+      deleteCommnetForumMutation.mutate(data, {
+        onSuccess: () => {
+          refetch()
+          toast.success("Delete Comment sucessfully!")
+        },
+        onError: () => {
+          toast.error("Delete comment failed!")
+        }
+      })
+    }
   }
   return (
     <>
@@ -119,6 +155,7 @@ const DetailForum = ({ post }: Props) => {
           comments={data.data}
           onCreateComment={handleCreateComment}
           onCreateReply={handleCreateReply}
+          onDeleteComment={handleDeleteComment}
         />
       </div>
       <div className="col-span-3 space-y-4 md:col-span-2 background-primary">

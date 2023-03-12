@@ -1,4 +1,4 @@
-import { ICreateCommentForum } from "./../types/Post.d"
+import { DeleteActionType, ICreateCommentForum } from "./../types/Post.d"
 import { AxiosResponse } from "axios"
 import { CreatePostForum } from "hooks/query/forum/useForum"
 import axiosClient from "shared/axios/httpClient"
@@ -56,6 +56,18 @@ class ForumService {
         parentCommentID: body.postId,
         ...body
       }
+    )
+    return res.data as IServerResponse<null>
+  }
+  async deleteCommentByID(commentID: string) {
+    const res: AxiosResponse = await axiosClient.delete(
+      `${URL_API.FORUM_POST_COMMENT}/DeleteCommentByID?CommentID=${commentID}`
+    )
+    return res.data as IServerResponse<null>
+  }
+  async deleteReplyCommentByID(value: Omit<DeleteActionType, "kind">) {
+    const res: AxiosResponse = await axiosClient.delete(
+      `${URL_API.FORUM_POST_COMMENT}/DeleteReplyCommentByID?CommentID=${value.CommentID}&ParentCommentID=${value.ParentCommentID}`
     )
     return res.data as IServerResponse<null>
   }

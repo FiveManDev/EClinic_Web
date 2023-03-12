@@ -1,7 +1,7 @@
 import CustomButton from "components/User/Button"
 import { useRef } from "react"
 import { useTranslation } from "react-i18next"
-import { IComment } from "types/Post"
+import { DeleteActionType, IComment } from "types/Post"
 import CommemtItem from "./CommemtItem"
 interface Props {
   comments: IComment[]
@@ -9,8 +9,15 @@ interface Props {
   onCreateComment: (value: string) => void
   // eslint-disable-next-line no-unused-vars
   onCreateReply: (id: string, content: string) => void
+  // eslint-disable-next-line no-unused-vars
+  onDeleteComment: (data: DeleteActionType) => void
 }
-const Comment = ({ comments, onCreateComment, onCreateReply }: Props) => {
+const Comment = ({
+  comments,
+  onCreateComment,
+  onCreateReply,
+  onDeleteComment
+}: Props) => {
   const inputRef = useRef<HTMLTextAreaElement>(null)
   const { t } = useTranslation(["base", "forum"])
   const handleSubmitComtent = () => {
@@ -54,6 +61,7 @@ const Comment = ({ comments, onCreateComment, onCreateReply }: Props) => {
               key={comment.id}
               comment={comment}
               onCreateReply={onCreateReply}
+              onDeleteComment={onDeleteComment}
             />
           ))}
         </div>

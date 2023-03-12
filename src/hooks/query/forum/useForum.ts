@@ -1,6 +1,6 @@
 import { forumService } from "./../../../services/forum.service"
 import { useMutation, useQuery } from "@tanstack/react-query"
-import { ICreateCommentForum } from "types/Post"
+import { DeleteActionType, ICreateCommentForum } from "types/Post"
 
 export interface CreatePostForum {
   title: string
@@ -41,6 +41,19 @@ export const useCreateCommentForumMutation = () => {
 }
 export const useCreateReplyCommentForumMutation = () => {
   return useMutation({
-    mutationFn: (body: ICreateCommentForum) => forumService.createReplyComment(body)
+    mutationFn: (body: ICreateCommentForum) =>
+      forumService.createReplyComment(body)
+  })
+}
+export const useDeleteCommnetForumMutation = () => {
+  return useMutation({
+    mutationFn: (querys: Omit<DeleteActionType, "kind" | "ParentCommentID">) =>
+      forumService.deleteCommentByID(querys.CommentID)
+  })
+}
+export const useDeleteReplyCommnetForumMutation = () => {
+  return useMutation({
+    mutationFn: (querys: Omit<DeleteActionType, "kind">) =>
+      forumService.deleteReplyCommentByID(querys)
   })
 }

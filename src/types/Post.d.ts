@@ -33,3 +33,8 @@ export type ICreateCommentForum = {
   content: string
   author: Author
 }
+export type DeleteActionType = {
+  ParentCommentID: string | null
+  CommentID: string
+  kind: "comment" | "reply"
+}
