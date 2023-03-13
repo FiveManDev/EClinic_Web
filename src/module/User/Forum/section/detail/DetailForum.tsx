@@ -28,7 +28,6 @@ interface Props {
 }
 const DetailForum = ({ post }: Props) => {
   const { t } = useTranslation(["base", "forum"])
-  const auth = useSelector((state: RootState) => state.auth)
   const { data, isLoading, isError, refetch } = useGetAllCommentForumQuery(
     post.id
   )
@@ -47,11 +46,7 @@ const DetailForum = ({ post }: Props) => {
       createCommentForumMutation.mutate(
         {
           postId: post.id,
-          content: value,
-          author: {
-            ...post.author,
-            userID: auth.user.userId
-          }
+          content: value
         },
         {
           onSuccess: () => {
@@ -71,11 +66,7 @@ const DetailForum = ({ post }: Props) => {
     createReplyCommentForumMutation.mutate(
       {
         postId: id,
-        content: value,
-        author: {
-          ...post.author,
-          userID: auth.user.userId
-        }
+        content: value
       },
       {
         onSuccess: () => {

@@ -31,7 +31,6 @@ export interface IComment {
 export type ICreateCommentForum = {
   postId: string
   content: string
-  author: Author
 }
 export type DeleteActionType = {
   ParentCommentID: string | null

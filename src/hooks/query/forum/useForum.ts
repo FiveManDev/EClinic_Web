@@ -6,18 +6,20 @@ export interface CreatePostForum {
   title: string
   content: string
   images: File[]
-  userId: string
 }
 export const useCreatePostMutation = () => {
   return useMutation({
     mutationFn: (data: CreatePostForum) => forumService.createPost(data)
   })
 }
-export const useGetAllPostForumQuery = () => {
-  const queryKey = ["useGetAllPostForumQuery"]
+export const useGetAllPostForumQuery = (
+  pageNumber: number,
+  pageSize: number
+) => {
+  const queryKey = ["useGetAllPostForumQuery", pageNumber, pageSize]
   return useQuery({
     queryKey,
-    queryFn: () => forumService.getAllPost()
+    queryFn: () => forumService.getAllPost(pageNumber, pageSize)
   })
 }
 export const useGetPostbyIdQuery = (id: string) => {

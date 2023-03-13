@@ -37,3 +37,4 @@ export const RELATIONSHIPS = {
   ME: "Me",
   CHILREN: "Con cái"
 }
+export const PAGE_SIZE = 1

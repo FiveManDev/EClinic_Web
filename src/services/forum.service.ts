@@ -11,7 +11,6 @@ class ForumService {
     const formData = new FormData()
     formData.append("title", data.title)
     formData.append("content", data.content)
-    formData.append("Author.UserID", data.userId)
     data.images.forEach((item) => {
       formData.append("images", item)
     })
@@ -24,11 +23,17 @@ class ForumService {
     )
     return res.data as IServerResponse<string>
   }
-  async getAllPost() {
+  async getAllPost(pageNumber: number, pageSize: number) {
     const res: AxiosResponse = await axiosServer.get(
-      `${URL_API.FORUM_POST}/GetAllPost`
+      `${URL_API.FORUM_POST}/GetAllPost`,
+      {
+        headers: {
+          PageNumber: pageNumber,
+          PageSize: pageSize
+        }
+      }
     )
-    return res.data as IServerResponse<IPost[]>
+    return res as AxiosResponse<IServerResponse<IPost[]>>
   }
   async getPostById(id: string) {
     const res: AxiosResponse = await axiosClient.get(

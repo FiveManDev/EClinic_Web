@@ -7,7 +7,7 @@ import {
   useCreatePostMutation
 } from "hooks/query/forum/useForum"
 import { NextRouter, useRouter } from "next/router"
-import { useEffect, useState } from "react"
+import { useState } from "react"
 import { toast } from "react-hot-toast"
 import { useTranslation } from "react-i18next"
 import { useSelector } from "react-redux"
@@ -22,12 +22,10 @@ const CreateQuestion = () => {
   const [post, setPost] = useState<CreatePostForum>({
     content: "",
     images: [],
-    title: "",
-    userId: ""
+    title: ""
   })
   const createPostMutation = useCreatePostMutation()
   const handleChangePost = (type: KeyCreatePost, data: any) => {
-    console.log("handleChangePost ~ data:", data)
     setPost((prevPost) => ({
       ...prevPost,
       [type]: data
@@ -56,11 +54,6 @@ const CreateQuestion = () => {
       Toast(router)
     }
   }
-  useEffect(() => {
-    if (auth) {
-      handleChangePost("userId", auth.user.userId)
-    }
-  }, [auth])
   return (
     <div className="flex flex-col justify-start space-y-4 background-primary">
       <h3 className="text-xl">{t("questionTitleHeading")}</h3>
