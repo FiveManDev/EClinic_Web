@@ -14,13 +14,13 @@ const ResultsSearch = () => {
             <CardService key={index} />
           ))}
       </LayoutItem>
-      <LayoutItem label="Hỏi đáp" link="/">
+      {/* <LayoutItem label="Hỏi đáp" link="/">
         {Array(4)
           .fill(0)
           .map((item, index) => (
             <CardForum key={index} />
           ))}
-      </LayoutItem>
+      </LayoutItem> */}
       <LayoutItem label="Tin tức hằng ngày" link="/">
         {Array(4)
           .fill(0)

@@ -1,7 +1,4 @@
-import {
-  useGetAllPostForumQuery,
-  useSearchPostsForum
-} from "hooks/query/forum/useForum"
+import { useGetAllPostForumQuery } from "hooks/query/forum/useForum"
 import useDebounce from "hooks/useDebounce"
 import UserSecondaryLayout from "layout/User/UserSecondaryLayout"
 import Head from "next/head"
@@ -10,7 +7,6 @@ import { useTranslation } from "react-i18next"
 import { PAGE_SIZE } from "shared/constant/constant"
 import { IBreadcrum } from "types/Base.type"
 import { IPagination } from "types/Pagination"
-import CardForum from "../components/CardForum"
 import CreateQuestion from "./section/create"
 import ListCardForum from "./section/list/ListCardForum"
 import Search from "./section/search"

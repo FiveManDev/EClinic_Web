@@ -51,6 +51,7 @@ const DetailForum = ({ post }: Props) => {
   const likeReplyCommnetForumMutation = useLikeReplyCommnetForumMutation()
   const likeCommnetForumMutation = useLikeCommnetForumMutation()
   const likePostForumMutation = useLikePostForumMutation()
+
   if (isLoading) {
     return <p>Loading....</p>
   }
@@ -224,9 +225,9 @@ const DetailForum = ({ post }: Props) => {
           onLikeComment={handleLikeComment}
         />
       </div>
-      <div className="col-span-3 space-y-4 md:col-span-2 background-primary">
+      {/* <div className="col-span-3 space-y-4 md:col-span-2 background-primary">
         <ListCardForum title={t("forum:related")} />
-      </div>
+      </div> */}
     </>
   )
 }
