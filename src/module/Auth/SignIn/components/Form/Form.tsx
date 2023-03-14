@@ -19,7 +19,7 @@ import { routerByRole } from "shared/helpers/helper"
 import { token } from "shared/utils/token"
 import { loginUser } from "store/module/auth/action-creators"
 import { useAppDispatch } from "store/store"
-import { ITokenDecode } from "types/Token.type"
+import { ITokenDecode } from "types/Token"
 import * as yup from "yup"
 
 const schema = yup.object({

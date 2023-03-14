@@ -3,13 +3,16 @@ import InputCustom from "components/Common/Input"
 import React from "react"
 import { HiMagnifyingGlass } from "react-icons/hi2"
 import { useTranslation } from "react-i18next"
-
-const Search = () => {
+type Props = {
+  onSearchChange: (value: string) => void
+}
+const Search = ({ onSearchChange }: Props) => {
   const { t } = useTranslation("forum")
 
   return (
     <div className="flex flex-col space-y-3">
       <InputCustom
+        onChange={(e) => onSearchChange(e.target.value)}
         icon={<HiMagnifyingGlass />}
         className="w-full md:max-w-[412px]"
         placeholder={t("search.input")}

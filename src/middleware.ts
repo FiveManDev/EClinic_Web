@@ -4,7 +4,7 @@ import type { NextRequest } from "next/server"
 import { NextResponse } from "next/server"
 import { authService } from "services/auth.service"
 import { ROLE } from "shared/constant/constant"
-import { ITokenDecode } from "types/Token.type"
+import { ITokenDecode } from "types/Token"
 const unprotectedPaths: string[] = [
   "/",
   "/search",
@@ -18,7 +18,6 @@ const unprotectedPaths: string[] = [
 export async function middleware(req: NextRequest) {
   const { pathname } = req.nextUrl
   if (pathname.startsWith("/_next")) return NextResponse.next()
-
   const { cookies } = req
   const accessToken = cookies.get(
     process.env.NEXT_PUBLIC_ACCESS_TOKEN_NAME as string
@@ -66,14 +65,12 @@ export async function middleware(req: NextRequest) {
     }
   }
   const checkRouter = unprotectedPaths.some((path) => {
-    console.log("checkRouter ~ pathname:", pathname)
     if (pathname === "/") {
       return true
     } else {
-      return path.includes(pathname)
+      return pathname.startsWith(path)
     }
   })
-  console.log("checkRouter ~ checkRouter:", checkRouter)
   if (checkRouter) {
     return NextResponse.next()
   } else {

@@ -1,7 +1,11 @@
 import classNames from "classnames"
-import { TextareaHTMLAttributes } from "react"
+import { DetailedHTMLProps, TextareaHTMLAttributes } from "react"
 
-interface Props extends TextareaHTMLAttributes<HTMLTextAreaElement> {
+interface Props
+  extends DetailedHTMLProps<
+    TextareaHTMLAttributes<HTMLTextAreaElement>,
+    HTMLTextAreaElement
+  > {
   classCustom?: string
 }
 
@@ -15,7 +19,7 @@ const TextAreaCustom = ({ classCustom, className, ...rest }: Props) => {
     >
       <textarea
         className={classNames(
-          "w-full h-full bg-transparent border-none outline-none  text-sm ",
+          "w-full h-full bg-transparent border-none outline-none  text-sm leading-relaxed",
           className
         )}
         {...rest}

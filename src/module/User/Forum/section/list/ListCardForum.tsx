@@ -1,23 +1,39 @@
-import { Pagination } from "@mui/material"
+import PaginationCustom from "components/Common/Pagination"
 import CardForum from "module/User/components/CardForum"
+import CardForumLoading from "module/User/components/CardForum/Loading"
+import { IPagination } from "types/Pagination"
+import { IPost } from "types/Post"
 interface Props {
   title: string
+  posts: IPost[] | undefined
+  isLoading: boolean
+  paginate: IPagination
+  // eslint-disable-next-line no-unused-vars
+  onPageIndexChange: (index: number) => void
 }
 
-const ListCardForum = ({ title }: Props) => {
+const ListCardForum = ({
+  title,
+  isLoading,
+  posts,
+  paginate,
+  onPageIndexChange
+}: Props) => {
   return (
     <>
       <div className="flex flex-col w-full gap-y-4 ">
         <h4 className="text-xl "> {title}</h4>
         <div className="grid grid-cols-1 gap-8 md:grid-cols-2">
-          {Array(6)
-            .fill(0)
-            .map((_, index) => (
-              <CardForum key={index} />
-            ))}
+          {isLoading &&
+            Array(4)
+              .fill(0)
+              .map((_, index) => <CardForumLoading key={index} />)}
+          {posts &&
+            posts.map((post, index) => <CardForum key={index} post={post} />)}
         </div>
-        <Pagination
-          count={10}
+        <PaginationCustom
+          onPageChange={(value) => onPageIndexChange(value)}
+          pagination={paginate}
           color="primary"
           className="pt-6 md:ml-auto md:w-fit"
           shape="rounded"

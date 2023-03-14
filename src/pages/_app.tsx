@@ -15,7 +15,7 @@ import { useEffect } from "react"
 import { useTranslation } from "react-i18next"
 import { Provider } from "react-redux"
 import { LANGUAGE, LOCALSTORAGE } from "shared/constant/constant"
-import { isBrowser } from "shared/helpers/helper"
+import { isDevelopment } from "shared/helpers/helper"
 import { theme } from "shared/theme/theme"
 import { checkLogin } from "store/module/auth/action-creators"
 import { store } from "store/store"
@@ -25,22 +25,28 @@ import { NextPageWithLayout } from "./page"
 interface AppPropsWithLayout extends AppProps {
   Component: NextPageWithLayout
 }
+if (isDevelopment()) {
+  process.env.NODE_TLS_REJECT_UNAUTHORIZED = "0"
+}
 const cache = createCache({
   key: "css",
   prepend: true
 })
 //checking is authenticated
-const queryClient = new QueryClient()
-
-if (isBrowser()) {
-  store.dispatch(checkLogin())
-}
+const queryClient = new QueryClient({
+  defaultOptions: {
+    queries: {
+      refetchOnWindowFocus: false
+    }
+  }
+})
 export default function App({ Component, pageProps }: AppPropsWithLayout) {
   const { i18n } = useTranslation()
 
   useNProgress()
   const getLayout = Component.getLayout || ((page) => page)
   useEffect(() => {
+    store.dispatch(checkLogin())
     i18n.changeLanguage(
       localStorage.getItem(LOCALSTORAGE.LANGUAGE) || LANGUAGE.ENGLISH
     )

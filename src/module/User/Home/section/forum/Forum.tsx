@@ -9,9 +9,9 @@ const Forum = () => {
     <section className="flex flex-col w-full ">
       <h3 className="mb-3 text-center heading-section ">{t("forum.title")}</h3>
       <div className="grid grid-cols-1 gap-y-4 md:gap-x-6 md:grid-cols-3">
+        {/* <CardForum />
         <CardForum />
-        <CardForum />
-        <CardForum />
+        <CardForum /> */}
       </div>
       <div className="flex items-center mt-6 space-x-2">
         <CustomButton kind="primary" className="max-w-[200px] ">
