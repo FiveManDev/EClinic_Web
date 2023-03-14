@@ -15,7 +15,7 @@ import { useEffect } from "react"
 import { useTranslation } from "react-i18next"
 import { Provider } from "react-redux"
 import { LANGUAGE, LOCALSTORAGE } from "shared/constant/constant"
-import { isBrowser } from "shared/helpers/helper"
+import { isDevelopment } from "shared/helpers/helper"
 import { theme } from "shared/theme/theme"
 import { checkLogin } from "store/module/auth/action-creators"
 import { store } from "store/store"
@@ -24,6 +24,9 @@ import "../assets/styles/app.scss"
 import { NextPageWithLayout } from "./page"
 interface AppPropsWithLayout extends AppProps {
   Component: NextPageWithLayout
+}
+if (isDevelopment()) {
+  process.env.NODE_TLS_REJECT_UNAUTHORIZED = "0"
 }
 const cache = createCache({
   key: "css",

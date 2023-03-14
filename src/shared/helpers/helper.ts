@@ -1,4 +1,3 @@
-import axios, { AxiosError } from "axios"
 import dayjs from "dayjs"
 import { ITokenDecode } from "types/Token"
 
