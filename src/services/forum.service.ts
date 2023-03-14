@@ -1,4 +1,10 @@
-import { DeleteActionType, ICreateCommentForum } from "./../types/Post.d"
+import {
+  CommnentId,
+  DeleteActionType,
+  IAnwer,
+  ICreateCommentForum,
+  UpdateActionType
+} from "./../types/Post.d"
 import { AxiosResponse } from "axios"
 import { CreatePostForum } from "hooks/query/forum/useForum"
 import axiosClient from "shared/axios/httpClient"
@@ -7,6 +13,12 @@ import { URL_API } from "shared/constant/constant"
 import { IComment, IPost } from "types/Post"
 import { IServerResponse } from "types/server/IServerResponse"
 class ForumService {
+  async searchPosts(keyword: string, pageNumber: number, pageSize: number) {
+    const res: AxiosResponse = await axiosServer.get(
+      `${URL_API.FORUM_POST}/GetPosts?PageNumber=${pageNumber}&PageSize=${pageSize}&searchText=${keyword}`
+    )
+    return res as AxiosResponse<IServerResponse<IPost[]>>
+  }
   async createPost(data: CreatePostForum) {
     const formData = new FormData()
     formData.append("title", data.title)
@@ -75,6 +87,50 @@ class ForumService {
       `${URL_API.FORUM_POST_COMMENT}/DeleteReplyCommentByID?CommentID=${value.CommentID}&ParentCommentID=${value.ParentCommentID}`
     )
     return res.data as IServerResponse<null>
+  }
+  async updateComment(
+    value: Omit<UpdateActionType, "kind" | "ParentCommentID">
+  ) {
+    const res: AxiosResponse = await axiosClient.put(
+      `${URL_API.FORUM_POST_COMMENT}/UpdateComment`,
+      {
+        ...value
+      }
+    )
+    return res.data as IServerResponse<null>
+  }
+  async updateCommentReply(value: Omit<UpdateActionType, "kind">) {
+    const res: AxiosResponse = await axiosClient.put(
+      `${URL_API.FORUM_POST_COMMENT}/UpdateReplyComment`,
+      {
+        ...value
+      }
+    )
+    return res.data as IServerResponse<null>
+  }
+  async likeComment(value: Omit<CommnentId, "ParentCommentID">) {
+    const res: AxiosResponse = await axiosClient.put(
+      `${URL_API.FORUM_POST_COMMENT}/LikeComment?CommentID=${value.CommentID}`
+    )
+    return res.data as IServerResponse<null>
+  }
+  async likeReplyComment(value: CommnentId) {
+    const res: AxiosResponse = await axiosClient.put(
+      `${URL_API.FORUM_POST_COMMENT}/LikeReplyComment?CommentID=${value.CommentID}&ParentCommentID=${value.ParentCommentID}`
+    )
+    return res.data as IServerResponse<null>
+  }
+  async likePost(postId: string) {
+    const res: AxiosResponse = await axiosClient.put(
+      `${URL_API.FORUM_POST}/LikePost?PostID=${postId}`
+    )
+    return res.data as IServerResponse<null>
+  }
+  async getAnwerByPostId(postId: string) {
+    const res: AxiosResponse = await axiosClient.get(
+      `${URL_API.FORUM_POST_ANWERS}/GetAnswerByID?PostID=${postId}`
+    )
+    return res.data as IServerResponse<IAnwer>
   }
 }
 export const forumService = new ForumService()

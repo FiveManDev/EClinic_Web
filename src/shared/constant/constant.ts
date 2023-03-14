@@ -4,7 +4,12 @@ export const routers = {
   signIn: "/sign-in"
 }
 export const QUERY_KEYS = {
-  LOGIN: "LOGIN"
+  LOGIN: "LOGIN",
+  FORUM: {
+    POST: "POST_FORUM",
+    COMMENT: "COMMENT_FORUM",
+    ANSWER: "ANSWER_FORUM"
+  }
 } as const
 export const ROLE = {
   USER: "User",
@@ -19,7 +24,8 @@ export const URL_API = {
   PROFILE: "profile/Profile",
   RELATIONSHIPS: "profile/Relationship",
   FORUM_POST: "forum/Post",
-  FORUM_POST_COMMENT: "forum/Comment"
+  FORUM_POST_COMMENT: "forum/Comment",
+  FORUM_POST_ANWERS: "forum/Answer"
 } as const
 export const LANGUAGE = {
   VIETNAM: "Vi",
@@ -37,4 +43,4 @@ export const RELATIONSHIPS = {
   ME: "Me",
   CHILREN: "Con cái"
 }
-export const PAGE_SIZE = 1
+export const PAGE_SIZE = 10

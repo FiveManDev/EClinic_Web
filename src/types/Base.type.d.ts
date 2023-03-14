@@ -9,3 +9,7 @@ export type Coords = {
   width: number
   height: number
 }
+export interface HashTag {
+  hashtagID: string
+  hashtagName: string
+}

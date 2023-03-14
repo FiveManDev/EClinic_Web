@@ -1,49 +1,39 @@
 import PaginationCustom from "components/Common/Pagination"
-import { useGetAllPostForumQuery } from "hooks/query/forum/useForum"
 import CardForum from "module/User/components/CardForum"
-import { useState } from "react"
-import { PAGE_SIZE } from "shared/constant/constant"
+import CardForumLoading from "module/User/components/CardForum/Loading"
 import { IPagination } from "types/Pagination"
+import { IPost } from "types/Post"
 interface Props {
   title: string
+  posts: IPost[] | undefined
+  isLoading: boolean
+  paginate: IPagination
+  // eslint-disable-next-line no-unused-vars
+  onPageIndexChange: (index: number) => void
 }
 
-const ListCardForum = ({ title }: Props) => {
-  const [pageIndex, setPageIndex] = useState(1)
-  const { data, isError, isLoading } = useGetAllPostForumQuery(
-    pageIndex,
-    PAGE_SIZE
-  )
-  if (isError) {
-    return <p>Error....</p>
-  }
-  if (isLoading) {
-    return <p>loading....</p>
-  }
-  console.log("ListCardForum ~ data:", data)
-  const paginateDate = data?.headers["x-pagination"]
-    ? (JSON.parse(data.headers["x-pagination"]) as IPagination)
-    : {
-        PageIndex: pageIndex,
-        PageSize: 0,
-        TotalCount: 0,
-        TotalPages: 0,
-        HasPrevious: false,
-        HasNext: false
-      }
-  console.log("re-render")
+const ListCardForum = ({
+  title,
+  isLoading,
+  posts,
+  paginate,
+  onPageIndexChange
+}: Props) => {
   return (
     <>
       <div className="flex flex-col w-full gap-y-4 ">
         <h4 className="text-xl "> {title}</h4>
         <div className="grid grid-cols-1 gap-8 md:grid-cols-2">
-          {data?.data?.data?.map((post, index) => (
-            <CardForum key={index} post={post} />
-          ))}
+          {isLoading &&
+            Array(4)
+              .fill(0)
+              .map((_, index) => <CardForumLoading key={index} />)}
+          {posts &&
+            posts.map((post, index) => <CardForum key={index} post={post} />)}
         </div>
         <PaginationCustom
-          onPageChange={(value) => setPageIndex(value)}
-          pagination={paginateDate}
+          onPageChange={(value) => onPageIndexChange(value)}
+          pagination={paginate}
           color="primary"
           className="pt-6 md:ml-auto md:w-fit"
           shape="rounded"

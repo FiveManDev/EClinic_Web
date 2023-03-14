@@ -1,4 +1,3 @@
-import { Button } from "@mui/material"
 import InputCustom from "components/Common/Input/InputCustom"
 import TextAreaCustom from "components/Common/Textarea/TextAreaCustom"
 import CustomButton from "components/User/Button"
@@ -6,7 +5,8 @@ import {
   CreatePostForum,
   useCreatePostMutation
 } from "hooks/query/forum/useForum"
-import { NextRouter, useRouter } from "next/router"
+import { ToastNavigate } from "module/User/components/Toast/ToastNavigate"
+import { useRouter } from "next/router"
 import { useState } from "react"
 import { toast } from "react-hot-toast"
 import { useTranslation } from "react-i18next"
@@ -14,7 +14,13 @@ import { useSelector } from "react-redux"
 import { routers } from "shared/constant/constant"
 import { RootState } from "store/store"
 import UploadImages from "./UploadImage"
+import * as yup from "yup"
+
 type KeyCreatePost = keyof CreatePostForum
+const schema = yup.object({
+  title: yup.string().required("Please enter title of the question"),
+  content: yup.string().required("Please enter detail of the question")
+})
 const CreateQuestion = () => {
   const { t } = useTranslation("forum")
   const router = useRouter()
@@ -41,17 +47,28 @@ const CreateQuestion = () => {
   }
   const handleSubmit = () => {
     if (post && auth.user.userId) {
-      console.log("handleSubmit ~ post:", post)
-      createPostMutation.mutate(post, {
-        onError: () => {
-          toast.error("Add error")
-        },
-        onSuccess: () => {
-          toast.success("Create post successfuly!")
-        }
-      })
+      if (post.title && post.content) {
+        createPostMutation.mutate(post, {
+          onError: () => {
+            toast.error("Add error")
+          },
+          onSuccess: () => {
+            toast.success("Create post successfuly!")
+          }
+        })
+      } else {
+        toast.error("Please enter your title and content")
+      }
     } else {
-      Toast(router)
+      toast((t) => (
+        <ToastNavigate
+          url={routers.signIn}
+          t={t}
+          labelButton="Login"
+          router={router}
+          title="Please login to create question"
+        />
+      ))
     }
   }
   return (
@@ -71,6 +88,13 @@ const CreateQuestion = () => {
         onChange={(e) => handleChangePost("content", e.target.value)}
       />
       <UploadImages onChange={(value) => handleFileImageChange(value)} />
+      <p>
+        {" "}
+        {t("desctiptionUpload.imagetitle")}{" "}
+        <span className="text-sm text-gray-400">
+          ({t("desctiptionUpload.note")})
+        </span>
+      </p>
       <CustomButton
         kind="primary"
         className="md:max-w-[182px] rounded-[4px]"
@@ -80,25 +104,6 @@ const CreateQuestion = () => {
       </CustomButton>
     </div>
   )
-}
-function Toast(router: NextRouter) {
-  return toast((t) => (
-    <div className="flex items-center gap-x-2">
-      <p className="flex-shrink-0 font-medium text-h1">
-        Please login to create question
-      </p>
-      <Button
-        color="primary"
-        size="small"
-        onClick={() => {
-          toast.dismiss(t.id)
-          router.push(routers.signIn)
-        }}
-      >
-        Login
-      </Button>
-    </div>
-  ))
 }
 
 export default CreateQuestion

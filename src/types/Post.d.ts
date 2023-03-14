@@ -1,3 +1,5 @@
+import { HashTag } from "./Base.type"
+
 export interface Author {
   userID: string
   firstName: string
@@ -17,6 +19,16 @@ export interface IPost {
   isLike: boolean
   isActive: boolean
 }
+export interface IAnwer {
+  id: string
+  content: string
+  hashTags: HashTag[]
+  createdAt: string
+  updatedAt: string
+  author: Author
+  likes: number
+  isLike: boolean
+}
 export interface IComment {
   id: string
   content: string
@@ -32,8 +44,18 @@ export type ICreateCommentForum = {
   postId: string
   content: string
 }
-export type DeleteActionType = {
-  ParentCommentID: string | null
+export interface CommnentId {
+  ParentCommentID?: string | null
   CommentID: string
-  kind: "comment" | "reply"
 }
+export interface DeleteActionType extends CommnentId {
+  kind: ActionComment
+}
+export interface UpdateActionType extends CommnentId {
+  content: string
+  kind: ActionComment
+}
+export interface LikeActionType extends CommnentId {
+  kind: ActionComment
+}
+export type ActionComment = "comment" | "reply"

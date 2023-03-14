@@ -1,7 +1,15 @@
+import {
+  useGetAllPostForumQuery,
+  useSearchPostsForum
+} from "hooks/query/forum/useForum"
+import useDebounce from "hooks/useDebounce"
 import UserSecondaryLayout from "layout/User/UserSecondaryLayout"
 import Head from "next/head"
+import { useState } from "react"
 import { useTranslation } from "react-i18next"
+import { PAGE_SIZE } from "shared/constant/constant"
 import { IBreadcrum } from "types/Base.type"
+import { IPagination } from "types/Pagination"
 import CardForum from "../components/CardForum"
 import CreateQuestion from "./section/create"
 import ListCardForum from "./section/list/ListCardForum"
@@ -13,6 +21,27 @@ const ForumPage = () => {
     { label: t("base:pages.home"), href: "/" },
     { label: t("base:pages.forum") }
   ]
+  const [pageIndex, setPageIndex] = useState(1)
+  const [searchText, setSearchText] = useState("")
+  const debounceSearchText = useDebounce(searchText, 800)
+  const getAllPostForumQuery = useGetAllPostForumQuery(pageIndex, PAGE_SIZE)
+  // const searchPostsForum = useSearchPostsForum(
+  //   debounceSearchText,
+  //   pageIndex,
+  //   PAGE_SIZE
+  // )
+  const paginateData = getAllPostForumQuery.data?.headers["x-pagination"]
+    ? (JSON.parse(
+        getAllPostForumQuery.data.headers["x-pagination"]
+      ) as IPagination)
+    : {
+        PageIndex: pageIndex,
+        PageSize: 0,
+        TotalCount: 0,
+        TotalPages: 0,
+        HasPrevious: false,
+        HasNext: false
+      }
   return (
     <>
       <Head>
@@ -28,7 +57,7 @@ const ForumPage = () => {
               <CreateQuestion />
             </div>
             <div className="col-span-3 md:col-span-1">
-              <Search />
+              <Search onSearchChange={(value) => setSearchText(value)} />
             </div>
           </div>
           {/* <div className="w-full col-span-3 md:col-span-2 background-primary">
@@ -63,7 +92,13 @@ const ForumPage = () => {
             </div>
           </div> */}
           <div className="col-span-3 space-y-4 md:col-span-2 background-primary">
-            <ListCardForum title={t("forum:allquestion")} />
+            <ListCardForum
+              onPageIndexChange={(indexPage) => setPageIndex(indexPage)}
+              title={t("forum:allquestion")}
+              paginate={paginateData}
+              posts={getAllPostForumQuery.data?.data.data}
+              isLoading={getAllPostForumQuery.isLoading}
+            />
           </div>
         </div>
       </UserSecondaryLayout>

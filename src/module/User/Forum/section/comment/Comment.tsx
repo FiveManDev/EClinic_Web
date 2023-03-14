@@ -1,7 +1,18 @@
 import CustomButton from "components/User/Button"
+import { ToastNavigate } from "module/User/components/Toast/ToastNavigate"
+import { useRouter } from "next/router"
 import { useRef } from "react"
+import { toast } from "react-hot-toast"
 import { useTranslation } from "react-i18next"
-import { DeleteActionType, IComment } from "types/Post"
+import { useSelector } from "react-redux"
+import { routers } from "shared/constant/constant"
+import { RootState } from "store/store"
+import {
+  DeleteActionType,
+  IComment,
+  LikeActionType,
+  UpdateActionType
+} from "types/Post"
 import CommemtItem from "./CommemtItem"
 interface Props {
   comments: IComment[]
@@ -11,19 +22,40 @@ interface Props {
   onCreateReply: (id: string, content: string) => void
   // eslint-disable-next-line no-unused-vars
   onDeleteComment: (data: DeleteActionType) => void
+  // eslint-disable-next-line no-unused-vars
+  updateComment: (data: UpdateActionType) => void
+  // eslint-disable-next-line no-unused-vars
+  onLikeComment: (data: LikeActionType) => void
 }
 const Comment = ({
   comments,
   onCreateComment,
   onCreateReply,
-  onDeleteComment
+  onDeleteComment,
+  onLikeComment,
+  updateComment
 }: Props) => {
+  const router = useRouter()
   const inputRef = useRef<HTMLTextAreaElement>(null)
   const { t } = useTranslation(["base", "forum"])
+  const auth = useSelector((state: RootState) => state.auth)
+
   const handleSubmitComtent = () => {
-    if (inputRef.current) {
-      onCreateComment(inputRef.current?.value || "")
-      inputRef.current!.value = ""
+    if (auth.user.userId) {
+      if (inputRef.current) {
+        onCreateComment(inputRef.current?.value || "")
+        inputRef.current!.value = ""
+      }
+    } else {
+      toast((t) => (
+        <ToastNavigate
+          url={routers.signIn}
+          t={t}
+          labelButton="Login"
+          router={router}
+          title="Please login to write comment"
+        />
+      ))
     }
   }
   return (
@@ -56,12 +88,15 @@ const Comment = ({
               <span className="!text-[12px]">{t("forum:btnComment")}</span>
             </CustomButton>
           </form>
+          {comments.length === 0 && <p>No comment on this post</p>}
           {comments.map((comment) => (
             <CommemtItem
               key={comment.id}
               comment={comment}
               onCreateReply={onCreateReply}
               onDeleteComment={onDeleteComment}
+              updateComment={updateComment}
+              onLikeComment={onLikeComment}
             />
           ))}
         </div>

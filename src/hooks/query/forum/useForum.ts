@@ -1,6 +1,8 @@
-import { forumService } from "./../../../services/forum.service"
 import { useMutation, useQuery } from "@tanstack/react-query"
+import { QUERY_KEYS } from "shared/constant/constant"
 import { DeleteActionType, ICreateCommentForum } from "types/Post"
+import { forumService } from "./../../../services/forum.service"
+import { CommnentId, UpdateActionType } from "./../../../types/Post.d"
 
 export interface CreatePostForum {
   title: string
@@ -16,31 +18,45 @@ export const useGetAllPostForumQuery = (
   pageNumber: number,
   pageSize: number
 ) => {
-  const queryKey = ["useGetAllPostForumQuery", pageNumber, pageSize]
+  const queryKey = [QUERY_KEYS.FORUM.POST, pageNumber, pageSize]
   return useQuery({
     queryKey,
     queryFn: () => forumService.getAllPost(pageNumber, pageSize)
   })
 }
+export const useSearchPostsForum = (
+  keyword: string,
+  pageNumber: number,
+  pageSize: number
+) => {
+  const queryKey = [QUERY_KEYS.FORUM.POST, keyword, pageNumber, pageSize]
+  return useQuery({
+    queryKey,
+    queryFn: () => {
+      if (keyword) {
+        return forumService.searchPosts(keyword, pageNumber, pageSize)
+      }
+    }
+  })
+}
 export const useGetPostbyIdQuery = (id: string) => {
-  const queryKey = ["useGetPostbyIdQuery", id]
+  const queryKey = [QUERY_KEYS.FORUM.POST, id]
   return useQuery({
     queryKey,
     queryFn: () => forumService.getPostById(id)
   })
 }
 export const useGetAllCommentForumQuery = (postId: string) => {
-  const queryKey = ["useGetAllCommentForumQuery", postId]
+  const queryKey = [QUERY_KEYS.FORUM.COMMENT, postId]
   return useQuery({
     queryKey,
     queryFn: () => forumService.GetAllComment(postId)
   })
 }
-export const useCreateCommentForumMutation = () => {
-  return useMutation({
+export const useCreateCommentForumMutation = () =>
+  useMutation({
     mutationFn: (body: ICreateCommentForum) => forumService.createComment(body)
   })
-}
 export const useCreateReplyCommentForumMutation = () => {
   return useMutation({
     mutationFn: (body: ICreateCommentForum) =>
@@ -57,5 +73,39 @@ export const useDeleteReplyCommnetForumMutation = () => {
   return useMutation({
     mutationFn: (querys: Omit<DeleteActionType, "kind">) =>
       forumService.deleteReplyCommentByID(querys)
+  })
+}
+export const useUpdatCommnetForumMutation = () => {
+  return useMutation({
+    mutationFn: (querys: Omit<UpdateActionType, "kind" | "ParentCommentID">) =>
+      forumService.updateComment(querys)
+  })
+}
+export const useUpdateReplyCommnetForumMutation = () => {
+  return useMutation({
+    mutationFn: (querys: Omit<UpdateActionType, "kind">) =>
+      forumService.updateCommentReply(querys)
+  })
+}
+export const useLikeReplyCommnetForumMutation = () => {
+  return useMutation({
+    mutationFn: (querys: CommnentId) => forumService.likeReplyComment(querys)
+  })
+}
+export const useLikeCommnetForumMutation = () => {
+  return useMutation({
+    mutationFn: (querys: Omit<CommnentId, "ParentCommentID">) =>
+      forumService.likeComment(querys)
+  })
+}
+export const useLikePostForumMutation = () =>
+  useMutation({
+    mutationFn: (CommnentId: string) => forumService.likePost(CommnentId)
+  })
+export const useGetAnwerByPostId = (postId: string) => {
+  const queryKey = [QUERY_KEYS.FORUM.ANSWER, postId]
+  return useQuery({
+    queryKey,
+    queryFn: () => forumService.getAnwerByPostId(postId)
   })
 }

@@ -17,7 +17,7 @@ const PaginationCustom: React.FC<IProps> = ({
 
   return (
     <Pagination
-      page={PageIndex + 1} // Pagination starts at page 1, so we need to add 1 to the pageIndex
+      page={PageIndex}
       count={TotalPages}
       onChange={(_, page) => onPageChange(page)}
       hideNextButton={!HasNext}

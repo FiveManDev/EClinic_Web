@@ -37,16 +37,13 @@ const queryClient = new QueryClient({
     }
   }
 })
-
-if (isBrowser()) {
-  store.dispatch(checkLogin())
-}
 export default function App({ Component, pageProps }: AppPropsWithLayout) {
   const { i18n } = useTranslation()
 
   useNProgress()
   const getLayout = Component.getLayout || ((page) => page)
   useEffect(() => {
+    store.dispatch(checkLogin())
     i18n.changeLanguage(
       localStorage.getItem(LOCALSTORAGE.LANGUAGE) || LANGUAGE.ENGLISH
     )

@@ -35,7 +35,7 @@
     @apply text-[#777781] text-sm md:text-base md:leading-tight;
   }
   .background-primary {
-    @apply bg-white border border-solid border-[#EAEAEA] rounded-lg p-3 md:p-7;
+    @apply bg-white border border-solid border-[#EAEAEA] shadow rounded-lg p-3 md:p-7;
   }
 }
 .input-hover {
