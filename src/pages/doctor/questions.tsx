@@ -1,9 +1,9 @@
 import DoctorLayout from "layout/ManagementLayout/DocterLayout"
+import QuestionsPage from "module/Doctor/Question/QuestionsPage"
 import { NextPageWithLayout } from "pages/page"
-import React from "react"
 
 const Page: NextPageWithLayout = () => {
-  return <div>Doctor page</div>
+  return <QuestionsPage />
 }
 Page.getLayout = (page) => {
   return <DoctorLayout>{page}</DoctorLayout>

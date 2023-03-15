@@ -9,7 +9,8 @@ export const QUERY_KEYS = {
     POST: "POST_FORUM",
     COMMENT: "COMMENT_FORUM",
     ANSWER: "ANSWER_FORUM"
-  }
+  },
+  HASHTAG: "HASHTAG"
 } as const
 export const ROLE = {
   USER: "User",
@@ -25,7 +26,8 @@ export const URL_API = {
   RELATIONSHIPS: "profile/Relationship",
   FORUM_POST: "forum/Post",
   FORUM_POST_COMMENT: "forum/Comment",
-  FORUM_POST_ANWERS: "forum/Answer"
+  FORUM_POST_ANWERS: "forum/Answer",
+  FORUM_POST_HASHTAG: "forum/Hashtag"
 } as const
 export const LANGUAGE = {
   VIETNAM: "Vi",

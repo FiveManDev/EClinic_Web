@@ -9,7 +9,7 @@ import {
 } from "@tanstack/react-query"
 import { useNProgress } from "hooks/useNProgress"
 import "i18n/i18n"
-import LayoutBase from "layout/LayoutBase"
+import LayoutBase from "layout/Base/LayoutBase"
 import type { AppProps } from "next/app"
 import { useEffect } from "react"
 import { useTranslation } from "react-i18next"

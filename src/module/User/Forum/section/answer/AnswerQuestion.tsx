@@ -1,5 +1,6 @@
 import ChipCustom from "components/Common/Chip/Chip"
 import { useGetAnwerByPostId } from "hooks/query/forum/useForum"
+import HTMLReactParser from "html-react-parser"
 import Info from "module/User/components/Info/Info"
 import React from "react"
 import { useTranslation } from "react-i18next"
@@ -21,9 +22,9 @@ const AnswerQuestion = ({ postId }: Props) => {
         <h4 className="text-lg">{t("forum:anwers")}</h4>
         <div className="flex flex-col gap-y-2">
           <Info data={data.data.author} />
-          <p className="text-[#696974] text-sm leading-loose">
-            {data.data.content}
-          </p>
+          <article className="entry-content ">
+            {HTMLReactParser(data.data.content)}
+          </article>
         </div>
       </div>
       <div className="flex items-center w-full gap-2 mt-4">

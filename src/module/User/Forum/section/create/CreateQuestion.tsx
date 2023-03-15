@@ -1,4 +1,5 @@
 import InputCustom from "components/Common/Input/InputCustom"
+import Spinner from "components/Common/Loading/LoadingIcon"
 import TextAreaCustom from "components/Common/Textarea/TextAreaCustom"
 import CustomButton from "components/User/Button"
 import {
@@ -14,13 +15,8 @@ import { useSelector } from "react-redux"
 import { routers } from "shared/constant/constant"
 import { RootState } from "store/store"
 import UploadImages from "./UploadImage"
-import * as yup from "yup"
 
 type KeyCreatePost = keyof CreatePostForum
-const schema = yup.object({
-  title: yup.string().required("Please enter title of the question"),
-  content: yup.string().required("Please enter detail of the question")
-})
 const CreateQuestion = () => {
   const { t } = useTranslation("forum")
   const router = useRouter()
@@ -53,6 +49,7 @@ const CreateQuestion = () => {
             toast.error("Add error")
           },
           onSuccess: () => {
+            setPost({ content: "", images: [], title: "" })
             toast.success("Create post successfuly!")
           }
         })
@@ -96,11 +93,12 @@ const CreateQuestion = () => {
         </span>
       </p>
       <CustomButton
+        disabled={createPostMutation.isLoading}
         kind="primary"
         className="md:max-w-[182px] rounded-[4px]"
         onClick={handleSubmit}
       >
-        {t("btnUpload")}
+        {createPostMutation.isLoading ? <Spinner /> : t("btnUpload")}
       </CustomButton>
     </div>
   )

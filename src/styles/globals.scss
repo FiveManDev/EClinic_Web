@@ -23,7 +23,7 @@
     @apply w-full h-[360px] px-[10px] md:px-4 md:max-h-[600px] md:h-full bg-[#E8F1FF];
   }
   .page-container {
-    @apply max-w-[1300px] h-full md:h-auto mx-auto w-full;
+    @apply max-w-[1440px] h-full md:h-auto mx-auto w-full;
     &--child {
       @apply px-3 md:px-6;
     }

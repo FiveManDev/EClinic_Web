@@ -40,6 +40,11 @@ export interface IComment {
   isLike: boolean
   replyCommentDtos: IComment[]
 }
+export interface IHashtag {
+  id: string
+  hashtagName: string
+  count: number
+}
 export type ICreateCommentForum = {
   postId: string
   content: string
