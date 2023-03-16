@@ -1,4 +1,3 @@
-import { HashTag } from "./../../../types/Base.type.d"
 import { useMutation, useQuery } from "@tanstack/react-query"
 import { QUERY_KEYS } from "shared/constant/constant"
 import { DeleteActionType, ICreateCommentForum } from "types/Post"
@@ -40,6 +39,10 @@ export const useGetPostNoAnserForumQuery = (
     queryFn: () => forumService.getPostNoAnser(pageNumber, pageSize)
   })
 }
+export const useChangeActivePost = () =>
+  useMutation({
+    mutationFn: (postId: string) => forumService.changeActivePost(postId)
+  })
 export const useCreateAwnserPostForumMutation = () =>
   useMutation({
     mutationFn: (body: CreateAnwserPost) => forumService.createAnswer(body)

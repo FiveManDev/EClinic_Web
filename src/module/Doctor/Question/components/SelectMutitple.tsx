@@ -5,6 +5,7 @@ import Select, { SelectChangeEvent } from "@mui/material/Select"
 import { useGetAllHashTagQuery } from "hooks/query/forum/useForum"
 type Props = {
   hashTags: string[]
+  // eslint-disable-next-line no-unused-vars
   handleChange: (value: string[]) => void
 }
 export default function MultipleSelect({ hashTags, handleChange }: Props) {
@@ -14,7 +15,7 @@ export default function MultipleSelect({ hashTags, handleChange }: Props) {
     const {
       target: { value }
     } = event
-    handleChange(typeof value === "string" ? value.split(",") : value)
+    handleChange(value as [])
   }
 
   return (

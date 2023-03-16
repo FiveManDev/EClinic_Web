@@ -35,7 +35,7 @@ const SideBar = ({ items }: Props) => {
             href={item.link}
             key={index}
             className={classNames(
-              "flex items-center h-12 rounded-[10px] space-x-[14px] w-full px-3 py-4 text-sm transition-all",
+              "flex items-center h-12 rounded-[10px] space-x-[14px] w-full px-3 py-4 text-sm transition-transform",
               asPath == item.link
                 ? "bg-[#0C0B1A] text-white font-semibold"
                 : "font-light text-[#5F666F]"

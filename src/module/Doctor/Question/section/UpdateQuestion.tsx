@@ -7,10 +7,12 @@ import {
   IconButton,
   Tooltip
 } from "@mui/material"
+import { useQueryClient } from "@tanstack/react-query"
 import Editor from "components/Common/Editor/Editor"
 import Field from "components/Common/Field/Field"
 import ImageCustom from "components/Common/ImageCustom"
 import Label from "components/Common/Label/Label"
+import Spinner from "components/Common/Loading/LoadingIcon"
 import CustomButton from "components/User/Button"
 import {
   CreateAnwserPost,
@@ -19,12 +21,14 @@ import {
 import { useState } from "react"
 import { toast } from "react-hot-toast"
 import { AiOutlineQuestionCircle } from "react-icons/ai"
+import { QUERY_KEYS } from "shared/constant/constant"
 import { IPost } from "types/Post"
 import MultipleSelectChip from "../components/SelectMutitple"
 type Props = {
   post: IPost
 }
 const UpdateQuestion = ({ post }: Props) => {
+  const queryClient = useQueryClient()
   const [anwerData, setAnerData] = useState<CreateAnwserPost>({
     postId: post.id,
     content: "",
@@ -49,6 +53,7 @@ const UpdateQuestion = ({ post }: Props) => {
     ) {
       createAwnserPostForumMutation.mutate(anwerData, {
         onSuccess: () => {
+          queryClient.invalidateQueries([QUERY_KEYS.FORUM.POST])
           toast.success("Create answer successfully")
           setOpen(!open)
         },
@@ -151,7 +156,9 @@ const UpdateQuestion = ({ post }: Props) => {
             </Label>
             <MultipleSelectChip
               hashTags={anwerData.tags}
-              handleChange={(value) => handleChangeAnwerData("tags", value)}
+              handleChange={(value) =>
+                handleChangeAnwerData("tags", [...value])
+              }
             />
           </Field>
         </DialogContent>
@@ -159,8 +166,12 @@ const UpdateQuestion = ({ post }: Props) => {
           <CustomButton kind="secondary" onClick={handleClose}>
             Close
           </CustomButton>
-          <CustomButton kind="primary" onClick={handleSubmit}>
-            Save
+          <CustomButton
+            disabled={createAwnserPostForumMutation.isLoading}
+            kind="primary"
+            onClick={handleSubmit}
+          >
+            {createAwnserPostForumMutation.isLoading ? <Spinner /> : "Save"}
           </CustomButton>
         </DialogActions>
       </Dialog>

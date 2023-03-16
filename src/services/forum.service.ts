@@ -36,15 +36,9 @@ class ForumService {
     return res.data as IServerResponse<string>
   }
   async createAnswer(data: CreateAnwserPost) {
-    const formData = new FormData()
-    formData.append("postID", data.postId)
-    formData.append("content", data.content)
-    data.tags.forEach((item) => {
-      formData.append("tags", item)
-    })
     const res: AxiosResponse = await axiosClient.post(
       `${URL_API.FORUM_POST_ANWERS}/CreateAnswer`,
-      formData
+      { ...data }
     )
     return res.data as IServerResponse<string>
   }
@@ -61,7 +55,7 @@ class ForumService {
     return res as AxiosResponse<IServerResponse<IPost[]>>
   }
   async getPostNoAnser(pageNumber: number, pageSize: number) {
-    const res: AxiosResponse = await axiosServer.get(
+    const res: AxiosResponse = await axiosClient.get(
       `${URL_API.FORUM_POST}/GetPostNoAnswer`,
       {
         headers: {
@@ -71,6 +65,12 @@ class ForumService {
       }
     )
     return res as AxiosResponse<IServerResponse<IPost[]>>
+  }
+  async changeActivePost(postId: string) {
+    const res: AxiosResponse = await axiosClient.put(
+      `${URL_API.FORUM_POST}/ChangeActivePost?PostID=${postId}`
+    )
+    return res.data as IServerResponse<null>
   }
   async getPostById(id: string) {
     const res: AxiosResponse = await axiosClient.get(

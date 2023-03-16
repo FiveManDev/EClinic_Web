@@ -5,12 +5,20 @@ import TableCell from "@mui/material/TableCell"
 import TableContainer from "@mui/material/TableContainer"
 import TableHead from "@mui/material/TableHead"
 import TableRow from "@mui/material/TableRow"
+import { useQueryClient } from "@tanstack/react-query"
 import ImageCustom from "components/Common/ImageCustom"
-import { useGetPostNoAnserForumQuery } from "hooks/query/forum/useForum"
+import CustomButton from "components/User/Button"
+import useConfirm from "context/ComfirmContext"
+import {
+  useChangeActivePost,
+  useGetAllPostForumQuery
+} from "hooks/query/forum/useForum"
+import ViewDetailPost from "module/Supporter/components/ViewDetailPost"
 import React from "react"
+import { toast } from "react-hot-toast"
+import { QUERY_KEYS } from "shared/constant/constant"
 import { combineName, dayformat } from "shared/helpers/helper"
 import { IPagination } from "types/Pagination"
-import UpdateQuestion from "./UpdateQuestion"
 interface Column {
   label: string
   minWidth?: number
@@ -22,35 +30,33 @@ const columns: readonly Column[] = [
   { label: "Description", minWidth: 170 },
   {
     label: "Author",
-    minWidth: 170,
-    align: "center"
+    minWidth: 170
   },
   {
-    label: "Created at",
-    minWidth: 80
+    label: "Created at"
   },
   {
     label: "Total like",
-    minWidth: 50,
     align: "center"
   },
   {
     label: "Status",
-    minWidth: 50,
     align: "center"
   },
   {
     label: "Action",
-    minWidth: 50,
     align: "center"
   }
 ]
 
-export default function TableQuestion() {
+export default function TableQuestionRequest() {
+  const queryClient = useQueryClient()
   const [page, setPage] = React.useState(0)
   const [rowsPerPage, setRowsPerPage] = React.useState(2)
+  const changeActivePost = useChangeActivePost()
+  const confirm = useConfirm()
 
-  const handleChangePage = (_: unknown, newPage: number) => {
+  const handleChangePage = (event: unknown, newPage: number) => {
     setPage(newPage)
   }
 
@@ -60,13 +66,14 @@ export default function TableQuestion() {
     setRowsPerPage(+event.target.value)
     setPage(0)
   }
-  const { data, isLoading, isError } = useGetPostNoAnserForumQuery(
-    page + 1,
+  const { data, isLoading, isError } = useGetAllPostForumQuery(
+    page,
     rowsPerPage
   )
   if (isError) {
     return <p> Error</p>
   }
+  console.log("TableQuestionRequest ~ data:", data)
   const paginateData = data?.headers["x-pagination"]
     ? (JSON.parse(data.headers["x-pagination"]) as IPagination)
     : {
@@ -77,6 +84,25 @@ export default function TableQuestion() {
         HasPrevious: false,
         HasNext: false
       }
+  const changeStatusPost = async (postId: string) => {
+    if (confirm) {
+      const choice = await confirm({
+        title: "Change status of post?",
+        content: "Are you sure you want to change status this comment?"
+      })
+      if (choice) {
+        changeActivePost.mutate(postId, {
+          onSuccess: (data) => {
+            queryClient.invalidateQueries([QUERY_KEYS.FORUM.POST])
+            toast.success(data.message as string)
+          },
+          onError: () => {
+            toast.error("Change status of post failed")
+          }
+        })
+      }
+    }
+  }
   return (
     <div className="w-full shadow">
       <TableContainer>
@@ -84,7 +110,13 @@ export default function TableQuestion() {
           <TableHead>
             <TableRow>
               {columns.map((column, index) => (
-                <TableCell key={index} align={column.align}>
+                <TableCell
+                  key={index}
+                  style={{
+                    minWidth: column.minWidth
+                  }}
+                  align={column.align}
+                >
                   {column.label}
                 </TableCell>
               ))}
@@ -164,8 +196,16 @@ export default function TableQuestion() {
                     <Chip label="UnActive" color="error" variant="outlined" />
                   )}
                 </TableCell>
-                <TableCell align="center">
-                  <UpdateQuestion post={row} />
+                <TableCell align="center" className="flex">
+                  <ViewDetailPost post={row} />
+                  <CustomButton
+                    onClick={() => changeStatusPost(row.id)}
+                    kind="tertiary"
+                    color="error"
+                    className="text-red-500"
+                  >
+                    Block
+                  </CustomButton>
                 </TableCell>
               </TableRow>
             ))}

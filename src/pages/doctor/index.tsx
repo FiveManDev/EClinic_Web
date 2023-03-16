@@ -1,4 +1,4 @@
-import DoctorLayout from "layout/ManagementLayout/DocterLayout"
+import DoctorLayout from "layout/Management/DoctorLayout"
 import { NextPageWithLayout } from "pages/page"
 import React from "react"
 
