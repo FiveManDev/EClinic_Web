@@ -52,7 +52,7 @@ const columns: readonly Column[] = [
 export default function TableQuestionRequest() {
   const queryClient = useQueryClient()
   const [page, setPage] = React.useState(0)
-  const [rowsPerPage, setRowsPerPage] = React.useState(2)
+  const [rowsPerPage, setRowsPerPage] = React.useState(10)
   const changeActivePost = useChangeActivePost()
   const confirm = useConfirm()
 
@@ -67,13 +67,12 @@ export default function TableQuestionRequest() {
     setPage(0)
   }
   const { data, isLoading, isError } = useGetAllPostForumQuery(
-    page,
+    page + 1,
     rowsPerPage
   )
   if (isError) {
     return <p> Error</p>
   }
-  console.log("TableQuestionRequest ~ data:", data)
   const paginateData = data?.headers["x-pagination"]
     ? (JSON.parse(data.headers["x-pagination"]) as IPagination)
     : {
@@ -88,7 +87,7 @@ export default function TableQuestionRequest() {
     if (confirm) {
       const choice = await confirm({
         title: "Change status of post?",
-        content: "Are you sure you want to change status this comment?"
+        content: "Are you sure you want to change status this question?"
       })
       if (choice) {
         changeActivePost.mutate(postId, {
@@ -198,14 +197,24 @@ export default function TableQuestionRequest() {
                 </TableCell>
                 <TableCell align="center" className="flex">
                   <ViewDetailPost post={row} />
-                  <CustomButton
-                    onClick={() => changeStatusPost(row.id)}
-                    kind="tertiary"
-                    color="error"
-                    className="text-red-500"
-                  >
-                    Block
-                  </CustomButton>
+                  {row.isActive ? (
+                    <CustomButton
+                      onClick={() => changeStatusPost(row.id)}
+                      kind="primary"
+                      color="error"
+                      className="bg-red-500 "
+                    >
+                      Block
+                    </CustomButton>
+                  ) : (
+                    <CustomButton
+                      onClick={() => changeStatusPost(row.id)}
+                      kind="primary"
+                      color="error"
+                    >
+                      Unblock
+                    </CustomButton>
+                  )}
                 </TableCell>
               </TableRow>
             ))}

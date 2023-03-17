@@ -4,9 +4,7 @@ import {
   Dialog,
   DialogActions,
   DialogContent,
-  DialogTitle,
-  IconButton,
-  Tooltip
+  DialogTitle
 } from "@mui/material"
 import Field from "components/Common/Field/Field"
 import ImageCustom from "components/Common/ImageCustom"
@@ -15,7 +13,6 @@ import CustomButton from "components/User/Button"
 import { useGetAnwerByPostId } from "hooks/query/forum/useForum"
 import HTMLReactParser from "html-react-parser"
 import { useState } from "react"
-import { AiOutlineQuestionCircle } from "react-icons/ai"
 import { IPost } from "types/Post"
 type Props = {
   post: IPost
@@ -23,9 +20,6 @@ type Props = {
 const ViewDetailPost = ({ post }: Props) => {
   const [open, setOpen] = useState(false)
   const { data, isLoading } = useGetAnwerByPostId(post.id)
-  if (isLoading) {
-    return <p>Loading</p>
-  }
   const handleClose = () => {
     setOpen(!open)
   }
@@ -61,9 +55,7 @@ const ViewDetailPost = ({ post }: Props) => {
                 <span> Description of question </span>
               </div>
             </Label>
-            <h3 className="text-base font-normal text-gray-700">
-              {post.content}
-            </h3>
+            <h3 className="text-base font-normal">{post.content}</h3>
           </Field>
           <Field>
             <Label htmlFor="content">Picture of disease symptoms</Label>
@@ -81,35 +73,40 @@ const ViewDetailPost = ({ post }: Props) => {
                   />
                 </div>
               ))}
+              {post.image.length === 0 && <p>No images</p>}
             </div>
           </Field>
-          <Field>
-            <Label htmlFor="content">
-              <div className="flex items-center space-x-1">
-                <span> Anwer of doctor</span>
-              </div>
-            </Label>
-            <article className="entry-content ">
-              {HTMLReactParser(data.data.content)}
-            </article>
-          </Field>
-          <Field>
-            <Label htmlFor="title">
-              <div className="flex items-center space-x-1">
-                <span> Tags for post </span>
-              </div>
-            </Label>
-            <div className="flex gap-2">
-              {data?.data.hashTags.map((tag, index) => (
-                <Chip
-                  label={tag.hashtagName}
-                  key={index}
-                  color="success"
-                  variant="outlined"
-                />
-              ))}
-            </div>
-          </Field>
+          {data && (
+            <>
+              <Field>
+                <Label htmlFor="content">
+                  <div className="flex items-center space-x-1">
+                    <span> Anwer of doctor</span>
+                  </div>
+                </Label>
+                <article className="entry-content ">
+                  {HTMLReactParser(data?.data?.content)}
+                </article>
+              </Field>
+              <Field>
+                <Label htmlFor="title">
+                  <div className="flex items-center space-x-1">
+                    <span> Tags for post </span>
+                  </div>
+                </Label>
+                <div className="flex gap-2">
+                  {data?.data.hashTags.map((tag, index) => (
+                    <Chip
+                      label={tag.hashtagName}
+                      key={index}
+                      color="success"
+                      variant="outlined"
+                    />
+                  ))}
+                </div>
+              </Field>
+            </>
+          )}
         </DialogContent>
         <DialogActions>
           <CustomButton kind="secondary" onClick={handleClose}>

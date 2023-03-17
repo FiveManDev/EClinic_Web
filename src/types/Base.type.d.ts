@@ -13,3 +13,8 @@ export interface HashTag {
   hashtagID: string
   hashtagName: string
 }
+export interface ImageItem {
+  key: string
+  file: File
+  url: string
+}
