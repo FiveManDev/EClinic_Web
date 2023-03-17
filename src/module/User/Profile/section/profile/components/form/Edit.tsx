@@ -11,9 +11,13 @@ import {
   Skeleton
 } from "@mui/material"
 import DatePickerCustom from "components/Common/DatePicker/DatePickerCustom"
+import Spinner from "components/Common/Loading/LoadingIcon"
 import CustomButton from "components/User/Button"
 import { CustomInput } from "components/User/Input"
-import { useAllRelationship } from "hooks/query/profile/useProfile"
+import {
+  useAllRelationship,
+  useGetBloodTypes
+} from "hooks/query/profile/useProfile"
 import Image from "next/image"
 import { ChangeEvent, useEffect, useState } from "react"
 import { FieldValues, useForm } from "react-hook-form"
@@ -55,7 +59,7 @@ const schema = yup.object({
 })
 const Edit = ({ onSubmit, onDelete, labelForm, profile }: Props) => {
   const relationShipQuery = useAllRelationship()
-
+  const getBloodTypes = useGetBloodTypes()
   const {
     handleSubmit,
     control,
@@ -70,7 +74,7 @@ const Edit = ({ onSubmit, onDelete, labelForm, profile }: Props) => {
     defaultValues: profile
   })
   watch("avatar", null)
-  const watchBlood = watch("bloodType", profile?.bloodType || "A")
+  const watchBlood = watch("bloodType", profile?.bloodType || "A+")
   const watchGender = watch("gender", profile?.gender || true)
   const watchRelationship = watch("relationshipID", profile?.relationshipID)
   const onFileChange = (file: File) => {
@@ -93,6 +97,14 @@ const Edit = ({ onSubmit, onDelete, labelForm, profile }: Props) => {
   return (
     <>
       <h3 className="pb-4 text-lg font-medium">{labelForm}</h3>
+      {getBloodTypes.isLoading ||
+        (relationShipQuery.isLoading && (
+          <>
+            <div className="flex items-center justify-center w-full h-full">
+              <Spinner color="#024ED5" />
+            </div>
+          </>
+        ))}
       <div className="flex flex-col justify-start">
         <form
           onSubmit={handleSubmit(onSubmit)}
@@ -152,19 +164,19 @@ const Edit = ({ onSubmit, onDelete, labelForm, profile }: Props) => {
               errorMessage={errors.dateOfBirth?.message?.toString()}
             />
             <FormControl fullWidth size="small">
-              <InputLabel id="demo-simple-select-label">Blood group</InputLabel>
+              <InputLabel>Blood group</InputLabel>
               <Select
-                labelId="demo-simple-select-label"
-                id="demo-simple-select"
                 value={watchBlood}
                 label="blood group"
                 onChange={(value) => {
                   setValue("bloodType", value.target.value)
                 }}
               >
-                <MenuItem value="A">A</MenuItem>
-                <MenuItem value="B">B</MenuItem>
-                <MenuItem value="C">C</MenuItem>
+                {getBloodTypes?.data?.data.map((item, index) => (
+                  <MenuItem value={item} key={index}>
+                    {item}
+                  </MenuItem>
+                ))}
               </Select>
             </FormControl>
           </div>

@@ -50,3 +50,10 @@ export const useCreateProfileMutation = () => {
   })
   return createProfileMutation
 }
+export const useGetBloodTypes = () => {
+  const queryKey = ["blood"]
+  return useQuery({
+    queryKey,
+    queryFn: () => profileService.getBloodTypes()
+  })
+}

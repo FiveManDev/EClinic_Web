@@ -29,6 +29,16 @@ export const useGetAllPostForumQuery = (
     queryFn: () => forumService.getAllPost(pageNumber, pageSize)
   })
 }
+export const useGetPostsNoActiveQuery = (
+  pageNumber: number,
+  pageSize: number
+) => {
+  const queryKey = [QUERY_KEYS.FORUM.POST, pageNumber, pageSize]
+  return useQuery({
+    queryKey,
+    queryFn: () => forumService.getPostsNoActive(pageNumber, pageSize)
+  })
+}
 export const useGetPostNoAnserForumQuery = (
   pageNumber: number,
   pageSize: number
@@ -67,6 +77,13 @@ export const useGetPostbyIdQuery = (id: string) => {
   return useQuery({
     queryKey,
     queryFn: () => forumService.getPostById(id)
+  })
+}
+export const useGetPostByUserId = (pageNumber: number, pageSize: number) => {
+  const queryKey = [QUERY_KEYS.FORUM.POST, pageNumber, pageSize]
+  return useQuery({
+    queryKey,
+    queryFn: () => forumService.getPossByUserId(pageNumber, pageSize)
   })
 }
 export const useGetAllCommentForumQuery = (postId: string) => {

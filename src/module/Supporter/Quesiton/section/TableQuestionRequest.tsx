@@ -11,7 +11,7 @@ import CustomButton from "components/User/Button"
 import useConfirm from "context/ComfirmContext"
 import {
   useChangeActivePost,
-  useGetAllPostForumQuery
+  useGetPostsNoActiveQuery
 } from "hooks/query/forum/useForum"
 import ViewDetailPost from "module/Supporter/components/ViewDetailPost"
 import React from "react"
@@ -66,7 +66,7 @@ export default function TableQuestionRequest() {
     setRowsPerPage(+event.target.value)
     setPage(0)
   }
-  const { data, isLoading, isError } = useGetAllPostForumQuery(
+  const { data, isLoading, isError } = useGetPostsNoActiveQuery(
     page + 1,
     rowsPerPage
   )
@@ -209,8 +209,8 @@ export default function TableQuestionRequest() {
                   ) : (
                     <CustomButton
                       onClick={() => changeStatusPost(row.id)}
-                      kind="primary"
-                      color="error"
+                      kind="secondary"
+                      color="success"
                     >
                       Unblock
                     </CustomButton>

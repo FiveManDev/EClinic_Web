@@ -23,6 +23,7 @@ export const URL_API = {
   ACCOUNT: "identity/Account",
   MAIL: "mail/Mail",
   PROFILE: "profile/Profile",
+  PROFILE_OTHER: "profile/Other",
   RELATIONSHIPS: "profile/Relationship",
   FORUM_POST: "forum/Post",
   FORUM_POST_COMMENT: "forum/Comment",

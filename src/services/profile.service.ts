@@ -62,6 +62,12 @@ class ProfileService {
     )
     return res.data as IServerResponse<null>
   }
+  async getBloodTypes() {
+    const res: AxiosResponse = await axiosClient.get(
+      `${URL_API.PROFILE_OTHER}/GetBloodTypes`
+    )
+    return res.data as IServerResponse<string[]>
+  }
 }
 
 export const profileService = new ProfileService()
