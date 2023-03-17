@@ -1,6 +1,6 @@
 import CustomButton from "components/User/Button"
 import { useTranslation } from "react-i18next"
-import Card from "./components/card"
+import CardService from "./components/card"
 
 const Services = () => {
   const { t } = useTranslation("home")
@@ -14,10 +14,10 @@ const Services = () => {
       </CustomButton>
 
       <div className="relative grid grid-cols-1 pt-8 gap-y-2 md:gap-x-4 md:grid-cols-4">
-        <Card />
-        <Card />
-        <Card />
-        <Card />
+        <CardService />
+        <CardService />
+        <CardService />
+        <CardService />
       </div>
     </section>
   )

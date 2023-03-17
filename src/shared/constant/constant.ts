@@ -1,6 +1,16 @@
 export const VERSION = 1
+export const DEFAULT_URL_API = "https://localhost:8888"
+export const routers = {
+  signIn: "/sign-in"
+}
 export const QUERY_KEYS = {
-  LOGIN: "LOGIN"
+  LOGIN: "LOGIN",
+  FORUM: {
+    POST: "POST_FORUM",
+    COMMENT: "COMMENT_FORUM",
+    ANSWER: "ANSWER_FORUM"
+  },
+  HASHTAG: "HASHTAG"
 } as const
 export const ROLE = {
   USER: "User",
@@ -9,13 +19,30 @@ export const ROLE = {
   SUPPORTER: "Supporter"
 } as const
 export const URL_API = {
-  AUTH: "Authentication",
-  ACCOUNT: "Account"
+  AUTH: "identity/Authentication",
+  ACCOUNT: "identity/Account",
+  MAIL: "mail/Mail",
+  PROFILE: "profile/Profile",
+  RELATIONSHIPS: "profile/Relationship",
+  FORUM_POST: "forum/Post",
+  FORUM_POST_COMMENT: "forum/Comment",
+  FORUM_POST_ANWERS: "forum/Answer",
+  FORUM_POST_HASHTAG: "forum/Hashtag"
 } as const
 export const LANGUAGE = {
-  VIETNAM: "vi",
-  ENGLISH: "en"
+  VIETNAM: "Vi",
+  ENGLISH: "En"
 } as const
 export const LOCALSTORAGE = {
   LANGUAGE: "lng"
 } as const
+export const RELATIONSHIPS = {
+  PARENTS: "Cha Mẹ",
+  SIBLINGS: "Anh Chị",
+  COUPLE: "Vợ Chồng",
+  GRANDPARENTS: "Ông Bà",
+  BROTHER: "Em",
+  ME: "Me",
+  CHILREN: "Con cái"
+}
+export const PAGE_SIZE = 1

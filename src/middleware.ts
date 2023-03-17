@@ -4,19 +4,19 @@ import type { NextRequest } from "next/server"
 import { NextResponse } from "next/server"
 import { authService } from "services/auth.service"
 import { ROLE } from "shared/constant/constant"
-import { ITokenDecode } from "types/Token.type"
+import { ITokenDecode } from "types/Token"
 const unprotectedPaths: string[] = [
   "/",
-  `/sign-in`,
-  `/sign-up`,
-  "/services",
-  "/forum"
+  "search",
+  `sign-in`,
+  `sign-up`,
+  "services",
+  "forum"
 ]
 
 // This function can be marked `async` if using `await` inside
 export async function middleware(req: NextRequest) {
   const { pathname } = req.nextUrl
-
   if (pathname.startsWith("/_next")) return NextResponse.next()
   const { cookies } = req
   const accessToken = cookies.get(
@@ -51,7 +51,7 @@ export async function middleware(req: NextRequest) {
         case pathname.includes("/user") && Object.values(ROLE).includes(role):
         case pathname.includes("/doctor") && role === ROLE.DOCTOR:
         case pathname.includes("/sup") && role === ROLE.SUPPORTER:
-        case pathname.includes("/admin") && role === ROLE.ADMIN:
+        case role === ROLE.ADMIN:
           return NextResponse.next()
         case pathname.includes("/sign-in") || pathname.includes("/sign-up"):
           req.nextUrl.pathname = "/"
@@ -64,7 +64,15 @@ export async function middleware(req: NextRequest) {
       return NextResponse.redirect(req.nextUrl)
     }
   }
-  if (unprotectedPaths.some((path) => pathname.startsWith(path))) {
+
+  const checkRouter = unprotectedPaths.some((path) => {
+    if (pathname === "/") {
+      return true
+    } else {
+      return pathname.substring(1).startsWith(path)
+    }
+  })
+  if (checkRouter) {
     return NextResponse.next()
   } else {
     req.nextUrl.pathname = "/sign-in"

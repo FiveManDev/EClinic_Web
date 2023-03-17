@@ -17,9 +17,9 @@ const UserLayout: React.FC<IUserLayout> = ({
 }) => {
   return (
     <>
-      <div {...divProps} className={`min-h-screen flex flex-col ${justify}`}>
+      <div {...divProps} className={`min-h-screen flex flex-col ${justify} `}>
         <Header />
-        {children}
+        <div className="flex-1 w-full">{children}</div>
         <Footer />
       </div>
     </>

@@ -1,3 +1,6 @@
+import { Badge } from "@mui/material"
+import { MdNotificationsNone } from "react-icons/md"
+
 import ChangeLanguage from "components/Common/ChangeLanguage"
 import CustomButton from "components/User/Button"
 import DrawerCustom from "components/User/Drawer"
@@ -36,14 +39,17 @@ const Navbar = ({ show = false, onClose }: Props) => {
         <ul className="flex flex-col items-center space-y-6 list-none md:flex-row md:space-y-0 md:space-x-10">
           <MenuItem href="/forum">{t("banner.menu.Portal")}</MenuItem>
           <MenuItem href="/services">{t("banner.menu.Services")}</MenuItem>
-          <MenuItem href="/">{t("banner.menu.Booking")}</MenuItem>
-          <MenuItem href="/">{t("banner.menu.Contact")}</MenuItem>
+          <MenuItem href="/booking">{t("banner.menu.Booking")}</MenuItem>
+          <MenuItem href="/contact">{t("banner.menu.Contact")}</MenuItem>
         </ul>
       </div>
       <div className="flex flex-col items-center justify-start w-full h-auto space-x-0 space-y-3 md:space-x-4 md:justify-start md:space-y-0 md:h-full md:flex-row md:w-auto">
         <ChangeLanguage />
         {auth.isLoggedIn ? (
           <>
+            <Badge badgeContent={4} color="primary">
+              <MdNotificationsNone className="text-2xl cursor-pointer" />
+            </Badge>
             <UserAvatar />
           </>
         ) : (

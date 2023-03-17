@@ -1,7 +1,7 @@
-import { Tag } from "antd"
 import classNames from "classnames"
+import ImageCustom from "components/Common/ImageCustom"
+import Tag from "components/Common/Tag"
 import CustomButton from "components/User/Button"
-import Image from "next/image"
 import Link from "next/link"
 import { useTranslation } from "react-i18next"
 import { HiOutlineUser } from "react-icons/hi2"
@@ -22,22 +22,18 @@ const CardService = ({ isDetail = true, className }: IProps) => {
       )}
     >
       <div className="relative w-full h-[140px]">
-        <Image
+        <ImageCustom
           src={"/images/sample-2.png"}
           fill
           alt="service"
-          className="object-cover"
+          classNameImage="object-cover"
         />
       </div>
       <div className="px-2 py-2 md:px-[18px] md:py-3">
         <h4 className="text-sm font-semibold md:text-lg text-h1 line-clamp-2">
           Gói xét nghiệm tổng quát
         </h4>
-        {isDetail && (
-          <Tag color="blue" className="mt-2 ">
-            Tim mạch
-          </Tag>
-        )}
+        {isDetail && <Tag className="w-fit">Tim mạch</Tag>}
         {isDetail && (
           <div className="flex items-center justify-between mt-4 md:mt-6">
             <div className="flex items-center gap-x-1">

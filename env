@@ -4,4 +4,8 @@ NEXT_PUBLIC_ACCESS_TOKEN_NAME=elinic_access_token
 NEXT_PUBLIC_REFRESH_TOKEN_NAME=elinic_refresh_token
 NEXT_PUBLIC_GOOGLE_CLIENT_ID=388136489670-3s2ppkghdimbd0orfc3ur0et7v3iauec.apps.googleusercontent.com
 # API URL
+<<<<<<< HEAD
 NEXT_PUBLIC_API_URL=https://localhost:3000
+=======
+NEXT_PUBLIC_API_URL=http://localhost:8888
+>>>>>>> 46341d1d982b0e5b0df7759e2182f80c7ba1f86d

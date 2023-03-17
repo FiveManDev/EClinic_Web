@@ -18,6 +18,9 @@ const themeConstants = {
 
 // Check here for more configurations https://material-ui.com/customization/default-theme/
 const theme = createTheme({
+  typography: {
+    fontFamily: `"Lexend Deca", sans-serif`
+  },
   palette: {
     primary: themeConstants.primary,
     background: { paper: themeConstants.paper }

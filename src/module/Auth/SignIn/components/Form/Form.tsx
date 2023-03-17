@@ -1,6 +1,6 @@
 import { yupResolver } from "@hookform/resolvers/yup"
 import { Alert, Divider } from "@mui/material"
-import { message } from "antd"
+
 import GoogleIcon from "components/Common/Icon/GoogleIcon"
 import Spinner from "components/Common/Loading/LoadingIcon"
 import CustomButton from "components/User/Button"
@@ -12,21 +12,19 @@ import Link from "next/link"
 import { useRouter } from "next/router"
 import { useEffect, useState } from "react"
 import { FieldValues, useForm } from "react-hook-form"
+import { toast } from "react-hot-toast"
 import { AiOutlineExclamationCircle } from "react-icons/ai"
 import { authService } from "services/auth.service"
 import { routerByRole } from "shared/helpers/helper"
 import { token } from "shared/utils/token"
 import { loginUser } from "store/module/auth/action-creators"
 import { useAppDispatch } from "store/store"
-import { ITokenDecode } from "types/Token.type"
+import { ITokenDecode } from "types/Token"
 import * as yup from "yup"
 
 const schema = yup.object({
   username: yup.string().required("Please enter your user name"),
-  password: yup
-    .string()
-    // .min(8, "Your password must be at least 8 characters or greater")
-    .required("Please enter your password")
+  password: yup.string().required("Please enter your password")
 })
 const FormLogin = () => {
   const { action, profile, error } = useUserGoogle()
@@ -45,16 +43,7 @@ const FormLogin = () => {
     try {
       const result = await authService.signIn(values.username, values.password)
       if (result.isSuccess) {
-        token.saveToken(result.data.accessToken, result.data.refreshToken)
-        const payload = jwt_decode(result.data.accessToken) as ITokenDecode
-        dispatch(
-          loginUser({
-            userName: "User",
-            userId: payload.UserID,
-            role: payload.role
-          })
-        )
-        router.push(routerByRole(payload.role), undefined, { shallow: true })
+        handleNavigate(result.data.accessToken, result.data.refreshToken)
         setIsError(false)
       } else {
         setIsError(true)
@@ -64,14 +53,44 @@ const FormLogin = () => {
       console.log("handleSignIn ~ error", error)
     }
   }
+  const handleNavigate = (accessToken: string, refreshToken: string) => {
+    token.saveToken(accessToken, refreshToken)
+    const payload = jwt_decode(accessToken) as ITokenDecode
+    dispatch(
+      loginUser({
+        userId: payload.UserID,
+        role: payload.role
+      })
+    )
+    router.push(routerByRole(payload.role), undefined, { shallow: true })
+  }
   useEffect(() => {
     if (error) {
-      // message.error("Login failed")
-      message.error({
-        content: "Login failed, please try again!!!"
-      })
+      toast.error("Login failed, please try again!!!")
     }
   }, [error])
+  useEffect(() => {
+    if (profile) {
+      const login = async () => {
+        const res = await authService.signInWithGoogle(profile.access_token)
+        console.log("login ~ res:", res)
+        try {
+          if (res.isSuccess) {
+            console.log("login ~ res:", res)
+            handleNavigate(res.data.accessToken, res.data.refreshToken)
+            toast.success("Sign in successfuly")
+          } else {
+            toast.error(res.message || "Login failed, please try again!!!")
+          }
+        } catch (error) {
+          console.error("login ~ error:", error)
+          toast.error("Login failed, please try again!!!")
+        }
+      }
+      login()
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [profile])
   return (
     <div className="md:max-w-[580px] w-full  bg-white rounded-md shadow-[1.69138px_-2.81897px_19.7328px_rgba(205,_205,_212,_0.1)] px-4 py-6 mt-7">
       <ButtonIcon
@@ -100,6 +119,12 @@ const FormLogin = () => {
           error={!!errors.password}
           errorMessage={errors.password?.message?.toString()}
         />
+        <Link
+          href={"/reset-password"}
+          className="!mt-2 text-right no-underline hover:underline hover:decoration-primary"
+        >
+          <span className="text-primary">Forgot password!</span>
+        </Link>
         {isError && (
           <Alert icon={<AiOutlineExclamationCircle />} severity="error">
             User Name or password incorrect

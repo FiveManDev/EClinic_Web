@@ -1,6 +1,8 @@
+import jwt_decode from "jwt-decode"
 import { authService } from "services/auth.service"
 import { token } from "shared/utils/token"
-import { IUser } from "./../../../types/User.type"
+import { ITokenDecode } from "types/Token"
+import { IUser } from "../../../types/User"
 import { AppDispatch } from "./../../store"
 import { authenticate, deleteAuthenticate } from "./auth-slice"
 
@@ -25,11 +27,13 @@ export const checkLogin = () => async (dispatch: AppDispatch) => {
   const accessToken = token.getToken().access_token
   const isAuthenticated = !!accessToken
   if (isAuthenticated) {
-    authService.currentUser().then((res) => {
-      if (res && res?.isSuccess === true) {
-        dispatch(authenticate(res.data))
-      }
-    })
+    const payload = jwt_decode(accessToken) as ITokenDecode
+    dispatch(
+      authenticate({
+        role: payload.role,
+        userId: payload.UserID
+      })
+    )
   } else {
     dispatch(deleteAuthenticate())
   }

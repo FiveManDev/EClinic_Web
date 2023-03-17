@@ -1,9 +1,10 @@
-import { createSlice } from "@reduxjs/toolkit"
-import { IAuthState } from "../../../types/Auth.type"
+import { createSlice, PayloadAction } from "@reduxjs/toolkit"
+import { IUser } from "types/User"
+import { IAuthState } from "../../../types/Auth"
 
 const initialState: IAuthState = {
   isLoggedIn: false,
-  user: {}
+  user: { role: "", userId: "" }
 }
 
 const authSlice = createSlice({
@@ -12,9 +13,9 @@ const authSlice = createSlice({
   reducers: {
     deleteAuthenticate: (state) => {
       state.isLoggedIn = false
-      state.user = {}
+      state.user = { role: "", userId: "" }
     },
-    authenticate: (state, action) => {
+    authenticate: (state, action: PayloadAction<IUser>) => {
       state.isLoggedIn = true
       state.user = action.payload
     }

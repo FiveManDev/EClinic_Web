@@ -23,7 +23,7 @@
     @apply w-full h-[360px] px-[10px] md:px-4 md:max-h-[600px] md:h-full bg-[#E8F1FF];
   }
   .page-container {
-    @apply max-w-[1300px] h-full md:h-auto mx-auto w-full;
+    @apply max-w-[1440px] h-full md:h-auto mx-auto w-full;
     &--child {
       @apply px-3 md:px-6;
     }
@@ -35,7 +35,7 @@
     @apply text-[#777781] text-sm md:text-base md:leading-tight;
   }
   .background-primary {
-    @apply bg-white border border-solid border-[#EAEAEA] rounded-lg p-3 md:p-7;
+    @apply bg-white border border-solid border-[#EAEAEA] shadow rounded-lg p-3 md:p-7;
   }
 }
 .input-hover {

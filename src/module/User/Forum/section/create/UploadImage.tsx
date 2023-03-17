@@ -1,71 +1,55 @@
-import { PlusOutlined } from "@ant-design/icons"
-import { message, Upload } from "antd"
-import type { RcFile, UploadFile, UploadProps } from "antd/es/upload/interface"
-import React, { useState } from "react"
-const UploadImage: React.FC = () => {
-  const [fileList, setFileList] = useState<UploadFile[]>([])
-  const [uploading, setUploading] = useState(false)
+// export default UploadImage
+import Image from "next/image"
+import { ChangeEvent } from "react"
+import { HiOutlineXMark } from "react-icons/hi2"
+import { ImageItem } from "types/Base.type"
 
-  const handleUpload = () => {
-    const formData = new FormData()
-    fileList.forEach((file) => {
-      formData.append("files[]", file as RcFile)
-    })
-    setUploading(true)
-    // You can use any AJAX library you like
-    fetch("https://www.mocky.io/v2/5cc8019d300000980a055e76", {
-      method: "POST",
-      body: formData
-    })
-      .then((res) => res.json())
-      .then(() => {
-        setFileList([])
-        message.success("upload successfully.")
-      })
-      .catch(() => {
-        message.error("upload failed.")
-      })
-      .finally(() => {
-        setUploading(false)
-      })
-  }
-
-  const generatePreview = (file: File) => {
-    if (file) {
-      return URL.createObjectURL(file)
-    }
-    return ""
-  }
-
-  const props: UploadProps = {
-    onRemove: (file) => {
-      const index = fileList.indexOf(file)
-      const newFileList = fileList.slice()
-      newFileList.splice(index, 1)
-      setFileList(newFileList)
-    },
-    beforeUpload: (file: RcFile) => {
-      setFileList([...fileList, file])
-      return false
-    },
-    fileList: fileList.map((file) => {
-      return {
-        ...file,
-        status: "done",
-        url: generatePreview(file as any)
-      }
-    })
-  }
+interface IProps {
+  images: ImageItem[]
+  // eslint-disable-next-line no-unused-vars
+  onChange: (event: ChangeEvent<HTMLInputElement>) => void
+  // eslint-disable-next-line no-unused-vars
+  removeImage: (key: string) => void
+}
+const UploadImage = ({ onChange, removeImage, images }: IProps) => {
   return (
     <>
-      <Upload listType="picture-card" {...props}>
-        {fileList.length >= 8 ? null : (
-          <div>
-            <PlusOutlined />
-            <div style={{ marginTop: 8 }}>Upload</div>
+      <div className="flex items-center gap-x-3">
+        {images &&
+          images.map((img) => (
+            <div className="relative group" key={img.key}>
+              <div className="relative z-10 overflow-hidden rounded-sm w-28 h-28">
+                <Image src={img.url} fill alt="avatar" className="z-10" />
+              </div>
+              <div
+                className="absolute top-0 right-0 z-20 p-1 text-xl text-white transition-all opacity-25 cursor-pointer group-hover:opacity-100"
+                onClick={() => removeImage(img.key)}
+              >
+                <HiOutlineXMark />
+              </div>
+            </div>
+          ))}
+        <label className="relative flex flex-col items-center justify-center transition-all border-gray-400 border-dashed cursor-pointer border-1 w-28 h-28 hover:bg-gray-100 hover:border-gray-300">
+          <div className="flex flex-col items-center justify-center ">
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              className="w-12 h-12 text-gray-400 group-hover:text-gray-600"
+              viewBox="0 0 20 20"
+              fill="currentColor"
+            >
+              <path
+                fillRule="evenodd"
+                d="M4 3a2 2 0 00-2 2v10a2 2 0 002 2h12a2 2 0 002-2V5a2 2 0 00-2-2H4zm12 12H4l4-8 3 6 2-4 3 6z"
+                clipRule="evenodd"
+              />
+            </svg>
+            <p className="pt-1 text-xs tracking-wider text-gray-400 group-hover:text-gray-600">
+              Select a photo
+            </p>
           </div>
-        )}
-      </Upload>
+          <input type="file" className="opacity-0" onChange={onChange} />
+        </label>
+      </div>
     </>
   )
 }

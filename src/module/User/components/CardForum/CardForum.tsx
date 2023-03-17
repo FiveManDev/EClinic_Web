@@ -1,17 +1,20 @@
 import classNames from "classnames"
+import ImageCustom from "components/Common/ImageCustom"
 import Image from "next/image"
 import Link from "next/link"
 import React from "react"
 import { useTranslation } from "react-i18next"
+import { IPost } from "types/Post"
 interface Props {
+  post: IPost
   kind?: "large" | "medium"
 }
-const CardForum = ({ kind = "medium" }: Props) => {
+const CardForum = ({ kind = "medium", post }: Props) => {
   const { t } = useTranslation("forum")
 
   return (
     <Link
-      href={"forum/1"}
+      href={`/forum/${post.id}`}
       className={classNames(
         "grid w-full rounded-md overflow-hidden",
         kind === "large" && "md:grid-cols-8 md:gap-x-4",
@@ -25,21 +28,21 @@ const CardForum = ({ kind = "medium" }: Props) => {
           kind === "medium" && "col-span-5 h-[140px] md:h-[200px]"
         )}
       >
-        <Image
-          src={"/images/sample.png"}
+        <ImageCustom
+          src={post.image[0]}
           fill
           alt="image"
-          className="object-cover"
+          classNameImage="object-cover"
         />
       </div>
       <div className={classNames(kind === "large" && "space-y-4 col-span-3")}>
         <h4 className="text-[22px] text-[#304050] font-semibold line-clamp-2">
-          Chụp CT có ảnh hưởng đến liền sẹo hay không?
+          {post.title}
         </h4>
         <div className="flex items-center space-x-3">
           <div className="relative h-14 md:w-11 w-14 md:h-11">
             <Image
-              src={"/images/sample.png"}
+              src={post.author.avatar}
               fill
               alt="image"
               className="object-cover rounded-full"
@@ -47,13 +50,15 @@ const CardForum = ({ kind = "medium" }: Props) => {
           </div>
           <div className="flex flex-col text-[#9A9FA5] text-sm md:text-[10px] font-medium">
             <span>{t("card.by")}</span>
-            <span className="text-black">BS. Nguyễn Thanh Bình</span>
+            <span className="text-black">
+              {post.author.firstName + " " + post.author.lastName}
+            </span>
             <div className="flex items-center gap-2">
               <span>
-                <strong>9</strong> {t("card.by")}
+                {t("card.by")} <strong>9</strong>
               </span>
               <div className="flex items-center gap-[2px]">
-                <span>30</span>
+                <span>{post.likes}</span>
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
                   viewBox="0 0 24 24"
