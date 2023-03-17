@@ -1,4 +1,5 @@
 import InputCustom from "components/Common/Input/InputCustom"
+import Spinner from "components/Common/Loading/LoadingIcon"
 import TextAreaCustom from "components/Common/Textarea/TextAreaCustom"
 import CustomButton from "components/User/Button"
 import {
@@ -7,24 +8,21 @@ import {
 } from "hooks/query/forum/useForum"
 import { ToastNavigate } from "module/User/components/Toast/ToastNavigate"
 import { useRouter } from "next/router"
-import { useState } from "react"
+import { ChangeEvent, useState } from "react"
 import { toast } from "react-hot-toast"
 import { useTranslation } from "react-i18next"
 import { useSelector } from "react-redux"
 import { routers } from "shared/constant/constant"
 import { RootState } from "store/store"
+import { ImageItem } from "types/Base.type"
 import UploadImages from "./UploadImage"
-import * as yup from "yup"
 
 type KeyCreatePost = keyof CreatePostForum
-const schema = yup.object({
-  title: yup.string().required("Please enter title of the question"),
-  content: yup.string().required("Please enter detail of the question")
-})
 const CreateQuestion = () => {
   const { t } = useTranslation("forum")
   const router = useRouter()
   const auth = useSelector((state: RootState) => state.auth)
+  const [images, setImages] = useState<ImageItem[]>([])
   const [post, setPost] = useState<CreatePostForum>({
     content: "",
     images: [],
@@ -37,13 +35,36 @@ const CreateQuestion = () => {
       [type]: data
     }))
   }
-  const handleFileImageChange = (files: File[]) => {
-    if (files !== null) {
-      setPost((prevState) => ({
-        ...prevState,
-        images: files
-      }))
+  const handleFileImageChange = (event: ChangeEvent<HTMLInputElement>) => {
+    if (images.length < 4) {
+      if (event.target.files !== null && event.target.files?.length > 0) {
+        const currentFile = event.target.files[0]
+        const url = URL.createObjectURL(currentFile)
+        setImages([
+          ...images,
+          {
+            file: currentFile,
+            key: images.length.toString(),
+            url
+          }
+        ])
+        const imagesList = [...images.map((item) => item.file), currentFile]
+        setPost((prevState) => ({
+          ...prevState,
+          images: imagesList
+        }))
+      }
+    } else {
+      toast.error("Up to 4 images")
     }
+  }
+  const removeImage = (key: string) => {
+    const newImages = images.filter((item) => item.key !== key)
+    setImages(newImages)
+    setPost((prevState) => ({
+      ...prevState,
+      images: newImages.map((item) => item.file)
+    }))
   }
   const handleSubmit = () => {
     if (post && auth.user.userId) {
@@ -53,6 +74,8 @@ const CreateQuestion = () => {
             toast.error("Add error")
           },
           onSuccess: () => {
+            setImages([])
+            setPost({ content: "", images: [], title: "" })
             toast.success("Create post successfuly!")
           }
         })
@@ -87,20 +110,24 @@ const CreateQuestion = () => {
         placeholder={t("textareaDesc")}
         onChange={(e) => handleChangePost("content", e.target.value)}
       />
-      <UploadImages onChange={(value) => handleFileImageChange(value)} />
+      <UploadImages
+        images={images}
+        removeImage={removeImage}
+        onChange={(value) => handleFileImageChange(value)}
+      />
       <p>
-        {" "}
         {t("desctiptionUpload.imagetitle")}{" "}
         <span className="text-sm text-gray-400">
           ({t("desctiptionUpload.note")})
         </span>
       </p>
       <CustomButton
+        disabled={createPostMutation.isLoading}
         kind="primary"
         className="md:max-w-[182px] rounded-[4px]"
         onClick={handleSubmit}
       >
-        {t("btnUpload")}
+        {createPostMutation.isLoading ? <Spinner /> : t("btnUpload")}
       </CustomButton>
     </div>
   )

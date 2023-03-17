@@ -9,6 +9,11 @@ export interface CreatePostForum {
   content: string
   images: File[]
 }
+export interface CreateAnwserPost {
+  postId: string
+  content: string
+  tags: string[]
+}
 export const useCreatePostMutation = () => {
   return useMutation({
     mutationFn: (data: CreatePostForum) => forumService.createPost(data)
@@ -24,6 +29,24 @@ export const useGetAllPostForumQuery = (
     queryFn: () => forumService.getAllPost(pageNumber, pageSize)
   })
 }
+export const useGetPostNoAnserForumQuery = (
+  pageNumber: number,
+  pageSize: number
+) => {
+  const queryKey = [QUERY_KEYS.FORUM.POST, pageNumber, pageSize]
+  return useQuery({
+    queryKey,
+    queryFn: () => forumService.getPostNoAnser(pageNumber, pageSize)
+  })
+}
+export const useChangeActivePost = () =>
+  useMutation({
+    mutationFn: (postId: string) => forumService.changeActivePost(postId)
+  })
+export const useCreateAwnserPostForumMutation = () =>
+  useMutation({
+    mutationFn: (body: CreateAnwserPost) => forumService.createAnswer(body)
+  })
 export const useSearchPostsForum = (
   keyword: string,
   pageNumber: number,
@@ -107,5 +130,14 @@ export const useGetAnwerByPostId = (postId: string) => {
   return useQuery({
     queryKey,
     queryFn: () => forumService.getAnwerByPostId(postId)
+  })
+}
+//hashtag
+
+export const useGetAllHashTagQuery = () => {
+  const queryKey = [QUERY_KEYS.HASHTAG]
+  return useQuery({
+    queryKey,
+    queryFn: () => forumService.getAllHashtag()
   })
 }

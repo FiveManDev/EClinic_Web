@@ -1,44 +1,17 @@
 // export default UploadImage
 import Image from "next/image"
-import React, { ChangeEvent, useEffect, useState } from "react"
+import { ChangeEvent } from "react"
 import { HiOutlineXMark } from "react-icons/hi2"
+import { ImageItem } from "types/Base.type"
 
-interface ImageItem {
-  key: string
-  file: File
-  url: string
-}
 interface IProps {
+  images: ImageItem[]
   // eslint-disable-next-line no-unused-vars
-  onChange: (files: File[]) => void
+  onChange: (event: ChangeEvent<HTMLInputElement>) => void
+  // eslint-disable-next-line no-unused-vars
+  removeImage: (key: string) => void
 }
-const UploadImage = ({ onChange }: IProps) => {
-  const [images, setImages] = useState<ImageItem[]>([])
-  const handleImageChange = (event: ChangeEvent<HTMLInputElement>) => {
-    if (images.length < 5) {
-      if (event.target.files !== null && event.target.files?.length > 0) {
-        const url = URL.createObjectURL(event.target.files[0])
-        setImages([
-          ...images,
-          {
-            file: event.target.files[0],
-            key: images.length.toString(),
-            url
-          }
-        ])
-      }
-    }
-  }
-  const removeImage = (key: string) => {
-    const newImages = images.filter((item) => item.key !== key)
-    setImages(newImages)
-  }
-  useEffect(() => {
-    if (onChange) {
-      const fileImages = images.map((item) => item.file)
-      onChange(fileImages)
-    }
-  }, [images])
+const UploadImage = ({ onChange, removeImage, images }: IProps) => {
   return (
     <>
       <div className="flex items-center gap-x-3">
@@ -74,11 +47,7 @@ const UploadImage = ({ onChange }: IProps) => {
               Select a photo
             </p>
           </div>
-          <input
-            type="file"
-            className="opacity-0"
-            onChange={handleImageChange}
-          />
+          <input type="file" className="opacity-0" onChange={onChange} />
         </label>
       </div>
     </>

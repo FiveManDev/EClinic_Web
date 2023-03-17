@@ -10,8 +10,8 @@ const Menu = () => {
   }
   return (
     <>
-      <div className="flex items-center justify-between px-5 md:px-[60px] lg:max-w-[1440px]  w-full h-full mx-auto">
-        <div className="relative scale-90 md:scale-100 w-[130px] h-9 md:hidden ">
+      <div className="flex items-center justify-between px-5 lg:max-w-[1440px]  w-full h-full mx-auto">
+        <div className="relative scale-90 md:scale-100 w-[150px] h-9 md:hidden ">
           <Link href="/">
             <Image
               src={"/images/logo.png"}
@@ -20,7 +20,7 @@ const Menu = () => {
               (max-width: 1200px) 50vw,
               33vw"
               alt="elinic"
-              className="cursor-pointer"
+              className="object-contain cursor-pointer"
             />
           </Link>
         </div>
