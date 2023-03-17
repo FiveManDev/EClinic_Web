@@ -66,6 +66,18 @@ class ForumService {
     )
     return res as AxiosResponse<IServerResponse<IPost[]>>
   }
+  async getPossByUserId(pageNumber: number, pageSize: number) {
+    const res: AxiosResponse = await axiosClient.get(
+      `${URL_API.FORUM_POST}/GetPostOfUser`,
+      {
+        headers: {
+          PageNumber: pageNumber,
+          PageSize: pageSize
+        }
+      }
+    )
+    return res as AxiosResponse<IServerResponse<IPost[]>>
+  }
   async changeActivePost(postId: string) {
     const res: AxiosResponse = await axiosClient.put(
       `${URL_API.FORUM_POST}/ChangeActivePost?PostID=${postId}`
@@ -162,6 +174,18 @@ class ForumService {
       `${URL_API.FORUM_POST_HASHTAG}/GetAllHashtag`
     )
     return res.data as IServerResponse<IHashtag[]>
+  }
+  async getPostsNoActive(pageNumber: number, pageSize: number) {
+    const res: AxiosResponse = await axiosServer.get(
+      `${URL_API.FORUM_POST}/GetPostNotActive`,
+      {
+        headers: {
+          PageNumber: pageNumber,
+          PageSize: pageSize
+        }
+      }
+    )
+    return res as AxiosResponse<IServerResponse<IPost[]>>
   }
 }
 export const forumService = new ForumService()

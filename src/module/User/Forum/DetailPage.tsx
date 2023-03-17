@@ -1,3 +1,4 @@
+import { LoadingArea } from "components/Common/Loading/LoadingIcon"
 import { useGetPostbyIdQuery } from "hooks/query/forum/useForum"
 import UserSecondaryLayout from "layout/User/UserSecondaryLayout"
 import Head from "next/head"
@@ -16,8 +17,15 @@ const DetailPage = () => {
     { label: t("base:pages.forum"), href: "/forum" },
     { label: t("base:pages.detail") }
   ]
+  if (router.isFallback) {
+    return (
+      <>
+        <LoadingArea />
+      </>
+    )
+  }
   if (isLoading) {
-    return <p>loading...</p>
+    return <LoadingArea />
   }
   if (isError) {
     return <p>Error.....</p>

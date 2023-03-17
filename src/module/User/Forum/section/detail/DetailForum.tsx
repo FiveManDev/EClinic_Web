@@ -24,7 +24,6 @@ import {
   UpdateActionType
 } from "types/Post"
 import AnswerQuestion from "../answer/AnswerQuestion"
-import ListCardForum from "../list/ListCardForum"
 
 const Comment = dynamic(
   () => import("../comment").then((module) => module.default),
@@ -36,6 +35,7 @@ interface Props {
   post: IPost
 }
 const DetailForum = ({ post }: Props) => {
+  console.log("DetailForum ~ post:", post)
   const { t } = useTranslation(["base", "forum"])
   const queryClient = useQueryClient()
   const { data, isLoading, isError, refetch } = useGetAllCommentForumQuery(
