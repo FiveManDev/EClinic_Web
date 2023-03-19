@@ -1,3 +1,4 @@
+import classNames from "classnames"
 import InputCustom from "components/Common/Input/InputCustom"
 import Spinner from "components/Common/Loading/LoadingIcon"
 import TextAreaCustom from "components/Common/Textarea/TextAreaCustom"
@@ -16,9 +17,11 @@ import { routers } from "shared/constant/constant"
 import { RootState } from "store/store"
 import { ImageItem } from "types/Base.type"
 import UploadImages from "./UploadImage"
-
+type Props = {
+  className: string
+}
 type KeyCreatePost = keyof CreatePostForum
-const CreateQuestion = () => {
+const CreateQuestion = ({ className = "" }: Props) => {
   const { t } = useTranslation("forum")
   const router = useRouter()
   const auth = useSelector((state: RootState) => state.auth)
@@ -95,7 +98,12 @@ const CreateQuestion = () => {
     }
   }
   return (
-    <div className="flex flex-col justify-start space-y-4 background-primary">
+    <div
+      className={classNames(
+        "flex flex-col justify-start space-y-4 background-primary",
+        className
+      )}
+    >
       <h3 className="text-xl">{t("questionTitleHeading")}</h3>
       <InputCustom
         className="max-w-[412px]"

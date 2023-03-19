@@ -13,9 +13,22 @@ import {
   UpdateActionType
 } from "./../types/Post.d"
 class ForumService {
-  async searchPosts(keyword: string, pageNumber: number, pageSize: number) {
-    const res: AxiosResponse = await axiosServer.get(
-      `${URL_API.FORUM_POST}/GetPosts?PageNumber=${pageNumber}&PageSize=${pageSize}&searchText=${keyword}`
+  async searchPosts(
+    keyword: string,
+    pageNumber: number,
+    pageSize: number,
+    tags: string[]
+  ) {
+    const res: AxiosResponse = await axiosClient.get(
+      `${URL_API.FORUM_POST}/SearchPost?SearchText=${keyword}&${
+        tags.length > 0 && tags.map((item) => `Tags=${item}`).join("&")
+      }`,
+      {
+        headers: {
+          PageNumber: pageNumber,
+          PageSize: pageSize
+        }
+      }
     )
     return res as AxiosResponse<IServerResponse<IPost[]>>
   }
@@ -174,6 +187,24 @@ class ForumService {
       `${URL_API.FORUM_POST_HASHTAG}/GetAllHashtag`
     )
     return res.data as IServerResponse<IHashtag[]>
+  }
+  async getTagSortByCount(pageNumber: number, pageSize: number) {
+    const res: AxiosResponse = await axiosClient.get(
+      `${URL_API.FORUM_POST_HASHTAG}/GetTagSortByCount`,
+      {
+        headers: {
+          PageNumber: pageNumber,
+          PageSize: pageSize
+        }
+      }
+    )
+    return res as AxiosResponse<IServerResponse<IHashtag[]>>
+  }
+  async createTag(HashtagName: string) {
+    const res: AxiosResponse = await axiosClient.post(
+      `${URL_API.FORUM_POST_HASHTAG}/CreateHashtag?HashtagName=${HashtagName}`
+    )
+    return res.data as IServerResponse<null>
   }
   async getPostsNoActive(pageNumber: number, pageSize: number) {
     const res: AxiosResponse = await axiosServer.get(

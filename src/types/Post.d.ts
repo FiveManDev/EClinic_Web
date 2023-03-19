@@ -41,7 +41,7 @@ export interface IComment {
   replyCommentDtos: IComment[]
 }
 export interface IHashtag {
-  id: string
+  hashtagID: string
   hashtagName: string
   count: number
 }

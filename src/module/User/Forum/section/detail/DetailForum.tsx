@@ -35,7 +35,6 @@ interface Props {
   post: IPost
 }
 const DetailForum = ({ post }: Props) => {
-  console.log("DetailForum ~ post:", post)
   const { t } = useTranslation(["base", "forum"])
   const queryClient = useQueryClient()
   const { data, isLoading, isError, refetch } = useGetAllCommentForumQuery(
@@ -195,9 +194,9 @@ const DetailForum = ({ post }: Props) => {
     <>
       <div className="flex flex-col justify-start gap-y-4 background-primary">
         <h3 className="text-xl">{post.title}</h3>
-        <div className="relative w-full overflow-hidden rounded-lg h-96">
+        <div className="relative w-full overflow-hidden rounded-sm h-96">
           <ImageCustom
-            src={"/images/sample.png"}
+            src={post.image[0] || "/images/sample.png"}
             fill
             alt="image"
             className="object-cover"

@@ -6,8 +6,7 @@ export const useProfieId = (userId: string) => {
   const queryKey = ["useProfieId", userId]
   const profileQuery = useQuery({
     queryKey,
-    queryFn: () => profileService.GetUserProfilesByID(userId),
-    retry: 0
+    queryFn: () => profileService.GetUserProfilesByID(userId)
   })
   return profileQuery
 }
@@ -19,6 +18,13 @@ export const useSimpleProfile = (userId: string) => {
     retry: 0
   })
   return profileQuery
+}
+export const useGetUserMainProfilesByID = () => {
+  const queryKey = ["useGetUserMainProfilesByID"]
+  return useQuery({
+    queryKey,
+    queryFn: () => profileService.getUserMainProfilesByID()
+  })
 }
 export const useAllRelationship = () => {
   const queryKey = ["AllRelationship"]

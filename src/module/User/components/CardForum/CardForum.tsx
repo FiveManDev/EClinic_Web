@@ -1,5 +1,6 @@
 import classNames from "classnames"
 import ImageCustom from "components/Common/ImageCustom"
+import { useGetAnwerByPostId } from "hooks/query/forum/useForum"
 import Image from "next/image"
 import Link from "next/link"
 import React from "react"
@@ -11,7 +12,7 @@ interface Props {
 }
 const CardForum = ({ kind = "medium", post }: Props) => {
   const { t } = useTranslation("forum")
-
+  const anwerPost = useGetAnwerByPostId(post.id)
   return (
     <Link
       href={`/forum/${post.id}`}
@@ -44,30 +45,31 @@ const CardForum = ({ kind = "medium", post }: Props) => {
             <Image
               src={post.author.avatar}
               fill
+              sizes="(max-width: 768px) 100vw,
+              (max-width: 1200px) 50vw,
+              33vw"
               alt="image"
               className="object-cover rounded-full"
             />
           </div>
           <div className="flex flex-col text-[#9A9FA5] text-sm md:text-[10px] font-medium">
-            <span>{t("card.by")}</span>
-            <span className="text-black">
-              {post.author.firstName + " " + post.author.lastName}
-            </span>
-            <div className="flex items-center gap-2">
-              <span>
-                {t("card.by")} <strong>9</strong>
-              </span>
-              <div className="flex items-center gap-[2px]">
-                <span>{post.likes}</span>
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  viewBox="0 0 24 24"
-                  fill="#ef4444"
-                  className="w-3 h-3 stroke-red-500"
-                >
-                  <path d="M11.645 20.91l-.007-.003-.022-.012a15.247 15.247 0 01-.383-.218 25.18 25.18 0 01-4.244-3.17C4.688 15.36 2.25 12.174 2.25 8.25 2.25 5.322 4.714 3 7.688 3A5.5 5.5 0 0112 5.052 5.5 5.5 0 0116.313 3c2.973 0 5.437 2.322 5.437 5.25 0 3.925-2.438 7.111-4.739 9.256a25.175 25.175 0 01-4.244 3.17 15.247 15.247 0 01-.383.219l-.022.012-.007.004-.003.001a.752.752 0 01-.704 0l-.003-.001z" />
-                </svg>
-              </div>
+            <span className="leading-snug">{t("card.by")} : </span>
+            <strong className="text-xs font-semibold text-black">
+              {anwerPost.data &&
+                anwerPost.data?.data.author.firstName +
+                  anwerPost.data?.data.author.lastName}
+            </strong>
+            <div className="flex items-center gap-1">
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                viewBox="0 0 24 24"
+                fill="#ef4444"
+                className="w-4 h-4 stroke-red-500"
+              >
+                <path d="M11.645 20.91l-.007-.003-.022-.012a15.247 15.247 0 01-.383-.218 25.18 25.18 0 01-4.244-3.17C4.688 15.36 2.25 12.174 2.25 8.25 2.25 5.322 4.714 3 7.688 3A5.5 5.5 0 0112 5.052 5.5 5.5 0 0116.313 3c2.973 0 5.437 2.322 5.437 5.25 0 3.925-2.438 7.111-4.739 9.256a25.175 25.175 0 01-4.244 3.17 15.247 15.247 0 01-.383.219l-.022.012-.007.004-.003.001a.752.752 0 01-.704 0l-.003-.001z" />
+              </svg>
+              <span className="text-xs font-semibold">{post.likes} </span>
+              <span>Cảm ơn</span>
             </div>
           </div>
         </div>

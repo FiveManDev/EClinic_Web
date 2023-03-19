@@ -4,7 +4,10 @@ import {
   Dialog,
   DialogActions,
   DialogContent,
-  DialogTitle
+  DialogTitle,
+  IconButton,
+  Link,
+  Tooltip
 } from "@mui/material"
 import Field from "components/Common/Field/Field"
 import ImageCustom from "components/Common/ImageCustom"
@@ -13,33 +16,28 @@ import CustomButton from "components/User/Button"
 import { useGetAnwerByPostId } from "hooks/query/forum/useForum"
 import HTMLReactParser from "html-react-parser"
 import { useState } from "react"
+import { AiOutlineEye } from "react-icons/ai"
 import { IPost } from "types/Post"
 type Props = {
   post: IPost
 }
 const ViewDetailPost = ({ post }: Props) => {
   const [open, setOpen] = useState(false)
-  const { data, isLoading } = useGetAnwerByPostId(post.id)
+  const { data } = useGetAnwerByPostId(post.id)
   const handleClose = () => {
     setOpen(!open)
   }
   return (
     <>
-      <CustomButton
-        kind="primary"
-        className="mx-auto"
-        onClick={() => setOpen(true)}
-      >
-        Detail
-      </CustomButton>
-      <Dialog
-        open={open}
-        onClose={handleClose}
-        fullWidth
-        maxWidth="lg"
-        scroll="paper"
-      >
-        <DialogTitle>{"Anwers the question here"}</DialogTitle>
+      <Tooltip title="View detail question">
+        <IconButton variant="contained" onClick={() => setOpen(true)}>
+          <AiOutlineEye />
+        </IconButton>
+      </Tooltip>
+      <Dialog open={open} onClose={handleClose} fullWidth scroll="paper">
+        <DialogTitle className="border border-t border-gray-200 border-solid">
+          {"Anwers the question here"}
+        </DialogTitle>
         <DialogContent>
           <Field>
             <Label htmlFor="title">
@@ -108,8 +106,8 @@ const ViewDetailPost = ({ post }: Props) => {
             </>
           )}
         </DialogContent>
-        <DialogActions>
-          <CustomButton kind="secondary" onClick={handleClose}>
+        <DialogActions className="border border-t border-gray-200 border-solid">
+          <CustomButton kind="primary" onClick={handleClose}>
             Close
           </CustomButton>
         </DialogActions>

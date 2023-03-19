@@ -1,10 +1,11 @@
 import PaginationCustom from "components/Common/Pagination"
 import CardForum from "module/User/components/CardForum"
 import CardForumLoading from "module/User/components/CardForum/Loading"
+import { ReactNode } from "react"
 import { IPagination } from "types/Pagination"
 import { IPost } from "types/Post"
 interface Props {
-  title: string
+  title: string | ReactNode
   posts: IPost[] | undefined
   isLoading: boolean
   paginate: IPagination

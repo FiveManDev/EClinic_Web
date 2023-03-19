@@ -12,16 +12,14 @@ export default function useUserGoogle() {
   })
   const action = useGoogleLogin({
     onSuccess: (codeResponse) => {
-      // toast.loading({
-      //   content: "Loading....",
-      //   duration: 0
-      // })
+      toast.loading("Wait a minutes")
       return mutate(codeResponse.access_token, {
         onSuccess: (data: any) => {
           setProfile({
             ...data,
             access_token: codeResponse.access_token
           })
+          toast.dismiss()
         }
       })
     },
