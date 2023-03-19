@@ -140,7 +140,7 @@ export default function TableQuestion() {
                 </TableCell>
                 <TableCell>
                   <div className="flex items-center gap-x-2">
-                    <div className="relative w-8 h-8 rounded-full">
+                    <div className="relative flex-shrink-0 w-8 h-8 rounded-full">
                       <ImageCustom
                         src={row.author.avatar}
                         alt={row.author.firstName}
@@ -161,7 +161,7 @@ export default function TableQuestion() {
                   {row.isActive ? (
                     <Chip label="Active" color="success" variant="outlined" />
                   ) : (
-                    <Chip label="UnActive" color="error" variant="outlined" />
+                    <Chip label="Not active" color="error" variant="outlined" />
                   )}
                 </TableCell>
                 <TableCell align="center">

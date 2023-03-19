@@ -3,26 +3,31 @@ import {
   Dialog,
   DialogActions,
   DialogContent,
-  DialogTitle,
   IconButton,
   Tooltip
 } from "@mui/material"
+
 import { useQueryClient } from "@tanstack/react-query"
 import Editor from "components/Common/Editor/Editor"
 import Field from "components/Common/Field/Field"
 import ImageCustom from "components/Common/ImageCustom"
+import InputCustom from "components/Common/Input"
 import Label from "components/Common/Label/Label"
 import Spinner from "components/Common/Loading/LoadingIcon"
 import CustomButton from "components/User/Button"
 import {
   CreateAnwserPost,
-  useCreateAwnserPostForumMutation
+  useCreateAwnserPostForumMutation,
+  useCreatetagMutation
 } from "hooks/query/forum/useForum"
 import { useState } from "react"
 import { toast } from "react-hot-toast"
 import { AiOutlineQuestionCircle } from "react-icons/ai"
+import { HiPencilSquare } from "react-icons/hi2"
 import { QUERY_KEYS } from "shared/constant/constant"
+import { combineName, dayformat } from "shared/helpers/helper"
 import { IPost } from "types/Post"
+import ImageReview from "../components/ImageReview"
 import MultipleSelectChip from "../components/SelectMutitple"
 type Props = {
   post: IPost
@@ -35,7 +40,9 @@ const UpdateQuestion = ({ post }: Props) => {
     tags: []
   })
   const [open, setOpen] = useState(false)
+  const [tagValue, setTagValue] = useState("")
   const createAwnserPostForumMutation = useCreateAwnserPostForumMutation()
+  const createtagMutation = useCreatetagMutation()
   const handleClose = () => {
     setOpen(!open)
   }
@@ -65,15 +72,25 @@ const UpdateQuestion = ({ post }: Props) => {
       toast.error("Please fill out the information completely")
     }
   }
+  const createTag = () => {
+    createtagMutation.mutate(tagValue, {
+      onSuccess: () => {
+        queryClient.invalidateQueries([QUERY_KEYS.HASHTAG])
+        setTagValue("")
+      },
+      onError: (error) => {
+        toast.error(error.response.data.message || "Create tag failed")
+      }
+    })
+  }
   return (
     <>
-      <CustomButton
-        kind="primary"
-        className="mx-auto"
-        onClick={() => setOpen(true)}
-      >
-        Create awnser
-      </CustomButton>
+      <Tooltip title="Create your anwers">
+        <IconButton variant="contained" onClick={() => setOpen(true)}>
+          <HiPencilSquare />
+        </IconButton>
+      </Tooltip>
+
       <Dialog
         open={open}
         onClose={handleClose}
@@ -81,43 +98,33 @@ const UpdateQuestion = ({ post }: Props) => {
         maxWidth="lg"
         scroll="paper"
       >
-        <DialogTitle>{"Anwers the question here"}</DialogTitle>
         <DialogContent>
           <Field>
-            <Label htmlFor="title">
-              <div className="flex items-center space-x-1">
-                <span> Title of post </span>
-              </div>
-            </Label>
-            <h3 className="text-xl font-semibold">{post.title}</h3>
+            <h3 className="text-2xl font-semibold">{post.title}</h3>
+            <time className="text-xs text-gray-400">
+              {dayformat(post.createdAt)}
+            </time>
           </Field>
           <Field>
-            <Label htmlFor="title">
-              <div className="flex items-center space-x-1">
-                <span> Description of question </span>
+            <div className="flex gap-x-2">
+              <div className="relative flex-shrink-0 w-6 h-6">
+                <ImageCustom
+                  src={post.author.avatar}
+                  fill
+                  className="object-cover rounded-sm"
+                />
               </div>
-            </Label>
-            <h3 className="text-base font-normal text-gray-700">
+              <span>
+                {combineName(post.author.firstName, post.author.lastName)}
+              </span>
+            </div>
+            <h3 className="text-sm font-normal leading-relaxed text-gray-500 ">
               {post.content}
             </h3>
           </Field>
           <Field>
-            <Label htmlFor="content">Picture of disease symptoms</Label>
-            <div className="grid w-full grid-cols-2 gap-3">
-              {post.image.map((item, index) => (
-                <div
-                  className="relative w-full h-[300px] overflow-hidden"
-                  key={index}
-                >
-                  <ImageCustom
-                    src={item}
-                    fill
-                    alt="post"
-                    className="object-cover"
-                  />
-                </div>
-              ))}
-            </div>
+            <Label>Picture of disease symptoms</Label>
+            <ImageReview images={post.image} />
           </Field>
           <Field>
             <Label htmlFor="content">
@@ -136,6 +143,7 @@ const UpdateQuestion = ({ post }: Props) => {
               </div>
             </Label>
             <Editor
+              placeholder="Write your anwers......"
               className="w-full entry-content custom-quill"
               value={anwerData.content}
               onChange={(value) => handleChangeAnwerData("content", value)}
@@ -154,6 +162,22 @@ const UpdateQuestion = ({ post }: Props) => {
                 </span>
               </div>
             </Label>
+            <div className="flex mb-3 gap-x-1">
+              <InputCustom
+                value={tagValue}
+                className="w-full md:max-w-[412px]"
+                placeholder="Create your tag"
+                onChange={(e) => setTagValue(e.target.value)}
+              />
+              <CustomButton
+                kind="primary"
+                className="!rounded-[5px]"
+                disabled={createtagMutation.isLoading}
+                onClick={createTag}
+              >
+                {createtagMutation.isLoading ? <Spinner /> : "Add"}
+              </CustomButton>
+            </div>
             <MultipleSelectChip
               hashTags={anwerData.tags}
               handleChange={(value) =>

@@ -58,7 +58,6 @@ const FormSignup = () => {
     null
   )
   const { action, profile, error } = useUserGoogle()
-
   const {
     handleSubmit,
     register,

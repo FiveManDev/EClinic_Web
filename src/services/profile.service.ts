@@ -12,6 +12,12 @@ class ProfileService {
     )
     return res.data as IServerResponse<(IProfile & IRelationShip)[]>
   }
+  async getUserMainProfilesByID() {
+    const res: AxiosResponse = await axiosClient.get(
+      `${URL_API.PROFILE}/GetUserMainProfilesByID`
+    )
+    return res.data as IServerResponse<IProfile & IRelationShip>
+  }
   async getSimpleProfile(userId: string) {
     const res: AxiosResponse = await axiosClient.get(
       `${URL_API.PROFILE}/GetSimpleProfile?UserID=${userId}`

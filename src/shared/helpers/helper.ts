@@ -1,4 +1,6 @@
+import { AxiosResponse } from "axios"
 import dayjs from "dayjs"
+import { IPagination } from "types/Pagination"
 import { ITokenDecode } from "types/Token"
 
 export const isProduction = () => {
@@ -54,4 +56,18 @@ export const combineName = (lastName: string, firstName: string) => {
 }
 export const dayformat = (date: string) => {
   return dayjs(date).format("DD/MM/YYYY")
+}
+export const getDataPaginate = (
+  response: AxiosResponse | undefined = undefined
+) => {
+  return response?.headers["x-pagination"]
+    ? (JSON.parse(response?.headers["x-pagination"]) as IPagination)
+    : {
+        PageIndex: 1,
+        PageSize: 10,
+        TotalCount: 0,
+        TotalPages: 0,
+        HasPrevious: false,
+        HasNext: false
+      }
 }

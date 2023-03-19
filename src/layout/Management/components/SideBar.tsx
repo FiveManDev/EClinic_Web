@@ -7,6 +7,7 @@ export type ItemSidebar = {
   icon: ReactNode
   title: string
   link: string
+  onClick?: () => void
 }
 export type Props = {
   items: ItemSidebar[]
@@ -40,6 +41,7 @@ const SideBar = ({ items }: Props) => {
                 ? "bg-[#0C0B1A] text-white font-semibold"
                 : "font-light text-[#5F666F]"
             )}
+            onClick={item.onClick}
           >
             {item.icon}
             <span>{item.title}</span>

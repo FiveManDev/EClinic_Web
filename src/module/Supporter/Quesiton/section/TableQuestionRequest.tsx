@@ -1,4 +1,10 @@
-import { Chip, Skeleton, TablePagination } from "@mui/material"
+import {
+  Chip,
+  IconButton,
+  Skeleton,
+  TablePagination,
+  Tooltip
+} from "@mui/material"
 import Table from "@mui/material/Table"
 import TableBody from "@mui/material/TableBody"
 import TableCell from "@mui/material/TableCell"
@@ -7,7 +13,6 @@ import TableHead from "@mui/material/TableHead"
 import TableRow from "@mui/material/TableRow"
 import { useQueryClient } from "@tanstack/react-query"
 import ImageCustom from "components/Common/ImageCustom"
-import CustomButton from "components/User/Button"
 import useConfirm from "context/ComfirmContext"
 import {
   useChangeActivePost,
@@ -16,6 +21,7 @@ import {
 import ViewDetailPost from "module/Supporter/components/ViewDetailPost"
 import React from "react"
 import { toast } from "react-hot-toast"
+import { AiFillLock, AiFillUnlock } from "react-icons/ai"
 import { QUERY_KEYS } from "shared/constant/constant"
 import { combineName, dayformat } from "shared/helpers/helper"
 import { IPagination } from "types/Pagination"
@@ -192,29 +198,18 @@ export default function TableQuestionRequest() {
                   {row.isActive ? (
                     <Chip label="Active" color="success" variant="outlined" />
                   ) : (
-                    <Chip label="UnActive" color="error" variant="outlined" />
+                    <Chip label="Not active" color="error" variant="outlined" />
                   )}
                 </TableCell>
-                <TableCell align="center" className="flex">
+                <TableCell align="center" className="flex space-x-2 ">
                   <ViewDetailPost post={row} />
-                  {row.isActive ? (
-                    <CustomButton
-                      onClick={() => changeStatusPost(row.id)}
-                      kind="primary"
-                      color="error"
-                      className="bg-red-500 "
-                    >
-                      Block
-                    </CustomButton>
-                  ) : (
-                    <CustomButton
-                      onClick={() => changeStatusPost(row.id)}
-                      kind="secondary"
-                      color="success"
-                    >
-                      Unblock
-                    </CustomButton>
-                  )}
+                  <Tooltip
+                    title={`${row.isActive ? "Inactive" : "UnActive"} question`}
+                  >
+                    <IconButton onClick={() => changeStatusPost(row.id)}>
+                      {row.isActive ? <AiFillLock /> : <AiFillUnlock />}
+                    </IconButton>
+                  </Tooltip>
                 </TableCell>
               </TableRow>
             ))}

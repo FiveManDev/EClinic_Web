@@ -1,15 +1,21 @@
 import { Tab, Tabs } from "@mui/material"
+import { useRouter } from "next/router"
 import { SyntheticEvent, useMemo, useState } from "react"
-import { MdOutlineHistory, MdOutlinePeopleAlt } from "react-icons/md"
+import { MdLogout, MdOutlineHistory, MdOutlinePeopleAlt } from "react-icons/md"
+import { RiLockPasswordLine } from "react-icons/ri"
+import { routers } from "shared/constant/constant"
+import { logoutUser } from "store/module/auth/action-creators"
+import { useAppDispatch } from "store/store"
 import LayoutItem from "../../components/layout"
 import ChangePassword from "../change-password"
 import HistoryQuestion from "../history-question"
 import Profile from "../profile"
 import { TabsWrapper } from "./Tabs.style"
-import { RiLockPasswordLine } from "react-icons/ri"
 
 const SiderBar = () => {
   const [tabIndex, setTabIndex] = useState(0)
+  const dispatch = useAppDispatch()
+  const router = useRouter()
 
   const handleTabChange = (
     event: SyntheticEvent<Element, Event>,
@@ -17,7 +23,10 @@ const SiderBar = () => {
   ) => {
     setTabIndex(value)
   }
-
+  const logout = () => {
+    dispatch(logoutUser())
+    router.push(routers.signIn)
+  }
   const tabs = useMemo(
     () => [
       {
@@ -49,6 +58,12 @@ const SiderBar = () => {
             <HistoryQuestion />
           </LayoutItem>
         )
+      },
+      {
+        key: 3,
+        label: `Logout`,
+        icon: <MdLogout />,
+        onclick: () => logout()
       }
     ],
     []
@@ -59,10 +74,11 @@ const SiderBar = () => {
         orientation="vertical"
         value={tabIndex}
         onChange={handleTabChange}
-        className="shadow-md h-fit"
+        className="rounded-lg shadow-md h-fit"
       >
         {tabs.map((tab) => (
           <Tab
+            onClick={tab?.onclick}
             icon={tab.icon}
             label={tab.label}
             key={tab.key}

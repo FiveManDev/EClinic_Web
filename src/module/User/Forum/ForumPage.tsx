@@ -1,12 +1,12 @@
-import { useGetAllPostForumQuery } from "hooks/query/forum/useForum"
-import useDebounce from "hooks/useDebounce"
+import { useSearchPostsForum } from "hooks/query/forum/useForum"
 import UserSecondaryLayout from "layout/User/UserSecondaryLayout"
 import Head from "next/head"
 import { useState } from "react"
 import { useTranslation } from "react-i18next"
 import { PAGE_SIZE } from "shared/constant/constant"
+import { getDataPaginate } from "shared/helpers/helper"
 import { IBreadcrum } from "types/Base.type"
-import { IPagination } from "types/Pagination"
+import { IHashtag } from "types/Post"
 import CreateQuestion from "./section/create"
 import ListCardForum from "./section/list/ListCardForum"
 import Search from "./section/search"
@@ -18,26 +18,18 @@ const ForumPage = () => {
     { label: t("base:pages.forum") }
   ]
   const [pageIndex, setPageIndex] = useState(1)
-  const [searchText, setSearchText] = useState("")
-  const debounceSearchText = useDebounce(searchText, 800)
-  const getAllPostForumQuery = useGetAllPostForumQuery(pageIndex, PAGE_SIZE)
-  // const searchPostsForum = useSearchPostsForum(
-  //   debounceSearchText,
-  //   pageIndex,
-  //   PAGE_SIZE
-  // )
-  const paginateData = getAllPostForumQuery.data?.headers["x-pagination"]
-    ? (JSON.parse(
-        getAllPostForumQuery.data.headers["x-pagination"]
-      ) as IPagination)
-    : {
-        PageIndex: pageIndex,
-        PageSize: 0,
-        TotalCount: 0,
-        TotalPages: 0,
-        HasPrevious: false,
-        HasNext: false
-      }
+  const [searchData, setSearchData] = useState({
+    searchText: "",
+    tags: [] as IHashtag[]
+  })
+  console.log("ForumPage ~ tags:", searchData.tags)
+  const searchPostsForum = useSearchPostsForum(
+    searchData.searchText,
+    pageIndex,
+    PAGE_SIZE,
+    searchData.tags.map((item) => item.hashtagID)
+  )
+  const paginateData = getDataPaginate(searchPostsForum.data)
   return (
     <>
       <Head>
@@ -49,11 +41,58 @@ const ForumPage = () => {
       <UserSecondaryLayout breadrums={breadrums}>
         <div className="grid grid-cols-3 gap-4 mt-10 md:gap-7">
           <div className="grid grid-cols-3 col-span-3 gap-7">
-            <div className="order-last col-span-3 md:order-first md:col-span-2">
-              <CreateQuestion />
+            <div className="order-last col-span-3 space-y-3 md:order-first md:col-span-2">
+              <CreateQuestion
+                className={
+                  searchData.searchText || searchData.tags.length > 0
+                    ? "hidden"
+                    : ""
+                }
+              />
+              <div className="col-span-3 space-y-4 md:col-span-2 background-primary">
+                <ListCardForum
+                  onPageIndexChange={(indexPage) => setPageIndex(indexPage)}
+                  title={
+                    searchData.searchText || searchData.tags ? (
+                      <>
+                        <div className="flex flex-col gap-y-2">
+                          <span className="text-gray-500">
+                            Your resuls:{" "}
+                            <strong className="text-lg font-semibold text-black">
+                              {searchData.searchText || ""}
+                            </strong>
+                          </span>
+                          <span>
+                            Tags:{" "}
+                            <span className="text-sm text-gray-500">
+                              {searchData.tags
+                                .map((item) => item.hashtagName)
+                                .join(", ")}
+                            </span>
+                          </span>
+                        </div>
+                      </>
+                    ) : (
+                      t("forum:allquestion")
+                    )
+                  }
+                  paginate={paginateData}
+                  posts={searchPostsForum.data?.data.data}
+                  isLoading={searchPostsForum.isLoading}
+                />
+              </div>
             </div>
             <div className="col-span-3 md:col-span-1">
-              <Search onSearchChange={(value) => setSearchText(value)} />
+              <Search
+                onChangeHashTags={(value) =>
+                  setSearchData((prev) => ({ ...prev, tags: [...value] }))
+                }
+                tagsActive={searchData.tags}
+                isLoading={searchPostsForum.isLoading}
+                onSearchChange={(value) =>
+                  setSearchData((prev) => ({ ...prev, searchText: value }))
+                }
+              />
             </div>
           </div>
           {/* <div className="w-full col-span-3 md:col-span-2 background-primary">
@@ -87,15 +126,6 @@ const ForumPage = () => {
               </div>
             </div>
           </div> */}
-          <div className="col-span-3 space-y-4 md:col-span-2 background-primary">
-            <ListCardForum
-              onPageIndexChange={(indexPage) => setPageIndex(indexPage)}
-              title={t("forum:allquestion")}
-              paginate={paginateData}
-              posts={getAllPostForumQuery.data?.data.data}
-              isLoading={getAllPostForumQuery.isLoading}
-            />
-          </div>
         </div>
       </UserSecondaryLayout>
     </>

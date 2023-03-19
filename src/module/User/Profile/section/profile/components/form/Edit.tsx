@@ -14,6 +14,7 @@ import DatePickerCustom from "components/Common/DatePicker/DatePickerCustom"
 import Spinner from "components/Common/Loading/LoadingIcon"
 import CustomButton from "components/User/Button"
 import { CustomInput } from "components/User/Input"
+import useConfirm from "context/ComfirmContext"
 import {
   useAllRelationship,
   useGetBloodTypes
@@ -55,9 +56,19 @@ const schema = yup.object({
     ),
   dateOfBirth: yup.string().required("Please enter your date of birth"),
   address: yup.string().required("Please enter your address"),
-  bloodType: yup.string().required("Please choose your blood").default("A")
+  bloodType: yup.string().required("Please choose your blood").default("A+"),
+  weight: yup
+    .number()
+    .typeError("Weight must be numbers")
+    .required("Please enter your weight"),
+  height: yup
+    .number()
+    .typeError("Height must be numbers")
+    .required("Please enter your weight")
 })
 const Edit = ({ onSubmit, onDelete, labelForm, profile }: Props) => {
+  const confirm = useConfirm()
+
   const relationShipQuery = useAllRelationship()
   const getBloodTypes = useGetBloodTypes()
   const {
@@ -74,11 +85,22 @@ const Edit = ({ onSubmit, onDelete, labelForm, profile }: Props) => {
     defaultValues: profile
   })
   watch("avatar", null)
-  const watchBlood = watch("bloodType", profile?.bloodType || "A+")
-  const watchGender = watch("gender", profile?.gender || true)
+  const watchBlood = watch("bloodType", profile ? profile?.bloodType : "A+")
+  const watchGender = watch("gender", profile ? profile?.gender : true)
   const watchRelationship = watch("relationshipID", profile?.relationshipID)
   const onFileChange = (file: File) => {
     setValue("avatar", file)
+  }
+  const handleDelete = async (profileId: string) => {
+    if (confirm) {
+      const choice = await confirm({
+        title: "Delete profile",
+        content: "Are you sure you want to delete this profile?"
+      })
+      if (choice) {
+        onDelete(profileId)
+      }
+    }
   }
   useEffect(() => {
     if (profile === undefined) {
@@ -88,11 +110,12 @@ const Edit = ({ onSubmit, onDelete, labelForm, profile }: Props) => {
         email: "",
         address: "",
         phone: "",
-        bloodType: "A",
+        bloodType: "A+",
         weight: 0,
         height: 0
       })
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [profile])
   return (
     <>
@@ -189,10 +212,9 @@ const Edit = ({ onSubmit, onDelete, labelForm, profile }: Props) => {
           />
 
           <FormControl>
-            <FormLabel id="radio-buttons">Gender</FormLabel>
+            <FormLabel>Gender</FormLabel>
             <RadioGroup
               row
-              aria-labelledby="radio-buttons"
               value={watchGender}
               onChange={(e) =>
                 setValue("gender", e.target.value === "true" ? true : false)
@@ -212,15 +234,26 @@ const Edit = ({ onSubmit, onDelete, labelForm, profile }: Props) => {
             </RadioGroup>
           </FormControl>
           <div className="flex items-start space-x-3">
-            <CustomInput label="Weight" control={control} name="weight" />
-            <CustomInput label="Height" control={control} name="height" />
+            <CustomInput
+              label="Weight"
+              control={control}
+              name="weight"
+              error={!!errors.weight}
+              helperText={errors.weight?.message?.toString()}
+            />
+            <CustomInput
+              label="Height"
+              control={control}
+              name="height"
+              error={!!errors.height}
+              helperText={errors.height?.message?.toString()}
+            />
           </div>
           {profile?.relationshipName !== RELATIONSHIPS.ME && (
             <FormControl>
-              <FormLabel id="radio-buttons">Relationship</FormLabel>
+              <FormLabel>Relationship</FormLabel>
               <RadioGroup
                 row
-                aria-labelledby="radio-buttons"
                 value={watchRelationship}
                 onChange={(e) => setValue("relationshipID", e.target.value)}
                 name="radio-buttons-group"
@@ -261,7 +294,7 @@ const Edit = ({ onSubmit, onDelete, labelForm, profile }: Props) => {
                 <CustomButton
                   kind="secondary"
                   className="text-red-600 border-red-600 hover:border-red-500 "
-                  onClick={() => onDelete(profile?.profileID)}
+                  onClick={() => handleDelete(profile.profileID)}
                 >
                   Delete
                 </CustomButton>

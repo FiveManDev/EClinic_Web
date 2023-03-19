@@ -1,6 +1,7 @@
 import classNames from "classnames"
+import { HTMLAttributes } from "react"
 
-interface Props {
+interface Props extends HTMLAttributes<HTMLDivElement> {
   label: string
   className?: string
 }

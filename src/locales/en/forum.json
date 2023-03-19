@@ -16,6 +16,7 @@
   "allquestion": "All questions",
   "card": {
     "by": "Answered by",
+    "create": "Created by",
     "exp": "years of experience"
   },
   "question": "Question",

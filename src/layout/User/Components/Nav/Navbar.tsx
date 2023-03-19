@@ -47,9 +47,9 @@ const Navbar = ({ show = false, onClose }: Props) => {
         <ChangeLanguage />
         {auth.isLoggedIn ? (
           <>
-            <Badge badgeContent={4} color="primary">
+            {/* <Badge badgeContent={4} color="primary">
               <MdNotificationsNone className="text-2xl cursor-pointer" />
-            </Badge>
+            </Badge> */}
             <UserAvatar />
           </>
         ) : (

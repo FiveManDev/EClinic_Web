@@ -60,16 +60,19 @@ export const useCreateAwnserPostForumMutation = () =>
 export const useSearchPostsForum = (
   keyword: string,
   pageNumber: number,
-  pageSize: number
+  pageSize: number,
+  tags: string[]
 ) => {
-  const queryKey = [QUERY_KEYS.FORUM.POST, keyword, pageNumber, pageSize]
+  const queryKey = [
+    QUERY_KEYS.FORUM.POST,
+    keyword ? keyword : " ",
+    tags,
+    pageNumber,
+    pageSize
+  ]
   return useQuery({
     queryKey,
-    queryFn: () => {
-      if (keyword) {
-        return forumService.searchPosts(keyword, pageNumber, pageSize)
-      }
-    }
+    queryFn: () => forumService.searchPosts(keyword, pageNumber, pageSize, tags)
   })
 }
 export const useGetPostbyIdQuery = (id: string) => {
@@ -158,3 +161,19 @@ export const useGetAllHashTagQuery = () => {
     queryFn: () => forumService.getAllHashtag()
   })
 }
+export const useGetHashtagBySortQuery = (
+  pageNumber: number,
+  pageSize: number
+) => {
+  const queryKey = [QUERY_KEYS.HASHTAG, pageNumber, pageSize]
+  return useQuery({
+    queryKey,
+    queryFn: () => forumService.getTagSortByCount(pageNumber, pageSize),
+    retry: 1,
+    staleTime: 1000 * 6
+  })
+}
+export const useCreatetagMutation = () =>
+  useMutation({
+    mutationFn: (HashtagName: string) => forumService.createTag(HashtagName)
+  })

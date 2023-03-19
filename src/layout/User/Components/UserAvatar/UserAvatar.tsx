@@ -7,15 +7,14 @@ import {
   Tooltip
 } from "@mui/material"
 import ImageCustom from "components/Common/ImageCustom"
-import { useSimpleProfile } from "hooks/query/profile/useProfile"
+import { useGetUserMainProfilesByID } from "hooks/query/profile/useProfile"
 import Image from "next/image"
 import Link from "next/link"
 import { useRouter } from "next/router"
 import { useState } from "react"
-import { useSelector } from "react-redux"
 import { routers } from "shared/constant/constant"
 import { logoutUser } from "store/module/auth/action-creators"
-import { RootState, useAppDispatch } from "store/store"
+import { useAppDispatch } from "store/store"
 
 const MENU = [
   {
@@ -23,25 +22,16 @@ const MENU = [
     href: "/user/profile"
   },
   {
-    title: "Giỏ hàng",
-    href: "/profile"
-  },
-  {
     title: "Câu hỏi của bạn",
-    href: "/profile"
-  },
-  {
-    title: "Lịch sử giao dịch",
     href: "/profile"
   }
 ]
 
 const UserAvatar = () => {
   const router = useRouter()
-  const { user } = useSelector((state: RootState) => state.auth)
   const dispatch = useAppDispatch()
   const [anchorElUser, setAnchorElUser] = useState<null | HTMLElement>(null)
-  const { isLoading, data } = useSimpleProfile(user.userId)
+  const { isLoading, data } = useGetUserMainProfilesByID()
   const handleOpenUserMenu = (event: React.MouseEvent<HTMLElement>) => {
     setAnchorElUser(event.currentTarget)
   }
@@ -69,7 +59,7 @@ const UserAvatar = () => {
             <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
               <div className="relative overflow-hidden rounded-full w-9 h-9">
                 <ImageCustom
-                  src={data?.data?.avatar || "/images/default.jpeg"}
+                  src={(data.data.avatar as string) || "/images/default.jpeg"}
                   fill
                   sizes="(max-width: 768px) 100vw,
               (max-width: 1200px) 50vw,
@@ -106,7 +96,9 @@ const UserAvatar = () => {
                 <div className="flex px-5 py-3 space-x-2 ">
                   <div className="relative overflow-hidden rounded-full w-9 h-9">
                     <Image
-                      src={data?.data?.avatar || "/images/default.jpeg"}
+                      src={
+                        (data?.data?.avatar as string) || "/images/default.jpeg"
+                      }
                       fill
                       sizes="(max-width: 768px) 100vw,
               (max-width: 1200px) 50vw,
@@ -119,7 +111,7 @@ const UserAvatar = () => {
                       {data.data.firstName + " " + data.data.lastName}
                     </div>
                     <small className="text-[10px] text-gray-400">
-                      abc@gmail.com
+                      {data.data.email}
                     </small>
                   </div>
                 </div>
