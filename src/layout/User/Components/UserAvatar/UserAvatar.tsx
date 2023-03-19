@@ -6,13 +6,14 @@ import {
   styled,
   Tooltip
 } from "@mui/material"
+import { useQueryClient } from "@tanstack/react-query"
 import ImageCustom from "components/Common/ImageCustom"
 import { useGetUserMainProfilesByID } from "hooks/query/profile/useProfile"
 import Image from "next/image"
 import Link from "next/link"
 import { useRouter } from "next/router"
 import { useState } from "react"
-import { routers } from "shared/constant/constant"
+import { QUERY_KEYS, routers } from "shared/constant/constant"
 import { logoutUser } from "store/module/auth/action-creators"
 import { useAppDispatch } from "store/store"
 
@@ -31,6 +32,7 @@ const UserAvatar = () => {
   const router = useRouter()
   const dispatch = useAppDispatch()
   const [anchorElUser, setAnchorElUser] = useState<null | HTMLElement>(null)
+  const queryClient = useQueryClient()
   const { isLoading, data } = useGetUserMainProfilesByID()
   const handleOpenUserMenu = (event: React.MouseEvent<HTMLElement>) => {
     setAnchorElUser(event.currentTarget)
@@ -41,6 +43,7 @@ const UserAvatar = () => {
   const logout = () => {
     dispatch(logoutUser())
     router.push(routers.signIn)
+    queryClient.invalidateQueries([QUERY_KEYS.PROFILE])
   }
 
   return (

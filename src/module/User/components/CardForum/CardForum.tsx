@@ -1,3 +1,4 @@
+import { Skeleton } from "@mui/material"
 import classNames from "classnames"
 import ImageCustom from "components/Common/ImageCustom"
 import { useGetAnwerByPostId } from "hooks/query/forum/useForum"
@@ -5,6 +6,7 @@ import Image from "next/image"
 import Link from "next/link"
 import React from "react"
 import { useTranslation } from "react-i18next"
+import { combineName } from "shared/helpers/helper"
 import { IPost } from "types/Post"
 interface Props {
   post: IPost
@@ -42,22 +44,29 @@ const CardForum = ({ kind = "medium", post }: Props) => {
         </h4>
         <div className="flex items-center space-x-3">
           <div className="relative h-14 md:w-11 w-14 md:h-11">
-            <Image
-              src={post.author.avatar}
-              fill
-              sizes="(max-width: 768px) 100vw,
+            {anwerPost.data && (
+              <Image
+                src={anwerPost.data.data.author.avatar}
+                fill
+                sizes="(max-width: 768px) 100vw,
               (max-width: 1200px) 50vw,
               33vw"
-              alt="image"
-              className="object-cover rounded-full"
-            />
+                alt="image"
+                className="object-cover rounded-full"
+              />
+            )}
+            {anwerPost.isLoading && (
+              <Skeleton variant="circular" className="w-full h-full " />
+            )}
           </div>
           <div className="flex flex-col text-[#9A9FA5] text-sm md:text-[10px] font-medium">
             <span className="leading-snug">{t("card.by")} : </span>
             <strong className="text-xs font-semibold text-black">
               {anwerPost.data &&
-                anwerPost.data?.data.author.firstName +
-                  anwerPost.data?.data.author.lastName}
+                combineName(
+                  anwerPost.data?.data.author.firstName,
+                  anwerPost.data?.data.author.lastName
+                )}
             </strong>
             <div className="flex items-center gap-1">
               <svg

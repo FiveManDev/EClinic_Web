@@ -82,6 +82,11 @@ export const useGetPostbyIdQuery = (id: string) => {
     queryFn: () => forumService.getPostById(id)
   })
 }
+export const useDeletePostbyIdMutaiton = () => {
+  return useMutation({
+    mutationFn: (id: string) => forumService.deletePost(id)
+  })
+}
 export const useGetPostByUserId = (pageNumber: number, pageSize: number) => {
   const queryKey = [QUERY_KEYS.FORUM.POST, pageNumber, pageSize]
   return useQuery({

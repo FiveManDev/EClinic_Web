@@ -13,6 +13,12 @@ class EmailService {
     )
     return res.data as IServerResponse<string>
   }
+  async verifyEmail(email: string) {
+    const res: AxiosResponse = await axios.get(
+      `https://localhost:4444/api/v1/Mail/VerifyEmail?email=${email}`
+    )
+    return res.data as IServerResponse<string>
+  }
 }
 
 export const emailService = new EmailService()

@@ -204,7 +204,7 @@ export default function TableQuestionRequest() {
                 <TableCell align="center" className="flex space-x-2 ">
                   <ViewDetailPost post={row} />
                   <Tooltip
-                    title={`${row.isActive ? "Inactive" : "UnActive"} question`}
+                    title={`${row.isActive ? "Inactive" : "Active"} question`}
                   >
                     <IconButton onClick={() => changeStatusPost(row.id)}>
                       {row.isActive ? <AiFillLock /> : <AiFillUnlock />}

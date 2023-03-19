@@ -7,6 +7,11 @@ export interface IChangePassowrd {
   newPassword: string
   confirmPassword: string
 }
+export interface IResetPassowrd {
+  email: string
+  newPassword: string
+  confirmPassword: string
+}
 export const useAccountChangePassowordMutation = () => {
   return useMutation({
     mutationFn: (value: IChangePassowrd) => authService.changePassword(value),
@@ -18,5 +23,10 @@ export const useAccountChangePassowordMutation = () => {
         toast.error("Update password Failed")
       }
     }
+  })
+}
+export const useAccountResetPassowordMutation = () => {
+  return useMutation({
+    mutationFn: (value: IResetPassowrd) => authService.resetPassword(value)
   })
 }

@@ -109,6 +109,12 @@ class ForumService {
     )
     return res.data as IServerResponse<IComment[]>
   }
+  async deletePost(postId: string) {
+    const res: AxiosResponse = await axiosClient.delete(
+      `${URL_API.FORUM_POST}/DeletePostByID?PostID=${postId}`
+    )
+    return res.data as IServerResponse<null>
+  }
   async createComment(body: ICreateCommentForum) {
     const res: AxiosResponse = await axiosClient.post(
       `${URL_API.FORUM_POST_COMMENT}/CreateComment`,

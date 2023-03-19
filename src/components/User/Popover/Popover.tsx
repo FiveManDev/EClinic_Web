@@ -7,12 +7,14 @@ interface PopoverProps {
   children?: React.ReactNode
   className?: string
   buttonTrigger: React.ReactNode
+  close?: () => void
 }
 function Popover({
   position = "left",
   children,
   className = "z-10",
-  buttonTrigger
+  buttonTrigger,
+  close
 }: PopoverProps) {
   const [isShowSettings, setIsShowSettings] = useState(false)
   const { nodeRef } = useClickOutSide(() => setIsShowSettings(false))

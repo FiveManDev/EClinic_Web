@@ -19,7 +19,6 @@ export default function useUserGoogle() {
             ...data,
             access_token: codeResponse.access_token
           })
-          toast.dismiss()
         }
       })
     },

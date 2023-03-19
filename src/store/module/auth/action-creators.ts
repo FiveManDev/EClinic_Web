@@ -5,7 +5,6 @@ import { ITokenDecode } from "types/Token"
 import { IUser } from "../../../types/User"
 import { AppDispatch } from "./../../store"
 import { authenticate, deleteAuthenticate } from "./auth-slice"
-
 export const loginUser = (user: IUser) => async (dispatch: AppDispatch) => {
   dispatch(authenticate(user))
 }
