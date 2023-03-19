@@ -1,5 +1,5 @@
 import { AxiosResponse } from "axios"
-import { IChangePassowrd } from "hooks/query/account/useAccount"
+import { IChangePassowrd, IResetPassowrd } from "hooks/query/account/useAccount"
 import axiosClient from "shared/axios/httpClient"
 import { URL_API, VERSION } from "shared/constant/constant"
 import { token as Token } from "shared/utils/token"
@@ -18,7 +18,17 @@ class AuthService {
     )
     return res.data as IServerResponse<any>
   }
-
+  async resetPassword(value: IResetPassowrd) {
+    const res: AxiosResponse = await axiosClient.post(
+      `${URL_API.ACCOUNT}/ResetPassword`,
+      {
+        email: value.email,
+        newPassword: value.newPassword,
+        confirmPassword: value.confirmPassword
+      }
+    )
+    return res.data as IServerResponse<null>
+  }
   async refreshToken(accessToken?: string, refreshToken?: string) {
     const token = {
       accessToken: accessToken || Token.getToken().access_token || "",

@@ -12,6 +12,22 @@ class ProfileService {
     )
     return res.data as IServerResponse<(IProfile & IRelationShip)[]>
   }
+  async searchFamlyProfiles(
+    pageNumber: number,
+    pageSize: number,
+    searchText: string
+  ) {
+    const res: AxiosResponse = await axiosClient.get(
+      `${URL_API.PROFILE}/SearchFamlyProfiles?SearchText=${searchText}`,
+      {
+        headers: {
+          PageNumber: pageNumber,
+          PageSize: pageSize
+        }
+      }
+    )
+    return res as AxiosResponse<IServerResponse<(IProfile & IRelationShip)[]>>
+  }
   async getUserMainProfilesByID() {
     const res: AxiosResponse = await axiosClient.get(
       `${URL_API.PROFILE}/GetUserMainProfilesByID`

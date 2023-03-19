@@ -3,14 +3,16 @@ import CustomButton from "components/User/Button"
 import {
   useCreateProfileMutation,
   useDeleteProfileMutation,
-  useProfieId,
+  useSearchFamlyProfilesQuery,
   useUpdateProfileMutation
 } from "hooks/query/profile/useProfile"
-import { ChangeEvent, useEffect, useRef, useState } from "react"
+import useDebounce from "hooks/useDebounce"
+import { useEffect, useState } from "react"
 import { FieldValues } from "react-hook-form"
 import { toast } from "react-hot-toast"
 import { HiMagnifyingGlass } from "react-icons/hi2"
 import { useSelector } from "react-redux"
+import { PAGE_SIZE } from "shared/constant/constant"
 import { RootState } from "store/store"
 import { IProfile, IRelationShip } from "types/Profile.type"
 import Edit from "./components/form/Edit"
@@ -20,33 +22,33 @@ import ProfileItem from "./components/ProfileItem"
 type Action = "add" | "edit" | "view"
 const Profile = () => {
   const [profiles, setProfiles] = useState<(IProfile & IRelationShip)[]>([])
-  const refProfile = useRef<(IProfile & IRelationShip)[]>()
   const [ownerProfile, setOwnerProfile] = useState<
     (IProfile & IRelationShip) | undefined
   >(undefined)
+  const [pageIndex, setPageIndex] = useState(1)
+  const [searchText, setSearchText] = useState("")
+  const searchTextDebounce = useDebounce(searchText, 1000)
   const auth = useSelector((state: RootState) => state.auth)
   const [mode, setMode] = useState<Action>("view")
 
   //query
-  const { data, isSuccess, isError, isLoading, refetch } = useProfieId(
-    auth.user.userId
-  )
+  const { data, status, isError, isLoading, refetch } =
+    useSearchFamlyProfilesQuery(pageIndex, PAGE_SIZE, searchTextDebounce)
   const deleteProfileMutation = useDeleteProfileMutation()
   const updateProfileMutaiton = useUpdateProfileMutation()
   const createProfileMutaiton = useCreateProfileMutation()
   useEffect(() => {
-    if (isSuccess) {
-      refProfile.current = data.data
-      setProfiles(data.data)
+    if (status === "success") {
+      setProfiles(data.data.data)
       //default value for owner profiled to display first render
-      const owner = data?.data.find((item) => {
+      const owner = data?.data.data.find((item) => {
         return item.userID === auth.user.userId
       })
       setOwnerProfile(owner)
       setMode("view")
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [isSuccess])
+  }, [status, data])
   if (isError) {
     return <p>Not found</p>
   }
@@ -88,7 +90,7 @@ const Profile = () => {
     if (mode == "add") {
       setOwnerProfile(undefined)
     } else if (mode === "edit" || mode === "view") {
-      const owner = data?.data.find((item) => {
+      const owner = data?.data.data.find((item) => {
         return item.profileID === profileID
       })
       setOwnerProfile(owner)
@@ -111,34 +113,11 @@ const Profile = () => {
       }
     })
   }
-  const handleSearchProfile = (e: ChangeEvent<HTMLInputElement>) => {
-    if (e.target.value) {
-      const keyword = e.target.value
-      const newProfiles = refProfile.current!.sort((a, b) => {
-        const fullnameA = a.firstName + a.lastName
-        const fullnameB = b.firstName + b.lastName
-        if (
-          fullnameA.toLocaleLowerCase().includes(keyword) &&
-          !fullnameB.toLocaleLowerCase().includes(keyword)
-        ) {
-          return -1
-        } else if (
-          !fullnameA.includes(keyword) &&
-          fullnameB.includes(keyword)
-        ) {
-          return 1
-        } else {
-          return 0
-        }
-      })
-      setProfiles([...newProfiles])
-    }
-  }
   return (
-    <div className="flex w-full bg-white ">
+    <div className="flex w-full bg-white">
       <div className="w-[340px] flex flex-col space-y-4">
         <InputCustom
-          onChange={handleSearchProfile}
+          onChange={(e) => setSearchText(e.target.value)}
           icon={<HiMagnifyingGlass />}
           className="w-full md:max-w-[412px]"
           placeholder="Tìm nhanh hồ sơ"

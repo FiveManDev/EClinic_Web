@@ -5,6 +5,7 @@ export const routers = {
 }
 export const QUERY_KEYS = {
   LOGIN: "LOGIN",
+  PROFILE: "PROFILE",
   FORUM: {
     POST: "POST_FORUM",
     COMMENT: "COMMENT_FORUM",

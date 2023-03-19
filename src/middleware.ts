@@ -10,6 +10,7 @@ const unprotectedPaths: string[] = [
   "search",
   `sign-in`,
   `sign-up`,
+  `reset-password`,
   "services",
   "forum"
 ]

@@ -1,5 +1,6 @@
 import { yupResolver } from "@hookform/resolvers/yup"
 import { Alert, Divider } from "@mui/material"
+import { useQueryClient } from "@tanstack/react-query"
 
 import GoogleIcon from "components/Common/Icon/GoogleIcon"
 import Spinner from "components/Common/Loading/LoadingIcon"
@@ -15,6 +16,7 @@ import { FieldValues, useForm } from "react-hook-form"
 import { toast } from "react-hot-toast"
 import { AiOutlineExclamationCircle } from "react-icons/ai"
 import { authService } from "services/auth.service"
+import { QUERY_KEYS } from "shared/constant/constant"
 import { routerByRole } from "shared/helpers/helper"
 import { token } from "shared/utils/token"
 import { loginUser } from "store/module/auth/action-creators"
@@ -27,6 +29,7 @@ const schema = yup.object({
   password: yup.string().required("Please enter your password")
 })
 const FormLogin = () => {
+  const queryClient = useQueryClient()
   const { action, profile, error } = useUserGoogle()
   const dispatch = useAppDispatch()
   const router = useRouter()
@@ -63,6 +66,7 @@ const FormLogin = () => {
       })
     )
     router.push(routerByRole(payload.role), undefined, { shallow: true })
+    queryClient.refetchQueries([QUERY_KEYS.PROFILE])
   }
   useEffect(() => {
     if (error) {
@@ -134,6 +138,7 @@ const FormLogin = () => {
           kind="primary"
           className="rounded-md md:h-[42px]"
           type="submit"
+          disabled={isSubmitting}
         >
           {isSubmitting ? <Spinner /> : "Sign In"}
         </CustomButton>

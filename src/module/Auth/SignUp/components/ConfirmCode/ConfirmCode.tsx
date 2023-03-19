@@ -1,5 +1,5 @@
 import CustomButton from "components/User/Button"
-import { useEffect, useState } from "react"
+import { useState } from "react"
 import { toast } from "react-hot-toast"
 import VerificationInput from "react-verification-input"
 
@@ -7,10 +7,17 @@ interface Props {
   code: string
   onSubmit: () => void
   handleBack: () => void
+  handleResetCode: () => void
   email?: string
 }
 
-const ConfirmCode = ({ code, onSubmit, email, handleBack }: Props) => {
+const ConfirmCode = ({
+  code,
+  onSubmit,
+  email,
+  handleBack,
+  handleResetCode
+}: Props) => {
   const [otp, setOtp] = useState<string | null>(null)
   const [countError, setCountError] = useState(0)
   const handleVerify = () => {
@@ -21,10 +28,11 @@ const ConfirmCode = ({ code, onSubmit, email, handleBack }: Props) => {
       toast.error("Invalid authentication code.")
     }
   }
-  useEffect(() => {
-    // if (countError === 5) {
-    // }
-  }, [countError])
+  const handleReset = () => {
+    setOtp(null)
+    setCountError(0)
+    handleResetCode()
+  }
   return (
     <>
       <div className="px-3 py-20">
@@ -50,8 +58,20 @@ const ConfirmCode = ({ code, onSubmit, email, handleBack }: Props) => {
                     }}
                   />
                 </div>
+                {countError === 5 && (
+                  <p className="mt-3 text-red-500">
+                    Please send code again{" "}
+                    <span
+                      className="underline cursor-pointer text-primary"
+                      onClick={handleReset}
+                    >
+                      Send
+                    </span>
+                  </p>
+                )}
                 <div className="flex flex-col items-center justify-center mt-5 gap-y-2">
                   <CustomButton
+                    disabled={countError === 5}
                     kind="primary"
                     className="w-full text-base font-medium"
                     onClick={handleVerify}

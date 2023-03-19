@@ -54,6 +54,7 @@ const FormSignup = () => {
   const [isVerify, setIsVerify] = useState(false)
   const [code, setCode] = useState<string | null>(null)
   const [emailVerify, setEmailVerify] = useState<string | null>(null)
+  const [email, setEmail] = useState("")
   const [loginMethod, setLoginMethod] = useState<"google" | "normal" | null>(
     null
   )
@@ -74,9 +75,16 @@ const FormSignup = () => {
   const handleSubmitSignup = async (values: FieldValues) => {
     setIsVerify(true)
     setLoginMethod("normal")
+    setEmail(values.email)
     getCodeFromEmail(values.email)
   }
+  const handleResetCode = async () => {
+    setIsVerify(true)
+    getCodeFromEmail(email)
+    toast.success("Send code again succesfully")
+  }
   const getCodeFromEmail = async (email: string) => {
+    toast.loading("Wait a minutes")
     try {
       const res = await emailService.confirmEmail(email)
       if (res.isSuccess) {
@@ -87,6 +95,8 @@ const FormSignup = () => {
       }
     } catch (error) {
       toast.error("Sign up failed")
+    } finally {
+      toast.dismiss()
     }
   }
   const signUp = async () => {
@@ -110,7 +120,6 @@ const FormSignup = () => {
     } else if (loginMethod === "google") {
       try {
         const data = await authService.signInWithGoogle(profile.access_token)
-        console.log("signUp ~ data:", data)
         if (data.isSuccess) {
           toast.success(data.message || "Sign up successfuly!!")
         } else {
@@ -123,6 +132,7 @@ const FormSignup = () => {
     reset()
     setCode(null)
     setIsVerify(false)
+    setEmail("")
   }
   useEffect(() => {
     /***
@@ -131,6 +141,7 @@ const FormSignup = () => {
     if (profile) {
       setIsVerify(true)
       getCodeFromEmail(profile?.data.email)
+      setEmail(profile?.data.email)
       setLoginMethod("google")
       toast.dismiss()
     }
@@ -146,6 +157,7 @@ const FormSignup = () => {
         <ConfirmCode
           onSubmit={signUp}
           code={code}
+          handleResetCode={handleResetCode}
           handleBack={() => setIsVerify(false)}
           email={emailVerify}
         />

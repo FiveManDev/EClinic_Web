@@ -1,14 +1,27 @@
 import { useMutation, useQuery } from "@tanstack/react-query"
+import { QUERY_KEYS } from "shared/constant/constant"
 import { IProfile, IRelationShip } from "types/Profile.type"
 import { profileService } from "../../../services/profile.service"
 
 export const useProfieId = (userId: string) => {
-  const queryKey = ["useProfieId", userId]
+  const queryKey = [QUERY_KEYS.PROFILE, userId]
   const profileQuery = useQuery({
     queryKey,
     queryFn: () => profileService.GetUserProfilesByID(userId)
   })
   return profileQuery
+}
+export const useSearchFamlyProfilesQuery = (
+  pageNumber: number,
+  pageSize: number,
+  searchText: string
+) => {
+  const queryKey = [QUERY_KEYS.PROFILE, pageNumber, pageSize, searchText]
+  return useQuery({
+    queryKey,
+    queryFn: () =>
+      profileService.searchFamlyProfiles(pageNumber, pageSize, searchText)
+  })
 }
 export const useSimpleProfile = (userId: string) => {
   const queryKey = ["useSimpleProfile", userId]
@@ -20,7 +33,7 @@ export const useSimpleProfile = (userId: string) => {
   return profileQuery
 }
 export const useGetUserMainProfilesByID = () => {
-  const queryKey = ["useGetUserMainProfilesByID"]
+  const queryKey = [QUERY_KEYS.PROFILE]
   return useQuery({
     queryKey,
     queryFn: () => profileService.getUserMainProfilesByID()

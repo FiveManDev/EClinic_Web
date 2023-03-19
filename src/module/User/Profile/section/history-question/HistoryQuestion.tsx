@@ -1,12 +1,18 @@
 import { Chip, Skeleton } from "@mui/material"
+import { useQueryClient } from "@tanstack/react-query"
 import PaginationCustom from "components/Common/Pagination"
+import Popover from "components/User/Popover"
 import {
+  useDeletePostbyIdMutaiton,
   useGetAnwerByPostId,
   useGetPostByUserId
 } from "hooks/query/forum/useForum"
 import Info from "module/User/components/Info/Info"
 import Link from "next/link"
 import { useState } from "react"
+import { toast } from "react-hot-toast"
+import { HiOutlineDotsHorizontal } from "react-icons/hi"
+import { QUERY_KEYS } from "shared/constant/constant"
 import { dayformat } from "shared/helpers/helper"
 import { IPagination } from "types/Pagination"
 import { IPost } from "types/Post"
@@ -48,38 +54,73 @@ const HistoryQuestion = () => {
 }
 const QuestionItem = ({ ques }: { ques: IPost }) => {
   const { data, isLoading } = useGetAnwerByPostId(ques.id)
+  const queryClient = useQueryClient()
+  const deletePostbyIdMutaiton = useDeletePostbyIdMutaiton()
+  const handleDeltePost = () => {
+    deletePostbyIdMutaiton.mutate(ques.id, {
+      onSuccess: () => {
+        queryClient.invalidateQueries([QUERY_KEYS.FORUM.POST])
+        toast.success("Delete successfully!")
+      },
+      onError: () => {
+        toast.error("Delete Failed!")
+      }
+    })
+  }
   return (
-    <Link
-      href={`/forum/${ques.id}`}
-      className="flex flex-col px-4 py-3 rounded-md shadow"
-    >
-      <div className="flex justify-between">
-        {isLoading ? (
-          <Skeleton variant="rounded" width={52} height={32} />
-        ) : data?.data.id ? (
-          <Chip
-            color="success"
-            label="Anwerd"
-            variant="outlined"
-            className="bg-green-100 border-none rounded-md"
-          />
-        ) : (
-          <Chip
-            color="warning"
-            label="Watting"
-            variant="outlined"
-            className="bg-yellow-100 border-none rounded-md"
-          />
-        )}
+    <div className="flex flex-col px-4 py-3 rounded-md shadow">
+      <Link href={`/forum/${ques.id}`}>
+        <div className="flex justify-between">
+          {isLoading ? (
+            <Skeleton variant="rounded" width={52} height={32} />
+          ) : data?.data.id ? (
+            <Chip
+              color="success"
+              label="Anwerd"
+              variant="outlined"
+              className="bg-green-100 border-none rounded-md"
+            />
+          ) : (
+            <Chip
+              color="warning"
+              label="Watting"
+              variant="outlined"
+              className="bg-yellow-100 border-none rounded-md"
+            />
+          )}
 
-        <span className="text-sm text-gray-400">
-          {dayformat(ques.createdAt)}
-        </span>
+          <span className="text-sm text-gray-400">
+            {dayformat(ques.createdAt)}
+          </span>
+        </div>
+        <h3 className="mt-4 font-normal line-clamp-2">{ques.title}</h3>
+        <div className="w-full h-[1px] bg-gray-200 my-4"></div>
+      </Link>
+      <div className="flex items-center justify-between">
+        <Info data={ques.author} />
+        <Popover
+          position="left"
+          className="w-fit"
+          buttonTrigger={
+            <button
+              className="inline-flex items-center p-2 text-sm font-medium text-center text-gray-400 bg-white border-none rounded-lg cursor-pointer hover:bg-gray-100 focus:ring-4 focus:outline-none focus:ring-gray-50"
+              type="button"
+            >
+              <HiOutlineDotsHorizontal className="text-xl" />
+            </button>
+          }
+        >
+          <ul className="py-2 bg-white rounded-md shadow">
+            <li
+              className="px-4 py-2 text-sm text-red-500 transition-all cursor-pointer hover:bg-gray-200"
+              onClick={() => handleDeltePost()}
+            >
+              Delete
+            </li>
+          </ul>
+        </Popover>
       </div>
-      <h3 className="mt-4 font-normal line-clamp-2">{ques.title}</h3>
-      <div className="w-full h-[1px] bg-gray-200 my-4"></div>
-      <Info data={ques.author} />
-    </Link>
+    </div>
   )
 }
 const QuestionItemLoading = () => {
