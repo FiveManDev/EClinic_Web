@@ -53,7 +53,7 @@ const ForumPage = () => {
                 <ListCardForum
                   onPageIndexChange={(indexPage) => setPageIndex(indexPage)}
                   title={
-                    searchData.searchText || searchData.tags ? (
+                    searchData.searchText || searchData.tags.length > 0 ? (
                       <>
                         <div className="flex flex-col gap-y-2">
                           <span className="text-gray-500">

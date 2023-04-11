@@ -18,7 +18,7 @@ import { RootState } from "store/store"
 import { ImageItem } from "types/Base.type"
 import UploadImages from "./UploadImage"
 type Props = {
-  className: string
+  className?: string
 }
 type KeyCreatePost = keyof CreatePostForum
 const CreateQuestion = ({ className = "" }: Props) => {

@@ -10,7 +10,7 @@
   body {
     text-rendering: optimizeLegibility;
     -webkit-font-smoothing: antialiased;
-    @apply leading-tight;
+    @apply leading-tight bg-gray-100;
   }
   a {
     @apply text-inherit;
