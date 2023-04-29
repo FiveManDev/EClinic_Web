@@ -18,7 +18,7 @@ const CardService = ({ isDetail = true, className }: IProps) => {
       href={"/services/1"}
       className={classNames(
         className,
-        "overflow-hidden bg-white border border-solid border-[#EAEAEA] rounded-xl inline-block max-w-[315px] w-full"
+        "overflow-hidden bg-white border border-solid border-[#EAEAEA] rounded-xl inline-block w-full"
       )}
     >
       <div className="relative w-full h-[140px]">

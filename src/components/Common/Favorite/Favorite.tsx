@@ -33,7 +33,7 @@ const Favorite = ({ className, content, onClick, isFavorite }: Props) => {
           transform="translate(-47 -55)"
         />
       </svg>
-      <span className="text-xs">{content}</span>
+      {content && <span className="text-xs">{content}</span>}
     </FavoriteWrapper>
   )
 }

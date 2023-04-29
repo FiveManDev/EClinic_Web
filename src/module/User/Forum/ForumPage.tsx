@@ -7,9 +7,9 @@ import { PAGE_SIZE } from "shared/constant/constant"
 import { getDataPaginate } from "shared/helpers/helper"
 import { IBreadcrum } from "types/Base.type"
 import { IHashtag } from "types/Post"
-import CreateQuestion from "./section/create"
 import ListCardForum from "./section/list/ListCardForum"
 import Search from "./section/search"
+import { CreateQuestion } from "./section/create"
 
 const ForumPage = () => {
   const { t } = useTranslation(["base", "forum"])
@@ -53,7 +53,7 @@ const ForumPage = () => {
                 <ListCardForum
                   onPageIndexChange={(indexPage) => setPageIndex(indexPage)}
                   title={
-                    searchData.searchText || searchData.tags ? (
+                    searchData.searchText || searchData.tags.length > 0 ? (
                       <>
                         <div className="flex flex-col gap-y-2">
                           <span className="text-gray-500">

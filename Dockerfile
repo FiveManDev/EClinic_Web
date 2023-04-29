@@ -1,6 +1,7 @@
 # Use an official Node runtime as a parent image
 FROM node:18-alpine
 
+RUN npm install -g nodemon
 # Set the working directory to /app
 WORKDIR /app
 

@@ -16,11 +16,13 @@ import { CustomInput, CustomInputPassword } from "components/User/Input"
 import useUserGoogle from "hooks/auth/useUserGoogle"
 import ButtonIcon from "module/Auth/components/ButtonIcon"
 import Link from "next/link"
+import { useRouter } from "next/router"
 import { useEffect, useState } from "react"
 import { FieldValues, useForm } from "react-hook-form"
 import { toast } from "react-hot-toast"
 import { authService } from "services/auth.service"
 import { emailService } from "services/mail.service"
+import { routers } from "shared/constant/constant"
 import { getCurrentDate } from "shared/helpers/helper"
 import * as yup from "yup"
 import ConfirmCode from "../ConfirmCode"
@@ -51,6 +53,7 @@ const schema = yup.object({
 })
 const SIGN_UP_FAILED = "Sign up failed!!"
 const FormSignup = () => {
+  const router = useRouter()
   const [isVerify, setIsVerify] = useState(false)
   const [code, setCode] = useState<string | null>(null)
   const [emailVerify, setEmailVerify] = useState<string | null>(null)
@@ -110,6 +113,7 @@ const FormSignup = () => {
       try {
         const data = await authService.signUp(result)
         if (data.isSuccess) {
+          router.push(routers.signIn)
           toast.success(data.message || "Sign up successfuly!!")
         } else {
           toast.error(data.message || SIGN_UP_FAILED)
@@ -122,6 +126,7 @@ const FormSignup = () => {
         const data = await authService.signInWithGoogle(profile.access_token)
         if (data.isSuccess) {
           toast.success(data.message || "Sign up successfuly!!")
+          router.push(routers.signIn)
         } else {
           toast.error(data.message || SIGN_UP_FAILED)
         }

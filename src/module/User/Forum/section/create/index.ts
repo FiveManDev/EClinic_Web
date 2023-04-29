@@ -1,3 +1,3 @@
 import CreateQuestion from "./CreateQuestion"
-
-export default CreateQuestion
+import UploadImage from "./UploadImage"
+export { CreateQuestion, UploadImage }
