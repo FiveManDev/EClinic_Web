@@ -2,6 +2,7 @@ import React, { useState, useEffect, useRef } from "react"
 import { PortalCustom } from "../Portal/PortalCustom"
 import classNames from "classnames"
 import { HiXMark } from "react-icons/hi2"
+import { ModalPrimaryWrapper } from "./ModalPrimary.styles"
 
 interface ModalProps {
   show: boolean
@@ -42,7 +43,7 @@ const ModalPrimary = ({ show, onClose, children }: ModalProps) => {
 
   return (
     <PortalCustom>
-      <div
+      <ModalPrimaryWrapper
         className={classNames(
           "modal fixed top-0 left-0 w-full h-full flex items-center justify-center z-50",
           isOpen
@@ -54,7 +55,7 @@ const ModalPrimary = ({ show, onClose, children }: ModalProps) => {
         <div className="absolute w-full h-full bg-gray-900 opacity-50 modal-overlay"></div>
         <div
           className={classNames(
-            "relative bg-white w-fit mx-auto shadow-lg z-50  transition-opacity transition-scale duration-300 p-10 rounded-[20px] ",
+            "relative bg-white w-fit mx-auto shadow-lg z-50  transition-opacity transition-scale duration-300 rounded-[20px]",
             isOpen ? "opacity-100 scale-100" : "opacity-0 scale-95"
           )}
           ref={modalRef}
@@ -69,7 +70,7 @@ const ModalPrimary = ({ show, onClose, children }: ModalProps) => {
           </div>
           {children}
         </div>
-      </div>
+      </ModalPrimaryWrapper>
     </PortalCustom>
   )
 }

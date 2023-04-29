@@ -5,8 +5,8 @@ import Head from "next/head"
 import { useRouter } from "next/router"
 import { useTranslation } from "react-i18next"
 import { IBreadcrum } from "types/Base.type"
-import CreateQuestion from "./section/create"
 import DetailForum from "./section/detail"
+import { CreateQuestion } from "./section/create"
 const DetailPage = () => {
   const router = useRouter()
   const id = router.query.id as string

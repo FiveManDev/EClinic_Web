@@ -16,7 +16,7 @@ import { useSelector } from "react-redux"
 import { routers } from "shared/constant/constant"
 import { RootState } from "store/store"
 import { ImageItem } from "types/Base.type"
-import UploadImages from "./UploadImage"
+import UploadImage from "./UploadImage"
 type Props = {
   className?: string
 }
@@ -118,7 +118,7 @@ const CreateQuestion = ({ className = "" }: Props) => {
         placeholder={t("textareaDesc")}
         onChange={(e) => handleChangePost("content", e.target.value)}
       />
-      <UploadImages
+      <UploadImage
         images={images}
         removeImage={removeImage}
         onChange={(value) => handleFileImageChange(value)}

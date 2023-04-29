@@ -22,6 +22,8 @@ import { store } from "store/store"
 import "styles/globals.scss"
 import "../assets/styles/app.scss"
 import { NextPageWithLayout } from "./page"
+import "overlayscrollbars/overlayscrollbars.css"
+
 interface AppPropsWithLayout extends AppProps {
   Component: NextPageWithLayout
 }

@@ -3,6 +3,10 @@ import styled from "@emotion/styled"
 export const DetailDoctorModalWrapper = styled.div`
   display: flex;
   flex-direction: column;
+  max-height: 660px;
+  width: 880px;
+  padding: 24px 24px 0 24px;
+  margin-bottom: 12px;
   .MuiDateCalendar-root {
     background-color: #fafafb;
     border-radius: 8px;
@@ -19,7 +23,6 @@ export const DetailDoctorModalWrapper = styled.div`
     .MuiDayCalendar-monthContainer {
       display: flex;
       flex-direction: column;
-      gap: 4px;
     }
     .MuiPickersDay-dayWithMargin {
       font-size: 16px;

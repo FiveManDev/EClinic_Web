@@ -21,7 +21,7 @@ const ProfileItem = ({ data, onClick, loading = false }: Props) => {
       >
         {loading && <Skeleton variant="rounded" width={64} height={64} />}
         {data && (
-          <div className="relative w-20 h-20 overflow-hidden">
+          <div className="relative w-20 h-20 overflow-hidden rounded-md">
             <ImageCustom
               src={data.avatar as string}
               alt={data.lastName}
