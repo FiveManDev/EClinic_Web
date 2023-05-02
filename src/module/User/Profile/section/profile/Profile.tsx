@@ -22,10 +22,10 @@ import ProfileItem from "./components/ProfileItem"
 type Action = "add" | "edit" | "view"
 const Profile = () => {
   const [profiles, setProfiles] = useState<(IProfile & IRelationShip)[]>([])
-   const [ownerProfile, setOwnerProfile] = useState<
+  const [ownerProfile, setOwnerProfile] = useState<
     (IProfile & IRelationShip) | undefined
   >(undefined)
-  const [pageIndex, setPageIndex] = useState(1)
+  const [pageIndex, _] = useState(1)
   const [searchText, setSearchText] = useState("")
   const searchTextDebounce = useDebounce(searchText, 1000)
   const auth = useSelector((state: RootState) => state.auth)

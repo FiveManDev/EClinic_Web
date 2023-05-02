@@ -1,13 +1,23 @@
 import {
-  Button,
   Dialog,
   DialogActions,
   DialogContent,
   DialogContentText,
   DialogTitle
 } from "@mui/material"
+import Zoom from "@mui/material/Zoom"
+import { TransitionProps } from "@mui/material/transitions"
+import React from "react"
 import CustomButton from "../Button"
 
+const Transition = React.forwardRef(function Transition(
+  props: TransitionProps & {
+    children: React.ReactElement<any, any>
+  },
+  ref: React.Ref<unknown>
+) {
+  return <Zoom timeout={50} ref={ref} {...props} />
+})
 type Props = {
   handleClose: () => void
   onConfirm: () => void
@@ -28,7 +38,11 @@ const AlertCustom = ({
 }: Props) => {
   return (
     <>
-      <Dialog open={open} onClose={handleClose}>
+      <Dialog
+        open={open}
+        onClose={handleClose}
+        TransitionComponent={Transition}
+      >
         {title && <DialogTitle>{title}</DialogTitle>}
         {content && (
           <DialogContent>
@@ -36,10 +50,20 @@ const AlertCustom = ({
           </DialogContent>
         )}
         <DialogActions>
-          <CustomButton kind="tertiary" onClick={handleClose} autoFocus>
+          <CustomButton
+            kind="tertiary"
+            onClick={handleClose}
+            className="text-gray-600"
+            autoFocus
+          >
             {btnDisagree}
           </CustomButton>
-          <CustomButton kind="primary" onClick={onConfirm}>
+          <CustomButton
+            kind="primary"
+            color="error"
+            className="bg-red-600"
+            onClick={onConfirm}
+          >
             {btnAgree}
           </CustomButton>
         </DialogActions>

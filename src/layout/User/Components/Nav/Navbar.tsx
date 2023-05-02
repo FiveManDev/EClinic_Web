@@ -1,6 +1,3 @@
-import { Badge } from "@mui/material"
-import { MdNotificationsNone } from "react-icons/md"
-
 import ChangeLanguage from "components/Common/ChangeLanguage"
 import CustomButton from "components/User/Button"
 import DrawerCustom from "components/User/Drawer"
@@ -41,6 +38,7 @@ const Navbar = ({ show = false, onClose }: Props) => {
           <MenuItem href="/services">{t("banner.menu.Services")}</MenuItem>
           <MenuItem href="/doctors">{t("banner.menu.Doctor")}</MenuItem>
           <MenuItem href="/booking">{t("banner.menu.Booking")}</MenuItem>
+          <MenuItem href="/blog">{t("banner.menu.Blog")}</MenuItem>
           <MenuItem href="/contact">{t("banner.menu.Contact")}</MenuItem>
         </ul>
       </div>

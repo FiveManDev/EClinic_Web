@@ -1,9 +1,36 @@
-import React, { useState, useEffect, useRef } from "react"
-import { PortalCustom } from "../Portal/PortalCustom"
+import styled from "@emotion/styled"
 import classNames from "classnames"
+import { motion, AnimatePresence } from "framer-motion"
+import React from "react"
 import { HiXMark } from "react-icons/hi2"
-import { ModalPrimaryWrapper } from "./ModalPrimary.styles"
-
+import Backdrop from "../Backdrop"
+import { PortalCustom } from "../Portal/PortalCustom"
+const ModalPrimaryWrapper = styled(motion.div)`
+  .footer {
+    padding: 20px 0;
+    border-top: 0.5px solid #cccc;
+  }
+`
+const dropIn = {
+  hidden: {
+    y: "-100vh",
+    opacity: 0
+  },
+  visible: {
+    y: "0",
+    opacity: 1,
+    transition: {
+      duration: 0.1,
+      type: "spring",
+      damping: 25,
+      stiffness: 500
+    }
+  },
+  exit: {
+    y: "100vh",
+    opacity: 0
+  }
+}
 interface ModalProps {
   show: boolean
   onClose: () => void
@@ -11,66 +38,38 @@ interface ModalProps {
 }
 
 const ModalPrimary = ({ show, onClose, children }: ModalProps) => {
-  const modalRef = useRef<HTMLDivElement>(null)
-  const [isOpen, setIsOpen] = useState(false)
-
-  useEffect(() => {
-    setIsOpen(show)
-  }, [show])
-
-  useEffect(() => {
-    const handleClickOutside = (event: MouseEvent) => {
-      if (
-        modalRef.current &&
-        !modalRef.current.contains(event.target as Node)
-      ) {
-        onClose()
-      }
-    }
-
-    document.addEventListener("mousedown", handleClickOutside)
-
-    return () => {
-      document.removeEventListener("mousedown", handleClickOutside)
-    }
-  }, [onClose])
-
-  const handleTransitionEnd = () => {
-    if (!isOpen) {
-      onClose()
-    }
-  }
-
   return (
     <PortalCustom>
-      <ModalPrimaryWrapper
-        className={classNames(
-          "modal fixed top-0 left-0 w-full h-full flex items-center justify-center z-50",
-          isOpen
-            ? "opacity-100 pointer-events-auto"
-            : "opacity-0 pointer-events-none"
-        )}
-        onTransitionEnd={handleTransitionEnd}
-      >
-        <div className="absolute w-full h-full bg-gray-900 opacity-50 modal-overlay"></div>
-        <div
-          className={classNames(
-            "relative bg-white w-fit mx-auto shadow-lg z-50  transition-opacity transition-scale duration-300 rounded-[20px]",
-            isOpen ? "opacity-100 scale-100" : "opacity-0 scale-95"
-          )}
-          ref={modalRef}
-        >
-          <div className="absolute top-0 right-0 translate-x-1/3 -translate-y-1/3 z-20 h-[46px] w-[46px] rounded-full p-1 bg-white cursor-pointer">
-            <button
-              onClick={onClose}
-              className="bg-[#44444F] w-full h-full flex items-center justify-center border-none outline-none rounded-full cursor-pointer hover:bg-opacity-90 transition-all"
+      <AnimatePresence initial={false} onExitComplete={() => null} mode="wait">
+        {show && (
+          <Backdrop onClick={onClose}>
+            <ModalPrimaryWrapper
+              onClick={(e) => e.stopPropagation()}
+              variants={dropIn}
+              initial="hidden"
+              animate="visible"
+              exit="exit"
             >
-              <HiXMark className="text-lg text-white" />
-            </button>
-          </div>
-          {children}
-        </div>
-      </ModalPrimaryWrapper>
+              <div
+                className={classNames(
+                  "relative bg-white w-fit mx-auto shadow-lg z-50  transition-opacity transition-scale duration-300 rounded-[20px]"
+                )}
+              >
+                <div className="absolute top-0 right-0 translate-x-1/3 -translate-y-1/3 z-20 h-[46px] w-[46px] rounded-full p-1 bg-white cursor-pointer">
+                  <motion.button
+                    whileHover={{ scale: 1.1 }}
+                    onClick={onClose}
+                    className="bg-[#44444F] w-full h-full flex items-center justify-center border-none outline-none rounded-full cursor-pointer hover:bg-opacity-90 transition-all"
+                  >
+                    <HiXMark className="text-lg text-white" />
+                  </motion.button>
+                </div>
+                {children}
+              </div>
+            </ModalPrimaryWrapper>
+          </Backdrop>
+        )}
+      </AnimatePresence>
     </PortalCustom>
   )
 }

@@ -7,6 +7,10 @@ export const TabsWrapper = styled.div`
     display: flex;
     justify-content: flex-start;
     padding: 10px;
+    background-color: white;
+    .MuiTab-labelIcon {
+      font-weight: 500;
+    }
   }
   .MuiTab-root {
     width: 100%;

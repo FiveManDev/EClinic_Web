@@ -12,7 +12,8 @@ module.exports = {
       colors: {
         primary: "#024ED5",
         error: "#d32f2f",
-        h1: "#2E2C49"
+        h1: "#2E2C49",
+        gray80: "#808191"
       }
     }
   },
