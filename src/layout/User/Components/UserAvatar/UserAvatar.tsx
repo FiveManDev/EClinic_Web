@@ -17,18 +17,13 @@ import { QUERY_KEYS, routers } from "shared/constant/constant"
 import { logoutUser } from "store/module/auth/action-creators"
 import { useAppDispatch } from "store/store"
 
-const MENU = [
-  {
-    title: "Hồ sơ ",
-    href: "/user/profile"
-  },
-  {
-    title: "Câu hỏi của bạn",
-    href: "/profile"
-  }
-]
-
-const UserAvatar = () => {
+interface Props {
+  menu: {
+    title: string
+    href: string
+  }[]
+}
+const UserAvatar = ({ menu }: Props) => {
   const router = useRouter()
   const dispatch = useAppDispatch()
   const [anchorElUser, setAnchorElUser] = useState<null | HTMLElement>(null)
@@ -56,22 +51,24 @@ const UserAvatar = () => {
           className="flex-shrink-0"
         />
       )}
-      {data && (
-        <>
-          <Tooltip title="Open settings">
-            <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
-              <div className="relative overflow-hidden rounded-full w-9 h-9">
-                <ImageCustom
-                  src={(data.data.avatar as string) || "/images/default.jpeg"}
-                  fill
-                  sizes="(max-width: 768px) 100vw,
+      {!isLoading && (
+        <Tooltip title="Open settings">
+          <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
+            <div className="relative overflow-hidden rounded-full w-9 h-9">
+              <ImageCustom
+                src={(data?.data.avatar as string) || "/images/default.jpeg"}
+                fill
+                sizes="(max-width: 768px) 100vw,
               (max-width: 1200px) 50vw,
               33vw"
-                  alt={"avatar"}
-                />
-              </div>
-            </IconButton>
-          </Tooltip>
+                alt={"avatar"}
+              />
+            </div>
+          </IconButton>
+        </Tooltip>
+      )}
+      {data && (
+        <>
           <StyledMenu
             sx={{ mt: "45px" }}
             anchorEl={anchorElUser}
@@ -124,7 +121,7 @@ const UserAvatar = () => {
                     Eclinic
                   </span>
                   <ul className="flex flex-col w-full">
-                    {MENU.map((item, index) => (
+                    {menu.map((item, index) => (
                       <Link
                         key={index}
                         href={process.env.NEXT_PUBLIC_APP_URL + item.href}

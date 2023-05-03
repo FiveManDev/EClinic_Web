@@ -1,20 +1,41 @@
+import MainHeadingLayout from "layout/Management/MainHeadingLayout"
+import TabsCustom from "layout/Management/components/TabsCustom"
 import Head from "next/head"
-import React from "react"
+import { useMemo } from "react"
+import TableAPM from "./sections/TableAPM"
 
 const AppoinmentPage = () => {
+  const tabs = useMemo(
+    () => [
+      {
+        key: 0,
+        label: `All Appointment`,
+        children: <TableAPM />
+      },
+      {
+        key: 1,
+        label: `Create schedule`,
+        children: (
+          <div>
+            Lorem ipsum dolor sit amet, consectetur adipisicing elit. Dolorem
+            eius sunt nemo perspiciatis? Vitae suscipit maiores consectetur
+            molestias tenetur minima! Nobis laborum voluptates dolorum vitae
+            quidem exercitationem nulla, architecto consequatur.
+          </div>
+        )
+      }
+    ],
+    []
+  )
   return (
     <>
       <Head>
         <title>Appointment page</title>
       </Head>
-      <main>
-        <div className="p-8">
-          Lorem ipsum dolor sit amet consectetur adipisicing elit. Provident
-          laboriosam repellat fuga adipisci illum ipsam voluptatem
-          necessitatibus. Cupiditate vitae nihil magni itaque quo, provident eum
-          ullam nobis atque placeat culpa!
-        </div>
-      </main>
+      <MainHeadingLayout heading="Appointment List">
+        <TabsCustom tabs={tabs} />
+        <div className="flex justify-between"></div>
+      </MainHeadingLayout>
     </>
   )
 }
