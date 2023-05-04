@@ -1,7 +1,5 @@
-import { Badge } from "@mui/material"
-import { MdNotificationsNone } from "react-icons/md"
-
 import ChangeLanguage from "components/Common/ChangeLanguage"
+import Notification from "components/Common/Notification"
 import CustomButton from "components/User/Button"
 import DrawerCustom from "components/User/Drawer"
 import Image from "next/image"
@@ -15,6 +13,16 @@ interface Props {
   show: boolean
   onClose: () => void
 }
+const MENU = [
+  {
+    title: "Hồ sơ ",
+    href: "/user/profile"
+  },
+  {
+    title: "Câu hỏi của bạn",
+    href: "/profile"
+  }
+]
 const Navbar = ({ show = false, onClose }: Props) => {
   const auth = useSelector((state: RootState) => state.auth)
   const { t } = useTranslation("home")
@@ -41,6 +49,7 @@ const Navbar = ({ show = false, onClose }: Props) => {
           <MenuItem href="/services">{t("banner.menu.Services")}</MenuItem>
           <MenuItem href="/doctors">{t("banner.menu.Doctor")}</MenuItem>
           <MenuItem href="/booking">{t("banner.menu.Booking")}</MenuItem>
+          <MenuItem href="/blog">{t("banner.menu.Blog")}</MenuItem>
           <MenuItem href="/contact">{t("banner.menu.Contact")}</MenuItem>
         </ul>
       </div>
@@ -48,10 +57,8 @@ const Navbar = ({ show = false, onClose }: Props) => {
         <ChangeLanguage />
         {auth.isLoggedIn ? (
           <>
-            {/* <Badge badgeContent={4} color="primary">
-              <MdNotificationsNone className="text-2xl cursor-pointer" />
-            </Badge> */}
-            <UserAvatar />
+            <Notification />
+            <UserAvatar menu={MENU} />
           </>
         ) : (
           <>

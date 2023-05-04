@@ -31,19 +31,14 @@ const DatePickerCustom = ({
       <DatePicker
         disableFuture
         label={label || "Date of birth"}
-        inputFormat={inputFormat}
+        format={inputFormat}
         onError={(reason) => onErrorField(reason?.toString() || "")}
         {...field}
-        renderInput={(params) => (
-          <div className="flex flex-col ">
-            <TextField {...field} {...params} size={size} />
-            {errorMessage && (
-              <FormHelperText className="text-error mx-[14px]">
-                {errorMessage}
-              </FormHelperText>
-            )}
-          </div>
-        )}
+        slotProps={{
+          textField: {
+            helperText: errorMessage
+          }
+        }}
       />
     </LocalizationProvider>
   )

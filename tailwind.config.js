@@ -10,9 +10,21 @@ module.exports = {
     },
     extend: {
       colors: {
-        primary: "#024ED5",
-        error: "#d32f2f",
-        h1: "#2E2C49"
+        background: "#F6F7FB",
+        primary: "#235EE8",
+        secondary: "#4FD8DE",
+        error: "#D72755",
+        h1: "#2E2C49",
+        gray80: "#808191",
+        black1: "#171822",
+        grayPrimary: "#272B30",
+        black2: "#394456",
+        disable: "#878EA1",
+        icon: "#828A9D",
+        carbon: "#E4E9EF",
+        snow: "#F9FAFC",
+        pending: "#FEAF02",
+        support: "#0C1A7B"
       }
     }
   },

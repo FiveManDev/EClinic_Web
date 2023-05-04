@@ -20,39 +20,17 @@ const DoctorLayout = ({ children }: PropsWithChildren) => {
         icon: (
           <>
             <svg
-              width={18}
-              height={20}
-              viewBox="0 0 18 20"
-              fill="none"
               xmlns="http://www.w3.org/2000/svg"
+              className="w-6 h-6"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke="currentColor"
+              strokeWidth="2"
             >
               <path
-                d="M1.56836 1.66663H7.4476V7.91663H1.56836V1.66663Z"
-                stroke="#5F666F"
-                strokeWidth="1.5"
                 strokeLinecap="round"
                 strokeLinejoin="round"
-              />
-              <path
-                d="M1.56836 12.0833H7.4476V18.3333H1.56836V12.0833Z"
-                stroke="#5F666F"
-                strokeWidth="1.5"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-              />
-              <path
-                d="M11.3671 1.66663H17.2463V7.91663H11.3671V1.66663Z"
-                stroke="#5F666F"
-                strokeWidth="1.5"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-              />
-              <path
-                d="M11.3671 12.0833H17.2463V18.3333H11.3671V12.0833Z"
-                stroke="#5F666F"
-                strokeWidth="1.5"
-                strokeLinecap="round"
-                strokeLinejoin="round"
+                d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4"
               />
             </svg>
           </>
@@ -64,29 +42,39 @@ const DoctorLayout = ({ children }: PropsWithChildren) => {
         icon: (
           <>
             <svg
-              width={19}
-              height={21}
-              viewBox="0 0 19 21"
-              fill="none"
               xmlns="http://www.w3.org/2000/svg"
+              fill="none"
+              viewBox="0 0 24 24"
+              strokeWidth="1.5"
+              stroke="currentColor"
+              className="w-6 h-6"
             >
               <path
-                d="M10.3018 3.49731V6.83065C10.3018 7.75112 11.104 8.49731 12.0936 8.49731H15.6771M11.1977 3.49731H5.13477C4.0302 3.49731 3.13477 4.39274 3.13477 5.49731V16.4973C3.13477 17.6019 4.03019 18.4973 5.13476 18.4973H13.6771C14.7817 18.4973 15.6771 17.6019 15.6771 16.4973V7.66398L11.1977 3.49731Z"
-                stroke="white"
-                strokeWidth="1.5"
+                strokeLinecap="round"
                 strokeLinejoin="round"
+                d="M6.75 3v2.25M17.25 3v2.25M3 18.75V7.5a2.25 2.25 0 012.25-2.25h13.5A2.25 2.25 0 0121 7.5v11.25m-18 0A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75m-18 0v-7.5A2.25 2.25 0 015.25 9h13.5A2.25 2.25 0 0121 11.25v7.5"
               />
+            </svg>
+          </>
+        ),
+        title: "Appointment",
+        link: "/doctor/appointment"
+      },
+      {
+        icon: (
+          <>
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              className="w-6 h-6"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke="currentColor"
+              strokeWidth="2"
+            >
               <path
-                fillRule="evenodd"
-                clipRule="evenodd"
-                d="M11.7588 11.6223C11.7588 11.9675 11.479 12.2473 11.1338 12.2473H6.89648C6.55131 12.2473 6.27148 11.9675 6.27148 11.6223V11.6223C6.27148 11.2771 6.55131 10.9973 6.89648 10.9973H11.1338C11.479 10.9973 11.7588 11.2771 11.7588 11.6223V11.6223Z"
-                fill="#5F666F"
-              />
-              <path
-                fillRule="evenodd"
-                clipRule="evenodd"
-                d="M13.3253 14.9556C13.3253 15.3008 13.0455 15.5806 12.7003 15.5806H6.11133C5.76615 15.5806 5.48633 15.3008 5.48633 14.9556V14.9556C5.48633 14.6104 5.76615 14.3306 6.11133 14.3306H12.7003C13.0455 14.3306 13.3253 14.6104 13.3253 14.9556V14.9556Z"
-                fill="#5F666F"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"
               />
             </svg>
           </>
@@ -94,9 +82,27 @@ const DoctorLayout = ({ children }: PropsWithChildren) => {
         title: "Question",
         link: "/doctor/questions"
       },
+
       {
         title: `Logout`,
-        icon: <MdLogout />,
+        icon: (
+          <>
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              className="w-6 h-6"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke="currentColor"
+              strokeWidth="2"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"
+              />
+            </svg>
+          </>
+        ),
         link: routers.signIn,
         onClick: () => logout()
       }

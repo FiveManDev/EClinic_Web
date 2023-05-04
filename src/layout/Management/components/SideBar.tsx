@@ -16,7 +16,7 @@ const SideBar = ({ items }: Props) => {
   const { asPath } = useRouter()
 
   return (
-    <nav className="flex flex-col items-center px-[14px] py-6 max-w-[250px] w-full bg-white">
+    <nav className="flex flex-col items-center px-3 py-6 max-w-[250px] w-full bg-white ">
       <div className="relative scale-90 md:scale-100 w-[150px] h-9 mb-11">
         <Link href="/">
           <Image
@@ -36,10 +36,10 @@ const SideBar = ({ items }: Props) => {
             href={item.link}
             key={index}
             className={classNames(
-              "flex items-center h-12 rounded-[10px] space-x-[14px] w-full px-3 py-4 text-sm transition-transform",
+              "flex items-center gap-5 p-3 font-medium rounded-md hover:bg-primary hover:bg-opacity-10 hover:text-primary transition-all mb-3",
               asPath == item.link
-                ? "bg-[#0C0B1A] text-white font-semibold"
-                : "font-light text-[#5F666F]"
+                ? "bg-primary bg-opacity-10 text-primary"
+                : "text-gray80"
             )}
             onClick={item.onClick}
           >

@@ -13,7 +13,8 @@ const unprotectedPaths: string[] = [
   `reset-password`,
   "services",
   "doctors",
-  "forum"
+  "forum",
+  "blog"
 ]
 
 // This function can be marked `async` if using `await` inside
