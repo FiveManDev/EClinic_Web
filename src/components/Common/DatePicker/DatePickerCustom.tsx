@@ -39,16 +39,6 @@ const DatePickerCustom = ({
             helperText: errorMessage
           }
         }}
-        //  renderInput={(params) => (
-        //   <div className="flex flex-col ">
-        //     <TextField {...field} {...params} size={size} />
-        //     {errorMessage && (
-        //       <FormHelperText className="text-error mx-[14px]">
-        //         {errorMessage}
-        //       </FormHelperText>
-        //     )}
-        //   </div>
-        // )}
       />
     </LocalizationProvider>
   )

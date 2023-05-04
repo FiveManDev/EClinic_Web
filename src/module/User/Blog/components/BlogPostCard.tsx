@@ -1,15 +1,7 @@
 import PropTypes from "prop-types"
 // @mui
 import { motion } from "framer-motion"
-import {
-  Avatar,
-  Box,
-  Card,
-  CardContent,
-  Grid,
-  Link,
-  Typography
-} from "@mui/material"
+import { Avatar, Box, Card, CardContent, Grid, Typography } from "@mui/material"
 import { alpha, styled } from "@mui/material/styles"
 // utils
 import SvgColor from "components/Common/svg-color/index"
@@ -18,6 +10,7 @@ import {
   HiOutlineEye
 } from "react-icons/hi2"
 import { dayformat } from "shared/helpers/helper"
+import Link from "next/link"
 // ----------------------------------------------------------------------
 
 const StyledCardMedia = styled("div")({
@@ -155,9 +148,8 @@ export default function BlogPostCard({ post, index }: any) {
           </Typography>
 
           <StyledTitle
-            color="inherit"
-            variant="subtitle2"
-            underline="hover"
+            href={"blog/1"}
+            className="hover:underline"
             sx={{
               ...(latestPostLarge && { typography: "h5", height: 60 }),
               ...((latestPostLarge || latestPost) && {

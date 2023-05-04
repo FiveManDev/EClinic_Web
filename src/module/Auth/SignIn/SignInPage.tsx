@@ -11,8 +11,8 @@ const SignInPage = () => {
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <link rel="icon" href="/images/favicon.png" />
       </Head>
-      <div className="mx-6">
-        <div className="flex flex-col space-y-[10px] text-[#4E5D78] font-bold text-center max-w-[280px] md:max-w-[488px] mx-auto mt-[42px]">
+      <div className="flex flex-col justify-center">
+        <div className="flex flex-col space-y-[10px] text-[#4E5D78] font-bold text-center  mx-auto mt-[42px]">
           <h1 className="text-lg md:text-[30px]">Getting Started</h1>
           <h3 className="text-sm md:text-base">
             Login to continue and connect with the people.

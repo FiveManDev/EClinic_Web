@@ -6,10 +6,9 @@ import Head from "next/head"
 import { useTranslation } from "react-i18next"
 import { HiMagnifyingGlass } from "react-icons/hi2"
 import { IBreadcrum } from "types/Base.type"
-import POSTS from "../../../_mock/blog"
+import { posts } from "../../../_mock/blog"
 import BlogPostCard from "./components/BlogPostCard"
 import BlogPostsSort from "./components/BlogPostsSort"
-import { motion } from "framer-motion"
 const SORT_OPTIONS = [
   { value: "latest", label: "Latest" },
   { value: "popular", label: "Popular" },
@@ -61,7 +60,7 @@ export default function BlogPage() {
           </Stack>
 
           <Grid container spacing={3}>
-            {POSTS.map((post, index) => (
+            {posts.map((post, index) => (
               <BlogPostCard key={post.id} post={post} index={index} />
             ))}
           </Grid>

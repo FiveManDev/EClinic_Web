@@ -97,7 +97,7 @@ const Form = () => {
           email={emailVerify}
         />
       ) : (
-        <div className="md:max-w-[580px] w-full  bg-white rounded-md px-4 py-6 mt-7">
+        <div className=" w-full  bg-white rounded-md px-4 py-6 mt-7">
           <form
             onSubmit={handleSubmit(handleSubmitForgot)}
             className="flex flex-col space-y-5"

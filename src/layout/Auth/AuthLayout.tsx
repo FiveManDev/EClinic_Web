@@ -1,5 +1,4 @@
 import Image from "next/image"
-import Link from "next/link"
 import { ReactNode } from "react"
 
 type Props = {
@@ -9,25 +8,16 @@ type Props = {
 const AuthLayout = ({ children }: Props) => {
   return (
     <>
-      <div className="min-h-screen flex flex-col bg-[linear-gradient(180deg,_rgba(255,_255,_255,_0.4)_0%,_rgba(255,_255,_255,_0.1)_100%)]">
-        <header className="w-full h-[84px] bg-white">
-          <div className="flex items-center justify-between px-4 md:px-[60px] max-w-[1440px] w-full h-full mx-auto">
-            <div className="relative scale-90 md:scale-100 w-[130px] h-9">
-              <Link href={"/"}>
-                <Image
-                  src={"/images/logo.png"}
-                  fill
-                  sizes="(max-width: 768px) 100vw,
-              (max-width: 1200px) 50vw,
-              33vw"
-                  alt="elinic"
-                  className="object-contain cursor-pointer"
-                />
-              </Link>
+      <div className="flex flex-col min-h-screen bg-white">
+        <div className="grid grid-cols-2">
+          <div className="relative w-full h-full min-h-screen">
+            <Image src={"/images/background-auth.png"} fill alt="cover" />
+            <div className="absolute top-5 left-5 w-[110px] h-[40px]">
+              <Image src={"/images/logo.png"} fill alt="cover" />
             </div>
           </div>
-        </header>
-        <main className="max-w-[580px] w-full mx-auto ">{children}</main>
+          <main className="w-full m-auto max-w-[540px]">{children}</main>
+        </div>
       </div>
     </>
   )
