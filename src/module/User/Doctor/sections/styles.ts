@@ -9,25 +9,7 @@ export const DetailDoctorModalWrapper = styled.div`
   margin-bottom: 12px;
   .MuiDateCalendar-root {
     background-color: #fafafb;
-    border-radius: 8px;
-    margin: 0;
-    display: flex;
-    flex-shrink: 0;
     padding: 16px 22px;
-    width: fit-content;
-    height: auto;
-    .MuiDayCalendar-header,
-    .MuiDayCalendar-weekContainer {
-      gap: 18px;
-    }
-    .MuiDayCalendar-monthContainer {
-      display: flex;
-      flex-direction: column;
-    }
-    .MuiPickersDay-dayWithMargin {
-      font-size: 16px;
-      font-weight: 300;
-    }
   }
   .modal-filed {
     display: flex;

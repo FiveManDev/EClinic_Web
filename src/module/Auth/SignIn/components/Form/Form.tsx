@@ -77,7 +77,6 @@ const FormLogin = () => {
     if (profile) {
       const login = async () => {
         const res = await authService.signInWithGoogle(profile.access_token)
-        console.log("login ~ res:", res)
         try {
           if (res.isSuccess) {
             console.log("login ~ res:", res)
