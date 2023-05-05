@@ -45,7 +45,7 @@
     position: relative;
     box-shadow: rgba(145, 158, 171, 0.2) 0px 0px 2px 0px,
       rgba(145, 158, 171, 0.12) 0px 12px 24px -4px;
-    border-radius: 16px;
+    border-radius: 12px;
     z-index: 0;
   }
   .entry-content,
@@ -166,5 +166,25 @@
   }
   .MuiTableCell-root {
     @apply border-none;
+  }
+}
+.MuiDateCalendar-root {
+  border-radius: 8px;
+  margin: 0;
+  display: flex;
+  flex-shrink: 0;
+  width: fit-content;
+  height: auto;
+  .MuiDayCalendar-header,
+  .MuiDayCalendar-weekContainer {
+    gap: 18px;
+  }
+  .MuiDayCalendar-monthContainer {
+    display: flex;
+    flex-direction: column;
+  }
+  .MuiPickersDay-dayWithMargin {
+    font-size: 16px;
+    font-weight: 300;
   }
 }

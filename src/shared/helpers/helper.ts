@@ -71,3 +71,25 @@ export const getDataPaginate = (
         HasNext: false
       }
 }
+export function renderQuarterArray() {
+  const intervals = []
+
+  // Loop through each quarter-hour interval (15 minutes)
+  for (let minute = 0; minute < 60; minute += 15) {
+    const minuteFormatted = minute.toString().padStart(2, "0") // Add leading zero if necessary
+    intervals.push(`0:${minuteFormatted}`)
+  }
+
+  // Loop through each hour of the day (24-hour format), starting from 1:00 AM
+  for (let hour = 1; hour < 24; hour++) {
+    const hourFormatted = hour.toString().padStart(2, "0") // Add leading zero if necessary
+
+    // Loop through each quarter-hour interval (15 minutes)
+    for (let minute = 0; minute < 60; minute += 15) {
+      const minuteFormatted = minute.toString().padStart(2, "0") // Add leading zero if necessary
+      intervals.push(`${hourFormatted}:${minuteFormatted}`)
+    }
+  }
+
+  return intervals
+}

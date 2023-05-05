@@ -29,17 +29,15 @@ class AuthService {
     )
     return res.data as IServerResponse<null>
   }
-  async refreshToken(accessToken?: string, refreshToken?: string) {
+  async refreshToken(refreshToken?: string) {
     const token = {
-      accessToken: accessToken || Token.getToken().access_token || "",
       refreshToken: refreshToken || Token.getToken().refresh_token || ""
     }
+
     const res = await fetch(
       `${process.env.NEXT_PUBLIC_API_URL}/api/v${VERSION}/${URL_API.AUTH}/RefreshToken`,
       {
         headers: {
-          "Content-Type": "application/json",
-          AccessToken: "1",
           RefreshToken: token.refreshToken
         }
       }

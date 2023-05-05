@@ -1,3 +1,4 @@
+import fetchAdapter from "@vespaiach/axios-fetch-adapter"
 import axios, {
   AxiosInstance,
   AxiosRequestConfig,
@@ -6,6 +7,7 @@ import axios, {
 import { authService } from "services/auth.service"
 import { VERSION } from "shared/constant/constant"
 import { token } from "shared/utils/token"
+
 class HttpClient {
   instance: AxiosInstance
   cancelTokenSource: CancelTokenSource

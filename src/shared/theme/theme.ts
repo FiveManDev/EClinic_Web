@@ -4,7 +4,7 @@ import { createTheme } from "@mui/material/styles"
 const themeConstants = {
   paper: "#FAFAFB",
   primary: {
-    main: "#024ED5"
+    main: "#235EE8"
   },
   breakpoints: {
     xs: 0,

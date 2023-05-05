@@ -3,6 +3,7 @@ import TabsCustom from "layout/Management/components/TabsCustom"
 import Head from "next/head"
 import { useMemo } from "react"
 import TableAPM from "./sections/TableAPM"
+import ScheduleAPM from "./sections/ScheduleAPM"
 
 const AppoinmentPage = () => {
   const tabs = useMemo(
@@ -14,15 +15,8 @@ const AppoinmentPage = () => {
       },
       {
         key: 1,
-        label: `Create schedule`,
-        children: (
-          <div>
-            Lorem ipsum dolor sit amet, consectetur adipisicing elit. Dolorem
-            eius sunt nemo perspiciatis? Vitae suscipit maiores consectetur
-            molestias tenetur minima! Nobis laborum voluptates dolorum vitae
-            quidem exercitationem nulla, architecto consequatur.
-          </div>
-        )
+        label: `My schedule`,
+        children: <ScheduleAPM />
       }
     ],
     []

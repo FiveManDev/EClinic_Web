@@ -5,6 +5,7 @@ import { NextResponse } from "next/server"
 import { authService } from "services/auth.service"
 import { ROLE } from "shared/constant/constant"
 import { ITokenDecode } from "types/Token"
+
 const unprotectedPaths: string[] = [
   "/",
   "search",
@@ -29,7 +30,7 @@ export async function middleware(req: NextRequest) {
     process.env.NEXT_PUBLIC_REFRESH_TOKEN_NAME as string
   )?.value
   if (!accessToken && refreshToken) {
-    const result = await authService.refreshToken()
+    const result = await authService.refreshToken(refreshToken)
     if (result.isSuccess) {
       cookies.set(
         process.env.NEXT_PUBLIC_ACCESS_TOKEN_NAME as string,
