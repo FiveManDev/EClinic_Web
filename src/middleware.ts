@@ -31,7 +31,7 @@ export async function middleware(req: NextRequest) {
   )?.value
   if (!accessToken && refreshToken) {
     const result = await authService.refreshToken(refreshToken)
-    if (result.isSuccess) {
+    if (result?.isSuccess) {
       cookies.set(
         process.env.NEXT_PUBLIC_ACCESS_TOKEN_NAME as string,
         result.data.accessToken

@@ -30,6 +30,7 @@ interface AppPropsWithLayout extends AppProps {
 if (isDevelopment()) {
   process.env.NODE_TLS_REJECT_UNAUTHORIZED = "0"
 }
+
 const cache = createCache({
   key: "css",
   prepend: true
