@@ -30,20 +30,23 @@ class AuthService {
     return res.data as IServerResponse<null>
   }
   async refreshToken(refreshToken?: string) {
-    const token = {
-      refreshToken: refreshToken || Token.getToken().refresh_token || ""
-    }
-
-    const res = await fetch(
-      `${process.env.NEXT_PUBLIC_API_URL}/api/v${VERSION}/${URL_API.AUTH}/RefreshToken`,
-      {
-        headers: {
-          RefreshToken: token.refreshToken
-        }
+    try {
+      const token = {
+        refreshToken: refreshToken || Token.getToken().refresh_token || ""
       }
-    )
-    const data: IServerResponse<IToken> = await res.json()
-    return data
+      const res = await fetch(
+        `${process.env.NEXT_PUBLIC_API_URL}/api/v${VERSION}/${URL_API.AUTH}/RefreshToken`,
+        {
+          headers: {
+            RefreshToken: token.refreshToken
+          }
+        }
+      )
+      const data: IServerResponse<IToken> = await res.json()
+      return data
+    } catch (error) {
+      console.log(error)
+    }
   }
   async signIn(userName: string, password: string) {
     const res: AxiosResponse = await axiosClient.post(

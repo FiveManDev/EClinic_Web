@@ -17,10 +17,10 @@ export const logoutUser = () => async (dispatch: AppDispatch) => {
 export const checkLogin = () => async (dispatch: AppDispatch) => {
   if (!token.getToken().access_token && token.getToken().refresh_token) {
     const result = await authService.refreshToken()
-    if (result.isSuccess) {
+    if (result?.isSuccess) {
       token.saveToken(result.data!.accessToken, result.data!.refreshToken)
     } else {
-      token.deleteToken()
+      // token.deleteToken()
     }
   }
   const accessToken = token.getToken().access_token
