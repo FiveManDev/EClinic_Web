@@ -1,6 +1,6 @@
 import classNames from "classnames"
-import { useState, useRef, useEffect } from "react"
-
+import { AnimatePresence, motion } from "framer-motion"
+import { useEffect, useRef, useState } from "react"
 export type Option = {
   label: string
   value: string
@@ -46,7 +46,7 @@ export const SelectCustom = ({
 
   return (
     <div
-      className={classNames("relative min-w-[200px] h-10", className)}
+      className={classNames("relative min-w-[200px] h-10 ", className)}
       ref={selectRef}
     >
       <button
@@ -83,30 +83,29 @@ export const SelectCustom = ({
           </svg>
         </div>
       </button>
-      <div
-        className={`${
-          isOpen ? "block" : "hidden"
-        } absolute z-50 mt-1 w-full rounded-md bg-white shadow-lg transition-all duration-300 ease-in-out transform origin-top`}
-        style={{
-          transformOrigin: "top",
-          transform: isOpen ? "scaleY(1)" : "scaleY(0.5)",
-          opacity: isOpen ? "1" : "0",
-          visibility: isOpen ? "visible" : "hidden",
-          zIndex: isOpen ? "50" : "-1"
-        }}
-      >
-        <ul className="w-full p-3 overflow-auto font-sans text-sm font-normal bg-white border rounded-md shadow-lg max-h-96 border-blue-gray-50 shadow-blue-gray-500/10 text-blue-gray-500 focus:outline-none">
-          {options.map((option) => (
-            <li
-              key={option.value}
-              className="pt-[9px] pb-2 px-3 rounded-md leading-tight select-none hover:bg-blue-gray-50 focus:bg-blue-gray-50 hover:bg-opacity-80 focus:bg-opacity-80 hover:text-blue-gray-900 focus:text-blue-gray-900 outline outline-0 transition-all cursor-pointer hover:bg-gray-100"
-              onClick={() => handleSelectOption(option)}
-            >
-              {option.label}
-            </li>
-          ))}
-        </ul>
-      </div>
+      <AnimatePresence>
+        {isOpen && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.3 }}
+            className="absolute z-50 w-full mt-1 origin-top transform bg-white rounded-md shadow"
+          >
+            <ul className="w-full p-3 overflow-auto font-sans text-sm font-normal bg-white border rounded-md shadow max-h-96 border-blue-gray-50 shadow-blue-gray-500/10 text-blue-gray-500 focus:outline-none">
+              {options.map((option) => (
+                <li
+                  key={option.value}
+                  className="pt-[9px] pb-2 px-3 rounded-md leading-tight select-none hover:bg-blue-gray-50 focus:bg-blue-gray-50 hover:bg-opacity-80 focus:bg-opacity-80 hover:text-blue-gray-900 focus:text-blue-gray-900 outline outline-0 transition-all cursor-pointer hover:bg-gray-100"
+                  onClick={() => handleSelectOption(option)}
+                >
+                  {option.label}
+                </li>
+              ))}
+            </ul>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </div>
   )
 }

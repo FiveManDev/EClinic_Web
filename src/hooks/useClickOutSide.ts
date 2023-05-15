@@ -1,20 +1,27 @@
-import { useEffect, useRef } from "react"
+import { RefObject, useEffect } from "react"
 
-export default function useClickOutSide(callback?: () => void) {
-  const nodeRef = useRef<HTMLDivElement>(null)
+// Hook
+export default function useOnClickOutside<T extends HTMLElement>(
+  ref: RefObject<T>,
+  // eslint-disable-next-line no-unused-vars
+  handler: (event: MouseEvent | TouchEvent) => void
+) {
   useEffect(() => {
-    function handleClickOutSide(this: Document, ev: MouseEvent) {
-      if (nodeRef.current && !nodeRef.current.contains(ev.target as Node)) {
-        callback?.()
+    const listener = (event: MouseEvent | TouchEvent) => {
+      // Do nothing if clicking ref's element or descendant elements
+      if (!ref.current || ref.current.contains(event.target as Node)) {
+        return
+      } else {
+        handler(event)
       }
     }
-    document.addEventListener("click", handleClickOutSide)
+
+    document.addEventListener("mousedown", listener)
+    document.addEventListener("touchstart", listener)
+
     return () => {
-      document.removeEventListener("click", handleClickOutSide)
+      document.removeEventListener("mousedown", listener)
+      document.removeEventListener("touchstart", listener)
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [])
-  return {
-    nodeRef
-  }
+  }, [ref, handler])
 }

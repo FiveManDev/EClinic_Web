@@ -1,6 +1,6 @@
 import classNames from "classnames"
 import useClickOutSide from "hooks/useClickOutSide"
-import React, { useState } from "react"
+import React, { useRef, useState } from "react"
 import { Position } from "types/Base.type"
 interface PopoverProps {
   position: Position
@@ -17,7 +17,8 @@ function Popover({
   close
 }: PopoverProps) {
   const [isShowSettings, setIsShowSettings] = useState(false)
-  const { nodeRef } = useClickOutSide(() => setIsShowSettings(false))
+  const nodeRef = useRef(null)
+  useClickOutSide(nodeRef, () => setIsShowSettings(false))
   const handleToggleSettings = () => {
     setIsShowSettings((s) => !s)
   }

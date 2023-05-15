@@ -67,7 +67,7 @@ export const StepOne = ({ onCancel, onContinue }: PropsStep) => {
           </div>
         </div>
       </div>
-      <div className="grid grid-cols-2 mt-6 gap-x-3">
+      <div className="grid grid-cols-2 mt-6 gap-x-3 h-36">
         <div className="modal-filed">
           <span className="label">Hình thức kết nối</span>
           <SelectCustom

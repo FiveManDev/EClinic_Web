@@ -6,6 +6,9 @@ const themeConstants = {
   primary: {
     main: "#235EE8"
   },
+  secondary: {
+    main: "#4FD8DE"
+  },
   breakpoints: {
     xs: 0,
     mb: 350,
@@ -23,6 +26,7 @@ const theme = createTheme({
   },
   palette: {
     primary: themeConstants.primary,
+    secondary: themeConstants.secondary,
     background: { paper: themeConstants.paper }
   },
   breakpoints: {

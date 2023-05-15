@@ -3,7 +3,7 @@ import styled from "@emotion/styled"
 export const DetailDoctorModalWrapper = styled.div`
   display: flex;
   flex-direction: column;
-  max-height: 660px;
+  max-height: 560px;
   width: 880px;
   padding: 24px 24px 0 24px;
   margin-bottom: 12px;
