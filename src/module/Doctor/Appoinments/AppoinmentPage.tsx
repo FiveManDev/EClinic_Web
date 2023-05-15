@@ -28,7 +28,6 @@ const AppoinmentPage = () => {
       </Head>
       <MainHeadingLayout heading="Appointment List">
         <TabsCustom tabs={tabs} />
-        <div className="flex justify-between"></div>
       </MainHeadingLayout>
     </>
   )

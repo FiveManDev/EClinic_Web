@@ -1,8 +1,10 @@
-import { FormControlProps, FormHelperText, TextField } from "@mui/material"
+import { FormControlProps } from "@mui/material"
 import { DatePicker, LocalizationProvider } from "@mui/x-date-pickers"
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs"
 import dayjs from "dayjs"
 import { Control, useController } from "react-hook-form"
+import "dayjs/add/isAfter"
+
 interface Props extends FormControlProps {
   name: string
   label: string
@@ -15,7 +17,6 @@ const DatePickerCustom = ({
   name,
   label,
   errorMessage,
-  size = "small",
   control,
   onErrorField,
   inputFormat = "MM/DD/YYYY"
@@ -23,7 +24,7 @@ const DatePickerCustom = ({
   const { field } = useController({
     control,
     name,
-    defaultValue: dayjs()
+    defaultValue: ""
   })
 
   return (

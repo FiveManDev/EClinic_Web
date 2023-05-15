@@ -23,27 +23,28 @@ const DetailDoctor = () => {
   return (
     <div className="flex flex-col">
       <ModalPrimary show={showModal} onClose={() => setShowModal(false)}>
-        <DetailDoctorModalWrapper>
-          {currentStep === 1 ? (
-            <StepOne
-              onCancel={() => setShowModal(false)}
-              onContinue={() => onChangeStep(2)}
-            />
-          ) : currentStep === 2 ? (
-            <OverlayScrollbarsComponent
-              defer
-              options={{ scrollbars: { autoHide: "scroll" } }}
-            >
+        <OverlayScrollbarsComponent
+          defer
+          options={{ scrollbars: { autoHide: "scroll" } }}
+        >
+          <DetailDoctorModalWrapper>
+            {currentStep === 1 ? (
+              <StepOne
+                onCancel={() => setShowModal(false)}
+                onContinue={() => onChangeStep(2)}
+              />
+            ) : currentStep === 2 ? (
               <StepTwo
                 onCancel={() => setShowModal(false)}
                 onBack={() => onChangeStep(1)}
                 onContinue={() => onChangeStep(currentStep)}
               />
-            </OverlayScrollbarsComponent>
-          ) : (
-            ""
-          )}
-        </DetailDoctorModalWrapper>
+            ) : (
+              ""
+            )}
+          </DetailDoctorModalWrapper>
+        </OverlayScrollbarsComponent>
+
         <div className="footer">
           <div className="flex justify-between px-6">
             <CustomButton kind="tertiary" onClick={() => setShowModal(false)}>

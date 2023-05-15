@@ -1,10 +1,10 @@
 import styled from "@emotion/styled"
 import classNames from "classnames"
-import { motion, AnimatePresence } from "framer-motion"
-import React from "react"
+import { AnimatePresence, motion } from "framer-motion"
+import React, { useRef } from "react"
 import { HiXMark } from "react-icons/hi2"
 import Backdrop from "../Backdrop"
-import { PortalCustom } from "../Portal/PortalCustom"
+import useOnClickOutside from "hooks/useClickOutSide"
 const ModalPrimaryWrapper = styled(motion.div)`
   .footer {
     padding: 20px 0;
@@ -38,13 +38,15 @@ interface ModalProps {
 }
 
 const ModalPrimary = ({ show, onClose, children }: ModalProps) => {
+  const nodeRef = useRef(null)
+  useOnClickOutside(nodeRef, () => onClose())
   return (
-    <PortalCustom>
+    <>
       <AnimatePresence initial={false} onExitComplete={() => null} mode="wait">
         {show && (
-          <Backdrop onClick={onClose}>
+          <Backdrop>
             <ModalPrimaryWrapper
-              onClick={(e) => e.stopPropagation()}
+              ref={nodeRef}
               variants={dropIn}
               initial="hidden"
               animate="visible"
@@ -70,7 +72,7 @@ const ModalPrimary = ({ show, onClose, children }: ModalProps) => {
           </Backdrop>
         )}
       </AnimatePresence>
-    </PortalCustom>
+    </>
   )
 }
 

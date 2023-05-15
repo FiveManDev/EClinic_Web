@@ -1,9 +1,10 @@
 import DoctorLayout from "layout/Management/DoctorLayout"
+import DoctorHomePage from "module/Doctor/Home/DoctorHomePage"
 import { NextPageWithLayout } from "pages/page"
 import React from "react"
 
 const Page: NextPageWithLayout = () => {
-  return <div>Doctor page</div>
+  return <DoctorHomePage />
 }
 Page.getLayout = (page) => {
   return <DoctorLayout>{page}</DoctorLayout>

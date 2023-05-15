@@ -1,14 +1,19 @@
-import React, { useMemo } from "react"
+import ModalPrimary from "components/Common/Modal/ModalPrimary"
+import CustomButton from "components/User/Button"
 import MaterialReactTable, { type MRT_ColumnDef } from "material-react-table"
+import DetailBooking from "module/Doctor/components/DetailBooking"
+import Info from "module/User/components/Info/Info"
+import { useMemo } from "react"
+import { dayformat } from "shared/helpers/helper"
 
 type Person = {
   name: {
     firstName: string
     lastName: string
   }
-  address: string
+  kind: string
   city: string
-  state: string
+  status: number
 }
 
 //nested data is ok, see accessorKeys in ColumnDef below
@@ -18,45 +23,45 @@ const data: Person[] = [
       firstName: "John",
       lastName: "Doe"
     },
-    address: "261 Erdman Ford",
+    kind: "Online",
     city: "East Daphne",
-    state: "Kentucky"
+    status: 0
   },
   {
     name: {
       firstName: "Jane",
       lastName: "Doe"
     },
-    address: "769 Dominic Grove",
+    kind: "Online",
     city: "Columbus",
-    state: "Ohio"
+    status: 1
   },
   {
     name: {
       firstName: "Joe",
       lastName: "Doe"
     },
-    address: "566 Brakus Inlet",
+    kind: "Online",
     city: "South Linda",
-    state: "West Virginia"
+    status: 1
   },
   {
     name: {
       firstName: "Kevin",
       lastName: "Vandy"
     },
-    address: "722 Emie Stream",
+    kind: "Online",
     city: "Lincoln",
-    state: "Nebraska"
+    status: 2
   },
   {
     name: {
       firstName: "Joshua",
       lastName: "Rolluffs"
     },
-    address: "32188 Larkin Turnpike",
+    kind: "Online",
     city: "Omaha",
-    state: "Nebraska"
+    status: 0
   }
 ]
 
@@ -66,23 +71,53 @@ const TableAPM = () => {
     () => [
       {
         accessorKey: "name.firstName", //access nested data with dot notation
-        header: "First Name"
+        header: "Patient name",
+        enableSorting: false,
+        Cell: () => {
+          return <Info />
+        }
       },
       {
         accessorKey: "name.lastName",
-        header: "Last Name"
+        header: "Appointment Date",
+        Cell: () => {
+          return (
+            <div className="flex flex-col gap-y-2">
+              <time dateTime="03 May 2023">{dayformat("03 May 2023")}</time>
+              <time className="text-gray80">9:00</time>
+            </div>
+          )
+        }
       },
       {
-        accessorKey: "address", //normal accessorKey
-        header: "Address"
+        accessorKey: "kind", //normal accessorKey
+        header: "Kind"
       },
       {
+        accessorKey: "status",
+        header: "Status",
+        Cell: ({ cell }) => {
+          return (
+            <div className="p-2">
+              {cell.getValue() === 0 ? (
+                <span className="text-pending">Pending</span>
+              ) : cell.getValue() === 1 ? (
+                <span className="text-secondary">Complete</span>
+              ) : (
+                <span className="text-error">Canceled</span>
+              )}
+            </div>
+          )
+        }
+      },
+      {
+        enableSorting: false,
+        enableColumnActions: false,
         accessorKey: "city",
-        header: "City"
-      },
-      {
-        accessorKey: "state",
-        header: "State"
+        header: "Action",
+        Cell: ({ cell }) => {
+          return <DetailBooking />
+        }
       }
     ],
     []
@@ -90,5 +125,33 @@ const TableAPM = () => {
 
   return <MaterialReactTable columns={columns} data={data} />
 }
-
+// const DetailBooking = ({
+//   show = false,
+//   onClose = () => {},
+//   onOpen = () => {}
+// }) => {
+//   return (
+//     <ModalPrimary show={show} onClose={() => onClose()}>
+//       <div className="flex flex-col gap-6 px-6 py-6 max-w-">
+//         <h1 className="text-xl text-h1 ">
+//           Select the date(s) you want to assign specific hours
+//         </h1>
+//         <div className="mx-auto">
+//           Lorem ipsum dolor sit amet consectetur adipisicing elit. Laudantium
+//           dolores officia corrupti, eaque possimus, inventore optio omnis
+//           molestias magni perspiciatis porro reiciendis nemo, tempore facilis
+//           dignissimos. Repellat maxime quisquam eum.
+//         </div>
+//       </div>
+//       <div className="footer">
+//         <div className="flex justify-between px-6">
+//           <CustomButton kind="tertiary" onClick={() => onOpen()}>
+//             Cancel
+//           </CustomButton>
+//           <CustomButton kind="primary">Apply</CustomButton>
+//         </div>
+//       </div>
+//     </ModalPrimary>
+//   )
+// }
 export default TableAPM

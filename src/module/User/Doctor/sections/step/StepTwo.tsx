@@ -10,7 +10,6 @@ import { PropsStep } from "./StepOne"
 
 export const StepTwo = ({ onBack }: PropsStep) => {
   const profiles = useSearchFamlyProfilesQuery(1, PAGE_SIZE, "")
-  console.log("StepTwo ~ profiles:", profiles)
   const [note, setNote] = useState("")
   const [images, setImages] = useState<ImageItem[]>([])
   const removeImage = (key: string) => {
