@@ -1,5 +1,4 @@
-import ModalPrimary from "components/Common/Modal/ModalPrimary"
-import CustomButton from "components/User/Button"
+import Tag from "components/Common/Tag"
 import MaterialReactTable, { type MRT_ColumnDef } from "material-react-table"
 import DetailBooking from "module/Doctor/components/DetailBooking"
 import Info from "module/User/components/Info/Info"
@@ -97,16 +96,13 @@ const TableAPM = () => {
         accessorKey: "status",
         header: "Status",
         Cell: ({ cell }) => {
-          return (
-            <div className="p-2">
-              {cell.getValue() === 0 ? (
-                <span className="text-pending">Pending</span>
-              ) : cell.getValue() === 1 ? (
-                <span className="text-secondary">Complete</span>
-              ) : (
-                <span className="text-error">Canceled</span>
-              )}
-            </div>
+          return cell.getValue() === 0 ? (
+            // <span className="text-pending">Pending</span>
+            <Tag color="#FEAF02">Pending</Tag>
+          ) : cell.getValue() === 1 ? (
+            <Tag color="#4FD8DE">Complete</Tag>
+          ) : (
+            <Tag color="#D72755">Canceled</Tag>
           )
         }
       },

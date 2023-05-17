@@ -1,11 +1,13 @@
 import {
+  Area,
+  AreaChart,
   CartesianGrid,
   Line,
   LineChart,
   ResponsiveContainer,
+  Tooltip,
   XAxis,
-  YAxis,
-  Tooltip
+  YAxis
 } from "recharts"
 
 const data = [
@@ -47,18 +49,27 @@ const data = [
 ]
 const ChartEarning = () => {
   return (
-    <div className="flex flex-col mb-6 gap-y-6">
+    <div className="flex flex-col gap-y-6">
       <div className="flex flex-col w-full h-[500px] background-primary">
         <h3 className="mb-6 text-2xl font-semibold text-h1">Total Incomes</h3>
         <ResponsiveContainer width="100%" height="100%">
-          <LineChart data={data} margin={{ right: 25, top: 10 }}>
-            <CartesianGrid strokeDasharray="3 3" />
+          <AreaChart data={data} margin={{ right: 25, top: 10 }}>
             <XAxis dataKey="name" interval={"preserveEnd"} />
-            <YAxis interval="preserveEnd" axisLine={false} tickLine={false} />
-            <Line type="monotone" dataKey="2023" stroke="#235EE8" />
+            <YAxis interval="preserveEnd" tickLine={false} />
+            <Area
+              type="monotone"
+              dataKey="2022"
+              stroke="#235EE8"
+              fill="#235EE8"
+            />
             <Tooltip />
-            <Line type="monotone" dataKey="2022" stroke="#FEAF02" />
-          </LineChart>
+            <Area
+              type="monotone"
+              dataKey="2023"
+              stroke="#4FD8DE"
+              fill="#4FD8DE"
+            />
+          </AreaChart>
         </ResponsiveContainer>
       </div>
       <div className="grid grid-cols-2 gap-x-6 h-[300px]">
@@ -70,22 +81,32 @@ const ChartEarning = () => {
 }
 const ChartMini = ({ heading = "" }) => {
   return (
-    <div className="flex flex-col w-full h-[400px] background-primary ">
+    <div className="flex flex-col background-primary ">
       <h3 className="mb-6 text-xl font-semibold text-h1">{heading}</h3>
-      <ResponsiveContainer width="100%" height="100%">
-        <LineChart data={data} margin={{ right: 25, top: 10 }}>
-          <CartesianGrid strokeDasharray="3 3" />
-          <XAxis dataKey="name" interval={"preserveEnd"} />
-          <YAxis interval="preserveEnd" axisLine={false} tickLine={false} />
-          <Line
-            type="monotone"
-            dataKey="2023"
-            stroke="#235EE8"
-            activeDot={{ r: 8 }}
-          />
-          <Tooltip />
-        </LineChart>
-      </ResponsiveContainer>
+      <div className="w-full h-[400px]">
+        <ResponsiveContainer width="100%" height="100%">
+          <AreaChart
+            data={data}
+            margin={{
+              top: 10,
+              right: 30,
+              left: 0,
+              bottom: 0
+            }}
+          >
+            {/* <CartesianGrid strokeDasharray="3 3" /> */}
+            <XAxis dataKey="name" tickLine={false} />
+            <YAxis tickLine={false} />
+            <Tooltip />
+            <Area
+              type="monotone"
+              dataKey="2023"
+              stroke="#4FD8DE"
+              fill="#4FD8DE"
+            />
+          </AreaChart>
+        </ResponsiveContainer>
+      </div>
     </div>
   )
 }
