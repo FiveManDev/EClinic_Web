@@ -1,20 +1,27 @@
-import classNames from "classnames"
-import React, { ReactNode } from "react"
+import styled from "@emotion/styled"
+import { ReactNode } from "react"
+import { hexToRGBA } from "shared/helpers/helper"
 interface Props {
   className?: string
   children: ReactNode
+  color?: string
 }
 
-const Tag = ({ className, children }: Props) => {
+const TagWrapper = styled.div`
+  width: fit-content;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: ${(props) => hexToRGBA(props.color, 20)};
+  color: ${(props) => props.color};
+  padding: 8px 16px;
+  border-radius: 8px;
+`
+const Tag = ({ className, color = "235EE8", children }: Props) => {
   return (
-    <div
-      className={classNames(
-        "px-[10px] py-1 bg-primary text-primary bg-opacity-20 flex items-center justify-center rounded-md",
-        className
-      )}
-    >
+    <TagWrapper color={color}>
       <span>{children}</span>
-    </div>
+    </TagWrapper>
   )
 }
 
