@@ -4,10 +4,13 @@ import TextMessage from "./TextMessage"
 import { dayformat } from "shared/helpers/helper"
 import { OverlayScrollbarsComponent } from "overlayscrollbars-react"
 import InputMessage from "./InputMessage"
-const MessageBox = () => {
+interface IProps {
+  toggleInfo: () => void
+}
+const MessageBox = ({ toggleInfo }: IProps) => {
   return (
-    <div className="flex flex-col w-full ">
-      <HeaderBox />
+    <div className="flex flex-col w-full border border-gray-200 border-solid border-y-0">
+      <HeaderBox toggleInfo={toggleInfo} />
       <OverlayScrollbarsComponent
         defer
         options={{ scrollbars: { autoHide: "scroll" } }}

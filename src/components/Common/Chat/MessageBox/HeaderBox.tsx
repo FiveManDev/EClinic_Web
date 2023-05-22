@@ -4,8 +4,10 @@ import {
   HiOutlineInformationCircle,
   HiOutlineVideoCamera
 } from "react-icons/hi2"
-
-export const HeaderBox = () => {
+interface IProps {
+  toggleInfo: () => void
+}
+export const HeaderBox = ({ toggleInfo }: IProps) => {
   return (
     <div className="flex justify-between p-6 border border-t-0 border-gray-200 border-solid border-x-0">
       <div className="flex space-x-2">
@@ -31,7 +33,7 @@ export const HeaderBox = () => {
           </IconButton>
         </Tooltip>
         <Tooltip title="View profile" placement="top">
-          <IconButton>
+          <IconButton onClick={toggleInfo}>
             <span className="text-3xl text-disable">
               <HiOutlineInformationCircle />
             </span>

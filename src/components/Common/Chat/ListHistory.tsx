@@ -6,7 +6,7 @@ import { OverlayScrollbarsComponent } from "overlayscrollbars-react"
 
 const ListHistory = () => {
   return (
-    <div className="flex flex-col bg-gray-50 w-full max-w-[360px]">
+    <div className="flex flex-col bg-gray-50 w-full max-w-[320px]">
       <div className="px-5 pt-10 pb-4">
         <h1 className="mb-3 text-2xl text-h1">Message</h1>
         <InputCustom

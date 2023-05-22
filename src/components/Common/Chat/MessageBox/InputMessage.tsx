@@ -1,8 +1,19 @@
 import { IconButton } from "@mui/material"
 import React from "react"
-import { HiOutlinePaperAirplane, HiPlus } from "react-icons/hi2"
+import {
+  HiOutlinePaperAirplane,
+  HiOutlinePaperClip,
+  HiOutlinePhoto,
+  HiPlus
+} from "react-icons/hi2"
 import Menu from "@mui/material/Menu"
 import MenuItem from "@mui/material/MenuItem"
+import styled from "@emotion/styled"
+const MenuWrapper = styled(Menu)`
+  .MuiPaper-elevation {
+    box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
+  }
+`
 
 const InputMessage = () => {
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null)
@@ -15,34 +26,36 @@ const InputMessage = () => {
   }
   return (
     <div className="flex items-end w-full px-5 py-4 bg-white gap-x-2 ">
-      {/* <ClickAwayListener onClickAway={handleTooltipClose}>
-        <div>
-          <Tooltip
-            PopperProps={{
-              disablePortal: true
-            }}
-            onClose={handleTooltipClose}
-            open={open}
-            disableFocusListener
-            disableHoverListener
-            disableTouchListener
-            title={
-              <>
-                <ChoiceAction />
-              </>
-            }
-          >
-
-          </Tooltip>
-        </div>
-      </ClickAwayListener> */}
       <IconButton size="medium" onClick={handleClick}>
         <HiPlus />
       </IconButton>
-      <Menu anchorEl={anchorEl} open={open} onClose={handleClose}>
-        <MenuItem onClick={handleClose}>Attack images</MenuItem>
-        <MenuItem onClick={handleClose}>Attack files</MenuItem>
-      </Menu>
+      <MenuWrapper
+        elevation={0}
+        anchorEl={anchorEl}
+        anchorOrigin={{
+          vertical: "top",
+          horizontal: "center"
+        }}
+        transformOrigin={{
+          vertical: "center",
+          horizontal: "center"
+        }}
+        open={open}
+        onClose={handleClose}
+      >
+        <MenuItem onClick={handleClose}>
+          <div className="flex items-center space-x-2">
+            <HiOutlinePhoto />
+            <span>Attack images</span>
+          </div>
+        </MenuItem>
+        <MenuItem onClick={handleClose}>
+          <div className="flex items-center space-x-2">
+            <HiOutlinePaperClip />
+            <span>Attack files</span>
+          </div>
+        </MenuItem>
+      </MenuWrapper>
 
       <div className="flex-1 px-2 py-1 bg-gray-100 rounded-md ">
         <input

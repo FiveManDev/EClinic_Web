@@ -32,7 +32,7 @@ const TextMessage = ({ kind = "other" }: IProps) => {
           <time className="text-xs text-disable">Today 7.59 am</time>
           <div
             className={classNames(
-              "max-w-[266px]  rounded-[10px] py-4",
+              "max-w-[266px] rounded-xl py-3 text-sm",
               kind === "other"
                 ? "rounded-bl-none pl-[10px] pr-7 bg-gray-100"
                 : "rounded-br-none pr-[10px] pl-7 bg-primary bg-opacity-80 text-white"
