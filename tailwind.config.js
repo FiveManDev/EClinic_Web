@@ -20,7 +20,7 @@ module.exports = {
         grayPrimary: "#272B30",
         black2: "#394456",
         disable: "#878EA1",
-        icon: "#828A9D",
+        icon: "#0d0f14",
         carbon: "#E4E9EF",
         snow: "#F9FAFC",
         pending: "#FEAF02",

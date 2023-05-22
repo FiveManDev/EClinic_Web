@@ -11,6 +11,8 @@ import ChangePassword from "../change-password"
 import HistoryQuestion from "../history-question"
 import Profile from "../profile"
 import { TabsWrapper } from "./Tabs.style"
+import { HiOutlineChatBubbleLeftRight } from "react-icons/hi2"
+import ChatSection from "../chat/ChatSection"
 
 const SiderBar = () => {
   const [tabIndex, setTabIndex] = useState(0)
@@ -61,6 +63,12 @@ const SiderBar = () => {
       },
       {
         key: 3,
+        label: `Chat with doctor`,
+        icon: <HiOutlineChatBubbleLeftRight />,
+        children: <ChatSection />
+      },
+      {
+        key: 4,
         label: `Logout`,
         icon: <MdLogout />,
         onclick: () => logout()
@@ -74,7 +82,7 @@ const SiderBar = () => {
         orientation="vertical"
         value={tabIndex}
         onChange={handleTabChange}
-        className="rounded-lg shadow-md h-fit"
+        className="p-0 rounded-sm background-primary h-fit"
       >
         {tabs.map((tab) => (
           <Tab

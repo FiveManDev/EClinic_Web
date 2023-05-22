@@ -1,9 +1,7 @@
 import { FormControlProps } from "@mui/material"
 import { DatePicker, LocalizationProvider } from "@mui/x-date-pickers"
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs"
-import dayjs from "dayjs"
 import { Control, useController } from "react-hook-form"
-import "dayjs/add/isAfter"
 
 interface Props extends FormControlProps {
   name: string
