@@ -1,9 +1,10 @@
 import { AxiosResponse } from "axios"
 import axiosClient from "shared/axios/httpClient"
 import { URL_API } from "shared/constant/constant"
-import { IProfile } from "types/Profile.type"
+import { IProfile, IProfileDoctor } from "types/Profile.type"
 import { IServerResponse } from "types/server/IServerResponse"
 import { IRelationShip } from "./../types/Profile.type.d"
+import { IPaginationSearch } from "types/Pagination"
 
 class ProfileService {
   async GetUserProfilesByID(userId: string) {
@@ -89,6 +90,19 @@ class ProfileService {
       `${URL_API.PROFILE_OTHER}/GetBloodTypes`
     )
     return res.data as IServerResponse<string[]>
+  }
+  async getDoctorProfiles(data: IPaginationSearch) {
+    const res: AxiosResponse = await axiosClient.get(
+      `${URL_API.PROFILE}/GetDoctorProfiles?SearchText=${data.searchText}`,
+      {
+        headers: {
+          PageNumber: data.pageNumber,
+          PageSize: data.pageSize
+        }
+      }
+    )
+    return res as AxiosResponse<IServerResponse<IProfileDoctor[]>>
+    // return res.data as IServerResponse<IProfileDoctor[]>
   }
 }
 

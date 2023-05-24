@@ -1,7 +1,9 @@
 import { Chip } from "@mui/material"
-import { DateCalendar, LocalizationProvider } from "@mui/x-date-pickers"
+import { CalendarPicker, LocalizationProvider } from "@mui/x-date-pickers"
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs"
 import { Option, SelectCustom } from "components/Common/Select/SelectCustom"
+import dayjs, { Dayjs } from "dayjs"
+import React from "react"
 const optionsConnect = [
   { label: "Trực tiếp", value: "1" },
   { label: "Online", value: "2" }
@@ -17,6 +19,7 @@ export type PropsStep = {
 }
 export const StepOne = ({ onCancel, onContinue }: PropsStep) => {
   const handleSelectTypeConnect = (option: Option) => {}
+  const [date, setDate] = React.useState<Dayjs | null>(dayjs("2022-04-07"))
   return (
     <>
       <div className="flex justify-between my-8 ">
@@ -46,7 +49,11 @@ export const StepOne = ({ onCancel, onContinue }: PropsStep) => {
         <div className=" modal-filed">
           <span className="label">Chọn ngày</span>
           <LocalizationProvider dateAdapter={AdapterDayjs}>
-            <DateCalendar showDaysOutsideCurrentMonth />
+            <CalendarPicker
+              showDaysOutsideCurrentMonth
+              date={date}
+              onChange={(newDate) => setDate(newDate)}
+            />
           </LocalizationProvider>
         </div>
         <div className="modal-filed">

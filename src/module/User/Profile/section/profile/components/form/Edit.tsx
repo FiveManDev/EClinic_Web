@@ -316,7 +316,7 @@ interface IFileProps {
   // eslint-disable-next-line no-unused-vars
   onFileChange: (file: File) => void
 }
-const Uploadfile = ({ imageUrl, onFileChange }: IFileProps) => {
+export const Uploadfile = ({ imageUrl, onFileChange }: IFileProps) => {
   const [image, setImage] = useState(imageUrl)
   const handleImageChange = (event: ChangeEvent<HTMLInputElement>) => {
     if (event.target.files !== null && event.target.files?.length > 0) {

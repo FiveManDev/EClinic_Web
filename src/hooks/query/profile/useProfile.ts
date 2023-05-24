@@ -1,5 +1,6 @@
 import { useMutation, useQuery } from "@tanstack/react-query"
 import { QUERY_KEYS } from "shared/constant/constant"
+import { IPaginationSearch } from "types/Pagination"
 import { IProfile, IRelationShip } from "types/Profile.type"
 import { profileService } from "../../../services/profile.service"
 
@@ -74,5 +75,22 @@ export const useGetBloodTypes = () => {
   return useQuery({
     queryKey,
     queryFn: () => profileService.getBloodTypes()
+  })
+}
+export const useGetDoctorProfilesQuery = (data: IPaginationSearch) => {
+  const queryKey = [
+    QUERY_KEYS.PROFILE,
+    data.pageNumber,
+    data.pageSize,
+    data.searchText
+  ]
+  return useQuery({
+    queryKey,
+    queryFn: () =>
+      profileService.getDoctorProfiles({
+        pageNumber: data.pageNumber,
+        pageSize: data.pageSize,
+        searchText: data.searchText
+      })
   })
 }

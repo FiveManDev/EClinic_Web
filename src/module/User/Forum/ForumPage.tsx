@@ -22,7 +22,6 @@ const ForumPage = () => {
     searchText: "",
     tags: [] as IHashtag[]
   })
-  console.log("ForumPage ~ tags:", searchData.tags)
   const searchPostsForum = useSearchPostsForum(
     searchData.searchText,
     pageIndex,
