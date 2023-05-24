@@ -1,8 +1,7 @@
 import styled from "@emotion/styled"
-import { ReactNode } from "react"
+import { HTMLAttributes, ReactNode } from "react"
 import { hexToRGBA } from "shared/helpers/helper"
-interface Props {
-  className?: string
+interface Props extends HTMLAttributes<HTMLDivElement> {
   children: ReactNode
   color?: string
 }
@@ -12,14 +11,15 @@ const TagWrapper = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-  background-color: ${(props) => hexToRGBA(props.color, 20)};
+  background-color: ${(props) => hexToRGBA(props.color, 10)};
   color: ${(props) => props.color};
-  padding: 8px 16px;
-  border-radius: 8px;
+  font-size: 14px;
+  padding: 4px 12px;
+  border-radius: 6px;
 `
-const Tag = ({ className, color = "235EE8", children }: Props) => {
+const Tag = ({ color = "235EE8", children, ...props }: Props) => {
   return (
-    <TagWrapper color={color}>
+    <TagWrapper color={color} {...props}>
       <span>{children}</span>
     </TagWrapper>
   )

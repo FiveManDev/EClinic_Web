@@ -13,6 +13,7 @@ const colorsProvider = {
   carbon: "#E4E9EF",
   snow: "#F9FAFC",
   pending: "#FEAF02",
-  support: "#0C1A7B"
+  support: "#0C1A7B",
+  success: "#07AB55"
 }
 export default colorsProvider

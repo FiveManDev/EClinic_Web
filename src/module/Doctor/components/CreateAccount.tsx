@@ -4,25 +4,26 @@ import {
   FormControlLabel,
   FormLabel,
   Radio,
-  RadioGroup,
-  Switch
+  RadioGroup
 } from "@mui/material"
 import DatePickerCustom from "components/Common/DatePicker/DatePickerCustom"
 import SwitchCustom from "components/Common/IOSSwitch"
-import Spinner from "components/Common/Loading/LoadingIcon"
+import Tag from "components/Common/Tag"
 import CustomButton from "components/User/Button"
 import { CustomInput } from "components/User/Input"
 import useConfirm from "context/ComfirmContext"
 import dayjs from "dayjs"
 import {
-  useAllRelationship,
-  useGetBloodTypes
+  CreateDoctorProfile,
+  useCreateProfileDoctorMutation
 } from "hooks/query/profile/useProfile"
 import { Uploadfile } from "module/User/Profile/section/profile/components/form/Edit"
 import { useEffect } from "react"
 import { FieldValues, useForm } from "react-hook-form"
+import { toast } from "react-hot-toast"
 import { IProfileDoctor } from "types/Profile.type"
 import * as yup from "yup"
+
 const schema = yup.object({
   email: yup
     .string()
@@ -45,22 +46,16 @@ const schema = yup.object({
     ),
   workStart: yup.string().required("Please enter date of working start"),
   address: yup.string().required("Please enter address"),
-  title: yup.string().required("Please enter position")
+  title: yup.string().required("Please enter position"),
+  description: yup.string().required("Please enter position")
 })
-export interface IProfileDoctorWithFile extends IProfileDoctor {
-  avatarFile: File | null
-}
 interface Props {
-  // eslint-disable-next-line no-unused-vars
-  onSubmit: (value: FieldValues) => void
-  // eslint-disable-next-line no-unused-vars
-  onDelete?: (profileId: string) => void
   labelForm: string
-  profile?: IProfileDoctorWithFile
+  profile?: IProfileDoctor
 }
-const CreateAccount = ({ onSubmit, onDelete, labelForm, profile }: Props) => {
+const CreateAccount = ({ labelForm, profile }: Props) => {
   const confirm = useConfirm()
-
+  const createProfileDoctorMutation = useCreateProfileDoctorMutation()
   const {
     handleSubmit,
     control,
@@ -74,22 +69,40 @@ const CreateAccount = ({ onSubmit, onDelete, labelForm, profile }: Props) => {
     resolver: yupResolver(schema),
     defaultValues: profile
   })
-  watch("avatarFile", null)
+  watch("avatar", null)
   const watchGender = watch("gender", profile ? profile?.gender : true)
 
   const onFileChange = (file: File) => {
-    setValue("avatarFile", file)
+    setValue("avatar", file)
   }
-  const handleDelete = async (profileId: string) => {
-    if (confirm) {
-      const choice = await confirm({
-        title: "Delete profile",
-        content: "Are you sure you want to delete this profile?"
-      })
-      if (choice) {
-        onDelete && onDelete(profileId)
+  // const handleDelete = async (profileId: string) => {
+  //   if (confirm) {
+  //     const choice = await confirm({
+  //       title: "Delete profile",
+  //       content: "Are you sure you want to delete this profile?"
+  //     })
+  //     if (choice) {
+  //     }
+  //   }
+  // }
+  const onSubmit = (value: FieldValues) => {
+    createProfileDoctorMutation.mutate(
+      {
+        ...value
+      } as CreateDoctorProfile,
+      {
+        onSuccess: (data) => {
+          if (data.isSuccess) {
+            toast.success("Add successfuly")
+          } else {
+            toast.error("Add error")
+          }
+        },
+        onError: () => {
+          toast.error("Add error")
+        }
       }
-    }
+    )
   }
   useEffect(() => {
     if (profile === undefined) {
@@ -98,38 +111,52 @@ const CreateAccount = ({ onSubmit, onDelete, labelForm, profile }: Props) => {
         userID: "",
         firstName: "",
         lastName: "",
-        avatar: "",
-        avatarFile: null,
+        avatar: null,
         gender: true,
         dateOfBirth: dayjs().toString(),
         address: "",
         email: "",
         phone: "",
         title: "",
-        workStart: ""
+        workStart: dayjs().toString(),
+        description: ""
       })
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [profile])
+
   return (
-    <form className="flex w-full gap-x-5" onSubmit={handleSubmit(onSubmit)}>
-      <div className="background-primary max-w-[360px] w-full flex flex-col items-center gap-y-6 h-fit py-16">
+    <form
+      className="flex flex-col w-full gap-y-6 md:gap-y-0 md:flex-row gap-x-5"
+      onSubmit={handleSubmit(onSubmit)}
+    >
+      <div className="relative background-primary w-full md:max-w-[360px] flex flex-col items-center h-fit py-16">
+        <Tag
+          color="#07AB55"
+          className="absolute top-0 right-0 -translate-x-1/4 translate-y-2/4"
+        >
+          Active
+        </Tag>
+
         <Uploadfile
           imageUrl={profile?.avatar as string | null}
           onFileChange={onFileChange}
         />
-        <p className="text-xs text-disable max-w-[200px] text-center leading-relaxed">
+        <p className="text-xs text-disable max-w-[200px] text-center leading-relaxed mt-3">
           Allowed *.jpeg, *.jpg, *.png, *.gif max size of 3.1 MB
         </p>
-        <div className="flex items-center justify-between w-full max-w-[140px]">
-          <span className="text-base text-black2">Publish</span>
+        <div className="flex items-center justify-between w-full max-w-[260px] mt-6">
+          <div className="flex flex-col">
+            <span className="text-base font-medium text-black2">Publish</span>
+            <p className="text-xs text-disable">Apply disable account</p>
+          </div>
           <SwitchCustom />
         </div>
       </div>
       <div className="flex-1 background-primary">
         <h3 className="pb-4 text-lg font-medium">{labelForm}</h3>
         <div className="flex flex-col justify-start">
-          <form className="flex flex-col space-y-5">
+          <div className="flex flex-col space-y-5">
             <div className="flex items-start space-x-3">
               <CustomInput
                 size="medium"
@@ -149,14 +176,24 @@ const CreateAccount = ({ onSubmit, onDelete, labelForm, profile }: Props) => {
               />
             </div>
 
-            <CustomInput
-              size="medium"
-              label="Address"
-              control={control}
-              name="address"
-              error={!!errors.address}
-              helperText={errors.address?.message?.toString()}
-            />
+            <div className="flex space-x-3">
+              <CustomInput
+                size="medium"
+                label="Address"
+                control={control}
+                name="address"
+                error={!!errors.address}
+                helperText={errors.address?.message?.toString()}
+              />
+              <CustomInput
+                size="medium"
+                label="Position"
+                control={control}
+                name="title"
+                error={!!errors.title}
+                helperText={errors.title?.message?.toString()}
+              />
+            </div>
             <div className="flex space-x-3">
               <DatePickerCustom
                 size="medium"
@@ -188,7 +225,7 @@ const CreateAccount = ({ onSubmit, onDelete, labelForm, profile }: Props) => {
                 size="medium"
                 label="Date start work"
                 control={control}
-                name="dateOfBirth"
+                name="workStart"
                 onErrorField={(reason) => {
                   const message =
                     reason === "invalidDate"
@@ -196,9 +233,9 @@ const CreateAccount = ({ onSubmit, onDelete, labelForm, profile }: Props) => {
                       : reason === "disableFuture"
                       ? "The birthday cannot be less than the current date"
                       : ""
-                  setError("dateOfBirth", { type: "focus", message })
+                  setError("workStart", { type: "focus", message })
                 }}
-                errorMessage={errors.dateOfBirth?.message?.toString()}
+                errorMessage={errors.workStart?.message?.toString()}
               />
               <CustomInput
                 size="medium"
@@ -209,17 +246,6 @@ const CreateAccount = ({ onSubmit, onDelete, labelForm, profile }: Props) => {
                 helperText={errors.phone?.message?.toString()}
               />
             </div>
-
-            <CustomInput
-              size="medium"
-              multiline
-              label="About"
-              rows={4}
-              control={control}
-              name="address"
-              error={!!errors.address}
-              helperText={errors.address?.message?.toString()}
-            />
             <FormControl>
               <FormLabel>Gender</FormLabel>
               <RadioGroup
@@ -242,6 +268,17 @@ const CreateAccount = ({ onSubmit, onDelete, labelForm, profile }: Props) => {
                 />
               </RadioGroup>
             </FormControl>
+            <CustomInput
+              size="medium"
+              multiline
+              label="About"
+              rows={4}
+              control={control}
+              name="description"
+              error={!!errors.description}
+              helperText={errors.description?.message?.toString()}
+            />
+
             <CustomButton
               kind="primary"
               type="submit"
@@ -249,7 +286,7 @@ const CreateAccount = ({ onSubmit, onDelete, labelForm, profile }: Props) => {
             >
               Create account
             </CustomButton>
-          </form>
+          </div>
         </div>
       </div>
     </form>

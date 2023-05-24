@@ -10,7 +10,7 @@ module.exports = {
     },
     extend: {
       colors: {
-        background: "#fefefe",
+        background: "#F6F7FB",
         primary: "#235EE8",
         secondary: "#4FD8DE",
         error: "#D72755",
@@ -20,11 +20,12 @@ module.exports = {
         grayPrimary: "#272B30",
         black2: "#394456",
         disable: "#878EA1",
-        icon: "#0d0f14",
+        icon: "#828A9D",
         carbon: "#E4E9EF",
         snow: "#F9FAFC",
         pending: "#FEAF02",
-        support: "#0C1A7B"
+        support: "#0C1A7B",
+        success: "#07AB55"
       },
       boxShadow: {
         main: "rgba(145, 158, 171, 0.2) 0px 0px 2px 0px, rgba(145, 158, 171, 0.12) 0px 12px 24px -4px"

@@ -1,9 +1,10 @@
 import { useMutation, useQuery } from "@tanstack/react-query"
 import { QUERY_KEYS } from "shared/constant/constant"
 import { IPaginationSearch } from "types/Pagination"
-import { IProfile, IRelationShip } from "types/Profile.type"
+import { IProfile, IProfileDoctor, IRelationShip } from "types/Profile.type"
 import { profileService } from "../../../services/profile.service"
 
+export type CreateDoctorProfile = Omit<IProfileDoctor, "profileID" | "userID">
 export const useProfieId = (userId: string) => {
   const queryKey = [QUERY_KEYS.PROFILE, userId]
   const profileQuery = useQuery({
@@ -67,6 +68,13 @@ export const useCreateProfileMutation = () => {
   const createProfileMutation = useMutation({
     mutationFn: (profile: IProfile & IRelationShip) =>
       profileService.createUserProfile(profile)
+  })
+  return createProfileMutation
+}
+export const useCreateProfileDoctorMutation = () => {
+  const createProfileMutation = useMutation({
+    mutationFn: (profile: CreateDoctorProfile) =>
+      profileService.createDoctorProfile(profile)
   })
   return createProfileMutation
 }

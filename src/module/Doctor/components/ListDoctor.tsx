@@ -5,7 +5,7 @@ import MaterialReactTable, {
   MRT_ColumnDef,
   MRT_PaginationState
 } from "material-react-table"
-import { useEffect, useMemo, useState } from "react"
+import { useMemo, useState } from "react"
 import { combineName, dayformat, getDataPaginate } from "shared/helpers/helper"
 import { IProfileDoctor } from "types/Profile.type"
 const ListDoctor = () => {
@@ -32,7 +32,7 @@ const ListDoctor = () => {
             <div className="flex items-center space-x-2">
               <div className="relative w-10 h-10 overflow-hidden rounded-full">
                 <ImageCustom
-                  src={row.original.avatar}
+                  src={row.original.avatar || "images/avatars/avatar_1.jpg"}
                   fill
                   alt="user-avatar"
                   className="object-cover"

@@ -16,12 +16,7 @@ const Doctor = () => {
       {
         key: 1,
         label: `Create account`,
-        children: (
-          <CreateAccount
-            labelForm="Create Account"
-            onSubmit={(value) => console.log(value)}
-          />
-        )
+        children: <CreateAccount labelForm="Create Account" />
       }
     ],
     []

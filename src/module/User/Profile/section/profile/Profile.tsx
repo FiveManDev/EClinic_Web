@@ -145,7 +145,7 @@ const Profile = () => {
           <span className="text-base">Add Profile</span>
         </CustomButton>
       </div>
-      <div className="flex-1 px-6 ">
+      <div className="flex-1 px-6 ml-4 border border-r-0 border-gray-200 border-dashed border-y-0">
         {(mode == "add" || mode === "edit") && (
           <Edit
             labelForm={

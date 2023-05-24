@@ -4,7 +4,7 @@ interface Props extends PropsWithChildren {
 }
 const LayoutItem = ({ label, children }: Props) => {
   return (
-    <div className="flex flex-col space-y-4 rounded-md shadow-md background-primary">
+    <div className="flex flex-col space-y-4 rounded-md background-primary">
       <h2 className="text-xl font-bold text-h1">{label}</h2>
       <div className="w-full">{children}</div>
     </div>

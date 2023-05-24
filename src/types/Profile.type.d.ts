@@ -18,7 +18,7 @@ export interface IProfileDoctor {
   userID: string
   firstName: string
   lastName: string
-  avatar: string
+  avatar: any
   gender: boolean
   dateOfBirth: string
   address: string
@@ -26,6 +26,8 @@ export interface IProfileDoctor {
   phone: string
   title: string
   workStart: string
+  description: string
+  specializationID: string
 }
 
 export interface IRelationShip {
