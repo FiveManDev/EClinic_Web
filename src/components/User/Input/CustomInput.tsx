@@ -1,11 +1,12 @@
-import { BaseTextFieldProps, TextField } from "@mui/material"
+import { BaseTextFieldProps, TextField, TextFieldProps } from "@mui/material"
 import { Control, useController } from "react-hook-form"
 
-interface Props extends BaseTextFieldProps {
-  name: string
-  label: string
-  control?: Control<any> // Make control prop optional
-}
+type Props = BaseTextFieldProps &
+  TextFieldProps & {
+    name?: string
+    label?: string
+    control?: Control<any> // Make control prop optional
+  }
 
 const CustomInput = ({
   name,
@@ -19,7 +20,7 @@ const CustomInput = ({
   const FieldWithController = () => {
     const { field } = useController({
       control: control!,
-      name,
+      name: name!,
       defaultValue: ""
     })
 
@@ -35,7 +36,7 @@ const CustomInput = ({
     )
   }
 
-  return control ? (
+  return control && name ? (
     <FieldWithController />
   ) : (
     <TextField

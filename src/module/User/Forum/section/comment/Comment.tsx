@@ -5,7 +5,7 @@ import { useRef } from "react"
 import { toast } from "react-hot-toast"
 import { useTranslation } from "react-i18next"
 import { useSelector } from "react-redux"
-import { routers } from "shared/constant/constant"
+import { routers } from "shared/constant/routers"
 import { RootState } from "store/store"
 import {
   DeleteActionType,

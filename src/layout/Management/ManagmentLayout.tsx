@@ -1,3 +1,4 @@
+import { OverlayScrollbarsComponent } from "overlayscrollbars-react"
 import SideBar, { ItemSidebar } from "./components/SideBar"
 import TopBar from "./components/TopBar"
 export interface IManagmentLayout
@@ -12,7 +13,10 @@ const ManagmentLayout: React.FC<IManagmentLayout> = ({
   ...divProps
 }) => {
   return (
-    <>
+    <OverlayScrollbarsComponent
+      defer
+      options={{ scrollbars: { autoHide: "scroll" } }}
+    >
       <div {...divProps} className="flex min-h-screen">
         <SideBar items={sidebars} />
         <div className="flex-1 w-full">
@@ -22,7 +26,7 @@ const ManagmentLayout: React.FC<IManagmentLayout> = ({
           </div>
         </div>
       </div>
-    </>
+    </OverlayScrollbarsComponent>
   )
 }
 

@@ -48,66 +48,64 @@ const SideBar = ({ items }: Props) => {
           />
         </Link>
       </div>
-      <ul className="flex flex-col w-full">
+      <div className="flex flex-col w-full">
         {items.map((item, index) => {
           if (item.subItem) {
             return (
-              <>
-                <div
-                  key={index}
-                  className={classNames(classItem, "flex flex-col")}
-                  onClick={() =>
-                    setExpandITem(index === expandITem ? null : index)
-                  }
-                >
-                  <div className="flex items-center justify-between w-full">
-                    <div className="flex items-center gap-x-5">
-                      <span className="w-6 h-6">{item.icon}</span>
-                      <span>{item.title}</span>
-                    </div>
-                    <span
-                      className={classNames(
-                        "w-5 h-5 transition-all",
-                        index === expandITem && "rotate-90"
-                      )}
-                    >
-                      <svg
-                        xmlns="http://www.w3.org/2000/svg"
-                        fill="none"
-                        viewBox="0 0 24 24"
-                        strokeWidth={1.5}
-                        stroke="currentColor"
-                      >
-                        <path
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                          d="M8.25 4.5l7.5 7.5-7.5 7.5"
-                        />
-                      </svg>
-                    </span>
+              <div
+                key={index}
+                className={classNames(classItem, "flex flex-col")}
+                onClick={() =>
+                  setExpandITem(index === expandITem ? null : index)
+                }
+              >
+                <div className="flex items-center justify-between w-full">
+                  <div className="flex items-center gap-x-5">
+                    <span className="w-6 h-6">{item.icon}</span>
+                    <span>{item.title}</span>
                   </div>
-                  {index === expandITem && (
-                    <ul className="flex flex-col w-full py-3 mt-2 bg-gray-100 rounded-sm">
-                      {item.subItem.map((subItem, idx) => {
-                        return (
-                          <Link
-                            href={subItem.link || asPath}
-                            key={idx}
-                            className={classNames(
-                              classHover,
-                              classItem,
-                              asPath === subItem.link && classActive,
-                              "pl-4"
-                            )}
-                          >
-                            <span className="pl-6">{subItem?.title}</span>
-                          </Link>
-                        )
-                      })}
-                    </ul>
-                  )}
+                  <span
+                    className={classNames(
+                      "w-5 h-5 transition-all",
+                      index === expandITem && "rotate-90"
+                    )}
+                  >
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      fill="none"
+                      viewBox="0 0 24 24"
+                      strokeWidth={1.5}
+                      stroke="currentColor"
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        d="M8.25 4.5l7.5 7.5-7.5 7.5"
+                      />
+                    </svg>
+                  </span>
                 </div>
-              </>
+                {index === expandITem && (
+                  <ul className="flex flex-col w-full py-3 mt-2 list-disc rounded-sm">
+                    {item.subItem.map((subItem) => {
+                      return (
+                        <Link
+                          href={subItem.link || asPath}
+                          key={subItem.link}
+                          className={classNames(
+                            classHover,
+                            classItem,
+                            asPath === subItem.link && classActive,
+                            "pl-4"
+                          )}
+                        >
+                          <li className="pl-6">{subItem?.title}</li>
+                        </Link>
+                      )
+                    })}
+                  </ul>
+                )}
+              </div>
             )
           } else {
             return (
@@ -127,7 +125,7 @@ const SideBar = ({ items }: Props) => {
             )
           }
         })}
-      </ul>
+      </div>
     </nav>
   )
 }

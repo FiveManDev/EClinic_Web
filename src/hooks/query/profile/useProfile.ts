@@ -5,6 +5,7 @@ import { IProfile, IProfileDoctor, IRelationShip } from "types/Profile.type"
 import { profileService } from "../../../services/profile.service"
 
 export type CreateDoctorProfile = Omit<IProfileDoctor, "profileID" | "userID">
+export type UpdateDoctorProfile = Omit<IProfileDoctor, "profileID">
 export const useProfieId = (userId: string) => {
   const queryKey = [QUERY_KEYS.PROFILE, userId]
   const profileQuery = useQuery({
@@ -78,6 +79,13 @@ export const useCreateProfileDoctorMutation = () => {
   })
   return createProfileMutation
 }
+export const useUpdateProfileDoctorMutation = () => {
+  const createProfileMutation = useMutation({
+    mutationFn: (profile: UpdateDoctorProfile) =>
+      profileService.updateDoctorProfile(profile)
+  })
+  return createProfileMutation
+}
 export const useGetBloodTypes = () => {
   const queryKey = ["blood"]
   return useQuery({
@@ -100,5 +108,12 @@ export const useGetDoctorProfilesQuery = (data: IPaginationSearch) => {
         pageSize: data.pageSize,
         searchText: data.searchText
       })
+  })
+}
+export const useGetDoctorProfilesByIdQuery = (userID: string) => {
+  const queryKey = [QUERY_KEYS.PROFILE, userID]
+  return useQuery({
+    queryKey,
+    queryFn: () => profileService.getDoctorProfileById(userID)
   })
 }

@@ -7,6 +7,7 @@ import {
   RadioGroup
 } from "@mui/material"
 import DatePickerCustom from "components/Common/DatePicker/DatePickerCustom"
+import Editor from "components/Common/Editor/Editor"
 import SwitchCustom from "components/Common/IOSSwitch"
 import Tag from "components/Common/Tag"
 import CustomButton from "components/User/Button"
@@ -15,7 +16,9 @@ import useConfirm from "context/ComfirmContext"
 import dayjs from "dayjs"
 import {
   CreateDoctorProfile,
-  useCreateProfileDoctorMutation
+  UpdateDoctorProfile,
+  useCreateProfileDoctorMutation,
+  useUpdateProfileDoctorMutation
 } from "hooks/query/profile/useProfile"
 import { Uploadfile } from "module/User/Profile/section/profile/components/form/Edit"
 import { useEffect } from "react"
@@ -52,10 +55,12 @@ const schema = yup.object({
 interface Props {
   labelForm: string
   profile?: IProfileDoctor
+  mode?: "update" | "create"
 }
-const CreateAccount = ({ labelForm, profile }: Props) => {
+const CreateAccount = ({ labelForm, profile, mode = "create" }: Props) => {
   const confirm = useConfirm()
   const createProfileDoctorMutation = useCreateProfileDoctorMutation()
+  const updateProfileDoctorMutation = useUpdateProfileDoctorMutation()
   const {
     handleSubmit,
     control,
@@ -71,38 +76,56 @@ const CreateAccount = ({ labelForm, profile }: Props) => {
   })
   watch("avatar", null)
   const watchGender = watch("gender", profile ? profile?.gender : true)
-
+  const watchDesc = watch("description")
   const onFileChange = (file: File) => {
     setValue("avatar", file)
   }
-  // const handleDelete = async (profileId: string) => {
-  //   if (confirm) {
-  //     const choice = await confirm({
-  //       title: "Delete profile",
-  //       content: "Are you sure you want to delete this profile?"
-  //     })
-  //     if (choice) {
-  //     }
-  //   }
-  // }
-  const onSubmit = (value: FieldValues) => {
-    createProfileDoctorMutation.mutate(
-      {
-        ...value
-      } as CreateDoctorProfile,
-      {
-        onSuccess: (data) => {
-          if (data.isSuccess) {
-            toast.success("Add successfuly")
-          } else {
-            toast.error("Add error")
-          }
-        },
-        onError: () => {
-          toast.error("Add error")
+  const onSubmit = async (value: FieldValues) => {
+    if (mode === "update") {
+      if (confirm) {
+        const choice = await confirm({
+          title: "Update account",
+          content: "Are you sure you want to update this profile?"
+        })
+        if (choice) {
+          updateProfileDoctorMutation.mutate(
+            {
+              ...value
+            } as UpdateDoctorProfile,
+            {
+              onSuccess: (data) => {
+                if (data.isSuccess) {
+                  toast.success("Update successfuly")
+                } else {
+                  toast.error("Update error")
+                }
+              },
+              onError: () => {
+                toast.error("Update error")
+              }
+            }
+          )
         }
       }
-    )
+    } else {
+      createProfileDoctorMutation.mutate(
+        {
+          ...value
+        } as CreateDoctorProfile,
+        {
+          onSuccess: (data) => {
+            if (data.isSuccess) {
+              toast.success("Add successfuly")
+            } else {
+              toast.error("Add error")
+            }
+          },
+          onError: () => {
+            toast.error("Add error")
+          }
+        }
+      )
+    }
   }
   useEffect(() => {
     if (profile === undefined) {
@@ -268,7 +291,7 @@ const CreateAccount = ({ labelForm, profile }: Props) => {
                 />
               </RadioGroup>
             </FormControl>
-            <CustomInput
+            {/* <CustomInput
               size="medium"
               multiline
               label="About"
@@ -277,14 +300,18 @@ const CreateAccount = ({ labelForm, profile }: Props) => {
               name="description"
               error={!!errors.description}
               helperText={errors.description?.message?.toString()}
+            /> */}
+            <Editor
+              placeholder="About doctor"
+              value={watchDesc}
+              onChange={(e) => setValue("description", e)}
             />
-
             <CustomButton
               kind="primary"
               type="submit"
               className="ml-auto w-fit"
             >
-              Create account
+              {mode === "create" ? "Create account" : "Update account"}
             </CustomButton>
           </div>
         </div>

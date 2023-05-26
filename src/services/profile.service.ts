@@ -5,7 +5,10 @@ import { IProfile, IProfileDoctor } from "types/Profile.type"
 import { IServerResponse } from "types/server/IServerResponse"
 import { IRelationShip } from "./../types/Profile.type.d"
 import { IPaginationSearch } from "types/Pagination"
-import { CreateDoctorProfile } from "hooks/query/profile/useProfile"
+import {
+  CreateDoctorProfile,
+  UpdateDoctorProfile
+} from "hooks/query/profile/useProfile"
 
 class ProfileService {
   async GetUserProfilesByID(userId: string) {
@@ -104,7 +107,27 @@ class ProfileService {
     )
     return res as AxiosResponse<IServerResponse<IProfileDoctor[]>>
   }
+  async getDoctorProfileById(userId: string) {
+    const res: AxiosResponse = await axiosClient.get(
+      `${URL_API.PROFILE}/GetDoctorProfileById?UserID=${userId}`
+    )
+    return res.data as IServerResponse<IProfileDoctor>
+  }
   async createDoctorProfile(data: CreateDoctorProfile) {
+    const formData = new FormData()
+    for (const [key, value] of Object.entries(data)) {
+      formData.append(key, value)
+    }
+    const res = await axiosClient.post(
+      `${URL_API.PROFILE}/CreateDoctorProfile`,
+      formData,
+      {
+        headers: { "content-type": "multipart/form-data" }
+      }
+    )
+    return res.data as IServerResponse<null>
+  }
+  async updateDoctorProfile(data: UpdateDoctorProfile) {
     const formData = new FormData()
     for (const [key, value] of Object.entries(data)) {
       formData.append(key, value)

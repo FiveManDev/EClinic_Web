@@ -1,7 +1,7 @@
 import { useRouter } from "next/router"
 import React, { PropsWithChildren, useMemo } from "react"
 import { MdLogout } from "react-icons/md"
-import { routers } from "shared/constant/constant"
+import { routers } from "shared/constant/routers"
 import { logoutUser } from "store/module/auth/action-creators"
 import { useAppDispatch } from "store/store"
 import { ItemSidebar } from "./components/SideBar"

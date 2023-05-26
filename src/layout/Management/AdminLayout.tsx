@@ -1,6 +1,6 @@
 import { useRouter } from "next/router"
 import { PropsWithChildren, useMemo } from "react"
-import { routers } from "shared/constant/constant"
+import { routers } from "shared/constant/routers"
 import { logoutUser } from "store/module/auth/action-creators"
 import { useAppDispatch } from "store/store"
 import ManagmentLayout from "./ManagmentLayout"
