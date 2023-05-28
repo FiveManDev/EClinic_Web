@@ -7,7 +7,6 @@ import {
   RadioGroup
 } from "@mui/material"
 import DatePickerCustom from "components/Common/DatePicker/DatePickerCustom"
-import Editor from "components/Common/Editor/Editor"
 import SwitchCustom from "components/Common/IOSSwitch"
 import Tag from "components/Common/Tag"
 import CustomButton from "components/User/Button"
@@ -15,16 +14,16 @@ import { CustomInput } from "components/User/Input"
 import useConfirm from "context/ComfirmContext"
 import dayjs from "dayjs"
 import {
-  CreateDoctorProfile,
-  UpdateDoctorProfile,
-  useCreateProfileDoctorMutation,
-  useUpdateProfileDoctorMutation
+  CreateSupporterProfile,
+  UpdateSupporterProfile,
+  useCreateSupporterDoctorMutation,
+  useUpdateSupporterMutation
 } from "hooks/query/profile/useProfile"
 import { Uploadfile } from "module/User/Profile/section/profile/components/form/Edit"
 import { useEffect } from "react"
 import { FieldValues, useForm } from "react-hook-form"
 import { toast } from "react-hot-toast"
-import { IProfileDoctor } from "types/Profile.type"
+import { IProfileSupporter } from "types/Profile.type"
 import * as yup from "yup"
 
 const schema = yup.object({
@@ -49,18 +48,21 @@ const schema = yup.object({
     ),
   workStart: yup.string().required("Please enter date of working start"),
   address: yup.string().required("Please enter address"),
-  title: yup.string().required("Please enter position"),
   description: yup.string().required("Please enter description")
 })
 interface Props {
   labelForm: string
-  profile?: IProfileDoctor
+  profile?: IProfileSupporter
   mode?: "update" | "create"
 }
-const CreateAccount = ({ labelForm, profile, mode = "create" }: Props) => {
+const CreateAccountSupporter = ({
+  labelForm,
+  profile,
+  mode = "create"
+}: Props) => {
   const confirm = useConfirm()
-  const createProfileDoctorMutation = useCreateProfileDoctorMutation()
-  const updateProfileDoctorMutation = useUpdateProfileDoctorMutation()
+  const createSupporterDoctorMutation = useCreateSupporterDoctorMutation()
+  const updateSupporterDoctorMutation = useUpdateSupporterMutation()
   const {
     handleSubmit,
     control,
@@ -76,9 +78,24 @@ const CreateAccount = ({ labelForm, profile, mode = "create" }: Props) => {
   })
   watch("avatar", null)
   const watchGender = watch("gender", profile ? profile?.gender : true)
-  const watchDesc = watch("description")
   const onFileChange = (file: File) => {
     setValue("avatar", file)
+  }
+  const resetForm = () => {
+    reset({
+      profileID: "",
+      userID: "",
+      firstName: "",
+      lastName: "",
+      avatar: null,
+      gender: true,
+      dateOfBirth: dayjs().toString(),
+      address: "",
+      email: "",
+      phone: "",
+      workStart: dayjs().toString(),
+      description: ""
+    })
   }
   const onSubmit = async (value: FieldValues) => {
     if (mode === "update") {
@@ -88,14 +105,15 @@ const CreateAccount = ({ labelForm, profile, mode = "create" }: Props) => {
           content: "Are you sure you want to update this profile?"
         })
         if (choice) {
-          updateProfileDoctorMutation.mutate(
+          updateSupporterDoctorMutation.mutate(
             {
               ...value
-            } as UpdateDoctorProfile,
+            } as UpdateSupporterProfile,
             {
               onSuccess: (data) => {
                 if (data.isSuccess) {
                   toast.success("Update successfuly")
+                  resetForm()
                 } else {
                   toast.error("Update error")
                 }
@@ -108,10 +126,10 @@ const CreateAccount = ({ labelForm, profile, mode = "create" }: Props) => {
         }
       }
     } else {
-      createProfileDoctorMutation.mutate(
+      createSupporterDoctorMutation.mutate(
         {
           ...value
-        } as CreateDoctorProfile,
+        } as CreateSupporterProfile,
         {
           onSuccess: (data) => {
             if (data.isSuccess) {
@@ -129,21 +147,7 @@ const CreateAccount = ({ labelForm, profile, mode = "create" }: Props) => {
   }
   useEffect(() => {
     if (profile === undefined) {
-      reset({
-        profileID: "",
-        userID: "",
-        firstName: "",
-        lastName: "",
-        avatar: null,
-        gender: true,
-        dateOfBirth: dayjs().toString(),
-        address: "",
-        email: "",
-        phone: "",
-        title: "",
-        workStart: dayjs().toString(),
-        description: ""
-      })
+      resetForm()
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [profile])
@@ -207,14 +211,6 @@ const CreateAccount = ({ labelForm, profile, mode = "create" }: Props) => {
                 name="address"
                 error={!!errors.address}
                 helperText={errors.address?.message?.toString()}
-              />
-              <CustomInput
-                size="medium"
-                label="Position"
-                control={control}
-                name="title"
-                error={!!errors.title}
-                helperText={errors.title?.message?.toString()}
               />
             </div>
             <div className="flex space-x-3">
@@ -291,28 +287,23 @@ const CreateAccount = ({ labelForm, profile, mode = "create" }: Props) => {
                 />
               </RadioGroup>
             </FormControl>
-            {/* <CustomInput
-              size="medium"
+            <CustomInput
               multiline
-              label="About"
               rows={4}
+              size="medium"
+              label="About"
               control={control}
               name="description"
               error={!!errors.description}
               helperText={errors.description?.message?.toString()}
-            /> */}
-            <Editor
-              placeholder="About doctor"
-              value={watchDesc}
-              onChange={(e) => setValue("description", e)}
             />
             <CustomButton
               kind="primary"
               type="submit"
               className="ml-auto w-fit"
               isLoading={
-                createProfileDoctorMutation.isLoading ||
-                updateProfileDoctorMutation.isLoading
+                updateSupporterDoctorMutation.isLoading ||
+                createSupporterDoctorMutation.isLoading
               }
             >
               {mode === "create" ? "Create account" : "Update account"}
@@ -324,4 +315,4 @@ const CreateAccount = ({ labelForm, profile, mode = "create" }: Props) => {
   )
 }
 
-export default CreateAccount
+export default CreateAccountSupporter

@@ -22,17 +22,17 @@ const SideBar = ({ items }: Props) => {
     "border-[4px] border-primary border-solid border-y-0 border-r-0 bg-primary bg-opacity-10 !text-primary"
   const classHover =
     "hover:bg-primary hover:bg-opacity-10 hover:text-primary transition-all hover:border-[4px] hover:border-primary hover:border-solid hover:border-y-0 hover:border-r-0"
-  useEffect(() => {
-    items.some((item, idx) =>
-      item.subItem?.some((subItem) => {
-        if (subItem.link === asPath) {
-          setExpandITem(idx)
-          return true
-        }
-        return false
-      })
-    )
-  }, [route])
+  // useEffect(() => {
+  //   items.some((item, idx) =>
+  //     item.subItem?.some((subItem) => {
+  //       if (subItem.link === asPath) {
+  //         setExpandITem(idx)
+  //         return true
+  //       }
+  //       return false
+  //     })
+  //   )
+  // }, [route])
   return (
     <nav className="flex flex-col items-center py-6 w-[250px] flex-shrink-0 bg-white border border-dashed border-gray-200 border-y-0 border-l-0 border-r p-0 rounded-none ">
       <div className="relative scale-90 md:scale-100 w-[150px] h-9 mb-11">
@@ -99,7 +99,12 @@ const SideBar = ({ items }: Props) => {
                             "pl-4"
                           )}
                         >
-                          <li className="pl-6">{subItem?.title}</li>
+                          <li
+                            className="pl-6"
+                            onClick={() => setExpandITem(index)}
+                          >
+                            {subItem?.title}
+                          </li>
                         </Link>
                       )
                     })}

@@ -1,8 +1,7 @@
 import { Box, IconButton, Tooltip } from "@mui/material"
 import ImageCustom from "components/Common/ImageCustom"
-import Tag from "components/Common/Tag"
 import { CustomInput } from "components/User/Input"
-import { useGetDoctorProfilesQuery } from "hooks/query/profile/useProfile"
+import { useGetExpertProfilesQuery } from "hooks/query/profile/useProfile"
 import useDebounce from "hooks/useDebounce"
 import MaterialReactTable, {
   MRT_ColumnDef,
@@ -13,8 +12,8 @@ import { useRouter } from "next/router"
 import { useMemo, useState } from "react"
 import { HiOutlinePencilSquare } from "react-icons/hi2"
 import { combineName, dayformat, getDataPaginate } from "shared/helpers/helper"
-import { IProfileDoctor } from "types/Profile.type"
-const ListDoctor = () => {
+import { IProfileExpert } from "types/Profile.type"
+const ListExpert = () => {
   const router = useRouter()
   const [pagination, setPagination] = useState<MRT_PaginationState>({
     pageIndex: 1,
@@ -23,13 +22,13 @@ const ListDoctor = () => {
   const [searchData, setSearchData] = useState("")
   const searchTextDebounce = useDebounce(searchData, 1000)
 
-  const { data, isLoading, isError, isRefetching } = useGetDoctorProfilesQuery({
+  const { data, isLoading, isError, isRefetching } = useGetExpertProfilesQuery({
     searchText: searchTextDebounce,
     pageNumber: pagination.pageIndex,
     pageSize: pagination.pageSize
   })
 
-  const columns = useMemo<MRT_ColumnDef<IProfileDoctor>[]>(
+  const columns = useMemo<MRT_ColumnDef<IProfileExpert>[]>(
     () => [
       {
         accessorKey: "profileID",
@@ -102,14 +101,6 @@ const ListDoctor = () => {
         }
       },
       {
-        accessorKey: "title",
-        header: "Position",
-        size: 120,
-        Cell: ({ row }) => {
-          return <p className="line-clamp-1">{row.original.title}</p>
-        }
-      },
-      {
         accessorKey: "phone",
         header: "Phone",
         size: 180,
@@ -156,7 +147,7 @@ const ListDoctor = () => {
             <IconButton
               onClick={() =>
                 router.push(
-                  `/admin/accounts/doctor/edit/${row.original.userID}`
+                  `/admin/accounts/expert/edit/${row.original.userID}`
                 )
               }
             >
@@ -176,4 +167,4 @@ const ListDoctor = () => {
   )
 }
 
-export default ListDoctor
+export default ListExpert

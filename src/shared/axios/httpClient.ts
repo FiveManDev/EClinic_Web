@@ -1,4 +1,3 @@
-import fetchAdapter from "@vespaiach/axios-fetch-adapter"
 import axios, {
   AxiosInstance,
   AxiosRequestConfig,
@@ -19,7 +18,7 @@ class HttpClient {
     this.cancelTokenSource = axios.CancelToken.source()
     this.instance = axios.create({
       baseURL: `${process.env.NEXT_PUBLIC_API_URL}/api/v${VERSION}/`,
-      timeout: 10000,
+      timeout: 100000,
       headers: {
         "Content-Type": "application/json"
       },
@@ -47,7 +46,7 @@ class HttpClient {
         if (error.response?.status === 403 && !originalRequest._retry) {
           originalRequest._retry = true
           const res = await authService.refreshToken()
-          if (res.isSuccess) {
+          if (res?.isSuccess) {
             token.saveToken(res.data.accessToken, res.data.refreshToken)
             originalRequest.headers[
               "Authorization"

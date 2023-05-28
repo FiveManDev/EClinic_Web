@@ -1,13 +1,22 @@
 import { AxiosResponse } from "axios"
 import axiosClient from "shared/axios/httpClient"
 import { URL_API } from "shared/constant/constant"
-import { IProfile, IProfileDoctor } from "types/Profile.type"
+import {
+  IProfile,
+  IProfileDoctor,
+  IProfileExpert,
+  IProfileSupporter
+} from "types/Profile.type"
 import { IServerResponse } from "types/server/IServerResponse"
 import { IRelationShip } from "./../types/Profile.type.d"
 import { IPaginationSearch } from "types/Pagination"
 import {
   CreateDoctorProfile,
-  UpdateDoctorProfile
+  CreateExpertProfile,
+  CreateSupporterProfile,
+  UpdateDoctorProfile,
+  UpdateExpertProfile,
+  UpdateSupporterProfile
 } from "hooks/query/profile/useProfile"
 
 class ProfileService {
@@ -95,6 +104,7 @@ class ProfileService {
     )
     return res.data as IServerResponse<string[]>
   }
+  // Doctor
   async getDoctorProfiles(data: IPaginationSearch) {
     const res: AxiosResponse = await axiosClient.get(
       `${URL_API.PROFILE}/GetDoctorProfiles?SearchText=${data.searchText}`,
@@ -132,8 +142,102 @@ class ProfileService {
     for (const [key, value] of Object.entries(data)) {
       formData.append(key, value)
     }
+    const res = await axiosClient.put(
+      `${URL_API.PROFILE}/UpdateDoctorProfile`,
+      formData,
+      {
+        headers: { "content-type": "multipart/form-data" }
+      }
+    )
+    return res.data as IServerResponse<null>
+  }
+  // Supporter
+  async getSupporterProfiles(data: IPaginationSearch) {
+    const res: AxiosResponse = await axiosClient.get(
+      `${URL_API.PROFILE}/GetSupporterProfiles?SearchText=${data.searchText}`,
+      {
+        headers: {
+          PageNumber: data.pageNumber,
+          PageSize: data.pageSize
+        }
+      }
+    )
+    return res as AxiosResponse<IServerResponse<IProfileSupporter[]>>
+  }
+  async getSupporterProfileById(userId: string) {
+    const res: AxiosResponse = await axiosClient.get(
+      `${URL_API.PROFILE}/GetEmployeeProfileById?UserID=${userId}`
+    )
+    return res.data as IServerResponse<IProfileSupporter>
+  }
+  async createSupporterProfile(data: CreateSupporterProfile) {
+    const formData = new FormData()
+    for (const [key, value] of Object.entries(data)) {
+      formData.append(key, value)
+    }
     const res = await axiosClient.post(
-      `${URL_API.PROFILE}/CreateDoctorProfile`,
+      `${URL_API.PROFILE}/CreateSupporterProfile`,
+      formData,
+      {
+        headers: { "content-type": "multipart/form-data" }
+      }
+    )
+    return res.data as IServerResponse<null>
+  }
+  async updateSupporterProfile(data: UpdateSupporterProfile) {
+    const formData = new FormData()
+    for (const [key, value] of Object.entries(data)) {
+      formData.append(key, value)
+    }
+    const res = await axiosClient.put(
+      `${URL_API.PROFILE}/UpdateSupporterProfile`,
+      formData,
+      {
+        headers: { "content-type": "multipart/form-data" }
+      }
+    )
+    return res.data as IServerResponse<null>
+  }
+  // Expert
+  async getExpertProfiles(data: IPaginationSearch) {
+    const res: AxiosResponse = await axiosClient.get(
+      `${URL_API.PROFILE}/GetExpertProfiles?SearchText=${data.searchText}`,
+      {
+        headers: {
+          PageNumber: data.pageNumber,
+          PageSize: data.pageSize
+        }
+      }
+    )
+    return res as AxiosResponse<IServerResponse<IProfileExpert[]>>
+  }
+  async getExpertProfileById(userId: string) {
+    const res: AxiosResponse = await axiosClient.get(
+      `${URL_API.PROFILE}/GetExpertProfileById?UserID=${userId}`
+    )
+    return res.data as IServerResponse<IProfileExpert>
+  }
+  async createExpertProfile(data: CreateExpertProfile) {
+    const formData = new FormData()
+    for (const [key, value] of Object.entries(data)) {
+      formData.append(key, value)
+    }
+    const res = await axiosClient.post(
+      `${URL_API.PROFILE}/CreateExpertProfile`,
+      formData,
+      {
+        headers: { "content-type": "multipart/form-data" }
+      }
+    )
+    return res.data as IServerResponse<null>
+  }
+  async updateExpertProfile(data: UpdateExpertProfile) {
+    const formData = new FormData()
+    for (const [key, value] of Object.entries(data)) {
+      formData.append(key, value)
+    }
+    const res = await axiosClient.put(
+      `${URL_API.PROFILE}/UpdateExpertProfile`,
       formData,
       {
         headers: { "content-type": "multipart/form-data" }
