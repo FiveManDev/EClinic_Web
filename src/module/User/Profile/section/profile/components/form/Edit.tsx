@@ -139,6 +139,7 @@ const Edit = ({ onSubmit, onDelete, labelForm, profile }: Props) => {
           />
           <div className="flex items-start space-x-3">
             <CustomInput
+              size="medium"
               label="First name"
               control={control}
               name="firstName"
@@ -146,6 +147,7 @@ const Edit = ({ onSubmit, onDelete, labelForm, profile }: Props) => {
               helperText={errors.firstName?.message?.toString()}
             />
             <CustomInput
+              size="medium"
               label="Last name"
               control={control}
               name="lastName"
@@ -154,6 +156,7 @@ const Edit = ({ onSubmit, onDelete, labelForm, profile }: Props) => {
             />
           </div>
           <CustomInput
+            size="medium"
             disabled={
               profile?.relationshipName === RELATIONSHIPS.ME ? true : false
             }
@@ -164,6 +167,7 @@ const Edit = ({ onSubmit, onDelete, labelForm, profile }: Props) => {
             helperText={errors.email?.message?.toString()}
           />
           <CustomInput
+            size="medium"
             label="Address"
             control={control}
             name="address"
@@ -172,6 +176,7 @@ const Edit = ({ onSubmit, onDelete, labelForm, profile }: Props) => {
           />
           <div className="flex space-x-3">
             <DatePickerCustom
+              size="medium"
               label="Date of birth"
               control={control}
               name="dateOfBirth"
@@ -189,6 +194,7 @@ const Edit = ({ onSubmit, onDelete, labelForm, profile }: Props) => {
             <FormControl fullWidth size="small">
               <InputLabel>Blood group</InputLabel>
               <Select
+                size="medium"
                 value={watchBlood}
                 label="blood group"
                 onChange={(value) => {
@@ -204,6 +210,7 @@ const Edit = ({ onSubmit, onDelete, labelForm, profile }: Props) => {
             </FormControl>
           </div>
           <CustomInput
+            size="medium"
             label="Phone number"
             control={control}
             name="phone"
@@ -235,6 +242,7 @@ const Edit = ({ onSubmit, onDelete, labelForm, profile }: Props) => {
           </FormControl>
           <div className="flex items-start space-x-3">
             <CustomInput
+              size="medium"
               label="Weight"
               control={control}
               name="weight"
@@ -242,6 +250,7 @@ const Edit = ({ onSubmit, onDelete, labelForm, profile }: Props) => {
               helperText={errors.weight?.message?.toString()}
             />
             <CustomInput
+              size="medium"
               label="Height"
               control={control}
               name="height"
@@ -316,7 +325,7 @@ interface IFileProps {
   // eslint-disable-next-line no-unused-vars
   onFileChange: (file: File) => void
 }
-const Uploadfile = ({ imageUrl, onFileChange }: IFileProps) => {
+export const Uploadfile = ({ imageUrl, onFileChange }: IFileProps) => {
   const [image, setImage] = useState(imageUrl)
   const handleImageChange = (event: ChangeEvent<HTMLInputElement>) => {
     if (event.target.files !== null && event.target.files?.length > 0) {
@@ -330,11 +339,16 @@ const Uploadfile = ({ imageUrl, onFileChange }: IFileProps) => {
       <div className="flex justify-center mt-8">
         <div className="rounded-lg lg:w-1/2">
           <div className="flex items-center justify-center w-full">
-            <label className="relative flex flex-col w-40 h-40 border-2 border-gray-400 border-dashed rounded-full cursor-pointer hover:bg-gray-100 hover:border-gray-300">
+            <label className="relative flex flex-col items-center justify-center w-40 h-40 border border-gray-400 border-dashed rounded-full cursor-pointer hover:bg-gray-100 hover:border-gray-300">
               {image && (
-                <Image src={image} fill alt="avatar" className="rounded-full" />
+                <Image
+                  src={image}
+                  fill
+                  alt="avatar"
+                  className="object-cover rounded-full"
+                />
               )}
-              <div className="flex flex-col items-center justify-center pt-7">
+              <div className="flex flex-col items-center justify-center ">
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
                   className="w-12 h-12 text-gray-400 group-hover:text-gray-600"
@@ -347,7 +361,7 @@ const Uploadfile = ({ imageUrl, onFileChange }: IFileProps) => {
                     clipRule="evenodd"
                   />
                 </svg>
-                <p className="pt-1 text-sm tracking-wider text-gray-400 group-hover:text-gray-600">
+                <p className="pt-1 text-xs tracking-wider text-gray-400 group-hover:text-gray-600">
                   Select a photo
                 </p>
               </div>

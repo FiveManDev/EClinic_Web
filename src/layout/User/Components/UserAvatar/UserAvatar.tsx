@@ -13,7 +13,8 @@ import Image from "next/image"
 import Link from "next/link"
 import { useRouter } from "next/router"
 import { useState } from "react"
-import { QUERY_KEYS, routers } from "shared/constant/constant"
+import { QUERY_KEYS } from "shared/constant/constant"
+import { routers } from "shared/constant/routers"
 import { logoutUser } from "store/module/auth/action-creators"
 import { useAppDispatch } from "store/store"
 
@@ -67,87 +68,87 @@ const UserAvatar = ({ menu }: Props) => {
           </IconButton>
         </Tooltip>
       )}
-      {data && (
-        <>
-          <StyledMenu
-            sx={{ mt: "45px" }}
-            anchorEl={anchorElUser}
-            anchorOrigin={{
-              vertical: "top",
-              horizontal: "right"
-            }}
-            keepMounted
-            transformOrigin={{
-              vertical: "top",
-              horizontal: "right"
-            }}
-            open={Boolean(anchorElUser)}
-            onClose={handleCloseUserMenu}
+      <>
+        <StyledMenu
+          sx={{ mt: "45px" }}
+          anchorEl={anchorElUser}
+          anchorOrigin={{
+            vertical: "top",
+            horizontal: "right"
+          }}
+          keepMounted
+          transformOrigin={{
+            vertical: "top",
+            horizontal: "right"
+          }}
+          open={Boolean(anchorElUser)}
+          onClose={handleCloseUserMenu}
+        >
+          <div
+            onClick={handleCloseUserMenu}
+            className="flex flex-col w-[235px]"
           >
-            <div
-              onClick={handleCloseUserMenu}
-              className="flex flex-col w-[235px]"
-            >
-              <div className="flex flex-col space-y-2">
-                <span className="px-5 mt-3 text-xs font-semibold uppercase text-h1">
-                  Account
-                </span>
-                {/* profile basic */}
-                <div className="flex px-5 py-3 space-x-2 ">
-                  <div className="relative overflow-hidden rounded-full w-9 h-9">
-                    <Image
-                      src={
-                        (data?.data?.avatar as string) || "/images/default.jpeg"
-                      }
-                      fill
-                      sizes="(max-width: 768px) 100vw,
+            <div className="flex flex-col space-y-2">
+              <span className="px-5 mt-3 text-xs font-semibold uppercase text-h1">
+                Account
+              </span>
+              {/* profile basic */}
+              <div className="flex px-5 py-3 space-x-2 ">
+                <div className="relative overflow-hidden rounded-full w-9 h-9">
+                  <Image
+                    src={
+                      (data?.data?.avatar as string) || "/images/default.jpeg"
+                    }
+                    fill
+                    sizes="(max-width: 768px) 100vw,
               (max-width: 1200px) 50vw,
               33vw"
-                      alt={"avatar"}
-                    />
-                  </div>
+                    alt={"avatar"}
+                  />
+                </div>
+                {data && (
                   <div className="flex flex-col">
                     <div className="text-sm">
-                      {data.data.firstName + " " + data.data.lastName}
+                      {data?.data?.firstName + " " + data?.data?.lastName}
                     </div>
                     <small className="text-[10px] text-gray-400">
-                      {data.data.email}
+                      {data?.data?.email}
                     </small>
                   </div>
-                </div>
-                <div className="w-full h-[2px] bg-gray-100"></div>
-                <div>
-                  <span className="block px-5 mt-3 mb-2 text-xs font-semibold uppercase text-h1">
-                    Eclinic
-                  </span>
-                  <ul className="flex flex-col w-full">
-                    {menu.map((item, index) => (
-                      <Link
-                        key={index}
-                        href={process.env.NEXT_PUBLIC_APP_URL + item.href}
-                        className="w-full py-2 transition-all cursor-pointer hover:bg-gray-100"
-                      >
-                        <span className="px-5 text-sm font-normal">
-                          {item.title}
-                        </span>
-                      </Link>
-                    ))}
-                    <div className="mb-1 w-full h-[2px] bg-gray-100"></div>
-                    <li
+                )}
+              </div>
+              <div className="w-full h-[2px] bg-gray-100"></div>
+              <div>
+                <span className="block px-5 mt-3 mb-2 text-xs font-semibold uppercase text-h1">
+                  Eclinic
+                </span>
+                <ul className="flex flex-col w-full">
+                  {menu.map((item, index) => (
+                    <Link
+                      key={index}
+                      href={process.env.NEXT_PUBLIC_APP_URL + item.href}
                       className="w-full py-2 transition-all cursor-pointer hover:bg-gray-100"
-                      onClick={() => {
-                        logout()
-                      }}
                     >
-                      <span className="px-5 text-sm font-normal">Log out</span>
-                    </li>
-                  </ul>
-                </div>
+                      <span className="px-5 text-sm font-normal">
+                        {item.title}
+                      </span>
+                    </Link>
+                  ))}
+                  <div className="mb-1 w-full h-[2px] bg-gray-100"></div>
+                  <li
+                    className="w-full py-2 transition-all cursor-pointer hover:bg-gray-100"
+                    onClick={() => {
+                      logout()
+                    }}
+                  >
+                    <span className="px-5 text-sm font-normal">Log out</span>
+                  </li>
+                </ul>
               </div>
             </div>
-          </StyledMenu>
-        </>
-      )}
+          </div>
+        </StyledMenu>
+      </>
     </>
   )
 }

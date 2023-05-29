@@ -1,8 +1,26 @@
 import { useMutation, useQuery } from "@tanstack/react-query"
 import { QUERY_KEYS } from "shared/constant/constant"
-import { IProfile, IRelationShip } from "types/Profile.type"
+import { IPaginationSearch } from "types/Pagination"
+import {
+  IProfile,
+  IProfileDoctor,
+  IProfileExpert,
+  IProfileSupporter,
+  IRelationShip
+} from "types/Profile.type"
 import { profileService } from "../../../services/profile.service"
 
+export type CreateDoctorProfile = Omit<IProfileDoctor, "profileID" | "userID">
+export type UpdateDoctorProfile = Omit<IProfileDoctor, "profileID">
+
+export type CreateSupporterProfile = Omit<
+  IProfileSupporter,
+  "profileID" | "userID"
+>
+export type UpdateSupporterProfile = Omit<IProfileSupporter, "userID">
+
+export type CreateExpertProfile = Omit<IProfileExpert, "profileID" | "userID">
+export type UpdateExpertProfile = Omit<IProfileExpert, "userID">
 export const useProfieId = (userId: string) => {
   const queryKey = [QUERY_KEYS.PROFILE, userId]
   const profileQuery = useQuery({
@@ -69,10 +87,128 @@ export const useCreateProfileMutation = () => {
   })
   return createProfileMutation
 }
+
 export const useGetBloodTypes = () => {
   const queryKey = ["blood"]
   return useQuery({
     queryKey,
     queryFn: () => profileService.getBloodTypes()
+  })
+}
+//Doctor
+export const useCreateProfileDoctorMutation = () => {
+  const createProfileMutation = useMutation({
+    mutationFn: (profile: CreateDoctorProfile) =>
+      profileService.createDoctorProfile(profile)
+  })
+  return createProfileMutation
+}
+export const useUpdateProfileDoctorMutation = () => {
+  const createProfileMutation = useMutation({
+    mutationFn: (profile: UpdateDoctorProfile) =>
+      profileService.updateDoctorProfile(profile)
+  })
+  return createProfileMutation
+}
+export const useGetDoctorProfilesQuery = (data: IPaginationSearch) => {
+  const queryKey = [
+    QUERY_KEYS.PROFILE,
+    data.pageNumber,
+    data.pageSize,
+    data.searchText
+  ]
+  return useQuery({
+    queryKey,
+    queryFn: () =>
+      profileService.getDoctorProfiles({
+        pageNumber: data.pageNumber,
+        pageSize: data.pageSize,
+        searchText: data.searchText
+      })
+  })
+}
+export const useGetDoctorProfilesByIdQuery = (userID: string) => {
+  const queryKey = [QUERY_KEYS.PROFILE, userID]
+  return useQuery({
+    queryKey,
+    queryFn: () => profileService.getDoctorProfileById(userID)
+  })
+}
+//Supporter
+export const useCreateSupporterDoctorMutation = () => {
+  const createProfileMutation = useMutation({
+    mutationFn: (profile: CreateSupporterProfile) =>
+      profileService.createSupporterProfile(profile)
+  })
+  return createProfileMutation
+}
+export const useUpdateSupporterMutation = () => {
+  const createProfileMutation = useMutation({
+    mutationFn: (profile: UpdateSupporterProfile) =>
+      profileService.updateSupporterProfile(profile)
+  })
+  return createProfileMutation
+}
+export const useGetSupportersQuery = (data: IPaginationSearch) => {
+  const queryKey = [
+    QUERY_KEYS.PROFILE,
+    data.pageNumber,
+    data.pageSize,
+    data.searchText
+  ]
+  return useQuery({
+    queryKey,
+    queryFn: () =>
+      profileService.getSupporterProfiles({
+        pageNumber: data.pageNumber,
+        pageSize: data.pageSize,
+        searchText: data.searchText
+      })
+  })
+}
+export const useGetSupporterByIdQuery = (userID: string) => {
+  const queryKey = [QUERY_KEYS.PROFILE, userID]
+  return useQuery({
+    queryKey,
+    queryFn: () => profileService.getSupporterProfileById(userID)
+  })
+}
+//Expert
+export const useCreateExpertMutation = () => {
+  const createProfileMutation = useMutation({
+    mutationFn: (profile: CreateExpertProfile) =>
+      profileService.createExpertProfile(profile)
+  })
+  return createProfileMutation
+}
+export const useUpdateExpertMutation = () => {
+  const createProfileMutation = useMutation({
+    mutationFn: (profile: UpdateExpertProfile) =>
+      profileService.updateExpertProfile(profile)
+  })
+  return createProfileMutation
+}
+export const useGetExpertProfilesQuery = (data: IPaginationSearch) => {
+  const queryKey = [
+    QUERY_KEYS.PROFILE,
+    data.pageNumber,
+    data.pageSize,
+    data.searchText
+  ]
+  return useQuery({
+    queryKey,
+    queryFn: () =>
+      profileService.getExpertProfiles({
+        pageNumber: data.pageNumber,
+        pageSize: data.pageSize,
+        searchText: data.searchText
+      })
+  })
+}
+export const useGetExpertProfilesByIdQuery = (userID: string) => {
+  const queryKey = [QUERY_KEYS.PROFILE, userID]
+  return useQuery({
+    queryKey,
+    queryFn: () => profileService.getExpertProfileById(userID)
   })
 }

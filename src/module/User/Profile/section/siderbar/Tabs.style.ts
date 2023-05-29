@@ -6,7 +6,6 @@ export const TabsWrapper = styled.div`
   .MuiTabs-flexContainer {
     display: flex;
     justify-content: flex-start;
-    padding: 10px;
     background-color: white;
     .MuiTab-labelIcon {
       font-weight: 500;
@@ -20,12 +19,11 @@ export const TabsWrapper = styled.div`
     justify-content: flex-start;
     column-gap: 16px;
     text-transform: none;
-    font-size: 16px;
+    font-size: 14px;
     font-weight: 300;
     padding: 0px 20px;
     transition: all 0.25s ease-out;
-    border-radius: 6px;
-    min-height: 54px;
+    min-height: 50px;
     .MuiTab-iconWrapper {
       margin-bottom: 0;
       font-size: 22px;
@@ -33,6 +31,7 @@ export const TabsWrapper = styled.div`
   }
   .Mui-selected {
     background-color: rgba(2, 78, 213, 0.1);
+    border-left: 3px solid #235ee8;
   }
   .MuiTabs-indicator {
     display: none;

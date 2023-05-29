@@ -10,7 +10,7 @@ const InputCustom = ({ icon, className, ...rest }: Props) => {
   return (
     <div
       className={classNames(
-        "w-full px-2 py-2 flex items-center space-x-2 input-hover",
+        "w-full px-2 py-2 flex items-center space-x-2 input-hover ",
         className
       )}
     >

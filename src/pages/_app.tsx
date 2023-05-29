@@ -23,6 +23,7 @@ import "styles/globals.scss"
 import "../assets/styles/app.scss"
 import { NextPageWithLayout } from "./page"
 import "overlayscrollbars/overlayscrollbars.css"
+import "react-quill/dist/quill.snow.css"
 
 interface AppPropsWithLayout extends AppProps {
   Component: NextPageWithLayout

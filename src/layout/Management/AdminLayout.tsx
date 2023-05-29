@@ -1,11 +1,10 @@
 import { useRouter } from "next/router"
-import React, { PropsWithChildren, useMemo } from "react"
-import { MdLogout } from "react-icons/md"
-import { routers } from "shared/constant/constant"
+import { PropsWithChildren, useMemo } from "react"
+import { routers } from "shared/constant/routers"
 import { logoutUser } from "store/module/auth/action-creators"
 import { useAppDispatch } from "store/store"
-import { ItemSidebar } from "./components/SideBar"
 import ManagmentLayout from "./ManagmentLayout"
+import { ItemSidebar } from "./components/SideBar"
 
 const DoctorLayout = ({ children }: PropsWithChildren) => {
   const dispatch = useAppDispatch()
@@ -21,7 +20,6 @@ const DoctorLayout = ({ children }: PropsWithChildren) => {
           <>
             <svg
               xmlns="http://www.w3.org/2000/svg"
-              className="w-6 h-6"
               fill="none"
               viewBox="0 0 24 24"
               stroke="currentColor"
@@ -47,7 +45,6 @@ const DoctorLayout = ({ children }: PropsWithChildren) => {
               viewBox="0 0 24 24"
               strokeWidth="1.5"
               stroke="currentColor"
-              className="w-6 h-6"
             >
               <path
                 strokeLinecap="round"
@@ -61,12 +58,49 @@ const DoctorLayout = ({ children }: PropsWithChildren) => {
         link: "/admin/appointment"
       },
       {
+        icon: (
+          <>
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              fill="none"
+              viewBox="0 0 24 24"
+              strokeWidth={1.5}
+              stroke="currentColor"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                d="M16.5 10.5V6.75a4.5 4.5 0 10-9 0v3.75m-.75 11.25h10.5a2.25 2.25 0 002.25-2.25v-6.75a2.25 2.25 0 00-2.25-2.25H6.75a2.25 2.25 0 00-2.25 2.25v6.75a2.25 2.25 0 002.25 2.25z"
+              />
+            </svg>
+          </>
+        ),
+        title: "Account",
+        subItem: [
+          {
+            title: "Doctor",
+            link: "/admin/accounts/doctor"
+          },
+          {
+            title: "Supporter",
+            link: "/admin/accounts/sup"
+          },
+          {
+            title: "Patient",
+            link: "/admin/accounts/user"
+          },
+          {
+            title: "Expert",
+            link: "/admin/accounts/expert"
+          }
+        ]
+      },
+      {
         title: `Logout`,
         icon: (
           <>
             <svg
               xmlns="http://www.w3.org/2000/svg"
-              className="w-6 h-6"
               fill="none"
               viewBox="0 0 24 24"
               stroke="currentColor"

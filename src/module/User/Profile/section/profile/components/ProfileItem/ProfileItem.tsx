@@ -2,7 +2,6 @@ import { Skeleton } from "@mui/material"
 import ImageCustom from "components/Common/ImageCustom"
 import Tag from "components/Common/Tag"
 import dayjs from "dayjs"
-import Image from "next/image"
 import React from "react"
 import { RELATIONSHIPS } from "shared/constant/constant"
 import { IProfile, IRelationShip } from "types/Profile.type"
@@ -39,12 +38,11 @@ const ProfileItem = ({ data, onClick, loading = false }: Props) => {
 
           {data && (
             <Tag
-              // data.relationshipName === RELATIONSHIPS.ME ? "green" : "blue"
-              className={`w-fit text-sm ${
+              color={
                 data.relationshipName === RELATIONSHIPS.ME
-                  ? "bg-green-500 text-green-500"
-                  : "text-primary"
-              }`}
+                  ? "#07AB55"
+                  : "#235EE8"
+              }
             >
               {data.relationshipName}
             </Tag>

@@ -35,11 +35,7 @@ const TabsCustom = ({ tabs }: Props) => {
       </TabsStyles>
       {tabs.map((tab) => {
         if (tab.key === tabIndex) {
-          return (
-            <div className="flex-1" key={tab.key}>
-              {tab.children}
-            </div>
-          )
+          return <>{tab.children}</>
         }
       })}
     </>

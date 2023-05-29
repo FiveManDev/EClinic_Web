@@ -1,7 +1,8 @@
 import { Chip } from "@mui/material"
-import { DateCalendar, LocalizationProvider } from "@mui/x-date-pickers"
+import { CalendarPicker, LocalizationProvider } from "@mui/x-date-pickers"
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs"
 import { Option, SelectCustom } from "components/Common/Select/SelectCustom"
+import dayjs, { Dayjs } from "dayjs"
 import { DetailDoctorModalWrapper } from "module/User/Doctor/sections/styles"
 import React from "react"
 const optionsConnect = [
@@ -10,6 +11,7 @@ const optionsConnect = [
 ]
 const Reschedule = () => {
   const handleSelectTypeConnect = (option: Option) => {}
+  const [date, setDate] = React.useState<Dayjs | null>(dayjs("2022-04-07"))
 
   return (
     <DetailDoctorModalWrapper className="max-w-[505px] gap-y-6">
@@ -31,7 +33,11 @@ const Reschedule = () => {
         <div className=" modal-filed">
           <span className="label">Chọn ngày</span>
           <LocalizationProvider dateAdapter={AdapterDayjs}>
-            <DateCalendar showDaysOutsideCurrentMonth />
+            <CalendarPicker
+              showDaysOutsideCurrentMonth
+              date={date}
+              onChange={(newDate) => setDate(newDate)}
+            />
           </LocalizationProvider>
         </div>
       </div>
