@@ -6,7 +6,7 @@ import UserProfile from "./UserProfile"
 const ContainerChat = () => {
   const [show, setShow] = useState(false)
   return (
-    <div className="flex h-full max-h-[862px]">
+    <div className="flex h-full max-h-[620px]">
       <ListHistory />
       <MessageBox toggleInfo={() => setShow(!show)} />
       {show && <UserProfile onClose={() => setShow(!show)} />}

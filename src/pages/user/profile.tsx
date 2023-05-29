@@ -6,6 +6,6 @@ const Profile: NextPageWithLayout = () => {
   return <ProfilePage />
 }
 Profile.getLayout = (page) => {
-  return <UserLayout>{page}</UserLayout>
+  return <UserLayout footer={false}>{page}</UserLayout>
 }
 export default Profile

@@ -1,6 +1,5 @@
 import { Box, IconButton, Tooltip } from "@mui/material"
 import ImageCustom from "components/Common/ImageCustom"
-import Tag from "components/Common/Tag"
 import { CustomInput } from "components/User/Input"
 import { useGetDoctorProfilesQuery } from "hooks/query/profile/useProfile"
 import useDebounce from "hooks/useDebounce"

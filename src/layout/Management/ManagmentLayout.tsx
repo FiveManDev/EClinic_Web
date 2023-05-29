@@ -17,13 +17,11 @@ const ManagmentLayout: React.FC<IManagmentLayout> = ({
       defer
       options={{ scrollbars: { autoHide: "scroll" } }}
     >
-      <div {...divProps} className="flex min-h-screen">
+      <div {...divProps} className="flex w-screen min-h-screen">
         <SideBar items={sidebars} />
-        <div className="flex-1 w-full">
-          <div className="flex flex-col">
-            <TopBar />
-            {children}
-          </div>
+        <div className="flex flex-col flex-1 overflow-hidden">
+          <TopBar />
+          {children}
         </div>
       </div>
     </OverlayScrollbarsComponent>

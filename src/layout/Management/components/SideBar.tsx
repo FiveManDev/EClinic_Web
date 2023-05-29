@@ -34,7 +34,7 @@ const SideBar = ({ items }: Props) => {
   //   )
   // }, [route])
   return (
-    <nav className="flex flex-col items-center py-6 w-[250px] flex-shrink-0 bg-white border border-dashed border-gray-200 border-y-0 border-l-0 border-r p-0 rounded-none ">
+    <nav className="flex flex-col items-center py-6 w-[220px] flex-shrink-0 bg-white border border-dashed border-gray-200 border-y-0 border-l-0 border-r p-0 rounded-none ">
       <div className="relative scale-90 md:scale-100 w-[150px] h-9 mb-11">
         <Link href="/">
           <Image
