@@ -7,7 +7,6 @@ import {
   RadioGroup
 } from "@mui/material"
 import DatePickerCustom from "components/Common/DatePicker/DatePickerCustom"
-import Editor from "components/Common/Editor/Editor"
 import SwitchCustom from "components/Common/IOSSwitch"
 import Tag from "components/Common/Tag"
 import CustomButton from "components/User/Button"
@@ -21,12 +20,15 @@ import {
   useUpdateProfileDoctorMutation
 } from "hooks/query/profile/useProfile"
 import { Uploadfile } from "module/User/Profile/section/profile/components/form/Edit"
+import dynamic from "next/dynamic"
 import { useEffect } from "react"
 import { FieldValues, useForm } from "react-hook-form"
 import { toast } from "react-hot-toast"
 import { IProfileDoctor } from "types/Profile.type"
 import * as yup from "yup"
-
+const Editor = dynamic(() => import("components/Common/Editor/Editor"), {
+  ssr: false
+})
 const schema = yup.object({
   email: yup
     .string()
@@ -302,10 +304,12 @@ const CreateAccount = ({ labelForm, profile, mode = "create" }: Props) => {
               helperText={errors.description?.message?.toString()}
             /> */}
             <Editor
-              placeholder="About doctor"
+              onChange={(data: string) => {
+                setValue("description", data)
+              }}
               value={watchDesc}
-              onChange={(e) => setValue("description", e)}
             />
+
             <CustomButton
               kind="primary"
               type="submit"

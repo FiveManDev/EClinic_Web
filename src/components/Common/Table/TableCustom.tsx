@@ -45,6 +45,7 @@ const TableCustom = <T extends Record<string, any>>({
       manualPagination
       enableStickyHeader
       enableTopToolbar
+      enableGlobalFilter={false}
       muiTableContainerProps={{ sx: { maxHeight: "500px" } }}
       onPaginationChange={setPagination}
       data={data}

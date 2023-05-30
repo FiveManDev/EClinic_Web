@@ -20,7 +20,7 @@ interface Props {
   }[]
 }
 const TabsCustom = ({ tabs }: Props) => {
-  const [tabIndex, setTabIndex] = useState(0)
+  const [tabIndex, setTabIndex] = useState(1)
   return (
     <>
       <TabsStyles value={tabIndex} onChange={(_, value) => setTabIndex(value)}>
