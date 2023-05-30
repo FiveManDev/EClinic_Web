@@ -14,7 +14,6 @@
     "prettier": "prettier --write ."
   },
   "dependencies": {
-    "@editorjs/editorjs": "^2.27.0",
     "@fullcalendar/core": "^6.1.7",
     "@fullcalendar/daygrid": "^6.1.7",
     "@fullcalendar/react": "^6.1.7",
@@ -30,7 +29,6 @@
     "overlayscrollbars-react": "^0.5.0",
     "react": "18.2.0",
     "react-dom": "18.2.0",
-    "react-draft-wysiwyg": "^1.15.0",
     "react-hot-toast": "^2.4.0",
     "react-i18next": "^12.1.5",
     "react-icons": "^4.7.1",
@@ -39,8 +37,6 @@
     "recharts": "^2.6.2"
   },
   "devDependencies": {
-    "@ckeditor/ckeditor5-build-classic": "^38.0.1",
-    "@ckeditor/ckeditor5-react": "^6.0.0",
     "@emotion/react": "^11.10.5",
     "@emotion/styled": "^11.10.5",
     "@faker-js/faker": "^7.6.0",
@@ -57,7 +53,6 @@
     "@types/nprogress": "^0.2.0",
     "@types/react": "18.0.26",
     "@types/react-dom": "18.0.10",
-    "@types/react-draft-wysiwyg": "^1.13.4",
     "autoprefixer": "^10.4.13",
     "axios": "^1.2.2",
     "classnames": "^2.3.2",
