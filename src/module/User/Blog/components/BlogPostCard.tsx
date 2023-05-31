@@ -1,16 +1,12 @@
-import PropTypes from "prop-types"
 // @mui
-import { motion } from "framer-motion"
-import { Avatar, Box, Card, CardContent, Grid, Typography } from "@mui/material"
+import { Avatar, Card, CardContent, Grid, Typography } from "@mui/material"
 import { alpha, styled } from "@mui/material/styles"
+import { motion } from "framer-motion"
 // utils
 import SvgColor from "components/Common/svg-color/index"
-import {
-  HiOutlineChatBubbleOvalLeftEllipsis,
-  HiOutlineEye
-} from "react-icons/hi2"
-import { dayformat } from "shared/helpers/helper"
 import Link from "next/link"
+import { dayformat } from "shared/helpers/helper"
+import { IBlog } from "types/Blog"
 // ----------------------------------------------------------------------
 
 const StyledCardMedia = styled("div")({
@@ -35,14 +31,6 @@ const StyledAvatar = styled(Avatar)(({ theme }) => ({
   bottom: theme.spacing(-2)
 }))
 
-const StyledInfo = styled("div")(({ theme }) => ({
-  display: "flex",
-  flexWrap: "wrap",
-  justifyContent: "flex-end",
-  marginTop: theme.spacing(3),
-  color: theme.palette.text.disabled
-}))
-
 const StyledCover = styled("img")({
   top: 0,
   width: "100%",
@@ -53,25 +41,18 @@ const StyledCover = styled("img")({
 
 // ----------------------------------------------------------------------
 
-BlogPostCard.propTypes = {
-  post: PropTypes.object.isRequired,
-  index: PropTypes.number
+interface IProps {
+  post: IBlog
+  index: number
 }
-
-export default function BlogPostCard({ post, index }: any) {
-  const { cover, title, view, comment, author, createdAt } = post
+export default function BlogPostCard({ post, index }: IProps) {
   const latestPostLarge = index === 0
   const latestPost = index === 1 || index === 2
-
-  const POST_INFO = [
-    { number: comment, icon: <HiOutlineChatBubbleOvalLeftEllipsis /> },
-    { number: view, icon: <HiOutlineEye /> }
-  ]
 
   return (
     <Grid
       component={motion.div}
-      whileHover={{ scale: 1.1 }}
+      whileHover={{ scale: latestPostLarge || latestPost ? 1.05 : 1.1 }}
       item
       xs={12}
       sm={latestPostLarge ? 12 : 6}
@@ -113,8 +94,8 @@ export default function BlogPostCard({ post, index }: any) {
             }}
           />
           <StyledAvatar
-            alt={author.name}
-            src={author.avatarUrl}
+            alt={post.author.firstName + " " + post.author.lastName}
+            src={post.author.avatar}
             sx={{
               ...((latestPostLarge || latestPost) && {
                 zIndex: 9,
@@ -126,7 +107,7 @@ export default function BlogPostCard({ post, index }: any) {
             }}
           />
 
-          <StyledCover alt={title} src={cover} />
+          <StyledCover alt={post.title} src={post.coverImage} />
         </StyledCardMedia>
 
         <CardContent
@@ -139,16 +120,12 @@ export default function BlogPostCard({ post, index }: any) {
             })
           }}
         >
-          <Typography
-            gutterBottom
-            variant="caption"
-            sx={{ color: "text.disabled", display: "block", cursor: "pointer" }}
-          >
-            {dayformat(createdAt)}
+          <Typography gutterBottom variant="caption" className="text-disable">
+            {dayformat(post.updatedAt)}
           </Typography>
 
           <StyledTitle
-            href={"blog/1"}
+            href={`blog/${post.id}`}
             className="hover:underline"
             sx={{
               ...(latestPostLarge && { typography: "h5", height: 60 }),
@@ -157,27 +134,8 @@ export default function BlogPostCard({ post, index }: any) {
               })
             }}
           >
-            {title}
+            {post.title}
           </StyledTitle>
-
-          <StyledInfo>
-            {POST_INFO.map((info, index) => (
-              <Box
-                key={index}
-                sx={{
-                  display: "flex",
-                  alignItems: "center",
-                  ml: index === 0 ? 0 : 1.5,
-                  ...((latestPostLarge || latestPost) && {
-                    color: "grey.500"
-                  })
-                }}
-              >
-                <div className="w-4 h-4 mr-0.5">{info.icon}</div>
-                <Typography variant="caption">{info.number}</Typography>
-              </Box>
-            ))}
-          </StyledInfo>
         </CardContent>
       </Card>
     </Grid>
