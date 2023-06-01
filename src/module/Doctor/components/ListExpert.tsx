@@ -130,6 +130,7 @@ const ListExpert = () => {
       manualPagination
       enableStickyHeader
       enableTopToolbar
+      enableGlobalFilter={false}
       muiTableContainerProps={{ sx: { maxHeight: "600px" } }}
       onPaginationChange={setPagination}
       data={data?.data?.data ?? []}

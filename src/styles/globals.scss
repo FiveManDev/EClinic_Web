@@ -37,21 +37,11 @@
     @apply text-[#777781] text-sm md:text-base md:leading-tight;
   }
   .background-primary {
-    @apply p-3 md:p-7;
-    background-color: rgb(255, 255, 255);
-    transition: box-shadow 300ms cubic-bezier(0.4, 0, 0.2, 1) 0ms;
-    background-image: none;
-    overflow: hidden;
-    position: relative;
-    box-shadow: rgba(145, 158, 171, 0.2) 0px 0px 2px 0px,
-      rgba(145, 158, 171, 0.12) 0px 12px 24px -4px;
-    border-radius: 12px;
-    z-index: 0;
+    @apply p-3 md:p-7 overflow-hidden relative z-0 rounded-xl bg-white shadow-[rgba(145,_158,_171,_0.2)_0px_0px_2px_0px,_rgba(145,_158,_171,_0.12)_0px_12px_24px_-4px];
   }
   .entry-content,
-  .entry-content .ql-snow .ql-editor {
-    font-family: "Lexend Deca", sans-serif;
-    font-size: 16px;
+  .ql-snow .ql-editor {
+    @apply font-primary text-base;
     strong {
       font-weight: bold;
     }
@@ -122,25 +112,17 @@
       }
     }
   }
-  .custom-quill {
-    .ql-container {
-      height: 300px;
-    }
-  }
 }
 .quill {
-  position: relative;
-  .ql-toolbar {
-    position: sticky;
-    top: 0;
-    background-color: white;
-    z-index: 10;
+  .ql-container {
+    @apply min-h-[200px] md:min-h-[250px];
   }
-  @apply border border-solid border-gray-300 rounded-xl flex flex-col;
-  padding: 15px 25px;
+  .ql-toolbar {
+    @apply sticky top-0 bg-white z-10;
+  }
+  @apply relative border border-solid border-gray-300 rounded-xl flex flex-col px-[15px] py-[25px];
   .ql-toolbar.ql-snow {
-    border: none;
-    @apply bg-[#B2B3BD] bg-opacity-10 rounded-xl py-3 px-5 inline-block mx-auto;
+    @apply bg-[#B2B3BD] bg-opacity-10 rounded-xl py-3 px-5 inline-block mx-auto border-none;
   }
   .ql-container.ql-snow,
   .ql-editor {
@@ -208,5 +190,14 @@
   border-radius: 12px;
   &.MuiInputBase-sizeSmall {
     border-radius: 8px;
+  }
+}
+.MuiPaper-root.MuiPaper-elevation.MuiPaper-rounded {
+  border-radius: 12px;
+  box-shadow: rgba(0, 0, 0, 0.1) 0px 4px 12px;
+  padding: 0 12px;
+  .MuiButtonBase-root.MuiMenuItem-root {
+    margin-top: 4px;
+    border-radius: 6px;
   }
 }

@@ -212,3 +212,20 @@ export const useGetExpertProfilesByIdQuery = (userID: string) => {
     queryFn: () => profileService.getExpertProfileById(userID)
   })
 }
+export const useGetPatientProfilesQuery = (data: IPaginationSearch) => {
+  const queryKey = [
+    QUERY_KEYS.PROFILE,
+    data.pageNumber,
+    data.pageSize,
+    data.searchText
+  ]
+  return useQuery({
+    queryKey,
+    queryFn: () =>
+      profileService.getPatientProfiles({
+        pageNumber: data.pageNumber,
+        pageSize: data.pageSize,
+        searchText: data.searchText
+      })
+  })
+}

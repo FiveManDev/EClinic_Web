@@ -87,7 +87,7 @@ const DoctorLayout = ({ children }: PropsWithChildren) => {
           },
           {
             title: "Patient",
-            link: "/admin/accounts/user"
+            link: "/admin/accounts/patient"
           },
           {
             title: "Expert",

@@ -1,20 +1,16 @@
-import {
-  Container,
-  Grid,
-  SpeedDial,
-  SpeedDialAction,
-  Typography
-} from "@mui/material"
+import { Grid, SpeedDial, SpeedDialAction, Typography } from "@mui/material"
+import { LoadingArea } from "components/Common/Loading/LoadingIcon"
+import { useGetBlogPostbyIdQuery } from "hooks/query/blog/useBlog"
 import UserSecondaryLayout from "layout/User/UserSecondaryLayout"
 import Head from "next/head"
 import Image from "next/image"
+import { useRouter } from "next/router"
 import { useTranslation } from "react-i18next"
 import { AiOutlineInstagram } from "react-icons/ai"
 import { HiOutlineShare } from "react-icons/hi2"
+import { combineName } from "shared/helpers/helper"
 import { dayformat } from "shared/helpers/helper"
 import { IBreadcrum } from "types/Base.type"
-import BlogPostCard from "./components/BlogPostCard"
-import { recentPosts } from "../../../_mock/blog"
 
 const actions = [
   {
@@ -51,8 +47,21 @@ const actions = [
 ]
 
 const BlogDetailPage = () => {
+  const router = useRouter()
   const { t } = useTranslation(["base", "forum"])
-
+  const { data, isLoading, isError } = useGetBlogPostbyIdQuery(
+    router.query.id as string
+  )
+  if (router.isFallback || isLoading) {
+    return (
+      <>
+        <LoadingArea />
+      </>
+    )
+  }
+  if (isError) {
+    return <p>Error</p>
+  }
   const breadrums: IBreadcrum[] = [
     { label: t("base:pages.home"), href: "/" },
     { label: t("base:pages.forum") }
@@ -63,27 +72,37 @@ const BlogDetailPage = () => {
         <title>Blog</title>
       </Head>
       <UserSecondaryLayout breadrums={breadrums}>
-        <Container className="flex-1 p-0">
-          <div className="w-full h-full bg-background-primary">
+        <div className="flex-1 p-0">
+          <div className="flex flex-col w-full h-full p-0 background-primary">
             <div className="w-full h-[648px] relative rounded-tr-2xl rounded-tl-2xl overflow-hidden">
-              <Image fill src={"/images/covers/cover_1.jpg"} alt="thumbnails" />
-              <div className="absolute inset-0 z-10 backdrop-brightness-50"></div>
+              <Image
+                fill
+                src={data.data.coverImage || "/images/covers/cover_1.jpg"}
+                alt="thumbnails"
+              />
+              <div className="absolute inset-0 z-10 overflow-hidden backdrop-brightness-50 rounded-tr-2xl rounded-tl-2xl"></div>
 
               <h1 className="absolute top-0 z-20 p-20 text-5xl font-bold leading-snug text-snow">
-                Apply These 7 Secret Techniques To Improve Event
+                {data?.data.title}
               </h1>
               <div className="absolute bottom-0 z-20 flex items-center justify-between w-full p-20">
                 <div className="flex items-center gap-x-3">
                   <div className="relative w-12 h-12 overflow-hidden rounded-full">
                     <Image
-                      src={"/images/avatars/avatar_1.jpg"}
+                      src={
+                        data?.data.author.avatar ||
+                        "/images/avatars/avatar_1.jpg"
+                      }
                       fill
                       alt="avatart"
                     />
                   </div>
                   <div className="flex flex-col gap-y-1">
                     <h3 className="text-base font-bold leading-normal text-snow">
-                      Jayvion Simon
+                      {combineName(
+                        data?.data.author.firstName,
+                        data?.data.author.lastName
+                      )}
                     </h3>
                     <Typography
                       gutterBottom
@@ -94,7 +113,7 @@ const BlogDetailPage = () => {
                         cursor: "pointer"
                       }}
                     >
-                      {dayformat("03 May 2023")}
+                      {dayformat(data?.data.updatedAt)}
                     </Typography>
                   </div>
                 </div>
@@ -113,18 +132,28 @@ const BlogDetailPage = () => {
                 </SpeedDial>
               </div>
             </div>
+            <div className="max-w-3xl mx-auto my-8 md:my-16">
+              <div
+                className="entry-content"
+                // Prevent XSS Attack recommen from React Docs
+                dangerouslySetInnerHTML={{
+                  __html: data.data.content || ""
+                }}
+              ></div>
+            </div>
           </div>
+
           <div className="flex flex-col">
             <h3 className="my-10 text-2xl font-semibold text-h1">
               Recent posts
             </h3>
             <Grid container spacing={3}>
-              {recentPosts.map((post, index) => (
+              {/* {recentPosts.map((post, index) => (
                 <BlogPostCard key={post.id} post={post} index={index + 1} />
-              ))}
+              ))} */}
             </Grid>
           </div>
-        </Container>
+        </div>
       </UserSecondaryLayout>
     </>
   )

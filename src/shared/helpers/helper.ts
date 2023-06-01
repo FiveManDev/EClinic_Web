@@ -55,7 +55,7 @@ export const combineName = (lastName: string, firstName: string) => {
   return lastName + " " + firstName
 }
 export const dayformat = (date: string) => {
-  return dayjs(date).format("DD/MM/YYYY")
+  return dayjs(date).format("DD MMM YYYY")
 }
 export const getDataPaginate = (
   response: AxiosResponse | undefined = undefined
@@ -110,4 +110,7 @@ export function hexToRGBA(hexCode = "", opacity = 1) {
   }
 
   return `rgba(${r},${g},${b},${opacity})`
+}
+export function isImage(file: File) {
+  return /^image\//.test(file?.type)
 }

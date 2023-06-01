@@ -2,6 +2,7 @@ import MainHeadingLayout from "layout/Management/MainHeadingLayout"
 import TabsCustom from "layout/Management/components/TabsCustom"
 import Head from "next/head"
 import React, { useMemo } from "react"
+import CreateBlog from "../components/CreateBlog"
 
 const ManageBlog = () => {
   const tabs = useMemo(
@@ -22,14 +23,7 @@ const ManageBlog = () => {
         key: 1,
         label: `Create a new post
         `,
-        children: (
-          <p>
-            Lorem ipsum dolor sit amet, consectetur adipisicing elit. Dolore
-            temporibus consequuntur corporis error? Illum incidunt impedit
-            repellat saepe cum corrupti doloribus molestiae ullam sapiente,
-            sequi nemo dignissimos similique, eveniet cumque!
-          </p>
-        )
+        children: <CreateBlog labelForm="Create a new post" />
       }
     ],
     []

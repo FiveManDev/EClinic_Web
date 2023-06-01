@@ -1,20 +1,18 @@
-import { Box, IconButton, Tooltip } from "@mui/material"
+import { Box } from "@mui/material"
+import SwitchCustom from "components/Common/IOSSwitch"
 import ImageCustom from "components/Common/ImageCustom"
 import { CustomInput } from "components/User/Input"
-import { useGetSupportersQuery } from "hooks/query/profile/useProfile"
+import { useGetPatientProfilesQuery } from "hooks/query/profile/useProfile"
 import useDebounce from "hooks/useDebounce"
 import MaterialReactTable, {
   MRT_ColumnDef,
   MRT_PaginationState
 } from "material-react-table"
-import { useRouter } from "next/router"
 
 import { useMemo, useState } from "react"
-import { HiOutlinePencilSquare } from "react-icons/hi2"
 import { combineName, dayformat, getDataPaginate } from "shared/helpers/helper"
-import { IProfileSupporter } from "types/Profile.type"
-const ListSupporter = () => {
-  const router = useRouter()
+import { Profile } from "types/Profile.type"
+const ListPatient = () => {
   const [pagination, setPagination] = useState<MRT_PaginationState>({
     pageIndex: 1,
     pageSize: 10
@@ -22,13 +20,15 @@ const ListSupporter = () => {
   const [searchData, setSearchData] = useState("")
   const searchTextDebounce = useDebounce(searchData, 1000)
 
-  const { data, isLoading, isError, isRefetching } = useGetSupportersQuery({
-    searchText: searchTextDebounce,
-    pageNumber: pagination.pageIndex,
-    pageSize: pagination.pageSize
-  })
+  const { data, isLoading, isError, isRefetching } = useGetPatientProfilesQuery(
+    {
+      searchText: searchTextDebounce,
+      pageNumber: pagination.pageIndex,
+      pageSize: pagination.pageSize
+    }
+  )
 
-  const columns = useMemo<MRT_ColumnDef<IProfileSupporter>[]>(
+  const columns = useMemo<MRT_ColumnDef<Profile>[]>(
     () => [
       {
         accessorKey: "profileID",
@@ -107,18 +107,6 @@ const ListSupporter = () => {
         Cell: ({ row }) => {
           return <p className="line-clamp-1">{row.original.phone}</p>
         }
-      },
-      {
-        accessorKey: "workStart",
-        header: "Date start work",
-        size: 120,
-        Cell: ({ row }) => {
-          return (
-            <p className="line-clamp-1 max-w-[120px]">
-              {dayformat(row.original.workStart)}
-            </p>
-          )
-        }
       }
     ],
     []
@@ -144,15 +132,7 @@ const ListSupporter = () => {
       positionActionsColumn="last"
       renderRowActions={({ row }) => (
         <Box sx={{ display: "flex", gap: "1rem" }}>
-          <Tooltip arrow placement="left" title="Edit">
-            <IconButton
-              onClick={() =>
-                router.push(`/admin/accounts/sup/edit/${row.original.userID}`)
-              }
-            >
-              <HiOutlinePencilSquare />
-            </IconButton>
-          </Tooltip>
+          <SwitchCustom />
         </Box>
       )}
       renderTopToolbarCustomActions={() => (
@@ -166,4 +146,4 @@ const ListSupporter = () => {
   )
 }
 
-export default ListSupporter
+export default ListPatient

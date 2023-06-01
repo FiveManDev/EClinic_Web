@@ -5,7 +5,8 @@ import {
   IProfile,
   IProfileDoctor,
   IProfileExpert,
-  IProfileSupporter
+  IProfileSupporter,
+  Profile
 } from "types/Profile.type"
 import { IServerResponse } from "types/server/IServerResponse"
 import { IRelationShip } from "./../types/Profile.type.d"
@@ -244,6 +245,24 @@ class ProfileService {
       }
     )
     return res.data as IServerResponse<null>
+  }
+  async getPatientProfiles(data: IPaginationSearch) {
+    const res: AxiosResponse = await axiosClient.get(
+      `${URL_API.PROFILE}/GetUserProfiles?SearchText=${data.searchText}`,
+      {
+        headers: {
+          PageNumber: data.pageNumber,
+          PageSize: data.pageSize
+        }
+      }
+    )
+    return res as AxiosResponse<IServerResponse<Profile[]>>
+  }
+  async getPatientProfileById(userId: string) {
+    const res: AxiosResponse = await axiosClient.get(
+      `${URL_API.PROFILE}/GetUserProfileById?UserID=${userId}`
+    )
+    return res.data as IServerResponse<Profile>
   }
 }
 
