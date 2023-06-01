@@ -3,7 +3,7 @@ import { FormControlLabel, Switch, SwitchProps } from "@mui/material"
 import React from "react"
 const IOSSwitch = styled((props: SwitchProps) => (
   <Switch focusVisibleClassName=".Mui-focusVisible" disableRipple {...props} />
-))(({ theme }) => ({
+))(() => ({
   width: 38,
   height: 22,
   padding: 0,
@@ -46,10 +46,10 @@ const IOSSwitch = styled((props: SwitchProps) => (
     transition: "0.25s linear all"
   }
 }))
-const SwitchCustom = () => {
+const SwitchCustom = ({ ...props }: SwitchProps) => {
   return (
     <>
-      <IOSSwitch defaultChecked />
+      <IOSSwitch value={props.checked || false} {...props} />
     </>
   )
 }

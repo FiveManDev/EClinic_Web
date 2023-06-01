@@ -6,6 +6,9 @@ import "react-quill/dist/quill.snow.css"
 import { ImageActions } from "@xeger/quill-image-actions"
 import { ImageFormats } from "@xeger/quill-image-formats"
 import ReactQuill, { Quill } from "react-quill"
+import { blogService } from "services/blog.service"
+import { toast } from "react-hot-toast"
+import { isImage } from "shared/helpers/helper"
 
 Quill.register("modules/imageActions", ImageActions)
 Quill.register("modules/imageFormats", ImageFormats)
@@ -30,9 +33,16 @@ const Editor = memo(
         const file = input.files[0]
 
         // file type is only image.
-        if (/^image\//.test(file.type)) {
-          const res: any = "https://source.unsplash.com/random"
-          insertToEditor(res)
+        if (isImage(file)) {
+          try {
+            const res = await blogService.upLoadImage(file)
+            if (res?.isSuccess) {
+              insertToEditor(res?.message!)
+            } else throw new Error()
+          } catch (error) {
+            toast.error("You could only upload images")
+            console.log("input.onchange= ~ error:", error)
+          }
         } else {
           console.warn("You could only upload images.")
         }

@@ -11,7 +11,8 @@ export const QUERY_KEYS = {
   },
   HASHTAG: "HASHTAG",
   BLOG: {
-    POST: "POST_BLOG"
+    POST: "POST_BLOG",
+    HASHTASH: "POST_BLOG_HASHTAG"
   }
 } as const
 export const ROLE = {
@@ -29,6 +30,7 @@ export const URL_API = {
   RELATIONSHIPS: "profile/Relationship",
   FORUM_POST: "forum/Post",
   BLOG_POST: "Blog/Blog",
+  BLOG_HASHTAG: "Blog/Hashtag",
   FORUM_POST_COMMENT: "forum/Comment",
   FORUM_POST_ANWERS: "forum/Answer",
   FORUM_POST_HASHTAG: "forum/Hashtag"

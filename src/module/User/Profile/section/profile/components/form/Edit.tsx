@@ -19,6 +19,7 @@ import {
   useAllRelationship,
   useGetBloodTypes
 } from "hooks/query/profile/useProfile"
+import { useImageFile } from "hooks/useImageFile"
 import Image from "next/image"
 import { ChangeEvent, useEffect, useState } from "react"
 import { FieldValues, useForm } from "react-hook-form"
@@ -326,20 +327,17 @@ interface IFileProps {
   onFileChange: (file: File) => void
 }
 export const Uploadfile = ({ imageUrl, onFileChange }: IFileProps) => {
-  const [image, setImage] = useState(imageUrl)
-  const handleImageChange = (event: ChangeEvent<HTMLInputElement>) => {
-    if (event.target.files !== null && event.target.files?.length > 0) {
-      const objectUrl = URL.createObjectURL(event.target.files[0])
-      setImage(objectUrl)
-      onFileChange(event.target.files[0])
-    }
+  const { image, handleImageChange } = useImageFile(imageUrl)
+  const onImageChange = (e: ChangeEvent<HTMLInputElement>) => {
+    const file = handleImageChange(e)
+    onFileChange(file!)
   }
   return (
     <>
       <div className="flex justify-center mt-8">
         <div className="rounded-lg lg:w-1/2">
           <div className="flex items-center justify-center w-full">
-            <label className="relative flex flex-col items-center justify-center w-40 h-40 border border-gray-400 border-dashed rounded-full cursor-pointer hover:bg-gray-100 hover:border-gray-300">
+            <label className="relative flex flex-col items-center justify-center w-40 h-40 transition-all border border-gray-400 border-dashed rounded-full cursor-pointer hover:bg-gray-100 hover:border-gray-300">
               {image && (
                 <Image
                   src={image}
@@ -368,7 +366,7 @@ export const Uploadfile = ({ imageUrl, onFileChange }: IFileProps) => {
               <input
                 type="file"
                 className="opacity-0"
-                onChange={(e) => handleImageChange(e)}
+                onChange={(e) => onImageChange(e)}
               />
             </label>
           </div>

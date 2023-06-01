@@ -1,72 +1,69 @@
 import { yupResolver } from "@hookform/resolvers/yup"
 import {
+  Box,
+  Chip,
   FormControl,
-  FormControlLabel,
-  FormLabel,
-  Radio,
-  RadioGroup
+  FormHelperText,
+  InputLabel,
+  MenuItem,
+  OutlinedInput,
+  Select,
+  SelectChangeEvent
 } from "@mui/material"
-import DatePickerCustom from "components/Common/DatePicker/DatePickerCustom"
 import SwitchCustom from "components/Common/IOSSwitch"
-import Tag from "components/Common/Tag"
+import { UpdateCover } from "components/Common/UpLoadImage"
 import CustomButton from "components/User/Button"
 import { CustomInput } from "components/User/Input"
-import useConfirm from "context/ComfirmContext"
-import dayjs from "dayjs"
+import { error } from "console"
 import {
-  CreateDoctorProfile,
-  UpdateDoctorProfile,
-  useCreateProfileDoctorMutation,
-  useUpdateProfileDoctorMutation
-} from "hooks/query/profile/useProfile"
-import { Uploadfile } from "module/User/Profile/section/profile/components/form/Edit"
+  CreatePostBlog,
+  useCreateBlogPostMutation,
+  useGetAllHashTag
+} from "hooks/query/blog/useBlog"
 import dynamic from "next/dynamic"
 import { useEffect } from "react"
 import { FieldValues, useForm } from "react-hook-form"
 import { toast } from "react-hot-toast"
-import { IProfileDoctor } from "types/Profile.type"
+import { HashTag } from "types/Base.type"
+import { IBlog } from "types/Blog"
 import * as yup from "yup"
 const Editor = dynamic(() => import("components/Common/Editor/Editor"), {
   ssr: false
 })
+const ITEM_HEIGHT = 48
+const ITEM_PADDING_TOP = 8
+const MenuProps = {
+  PaperProps: {
+    style: {
+      maxHeight: ITEM_HEIGHT * 4.5 + ITEM_PADDING_TOP,
+      width: 250
+    }
+  }
+}
 const schema = yup.object({
-  email: yup
-    .string()
-    .required("Please enter email")
-    .email("Please enter a valid email address"),
-  firstName: yup
-    .string()
-    .required("Please enter first name")
-    .matches(/^[A-Za-z ]+$/, "Please enter valid name"),
-  lastName: yup
-    .string()
-    .required("Please enter last name")
-    .matches(/^[A-Za-z ]+$/, "Please enter valid name"),
-  phone: yup
-    .string()
-    .required("Please enter phone number")
-    .matches(
-      /(84|0[3|5|7|8|9])+([0-9]{8})\b/,
-      "Please enter valid phone number"
-    ),
-  workStart: yup.string().required("Please enter date of working start"),
-  address: yup.string().required("Please enter address"),
-  title: yup.string().required("Please enter position"),
-  description: yup.string().required("Please enter description")
+  title: yup.string().required("Please enter title"),
+  content: yup.string().required("Please enter content"),
+  metaTitle: yup.string().required("Please enter meta title"),
+  metaDescription: yup.string().required("Please enter meta description"),
+  metaKeywords: yup.string().required("Please enter meta keywords"),
+  hashtags: yup
+    .array()
+    .min(1, "Please choose at least one hashtag")
+    .required("Please choose hashtag")
 })
 interface Props {
   labelForm: string
-  profile?: IProfileDoctor
+  post?: IBlog
   mode?: "update" | "create"
 }
-const CreateBlog = ({ labelForm, profile, mode = "create" }: Props) => {
-  const confirm = useConfirm()
-  const createProfileDoctorMutation = useCreateProfileDoctorMutation()
-  const updateProfileDoctorMutation = useUpdateProfileDoctorMutation()
+const CreateBlog = ({ labelForm, post, mode = "create" }: Props) => {
+  // const confirm = useConfirm()
+  const hashTags = useGetAllHashTag()
+  const createPost = useCreateBlogPostMutation()
+  // const updateProfileDoctorMutation = useUpdateProfileDoctorMutation()
   const {
     handleSubmit,
     control,
-    setError,
     watch,
     reset,
     setValue,
@@ -74,50 +71,54 @@ const CreateBlog = ({ labelForm, profile, mode = "create" }: Props) => {
   } = useForm({
     mode: "onSubmit",
     resolver: yupResolver(schema),
-    defaultValues: profile
+    defaultValues: post
   })
-  watch("avatar", null)
-  const watchGender = watch("gender", profile ? profile?.gender : true)
-  const watchDesc = watch("description")
+  const hashTagSelected = watch("hashtags")
+  const watchDesc = watch("content")
+  const watchCoverImage = watch("coverImage")
+  const watchIsActive = watch("isActive", post?.isActive ? true : false)
   const onFileChange = (file: File) => {
-    setValue("avatar", file)
+    setValue("coverImage", file)
   }
   const onSubmit = async (value: FieldValues) => {
+    const newHashTags = value.hashtags.map((item: HashTag) => item.hashtagID)
     if (mode === "update") {
-      if (confirm) {
-        const choice = await confirm({
-          title: "Update account",
-          content: "Are you sure you want to update this profile?"
-        })
-        if (choice) {
-          updateProfileDoctorMutation.mutate(
-            {
-              ...value
-            } as UpdateDoctorProfile,
-            {
-              onSuccess: (data) => {
-                if (data.isSuccess) {
-                  toast.success("Update successfuly")
-                } else {
-                  toast.error("Update error")
-                }
-              },
-              onError: () => {
-                toast.error("Update error")
-              }
-            }
-          )
-        }
-      }
+      // if (confirm) {
+      //   const choice = await confirm({
+      //     title: "Update account",
+      //     content: "Are you sure you want to update this profile?"
+      //   })
+      //   if (choice) {
+      //     updateProfileDoctorMutation.mutate(
+      //       {
+      //         ...value
+      //       } as UpdateDoctorProfile,
+      //       {
+      //         onSuccess: (data) => {
+      //           if (data.isSuccess) {
+      //             toast.success("Update successfuly")
+      //           } else {
+      //             toast.error("Update error")
+      //           }
+      //         },
+      //         onError: () => {
+      //           toast.error("Update error")
+      //         }
+      //       }
+      //     )
+      //   }
+      // }
     } else {
-      createProfileDoctorMutation.mutate(
+      createPost.mutate(
         {
-          ...value
-        } as CreateDoctorProfile,
+          ...value,
+          hashtagId: newHashTags
+        } as CreatePostBlog,
         {
           onSuccess: (data) => {
-            if (data.isSuccess) {
-              toast.success("Add successfuly")
+            if (data?.isSuccess) {
+              toast.success("Create a post successfuly")
+              resetForm()
             } else {
               toast.error("Add error")
             }
@@ -129,193 +130,162 @@ const CreateBlog = ({ labelForm, profile, mode = "create" }: Props) => {
       )
     }
   }
+  const resetForm = () => {
+    reset({
+      title: "",
+      content: "",
+      coverImage: "",
+      hashtags: [],
+      isActive: false,
+      metaDescription: "",
+      metaKeywords: "",
+      metaTitle: ""
+    })
+  }
   useEffect(() => {
-    if (profile === undefined) {
-      reset({
-        profileID: "",
-        userID: "",
-        firstName: "",
-        lastName: "",
-        avatar: null,
-        gender: true,
-        dateOfBirth: dayjs().toString(),
-        address: "",
-        email: "",
-        phone: "",
-        title: "",
-        workStart: dayjs().toString(),
-        description: ""
-      })
+    if (post === undefined) {
+      resetForm()
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [profile])
-
+  }, [post])
+  const handleChange = (event: SelectChangeEvent<string[]>) => {
+    const {
+      target: { value }
+    } = event
+    let newHashtags: HashTag[] = []
+    if (typeof value === "string") {
+      newHashtags =
+        hashTags.data?.data.data.filter((item) => {
+          if (item.hashtagID === value) {
+            return item
+          }
+        }) || []
+    } else {
+      newHashtags =
+        hashTags.data?.data.data.filter((item) => {
+          if (value.some((has) => has === item.hashtagID)) {
+            return item
+          }
+        }) || []
+    }
+    setValue("hashtags", newHashtags)
+  }
+  const getHashtagName = (hashtagID: string) => {
+    const selectedTag = hashTags.data?.data.data.find(
+      (tag) => tag.hashtagID === hashtagID
+    )
+    return selectedTag ? selectedTag.hashtagName : ""
+  }
   return (
-    <form
-      className="flex flex-col w-full gap-y-6 md:gap-y-0 md:flex-row gap-x-5"
-      onSubmit={handleSubmit(onSubmit)}
-    >
-      <div className="relative background-primary w-full md:max-w-[360px] flex flex-col items-center h-fit py-16">
-        <Tag
-          color="#07AB55"
-          className="absolute top-0 right-0 -translate-x-1/4 translate-y-2/4"
-        >
-          Active
-        </Tag>
-
-        <Uploadfile
-          imageUrl={profile?.avatar as string | null}
-          onFileChange={onFileChange}
-        />
-        <p className="text-xs text-disable max-w-[200px] text-center leading-relaxed mt-3">
-          Allowed *.jpeg, *.jpg, *.png, *.gif max size of 3.1 MB
-        </p>
-        <div className="flex items-center justify-between w-full max-w-[260px] mt-6">
-          <div className="flex flex-col">
-            <span className="text-base font-medium text-black2">Publish</span>
-            <p className="text-xs text-disable">Apply disable account</p>
-          </div>
-          <SwitchCustom />
-        </div>
-      </div>
-      <div className="flex-1 background-primary">
+    <form className="grid grid-cols-8 gap-6" onSubmit={handleSubmit(onSubmit)}>
+      <div className="col-span-5 background-primary">
         <h3 className="pb-4 text-lg font-medium">{labelForm}</h3>
         <div className="flex flex-col justify-start">
           <div className="flex flex-col space-y-5">
-            <div className="flex items-start space-x-3">
-              <CustomInput
-                size="medium"
-                label="First name"
-                control={control}
-                name="firstName"
-                error={!!errors.firstName}
-                helperText={errors.firstName?.message?.toString()}
-              />
-              <CustomInput
-                size="medium"
-                label="Last name"
-                control={control}
-                name="lastName"
-                error={!!errors.lastName}
-                helperText={errors.lastName?.message?.toString()}
-              />
-            </div>
-
-            <div className="flex space-x-3">
-              <CustomInput
-                size="medium"
-                label="Address"
-                control={control}
-                name="address"
-                error={!!errors.address}
-                helperText={errors.address?.message?.toString()}
-              />
-              <CustomInput
-                size="medium"
-                label="Position"
-                control={control}
-                name="title"
-                error={!!errors.title}
-                helperText={errors.title?.message?.toString()}
-              />
-            </div>
-            <div className="flex space-x-3">
-              <DatePickerCustom
-                size="medium"
-                label="Date of birth"
-                control={control}
-                name="dateOfBirth"
-                onErrorField={(reason) => {
-                  const message =
-                    reason === "invalidDate"
-                      ? "Please enter valid date"
-                      : reason === "disableFuture"
-                      ? "The birthday cannot be less than the current date"
-                      : ""
-                  setError("dateOfBirth", { type: "focus", message })
-                }}
-                errorMessage={errors.dateOfBirth?.message?.toString()}
-              />
-              <CustomInput
-                size="medium"
-                label="Email"
-                control={control}
-                name="email"
-                error={!!errors.email}
-                helperText={errors.email?.message?.toString()}
-              />
-            </div>
-            <div className="flex space-x-3">
-              <DatePickerCustom
-                size="medium"
-                label="Date start work"
-                control={control}
-                name="workStart"
-                onErrorField={(reason) => {
-                  const message =
-                    reason === "invalidDate"
-                      ? "Please enter valid date"
-                      : reason === "disableFuture"
-                      ? "The birthday cannot be less than the current date"
-                      : ""
-                  setError("workStart", { type: "focus", message })
-                }}
-                errorMessage={errors.workStart?.message?.toString()}
-              />
-              <CustomInput
-                size="medium"
-                label="Phone number"
-                control={control}
-                name="phone"
-                error={!!errors.phone}
-                helperText={errors.phone?.message?.toString()}
-              />
-            </div>
-            <FormControl>
-              <FormLabel>Gender</FormLabel>
-              <RadioGroup
-                row
-                value={watchGender}
-                onChange={(e) =>
-                  setValue("gender", e.target.value === "true" ? true : false)
-                }
-                name="radio-buttons-group"
-              >
-                <FormControlLabel
-                  value={true}
-                  control={<Radio size="small" />}
-                  label="Female"
-                />
-                <FormControlLabel
-                  value={false}
-                  control={<Radio size="small" />}
-                  label="Male"
-                />
-              </RadioGroup>
-            </FormControl>
-            <Editor
-              onChange={(data: string) => {
-                setValue("description", data)
-              }}
-              value={watchDesc}
+            <CustomInput
+              size="medium"
+              label="Post title"
+              control={control}
+              name="title"
+              error={!!errors.title}
+              helperText={errors.title?.message?.toString()}
             />
+            <div className="flex flex-col">
+              <UpdateCover
+                onFileChange={onFileChange}
+                imageUrl={watchCoverImage || null}
+              />
+            </div>
 
-            <CustomButton
-              kind="primary"
-              type="submit"
-              className="ml-auto w-fit"
-              isLoading={
-                createProfileDoctorMutation.isLoading ||
-                updateProfileDoctorMutation.isLoading
-              }
-            >
-              {mode === "create" ? "Create blog" : "Update blog"}
-            </CustomButton>
+            <div className="flex flex-col gap-y-2">
+              <span className="text-gray-500">Content</span>
+              <Editor
+                onChange={(data: string) => {
+                  setValue("content", data)
+                }}
+                value={watchDesc}
+              />
+            </div>
           </div>
+        </div>
+      </div>
+
+      <div className="col-span-3">
+        <div className="flex flex-col py-8 space-y-6 background-primary">
+          <div className="flex items-center justify-between w-full">
+            <span className="text-base font-medium text-black2">Publish</span>
+            <SwitchCustom
+              checked={watchIsActive}
+              onChange={() => setValue("isActive", !watchIsActive)}
+            />
+          </div>
+          <FormControl>
+            <InputLabel>Chip</InputLabel>
+            <Select
+              multiple
+              value={hashTagSelected?.map((item) => item.hashtagID) || []}
+              onChange={handleChange}
+              error={!!errors.hashtags}
+              input={<OutlinedInput label="Tags" />}
+              renderValue={(selected) => (
+                <Box sx={{ display: "flex", flexWrap: "wrap", gap: 0.5 }}>
+                  {selected.map((value) => (
+                    <Chip key={value} label={getHashtagName(value)} />
+                  ))}
+                </Box>
+              )}
+              MenuProps={MenuProps}
+            >
+              {hashTags.data?.data.data.map((name) => (
+                <MenuItem key={name.hashtagID} value={name.hashtagID}>
+                  {name.hashtagName}
+                </MenuItem>
+              ))}
+            </Select>
+            <FormHelperText error>{errors.hashtags?.message}</FormHelperText>
+          </FormControl>
+          <CustomInput
+            size="medium"
+            label="Meta title"
+            control={control}
+            name="metaTitle"
+            error={!!errors.metaTitle}
+            helperText={errors.metaTitle?.message?.toString()}
+          />
+          <CustomInput
+            size="medium"
+            multiline
+            rows={3}
+            label="Meta description"
+            control={control}
+            name="metaDescription"
+            error={!!errors.metaDescription}
+            helperText={errors.metaDescription?.message?.toString()}
+          />
+          <CustomInput
+            size="medium"
+            label="Meta keywords"
+            control={control}
+            name="metaKeywords"
+            error={!!errors.metaKeywords}
+            helperText={errors.metaKeywords?.message?.toString()}
+          />
+        </div>
+        <div className="flex w-full mt-4 space-x-5">
+          <CustomButton kind="secondary" className="w-full ">
+            Preview
+          </CustomButton>
+          <CustomButton
+            kind="primary"
+            type="submit"
+            className="w-full "
+            isLoading={createPost.isLoading}
+          >
+            {mode === "create" ? "Post" : "Update blog"}
+          </CustomButton>
         </div>
       </div>
     </form>
   )
 }
-
 export default CreateBlog

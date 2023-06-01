@@ -1,7 +1,8 @@
 import { AxiosResponse } from "axios"
-import { CreatePostForum } from "hooks/query/forum/useForum"
+import { CreatePostBlog } from "hooks/query/blog/useBlog"
 import axiosClient from "shared/axios/httpClient"
 import { URL_API } from "shared/constant/constant"
+import { HashTag } from "types/Base.type"
 import { IBlog } from "types/Blog"
 import { IServerResponse } from "types/server/IServerResponse"
 class BlogService {
@@ -34,21 +35,55 @@ class BlogService {
     )
     return res.data as IServerResponse<IBlog>
   }
-  async createPost(data: CreatePostForum) {
-    const formData = new FormData()
-    formData.append("title", data.title)
-    formData.append("content", data.content)
-    data.images.forEach((item) => {
-      formData.append("images", item)
-    })
-    const res: AxiosResponse = await axiosClient.post(
-      `${URL_API.FORUM_POST}/CreatePost`,
-      formData,
-      {
-        headers: { "content-type": "multipart/form-data" }
+  async createPost(data: CreatePostBlog) {
+    try {
+      const formData = new FormData()
+      for (const [key, value] of Object.entries(data)) {
+        if (key === "hashtagId") {
+          value.forEach((hash: string) => {
+            formData.append(key, hash)
+          })
+        } else {
+          formData.append(key, value)
+        }
       }
-    )
-    return res.data as IServerResponse<string>
+      const res: AxiosResponse = await axiosClient.post(
+        `${URL_API.BLOG_POST}/CreateBlog`,
+        formData,
+        {
+          headers: { "content-type": "multipart/form-data" }
+        }
+      )
+      return res.data as IServerResponse<string>
+    } catch (error) {
+      console.log("BlogService ~ createPost ~ error:", error)
+    }
+  }
+  async getAllHashTag() {
+    try {
+      const res: AxiosResponse = await axiosClient.get(
+        `${URL_API.BLOG_HASHTAG}/getAllHashTag`
+      )
+      return res as AxiosResponse<IServerResponse<HashTag[]>>
+    } catch (error) {
+      console.log("BlogService ~ error:", error)
+    }
+  }
+  async upLoadImage(file: File) {
+    try {
+      const formData = new FormData()
+      formData.append("image", file)
+      const res: AxiosResponse = await axiosClient.post(
+        `${URL_API.BLOG_POST}/UploadImage`,
+        formData,
+        {
+          headers: { "content-type": "multipart/form-data" }
+        }
+      )
+      return res.data as IServerResponse<null>
+    } catch (error) {
+      console.log("BlogService ~ upLoadImage ~ error:", error)
+    }
   }
 }
 export const blogService = new BlogService()

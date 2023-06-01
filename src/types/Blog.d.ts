@@ -5,7 +5,7 @@ export interface IBlog {
   id: string
   title: string
   content: string
-  coverImage: string
+  coverImage?: any
   author: Author
   isActive: boolean
   metaTitle: string

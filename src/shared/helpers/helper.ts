@@ -111,3 +111,6 @@ export function hexToRGBA(hexCode = "", opacity = 1) {
 
   return `rgba(${r},${g},${b},${opacity})`
 }
+export function isImage(file: File) {
+  return /^image\//.test(file?.type)
+}

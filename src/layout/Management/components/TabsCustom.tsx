@@ -24,18 +24,18 @@ const TabsCustom = ({ tabs }: Props) => {
   return (
     <>
       <TabsStyles value={tabIndex} onChange={(_, value) => setTabIndex(value)}>
-        {tabs.map((tab) => (
+        {tabs.map((tab, index) => (
           <Tab
             label={tab.label}
-            key={tab.key}
+            key={index}
             value={tab.key}
             className="px-0 mr-[18px] text-base font-normal normal-case text-disable"
           />
         ))}
       </TabsStyles>
-      {tabs.map((tab) => {
+      {tabs.map((tab, index) => {
         if (tab.key === tabIndex) {
-          return <>{tab.children}</>
+          return <div key={index}>{tab.children}</div>
         }
       })}
     </>
