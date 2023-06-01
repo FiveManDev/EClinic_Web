@@ -24,6 +24,7 @@ import "../assets/styles/app.scss"
 import { NextPageWithLayout } from "./page"
 import "overlayscrollbars/overlayscrollbars.css"
 import "react-quill/dist/quill.snow.css"
+import { ReactQueryDevtools } from '@tanstack/react-query-devtools'
 
 interface AppPropsWithLayout extends AppProps {
   Component: NextPageWithLayout
@@ -59,6 +60,7 @@ export default function App({ Component, pageProps }: AppPropsWithLayout) {
   return (
     <>
       <QueryClientProvider client={queryClient}>
+        <ReactQueryDevtools initialIsOpen={false} />
         <Hydrate state={pageProps.dehydratedState}>
           <Provider store={store}>
             <GoogleOAuthProvider
