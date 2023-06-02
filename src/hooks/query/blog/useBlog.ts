@@ -38,6 +38,13 @@ export const useSearchPostsBlog = (
     queryFn: () => blogService.searchPosts(keyword, pageNumber, pageSize, tags)
   })
 }
+export const useGetAllBlog = (pageNumber: number, pageSize: number) => {
+  const queryKey = [QUERY_KEYS.BLOG.POST, pageNumber, pageSize]
+  return useQuery({
+    queryKey,
+    queryFn: () => blogService.getAllBlog(pageNumber, pageSize)
+  })
+}
 export const useGetBlogPostbyIdQuery = (id: string) => {
   const queryKey = [QUERY_KEYS.FORUM.POST, id]
   return useQuery({

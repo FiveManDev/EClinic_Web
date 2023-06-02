@@ -1,6 +1,9 @@
 import SupporterLayout from "layout/Management/SupporterLayout"
-import QuestionRequest from "module/Supporter/Quesiton/QuestionRequest"
+import dynamic from "next/dynamic"
 import { NextPageWithLayout } from "pages/page"
+const QuestionRequest = dynamic(
+  () => import("module/Supporter/Quesiton/QuestionRequest")
+)
 
 const Page: NextPageWithLayout = () => {
   return <QuestionRequest />

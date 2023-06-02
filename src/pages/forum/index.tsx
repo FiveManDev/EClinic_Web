@@ -1,10 +1,9 @@
 import UserLayout from "layout/User/UserLayout"
-import ForumPage from "module/User/Forum/ForumPage"
+import dynamic from "next/dynamic"
 import { NextPageWithLayout } from "pages/page"
-import React from "react"
-
+const ForumPageServer = dynamic(() => import("module/User/Forum/ForumPage"))
 const Forum: NextPageWithLayout = () => {
-  return <ForumPage />
+  return <ForumPageServer />
 }
 
 Forum.getLayout = (page) => {

@@ -1,15 +1,13 @@
 import { dehydrate, QueryClient } from "@tanstack/react-query"
 import UserLayout from "layout/User/UserLayout"
-import DetailPage from "module/User/Forum/DetailPage"
 import { GetStaticPaths, GetStaticProps } from "next"
+import dynamic from "next/dynamic"
 import { NextPageWithLayout } from "pages/page"
 import { forumService } from "services/forum.service"
 import { QUERY_KEYS } from "shared/constant/constant"
-
-// type PageProps = InferGetStaticPropsType<typeof getStaticProps>
-
+const DetailPageServer = dynamic(() => import("module/User/Forum/DetailPage"))
 const Detail: NextPageWithLayout = () => {
-  return <DetailPage />
+  return <DetailPageServer />
 }
 
 Detail.getLayout = (page) => {

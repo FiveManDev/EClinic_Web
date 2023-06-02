@@ -1,6 +1,7 @@
 import { Box } from "@mui/material"
 import SwitchCustom from "components/Common/IOSSwitch"
 import ImageCustom from "components/Common/ImageCustom"
+import TableCustom from "components/Common/Table/TableCustom"
 import { CustomInput } from "components/User/Input"
 import { useGetPatientProfilesQuery } from "hooks/query/profile/useProfile"
 import useDebounce from "hooks/useDebounce"
@@ -73,13 +74,6 @@ const ListPatient = () => {
           return <p className="line-clamp-2">{row.original.address}</p>
         }
       },
-      // {
-      //   accessorKey: "address",
-      //   header: "Status",
-      //   Cell: () => {
-      //     return <Tag color="#4FD8DE">Active</Tag>
-      //   }
-      // },
       {
         accessorKey: "email",
         header: "Email",
@@ -112,24 +106,15 @@ const ListPatient = () => {
     []
   )
   return (
-    <MaterialReactTable
-      columns={columns}
-      enableRowActions
-      manualPagination
-      enableStickyHeader
-      enableTopToolbar
-      enableGlobalFilter={false}
-      muiTableContainerProps={{ sx: { maxHeight: "600px" } }}
+    <TableCustom
+      pagination={pagination}
       onPaginationChange={setPagination}
+      columns={columns}
       data={data?.data?.data ?? []}
       rowCount={getDataPaginate(data).PageSize ?? 0}
-      state={{
-        isLoading,
-        pagination,
-        showAlertBanner: isError,
-        showProgressBars: isRefetching
-      }}
-      positionActionsColumn="last"
+      isLoading={isLoading}
+      isError={isError}
+      isRefetching={isRefetching}
       renderRowActions={({ row }) => (
         <Box sx={{ display: "flex", gap: "1rem" }}>
           <SwitchCustom />

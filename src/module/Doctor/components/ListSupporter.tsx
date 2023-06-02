@@ -1,5 +1,6 @@
 import { Box, IconButton, Tooltip } from "@mui/material"
 import ImageCustom from "components/Common/ImageCustom"
+import TableCustom from "components/Common/Table/TableCustom"
 import { CustomInput } from "components/User/Input"
 import { useGetSupportersQuery } from "hooks/query/profile/useProfile"
 import useDebounce from "hooks/useDebounce"
@@ -124,24 +125,15 @@ const ListSupporter = () => {
     []
   )
   return (
-    <MaterialReactTable
-      columns={columns}
-      enableRowActions
-      manualPagination
-      enableStickyHeader
-      enableTopToolbar
-      enableGlobalFilter={false}
-      muiTableContainerProps={{ sx: { maxHeight: "600px" } }}
+    <TableCustom
+      pagination={pagination}
       onPaginationChange={setPagination}
+      columns={columns}
       data={data?.data?.data ?? []}
       rowCount={getDataPaginate(data).PageSize ?? 0}
-      state={{
-        isLoading,
-        pagination,
-        showAlertBanner: isError,
-        showProgressBars: isRefetching
-      }}
-      positionActionsColumn="last"
+      isLoading={isLoading}
+      isError={isError}
+      isRefetching={isRefetching}
       renderRowActions={({ row }) => (
         <Box sx={{ display: "flex", gap: "1rem" }}>
           <Tooltip arrow placement="left" title="Edit">

@@ -29,6 +29,22 @@ class BlogService {
       console.log("BlogService ~ error:", error)
     }
   }
+  async getAllBlog(pageNumber: number, pageSize: number) {
+    try {
+      const res: AxiosResponse = await axiosClient.get(
+        `${URL_API.BLOG_POST}/GetAllBlog`,
+        {
+          headers: {
+            PageNumber: pageNumber,
+            PageSize: pageSize
+          }
+        }
+      )
+      return res as AxiosResponse<IServerResponse<IBlog[]>>
+    } catch (error) {
+      console.log("BlogService ~ error:", error)
+    }
+  }
   async getPostById(id: string) {
     const res: AxiosResponse = await axiosClient.get(
       `${URL_API.BLOG_POST}/GetBlogByID?BlogID=${id}`

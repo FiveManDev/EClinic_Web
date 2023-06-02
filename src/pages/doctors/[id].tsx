@@ -1,7 +1,7 @@
 import UserLayout from "layout/User/UserLayout"
-import DoctorDetailPage from "module/User/Doctor/DoctorDetailPage"
-import DoctorPage from "module/User/Doctor/DoctorPage"
+import dynamic from "next/dynamic"
 import { NextPageWithLayout } from "pages/page"
+const DoctorDetailPage = dynamic(() => import("module/User/Doctor/DoctorPage"))
 
 const Doctors: NextPageWithLayout = () => {
   return <DoctorDetailPage />

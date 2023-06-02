@@ -1,6 +1,7 @@
 import AdminLayout from "layout/Management/AdminLayout"
-import Doctor from "module/Admin/Account/Doctor"
+import dynamic from "next/dynamic"
 import { NextPageWithLayout } from "pages/page"
+const Doctor = dynamic(() => import("module/Admin/Account/Doctor"))
 
 const Page: NextPageWithLayout = () => {
   return <Doctor />

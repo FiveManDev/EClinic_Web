@@ -10,11 +10,12 @@ import {
   Select,
   SelectChangeEvent
 } from "@mui/material"
+import { useQueryClient } from "@tanstack/react-query"
 import SwitchCustom from "components/Common/IOSSwitch"
+import Spinner from "components/Common/Loading/LoadingIcon"
 import { UpdateCover } from "components/Common/UpLoadImage"
 import CustomButton from "components/User/Button"
 import { CustomInput } from "components/User/Input"
-import { error } from "console"
 import {
   CreatePostBlog,
   useCreateBlogPostMutation,
@@ -24,11 +25,13 @@ import dynamic from "next/dynamic"
 import { useEffect } from "react"
 import { FieldValues, useForm } from "react-hook-form"
 import { toast } from "react-hot-toast"
+import { QUERY_KEYS } from "shared/constant/constant"
 import { HashTag } from "types/Base.type"
 import { IBlog } from "types/Blog"
 import * as yup from "yup"
 const Editor = dynamic(() => import("components/Common/Editor/Editor"), {
-  ssr: false
+  ssr: false,
+  loading: () => <Spinner />
 })
 const ITEM_HEIGHT = 48
 const ITEM_PADDING_TOP = 8
@@ -57,6 +60,8 @@ interface Props {
   mode?: "update" | "create"
 }
 const CreateBlog = ({ labelForm, post, mode = "create" }: Props) => {
+  const queryClient = useQueryClient()
+
   // const confirm = useConfirm()
   const hashTags = useGetAllHashTag()
   const createPost = useCreateBlogPostMutation()
@@ -119,6 +124,7 @@ const CreateBlog = ({ labelForm, post, mode = "create" }: Props) => {
             if (data?.isSuccess) {
               toast.success("Create a post successfuly")
               resetForm()
+              queryClient.invalidateQueries([QUERY_KEYS.BLOG.POST])
             } else {
               toast.error("Add error")
             }
@@ -190,7 +196,8 @@ const CreateBlog = ({ labelForm, post, mode = "create" }: Props) => {
               error={!!errors.title}
               helperText={errors.title?.message?.toString()}
             />
-            <div className="flex flex-col">
+            <div className="flex flex-col gap-y-2">
+              <span className="text-gray-500">Cover</span>
               <UpdateCover
                 onFileChange={onFileChange}
                 imageUrl={watchCoverImage || null}
@@ -220,13 +227,13 @@ const CreateBlog = ({ labelForm, post, mode = "create" }: Props) => {
             />
           </div>
           <FormControl>
-            <InputLabel>Chip</InputLabel>
+            <InputLabel>Hashtags</InputLabel>
             <Select
               multiple
               value={hashTagSelected?.map((item) => item.hashtagID) || []}
               onChange={handleChange}
               error={!!errors.hashtags}
-              input={<OutlinedInput label="Tags" />}
+              input={<OutlinedInput label="Hashtags" />}
               renderValue={(selected) => (
                 <Box sx={{ display: "flex", flexWrap: "wrap", gap: 0.5 }}>
                   {selected.map((value) => (

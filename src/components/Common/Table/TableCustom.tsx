@@ -1,53 +1,42 @@
+import { TableContainerProps } from "@mui/material"
 import MaterialReactTable, {
   MRT_ColumnDef,
-  MRT_PaginationState
+  MRT_PaginationState,
+  MaterialReactTableProps
 } from "material-react-table"
-import React, { useMemo, useState } from "react"
 
-interface ReusableTableProps<T extends Record<string, any>> {
+interface ReusableTableProps<T extends Record<string, any>>
+  extends MaterialReactTableProps<T> {
   columns: MRT_ColumnDef<T>[]
   data: T[]
+  muiTableContainerProps?: TableContainerProps
+  pagination: MRT_PaginationState
   rowCount: number
   isLoading: boolean
   isError: boolean
   isRefetching: boolean
-  // eslint-disable-next-line no-unused-vars
-  onPaginationChange: (pagination: MRT_PaginationState) => void
-  // eslint-disable-next-line no-unused-vars
-  renderRowActions: (props: { row: any }) => React.ReactNode
-  renderTopToolbarCustomActions: () => React.ReactNode
 }
-
 const TableCustom = <T extends Record<string, any>>({
   columns,
   data,
+  pagination,
   rowCount,
   isLoading,
   isError,
   isRefetching,
-  onPaginationChange,
-  renderRowActions,
-  renderTopToolbarCustomActions
+  muiTableContainerProps = { sx: { maxHeight: "600px" } },
+  ...props
 }: ReusableTableProps<T>) => {
-  const [pagination, setPagination] = useState<MRT_PaginationState>({
-    pageIndex: 1,
-    pageSize: 10
-  })
-
-  useMemo(() => {
-    onPaginationChange(pagination)
-  }, [pagination, onPaginationChange])
-
   return (
     <MaterialReactTable
+      {...props}
       columns={columns}
       enableRowActions
       manualPagination
       enableStickyHeader
       enableTopToolbar
       enableGlobalFilter={false}
-      muiTableContainerProps={{ sx: { maxHeight: "500px" } }}
-      onPaginationChange={setPagination}
+      muiTableContainerProps={muiTableContainerProps}
       data={data}
       rowCount={rowCount}
       state={{
@@ -57,8 +46,6 @@ const TableCustom = <T extends Record<string, any>>({
         showProgressBars: isRefetching
       }}
       positionActionsColumn="last"
-      renderRowActions={renderRowActions}
-      renderTopToolbarCustomActions={renderTopToolbarCustomActions}
     />
   )
 }

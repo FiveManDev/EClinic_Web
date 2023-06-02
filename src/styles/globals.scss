@@ -10,7 +10,7 @@
   body {
     text-rendering: optimizeLegibility;
     -webkit-font-smoothing: antialiased;
-    @apply leading-tight bg-background;
+    @apply leading-normal bg-background;
   }
   a {
     @apply text-inherit;
@@ -41,7 +41,7 @@
   }
   .entry-content,
   .ql-snow .ql-editor {
-    @apply font-primary text-base;
+    @apply font-primary text-base leading-normal;
     strong {
       font-weight: bold;
     }
@@ -193,11 +193,8 @@
   }
 }
 .MuiPaper-root.MuiPaper-elevation.MuiPaper-rounded {
-  border-radius: 12px;
-  box-shadow: rgba(0, 0, 0, 0.1) 0px 4px 12px;
-  padding: 0 12px;
+  @apply rounded-xl shadow-md px-3 py-1 bg-white;
   .MuiButtonBase-root.MuiMenuItem-root {
-    margin-top: 4px;
-    border-radius: 6px;
+    @apply mt-1 rounded-md;
   }
 }

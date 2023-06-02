@@ -1,7 +1,10 @@
 import DoctorLayout from "layout/Management/DoctorLayout"
-import DoctorHomePage from "module/Doctor/Home/DoctorHomePage"
+import dynamic from "next/dynamic"
 import { NextPageWithLayout } from "pages/page"
 import React from "react"
+const DoctorHomePage = dynamic(
+  () => import("module/Doctor/Home/DoctorHomePage")
+)
 
 const Page: NextPageWithLayout = () => {
   return <DoctorHomePage />
