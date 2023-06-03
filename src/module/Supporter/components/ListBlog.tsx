@@ -3,7 +3,8 @@ import ImageCustom from "components/Common/ImageCustom"
 import TableCustom from "components/Common/Table/TableCustom"
 import Tag from "components/Common/Tag"
 import { CustomInput } from "components/User/Input"
-import { useGetAllBlog } from "hooks/query/blog/useBlog"
+import { useSearchPostsBlogAd } from "hooks/query/blog/useBlog"
+import useDebounce from "hooks/useDebounce"
 import { MRT_ColumnDef, MRT_PaginationState } from "material-react-table"
 import { useRouter } from "next/router"
 import { useMemo, useState } from "react"
@@ -14,13 +15,17 @@ import { IBlog } from "types/Blog"
 
 const ListBlog = () => {
   const router = useRouter()
+  const [searchData, setSearchData] = useState("")
+  const searchTextDebounce = useDebounce(searchData, 1500)
   const [pagination, setPagination] = useState<MRT_PaginationState>({
     pageIndex: 1,
     pageSize: 10
   })
-  const { data, isLoading, isError, isRefetching } = useGetAllBlog(
-    pagination.pageIndex,
-    pagination.pageSize
+  const { data, isLoading, isError, isRefetching } = useSearchPostsBlogAd(
+    searchTextDebounce,
+    pagination.pageIndex + 1,
+    pagination.pageSize,
+    []
   )
   const columns = useMemo<MRT_ColumnDef<IBlog>[]>(
     () => [
@@ -40,7 +45,7 @@ const ListBlog = () => {
         Cell: ({ row }) => {
           return (
             <div className="flex items-center space-x-2">
-              <div className="relative w-16 h-12 flex-shrink-0">
+              <div className="relative flex-shrink-0 w-16 h-12">
                 <ImageCustom
                   src={row.original.coverImage}
                   fill
@@ -52,7 +57,7 @@ const ListBlog = () => {
                 <h4 className="text-base font-medium text-h1 line-clamp-1">
                   {row.original.title}
                 </h4>
-                <time className="text-disable text-xs">
+                <time className="text-xs text-disable">
                   {dayformat(row.original.updatedAt)}
                 </time>
               </div>
@@ -110,7 +115,7 @@ const ListBlog = () => {
     ],
     []
   )
-
+  const pagaginationData = getDataPaginate(data)
   return (
     <>
       <TableCustom
@@ -118,7 +123,8 @@ const ListBlog = () => {
         onPaginationChange={setPagination}
         columns={columns}
         data={data?.data?.data ?? []}
-        rowCount={getDataPaginate(data).PageSize ?? 0}
+        rowCount={pagaginationData.TotalCount ?? 0}
+        pageCount={pagaginationData.TotalPages ?? 0}
         isLoading={isLoading}
         isError={isError}
         isRefetching={isRefetching}
@@ -126,9 +132,7 @@ const ListBlog = () => {
           <Box sx={{ display: "flex", gap: "1rem" }}>
             <Tooltip arrow placement="left" title="Edit">
               <IconButton
-                onClick={() =>
-                  router.push(`/admin/accounts/expert/edit/${row.original.id}`)
-                }
+                onClick={() => router.push(`/sup/blog/edit/${row.original.id}`)}
               >
                 <HiOutlinePencilSquare />
               </IconButton>
@@ -139,7 +143,7 @@ const ListBlog = () => {
           <CustomInput
             placeholder="Search data here"
             className="max-w-[300px] w-full"
-            onChange={(e) => {}}
+            onChange={(e) => setSearchData(e.target.value)}
           />
         )}
       />

@@ -21,11 +21,11 @@ const ListSupporter = () => {
     pageSize: 10
   })
   const [searchData, setSearchData] = useState("")
-  const searchTextDebounce = useDebounce(searchData, 1000)
+  const searchTextDebounce = useDebounce(searchData, 1500)
 
   const { data, isLoading, isError, isRefetching } = useGetSupportersQuery({
     searchText: searchTextDebounce,
-    pageNumber: pagination.pageIndex,
+    pageNumber: pagination.pageIndex + 1,
     pageSize: pagination.pageSize
   })
 
@@ -124,13 +124,16 @@ const ListSupporter = () => {
     ],
     []
   )
+  const pagaginationData = getDataPaginate(data)
+
   return (
     <TableCustom
       pagination={pagination}
       onPaginationChange={setPagination}
       columns={columns}
       data={data?.data?.data ?? []}
-      rowCount={getDataPaginate(data).PageSize ?? 0}
+      rowCount={pagaginationData.TotalCount ?? 0}
+      pageCount={pagaginationData.TotalPages ?? 0}
       isLoading={isLoading}
       isError={isError}
       isRefetching={isRefetching}

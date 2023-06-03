@@ -14,11 +14,11 @@ export type CreatePostBlog = Omit<
 > & {
   hashtagId: string[]
 }
-
-export interface CreateAnwserPost {
-  postId: string
-  content: string
-  tags: string[]
+export type UpdatePostBlog = Omit<
+  IBlog,
+  "createdAt" | "updatedAt" | "author" | "hashtags"
+> & {
+  hashtagId: string[]
 }
 export const useSearchPostsBlog = (
   keyword: string,
@@ -38,6 +38,25 @@ export const useSearchPostsBlog = (
     queryFn: () => blogService.searchPosts(keyword, pageNumber, pageSize, tags)
   })
 }
+export const useSearchPostsBlogAd = (
+  keyword: string,
+  pageNumber: number,
+  pageSize: number,
+  tags: string[]
+) => {
+  const queryKey = [
+    QUERY_KEYS.BLOG.POST,
+    keyword ? keyword : " ",
+    (tags = []),
+    pageNumber,
+    pageSize
+  ]
+  return useQuery({
+    queryKey,
+    queryFn: () =>
+      blogService.searchBlogForAd(keyword, pageNumber, pageSize, tags)
+  })
+}
 export const useGetAllBlog = (pageNumber: number, pageSize: number) => {
   const queryKey = [QUERY_KEYS.BLOG.POST, pageNumber, pageSize]
   return useQuery({
@@ -52,9 +71,20 @@ export const useGetBlogPostbyIdQuery = (id: string) => {
     queryFn: () => blogService.getPostById(id)
   })
 }
+export const useGetBlogPostbyForAdIdQuery = (id: string) => {
+  const queryKey = [QUERY_KEYS.FORUM.POST, id]
+  return useQuery({
+    queryKey,
+    queryFn: () => blogService.getPostByIdForAd(id)
+  })
+}
 export const useCreateBlogPostMutation = () =>
   useMutation({
     mutationFn: (body: CreatePostBlog) => blogService.createPost(body)
+  })
+export const useUpdateBlogPostMutation = () =>
+  useMutation({
+    mutationFn: (body: UpdatePostBlog) => blogService.updatePost(body)
   })
 export const useGetAllHashTag = () => {
   const queryKey = [QUERY_KEYS.BLOG.HASHTASH]

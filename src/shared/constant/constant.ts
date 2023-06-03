@@ -35,6 +35,12 @@ export const URL_API = {
   FORUM_POST_ANWERS: "forum/Answer",
   FORUM_POST_HASHTAG: "forum/Hashtag"
 } as const
+export const DEFAULT_ROUTER = {
+  USER: "/user",
+  ADMIN: "/admin",
+  DOCTOR: "/doctor",
+  SUPPORTER: "/sup"
+}
 export const LANGUAGE = {
   VIETNAM: "Vi",
   ENGLISH: "En"

@@ -16,10 +16,13 @@ import Spinner from "components/Common/Loading/LoadingIcon"
 import { UpdateCover } from "components/Common/UpLoadImage"
 import CustomButton from "components/User/Button"
 import { CustomInput } from "components/User/Input"
+import useConfirm from "context/ComfirmContext"
 import {
   CreatePostBlog,
+  UpdatePostBlog,
   useCreateBlogPostMutation,
-  useGetAllHashTag
+  useGetAllHashTag,
+  useUpdateBlogPostMutation
 } from "hooks/query/blog/useBlog"
 import dynamic from "next/dynamic"
 import { useEffect } from "react"
@@ -62,10 +65,10 @@ interface Props {
 const CreateBlog = ({ labelForm, post, mode = "create" }: Props) => {
   const queryClient = useQueryClient()
 
-  // const confirm = useConfirm()
+  const confirm = useConfirm()
   const hashTags = useGetAllHashTag()
   const createPost = useCreateBlogPostMutation()
-  // const updateProfileDoctorMutation = useUpdateProfileDoctorMutation()
+  const updatePost = useUpdateBlogPostMutation()
   const {
     handleSubmit,
     control,
@@ -86,33 +89,38 @@ const CreateBlog = ({ labelForm, post, mode = "create" }: Props) => {
     setValue("coverImage", file)
   }
   const onSubmit = async (value: FieldValues) => {
-    const newHashTags = value.hashtags.map((item: HashTag) => item.hashtagID)
+    const newHashTags =
+      value.hashtags.length > 0
+        ? value.hashtags.map((item: HashTag) => item.hashtagID)
+        : []
     if (mode === "update") {
-      // if (confirm) {
-      //   const choice = await confirm({
-      //     title: "Update account",
-      //     content: "Are you sure you want to update this profile?"
-      //   })
-      //   if (choice) {
-      //     updateProfileDoctorMutation.mutate(
-      //       {
-      //         ...value
-      //       } as UpdateDoctorProfile,
-      //       {
-      //         onSuccess: (data) => {
-      //           if (data.isSuccess) {
-      //             toast.success("Update successfuly")
-      //           } else {
-      //             toast.error("Update error")
-      //           }
-      //         },
-      //         onError: () => {
-      //           toast.error("Update error")
-      //         }
-      //       }
-      //     )
-      //   }
-      // }
+      if (confirm) {
+        const choice = await confirm({
+          title: "Update blog",
+          content: "Are you sure you want to update this blog?"
+        })
+        if (choice) {
+          updatePost.mutate(
+            {
+              ...value,
+              hashtagId: newHashTags
+            } as UpdatePostBlog,
+            {
+              onSuccess: (data) => {
+                if (data?.isSuccess) {
+                  toast.success("Update successfuly")
+                  queryClient.invalidateQueries([QUERY_KEYS.BLOG.POST])
+                } else {
+                  toast.error("Update error")
+                }
+              },
+              onError: () => {
+                toast.error("Update error")
+              }
+            }
+          )
+        }
+      }
     } else {
       createPost.mutate(
         {

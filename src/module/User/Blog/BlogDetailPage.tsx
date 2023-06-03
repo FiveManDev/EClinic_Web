@@ -69,7 +69,9 @@ const BlogDetailPage = () => {
   return (
     <>
       <Head>
-        <title>Blog</title>
+        <title>{data.data.metaTitle}</title>
+        <meta name="description" content={data.data.metaDescription}></meta>
+        <meta name="keywords" content={data.data.metaKeywords}></meta>
       </Head>
       <UserSecondaryLayout breadrums={breadrums}>
         <div className="flex-1 p-0">
@@ -132,7 +134,7 @@ const BlogDetailPage = () => {
                 </SpeedDial>
               </div>
             </div>
-            <div className="max-w-3xl mx-auto my-8 md:my-16">
+            <div className="w-full my-8 mx-9 md:my-16">
               <div
                 className="entry-content"
                 // Prevent XSS Attack recommen from React Docs
