@@ -54,47 +54,31 @@ export async function middleware(req: NextRequest) {
       ])
     }
   }
+  const checkRouter = unprotectedPaths.some((path) => {
+    if (pathname === "/") {
+      return true
+    } else {
+      return pathname.substring(1).startsWith(path)
+    }
+  })
   if (accessToken) {
     try {
       const payload = jwt_decode(accessToken) as ITokenDecode
       const role = payload.role
+      if (checkRouter && role !== "User") {
+        req.nextUrl.pathname = pathDefaultByRole(role)
+        return NextResponse.redirect(req.nextUrl)
+      }
       switch (true) {
-        case pathname.includes(DEFAULT_ROUTER.USER) && role === ROLE.USER:
-        case pathname.includes(DEFAULT_ROUTER.DOCTOR) && role === ROLE.DOCTOR:
-        case pathname.includes(DEFAULT_ROUTER.SUPPORTER) &&
-          role === ROLE.SUPPORTER:
+        case pathname.includes("/user") && Object.values(ROLE).includes(role):
+        case pathname.includes("/doctor") && role === ROLE.DOCTOR:
+        case pathname.includes("/sup") && role === ROLE.SUPPORTER:
         case role === ROLE.ADMIN:
           return NextResponse.next()
-
-        case pathname.includes(DEFAULT_ROUTER.USER) && role !== ROLE.USER:
-        case pathname.includes(DEFAULT_ROUTER.DOCTOR) && role !== ROLE.DOCTOR:
-        case pathname.includes(DEFAULT_ROUTER.ADMIN) && role !== ROLE.ADMIN:
-        case pathname.includes(DEFAULT_ROUTER.SUPPORTER) &&
-          role !== ROLE.SUPPORTER:
-          req.nextUrl.pathname = pathDefaultByRole(role)
-          return NextResponse.redirect(req.nextUrl)
         case pathname.includes("/sign-in") || pathname.includes("/sign-up"):
           req.nextUrl.pathname = "/"
           return NextResponse.redirect(req.nextUrl)
         default:
-          if (
-            unprotectedPaths.some((unppath) => {
-              if (
-                unppath.startsWith("/") &&
-                pathname.includes(unppath.substring(1))
-              ) {
-                return true
-              }
-              return false
-            })
-          ) {
-            if (role === ROLE.USER) {
-              return NextResponse.next()
-            } else {
-              req.nextUrl.pathname = pathDefaultByRole(role)
-              return NextResponse.redirect(req.nextUrl)
-            }
-          }
           break
       }
     } catch (e) {
@@ -103,13 +87,6 @@ export async function middleware(req: NextRequest) {
     }
   }
 
-  const checkRouter = unprotectedPaths.some((path) => {
-    if (pathname === "/") {
-      return true
-    } else {
-      return pathname.substring(1).startsWith(path)
-    }
-  })
   if (checkRouter) {
     return NextResponse.next()
   } else {
