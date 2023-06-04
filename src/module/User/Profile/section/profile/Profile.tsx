@@ -27,7 +27,7 @@ const Profile = () => {
   >(undefined)
   const [pageIndex, _] = useState(1)
   const [searchText, setSearchText] = useState("")
-  const searchTextDebounce = useDebounce(searchText, 1000)
+  const searchTextDebounce = useDebounce(searchText, 1500)
   const auth = useSelector((state: RootState) => state.auth)
   const [mode, setMode] = useState<Action>("view")
 

@@ -1,12 +1,10 @@
 import { Box, IconButton, Tooltip } from "@mui/material"
 import ImageCustom from "components/Common/ImageCustom"
+import TableCustom from "components/Common/Table/TableCustom"
 import { CustomInput } from "components/User/Input"
 import { useGetDoctorProfilesQuery } from "hooks/query/profile/useProfile"
 import useDebounce from "hooks/useDebounce"
-import MaterialReactTable, {
-  MRT_ColumnDef,
-  MRT_PaginationState
-} from "material-react-table"
+import { MRT_ColumnDef, MRT_PaginationState } from "material-react-table"
 import { useRouter } from "next/router"
 
 import { useMemo, useState } from "react"
@@ -20,11 +18,11 @@ const ListDoctor = () => {
     pageSize: 10
   })
   const [searchData, setSearchData] = useState("")
-  const searchTextDebounce = useDebounce(searchData, 1000)
+  const searchTextDebounce = useDebounce(searchData, 1500)
 
   const { data, isLoading, isError, isRefetching } = useGetDoctorProfilesQuery({
     searchText: searchTextDebounce,
-    pageNumber: pagination.pageIndex,
+    pageNumber: pagination.pageIndex + 1,
     pageSize: pagination.pageSize
   })
 
@@ -131,25 +129,19 @@ const ListDoctor = () => {
     ],
     []
   )
+  const paginationData = getDataPaginate(data)
+
   return (
-    <MaterialReactTable
-      columns={columns}
-      enableRowActions
-      manualPagination
-      enableStickyHeader
-      enableTopToolbar
-      enableGlobalFilter={false}
-      muiTableContainerProps={{ sx: { maxHeight: "600px" } }}
+    <TableCustom
+      pagination={pagination}
       onPaginationChange={setPagination}
+      columns={columns}
       data={data?.data?.data ?? []}
-      rowCount={getDataPaginate(data).PageSize ?? 0}
-      state={{
-        isLoading,
-        pagination,
-        showAlertBanner: isError,
-        showProgressBars: isRefetching
-      }}
-      positionActionsColumn="last"
+      rowCount={paginationData.TotalCount ?? 0}
+      pageCount={paginationData.TotalPages ?? 0}
+      isLoading={isLoading}
+      isError={isError}
+      isRefetching={isRefetching}
       renderRowActions={({ row }) => (
         <Box sx={{ display: "flex", gap: "1rem" }}>
           <Tooltip arrow placement="left" title="Edit">
@@ -173,6 +165,26 @@ const ListDoctor = () => {
         />
       )}
     />
+    // <MaterialReactTable
+    //   columns={columns}
+    //   enableRowActions
+    //   manualPagination
+    //   enableStickyHeader
+    //   enableTopToolbar
+    //   enableGlobalFilter={false}
+    //   muiTableContainerProps={{ sx: { maxHeight: "600px" } }}
+    //   onPaginationChange={setPagination}
+    //   data={data?.data?.data ?? []}
+    //   rowCount={getDataPaginate(data).PageSize ?? 0}
+    //   state={{
+    //     isLoading,
+    //     pagination,
+    //     showAlertBanner: isError,
+    //     showProgressBars: isRefetching
+    //   }}
+    //   positionActionsColumn="last"
+
+    // />
   )
 }
 

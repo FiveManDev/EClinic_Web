@@ -1,4 +1,4 @@
-import { Container, Grid, Stack, Typography } from "@mui/material"
+import { Grid, Stack, Typography } from "@mui/material"
 import InputCustom from "components/Common/Input"
 import PaginationCustom from "components/Common/Pagination"
 import { useSearchPostsBlog } from "hooks/query/blog/useBlog"
@@ -28,7 +28,7 @@ export default function BlogPage() {
     searchText: "",
     tags: [] as IHashtag[]
   })
-  const searchTextDebounce = useDebounce(searchData.searchText, 1000)
+  const searchTextDebounce = useDebounce(searchData.searchText, 1500)
 
   const { t } = useTranslation(["base", "forum"])
   const breadrums: IBreadcrum[] = [

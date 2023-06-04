@@ -1,11 +1,11 @@
 import UserLayout from "layout/User/UserLayout"
-import ServicesDetailPage from "module/User/Services/ServicesDetailPage"
-import { useRouter } from "next/router"
+import dynamic from "next/dynamic"
 import { NextPageWithLayout } from "pages/page"
+const ServicesDetailPage = dynamic(
+  () => import("module/User/Services/ServicesDetailPage")
+)
 
 const ServicesDetail: NextPageWithLayout = () => {
-  const router = useRouter()
-  console.log(router.query)
   return <ServicesDetailPage />
 }
 ServicesDetail.getLayout = (page) => {

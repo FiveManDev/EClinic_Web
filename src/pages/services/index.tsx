@@ -1,7 +1,7 @@
 import UserLayout from "layout/User/UserLayout"
-import ServicesPage from "module/User/Services/ServicesPage"
+import dynamic from "next/dynamic"
 import { NextPageWithLayout } from "pages/page"
-
+const ServicesPage = dynamic(() => import("module/User/Services/ServicesPage"))
 const Services: NextPageWithLayout = () => {
   return <ServicesPage />
 }

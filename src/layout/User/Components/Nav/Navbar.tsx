@@ -17,10 +17,6 @@ const MENU = [
   {
     title: "Hồ sơ ",
     href: "/user/profile"
-  },
-  {
-    title: "Câu hỏi của bạn",
-    href: "/profile"
   }
 ]
 const Navbar = ({ show = false, onClose }: Props) => {
@@ -48,9 +44,7 @@ const Navbar = ({ show = false, onClose }: Props) => {
           <MenuItem href="/forum">{t("banner.menu.Portal")}</MenuItem>
           <MenuItem href="/services">{t("banner.menu.Services")}</MenuItem>
           <MenuItem href="/doctors">{t("banner.menu.Doctor")}</MenuItem>
-          <MenuItem href="/booking">{t("banner.menu.Booking")}</MenuItem>
           <MenuItem href="/blog">{t("banner.menu.Blog")}</MenuItem>
-          <MenuItem href="/contact">{t("banner.menu.Contact")}</MenuItem>
         </ul>
       </div>
       <div className="flex flex-col items-center justify-start w-full h-auto space-x-0 space-y-3 md:space-x-4 md:justify-start md:space-y-0 md:h-full md:flex-row md:w-auto">

@@ -58,7 +58,7 @@ export default function BlogPostCard({ post, index }: IProps) {
       sm={latestPostLarge ? 12 : 6}
       md={latestPostLarge ? 6 : 3}
     >
-      <Card sx={{ position: "relative" }} className="shadow rounded-xl">
+      <Card className="shadow rounded-xl !p-0 relative">
         <StyledCardMedia
           sx={{
             ...((latestPostLarge || latestPost) && {

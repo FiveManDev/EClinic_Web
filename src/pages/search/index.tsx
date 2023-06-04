@@ -1,7 +1,8 @@
 import UserLayout from "layout/User/UserLayout"
-import SearchPage from "module/User/Search/SearchPage"
+import dynamic from "next/dynamic"
 import { NextPageWithLayout } from "pages/page"
 import React from "react"
+const SearchPage = dynamic(() => import("module/User/Search/SearchPage"))
 
 const Search: NextPageWithLayout = () => {
   return <SearchPage />

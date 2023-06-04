@@ -3,7 +3,7 @@ import jwt_decode from "jwt-decode"
 import type { NextRequest } from "next/server"
 import { NextResponse } from "next/server"
 import { authService } from "services/auth.service"
-import { ROLE } from "shared/constant/constant"
+import { DEFAULT_ROUTER, ROLE } from "shared/constant/constant"
 import { ITokenDecode } from "types/Token"
 
 const unprotectedPaths: string[] = [
@@ -17,7 +17,14 @@ const unprotectedPaths: string[] = [
   "forum",
   "blog"
 ]
-
+const pathDefaultByRole = (role: string) =>
+  role === ROLE.USER
+    ? DEFAULT_ROUTER.USER
+    : role === ROLE.ADMIN
+    ? DEFAULT_ROUTER.ADMIN
+    : role === ROLE.DOCTOR
+    ? DEFAULT_ROUTER.DOCTOR
+    : DEFAULT_ROUTER.SUPPORTER
 // This function can be marked `async` if using `await` inside
 export async function middleware(req: NextRequest) {
   const { pathname } = req.nextUrl
@@ -47,10 +54,21 @@ export async function middleware(req: NextRequest) {
       ])
     }
   }
+  const checkRouter = unprotectedPaths.some((path) => {
+    if (pathname === "/") {
+      return true
+    } else {
+      return pathname.substring(1).startsWith(path)
+    }
+  })
   if (accessToken) {
     try {
       const payload = jwt_decode(accessToken) as ITokenDecode
       const role = payload.role
+      if (checkRouter && role !== "User") {
+        req.nextUrl.pathname = pathDefaultByRole(role)
+        return NextResponse.redirect(req.nextUrl)
+      }
       switch (true) {
         case pathname.includes("/user") && Object.values(ROLE).includes(role):
         case pathname.includes("/doctor") && role === ROLE.DOCTOR:
@@ -69,13 +87,6 @@ export async function middleware(req: NextRequest) {
     }
   }
 
-  const checkRouter = unprotectedPaths.some((path) => {
-    if (pathname === "/") {
-      return true
-    } else {
-      return pathname.substring(1).startsWith(path)
-    }
-  })
   if (checkRouter) {
     return NextResponse.next()
   } else {

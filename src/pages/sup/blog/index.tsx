@@ -1,6 +1,7 @@
 import SupporterLayout from "layout/Management/SupporterLayout"
-import ManageBlog from "module/Supporter/Blog/ManageBlog"
+import dynamic from "next/dynamic"
 import { NextPageWithLayout } from "pages/page"
+const ManageBlog = dynamic(() => import("module/Supporter/Blog/ManageBlog"))
 
 const Create: NextPageWithLayout = () => {
   return <ManageBlog />

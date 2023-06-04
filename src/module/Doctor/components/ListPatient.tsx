@@ -1,6 +1,7 @@
 import { Box } from "@mui/material"
 import SwitchCustom from "components/Common/IOSSwitch"
 import ImageCustom from "components/Common/ImageCustom"
+import TableCustom from "components/Common/Table/TableCustom"
 import { CustomInput } from "components/User/Input"
 import { useGetPatientProfilesQuery } from "hooks/query/profile/useProfile"
 import useDebounce from "hooks/useDebounce"
@@ -18,12 +19,12 @@ const ListPatient = () => {
     pageSize: 10
   })
   const [searchData, setSearchData] = useState("")
-  const searchTextDebounce = useDebounce(searchData, 1000)
+  const searchTextDebounce = useDebounce(searchData, 1500)
 
   const { data, isLoading, isError, isRefetching } = useGetPatientProfilesQuery(
     {
       searchText: searchTextDebounce,
-      pageNumber: pagination.pageIndex,
+      pageNumber: pagination.pageIndex + 1,
       pageSize: pagination.pageSize
     }
   )
@@ -73,13 +74,6 @@ const ListPatient = () => {
           return <p className="line-clamp-2">{row.original.address}</p>
         }
       },
-      // {
-      //   accessorKey: "address",
-      //   header: "Status",
-      //   Cell: () => {
-      //     return <Tag color="#4FD8DE">Active</Tag>
-      //   }
-      // },
       {
         accessorKey: "email",
         header: "Email",
@@ -111,25 +105,19 @@ const ListPatient = () => {
     ],
     []
   )
+  const paginationData = getDataPaginate(data)
+
   return (
-    <MaterialReactTable
-      columns={columns}
-      enableRowActions
-      manualPagination
-      enableStickyHeader
-      enableTopToolbar
-      enableGlobalFilter={false}
-      muiTableContainerProps={{ sx: { maxHeight: "600px" } }}
+    <TableCustom
+      pagination={pagination}
       onPaginationChange={setPagination}
+      columns={columns}
       data={data?.data?.data ?? []}
-      rowCount={getDataPaginate(data).PageSize ?? 0}
-      state={{
-        isLoading,
-        pagination,
-        showAlertBanner: isError,
-        showProgressBars: isRefetching
-      }}
-      positionActionsColumn="last"
+      rowCount={paginationData.TotalCount ?? 0}
+      pageCount={paginationData.TotalPages ?? 0}
+      isLoading={isLoading}
+      isError={isError}
+      isRefetching={isRefetching}
       renderRowActions={({ row }) => (
         <Box sx={{ display: "flex", gap: "1rem" }}>
           <SwitchCustom />

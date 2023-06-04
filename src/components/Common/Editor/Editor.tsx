@@ -115,7 +115,7 @@ const Editor = memo(
       quillObj.insertEmbed(range.index, "image", url)
     }
 
-    const onChangeVaule = (values: string) => {
+    const onChangeValue = (values: string) => {
       const val = values === "<p><br></p>" ? "" : values
       onChange(val)
     }
@@ -126,7 +126,7 @@ const Editor = memo(
         formats={Editor.formats}
         theme="snow"
         value={value}
-        onChange={onChangeVaule}
+        onChange={onChangeValue}
         ref={editorRef}
       />
     )

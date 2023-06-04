@@ -1,7 +1,7 @@
 import DoctorLayout from "layout/Management/DoctorLayout"
-import ChatPage from "module/Doctor/Chat/ChatPage"
+import dynamic from "next/dynamic"
 import { NextPageWithLayout } from "pages/page"
-
+const ChatPage = dynamic(() => import("module/Doctor/Chat/ChatPage"))
 const Page: NextPageWithLayout = () => {
   return <ChatPage />
 }

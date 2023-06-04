@@ -1,6 +1,9 @@
 import AdminLayout from "layout/Management/AdminLayout"
-import AdminAppoinmentPage from "module/Admin/Appointment/AdminAppoinmentPage"
+import dynamic from "next/dynamic"
 import { NextPageWithLayout } from "pages/page"
+const AdminAppoinmentPage = dynamic(
+  () => import("module/Admin/Appointment/AdminAppoinmentPage")
+)
 
 const Page: NextPageWithLayout = () => {
   return <AdminAppoinmentPage />

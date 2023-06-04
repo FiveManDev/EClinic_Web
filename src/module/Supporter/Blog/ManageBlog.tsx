@@ -3,6 +3,7 @@ import TabsCustom from "layout/Management/components/TabsCustom"
 import Head from "next/head"
 import React, { useMemo } from "react"
 import CreateBlog from "../components/CreateBlog"
+import ListBlog from "../components/ListBlog"
 
 const ManageBlog = () => {
   const tabs = useMemo(
@@ -10,14 +11,7 @@ const ManageBlog = () => {
       {
         key: 0,
         label: `Blog`,
-        children: (
-          <p>
-            Lorem ipsum dolor sit amet consectetur, adipisicing elit. Ratione
-            dolorem libero eaque asperiores similique! Quasi a consectetur hic
-            quidem aliquam cupiditate! Dolores corporis consectetur ut natus
-            quam impedit modi provident.
-          </p>
-        )
+        children: <ListBlog />
       },
       {
         key: 1,

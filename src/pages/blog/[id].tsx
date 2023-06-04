@@ -1,10 +1,11 @@
 import { QueryClient, dehydrate } from "@tanstack/react-query"
 import UserLayout from "layout/User/UserLayout"
-import BlogDetailPage from "module/User/Blog/BlogDetailPage"
 import { GetStaticPaths, GetStaticProps } from "next"
 import { blogService } from "services/blog.service"
 import { QUERY_KEYS } from "shared/constant/constant"
 import { NextPageWithLayout } from "../page"
+import dynamic from "next/dynamic"
+const BlogDetailPage = dynamic(() => import("module/User/Blog/BlogDetailPage"))
 const Page: NextPageWithLayout = () => {
   return <BlogDetailPage />
 }

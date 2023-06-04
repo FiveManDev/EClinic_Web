@@ -1,8 +1,7 @@
 import AdminLayout from "layout/Management/AdminLayout"
-import Doctor from "module/Admin/Account/Doctor"
-import Expert from "module/Admin/Account/Expert"
-import Supporter from "module/Admin/Account/Supporter"
+import dynamic from "next/dynamic"
 import { NextPageWithLayout } from "pages/page"
+const Expert = dynamic(() => import("module/Admin/Account/Expert"))
 
 const Page: NextPageWithLayout = () => {
   return <Expert />

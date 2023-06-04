@@ -1,6 +1,7 @@
 import AuthLayout from "layout/Auth/AuthLayout"
-import SignInPage from "module/Auth/SignIn/SignInPage"
+import dynamic from "next/dynamic"
 import { NextPageWithLayout } from "./page"
+const SignInPage = dynamic(() => import("module/Auth/SignIn/SignInPage"))
 
 const SignIn: NextPageWithLayout = () => {
   return <SignInPage />

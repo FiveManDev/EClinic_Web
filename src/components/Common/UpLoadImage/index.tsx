@@ -1,7 +1,12 @@
 import classNames from "classnames"
 import { useImageFile } from "hooks/useImageFile"
 import Image from "next/image"
-import { ChangeEvent, DetailedHTMLProps, InputHTMLAttributes } from "react"
+import {
+  ChangeEvent,
+  DetailedHTMLProps,
+  InputHTMLAttributes,
+  useEffect
+} from "react"
 import { toast } from "react-hot-toast"
 import { isImage } from "shared/helpers/helper"
 
@@ -30,8 +35,13 @@ export const UpdateCover = ({
       toast.error("File is not image type")
     }
   }
+  useEffect(() => {
+    if (typeof imageUrl === "string" || !imageUrl) {
+      setImage(imageUrl)
+    }
+  }, [imageUrl])
   return (
-    <div className="relative flex justify-center w-full mt-8">
+    <div className="relative flex justify-center w-full ">
       {image && (
         <div
           className="absolute top-0 right-0 z-20 flex items-center justify-center w-6 h-6 text-white transition-all bg-black rounded-full -translate-x-2/4 translate-y-2/4 bg-opacity-40 hover:bg-opacity-30 cursor-pointer hover:scale-105"
@@ -58,7 +68,7 @@ export const UpdateCover = ({
       )}
       <label
         className={classNames(
-          " flex flex-col items-center justify-center w-full h-64 p-3 transition-all border border-gray-400 border-dashed cursor-pointer bg-gray-50 rounded-xl hover:bg-gray-100 hover:border-gray-300",
+          " flex flex-col items-center justify-center w-full h-72 p-3 transition-all border border-gray-400 border-dashed cursor-pointer bg-gray-50 rounded-xl hover:bg-gray-100 hover:border-gray-300",
           isError && "border-red-500"
         )}
       >

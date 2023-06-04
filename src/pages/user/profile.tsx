@@ -1,6 +1,7 @@
 import UserLayout from "layout/User/UserLayout"
-import ProfilePage from "module/User/Profile/ProfilePage"
+import dynamic from "next/dynamic"
 import { NextPageWithLayout } from "pages/page"
+const ProfilePage = dynamic(() => import("module/User/Profile/ProfilePage"))
 
 const Profile: NextPageWithLayout = () => {
   return <ProfilePage />
