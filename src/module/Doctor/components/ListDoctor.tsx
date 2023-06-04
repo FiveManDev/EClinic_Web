@@ -129,7 +129,7 @@ const ListDoctor = () => {
     ],
     []
   )
-  const pagaginationData = getDataPaginate(data)
+  const paginationData = getDataPaginate(data)
 
   return (
     <TableCustom
@@ -137,8 +137,8 @@ const ListDoctor = () => {
       onPaginationChange={setPagination}
       columns={columns}
       data={data?.data?.data ?? []}
-      rowCount={pagaginationData.TotalCount ?? 0}
-      pageCount={pagaginationData.TotalPages ?? 0}
+      rowCount={paginationData.TotalCount ?? 0}
+      pageCount={paginationData.TotalPages ?? 0}
       isLoading={isLoading}
       isError={isError}
       isRefetching={isRefetching}
