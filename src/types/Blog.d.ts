@@ -1,6 +1,9 @@
-import { HashTag } from "./Base.type"
 import { Author } from "./Post"
-
+export interface HashTagBlog {
+  id: string
+  hashtagName: string
+  count: number
+}
 export interface IBlog {
   id: string
   title: string
@@ -11,7 +14,7 @@ export interface IBlog {
   metaTitle: string
   metaDescription: string
   metaKeywords: string
-  hashtags: HashTag[]
+  hashtags: HashTagBlog[]
   createdAt: string
   updatedAt: string
 }

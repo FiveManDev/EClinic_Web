@@ -9,6 +9,7 @@ import {
 } from "react"
 import { toast } from "react-hot-toast"
 import { isImage } from "shared/helpers/helper"
+import ImageCustom from "../ImageCustom"
 
 interface UpdateCoverProps
   extends DetailedHTMLProps<
@@ -44,7 +45,7 @@ export const UpdateCover = ({
     <div className="relative flex justify-center w-full ">
       {image && (
         <div
-          className="absolute top-0 right-0 z-20 flex items-center justify-center w-6 h-6 text-white transition-all bg-black rounded-full -translate-x-2/4 translate-y-2/4 bg-opacity-40 hover:bg-opacity-30 cursor-pointer hover:scale-105"
+          className="absolute top-0 right-0 z-20 flex items-center justify-center w-6 h-6 text-white transition-all bg-black rounded-full cursor-pointer -translate-x-2/4 translate-y-2/4 bg-opacity-40 hover:bg-opacity-30 hover:scale-105"
           onClick={(e) => {
             e.stopPropagation()
             setImage("")
@@ -68,19 +69,18 @@ export const UpdateCover = ({
       )}
       <label
         className={classNames(
-          " flex flex-col items-center justify-center w-full h-72 p-3 transition-all border border-gray-400 border-dashed cursor-pointer bg-gray-50 rounded-xl hover:bg-gray-100 hover:border-gray-300",
+          "relative flex flex-col items-center justify-center w-full h-72 p-3 transition-all border border-gray-400 border-dashed cursor-pointer bg-gray-50 rounded-xl hover:bg-gray-100 hover:border-gray-300",
           isError && "border-red-500"
         )}
       >
         {image ? (
-          <>
-            <Image
-              src={image}
-              fill
-              alt="avatar"
-              className="object-cover rounded-xl"
-            />
-          </>
+          <ImageCustom
+            src={image}
+            priority
+            fill
+            alt="avatar"
+            className="object-cover rounded-xl"
+          />
         ) : (
           <div className="flex items-center gap-x-3">
             <div className="relative w-[200px] h-[170px]">

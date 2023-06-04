@@ -1,4 +1,5 @@
 import classNames from "classnames"
+import ImageCustom from "components/Common/ImageCustom"
 import Image from "next/image"
 import Link from "next/link"
 import { useRouter } from "next/router"
@@ -35,19 +36,21 @@ const SideBar = ({ items }: Props) => {
   // }, [route])
   return (
     <nav className="flex flex-col items-center py-6 w-[220px] flex-shrink-0 bg-white border border-dashed border-gray-200 border-y-0 border-l-0 border-r p-0 rounded-none ">
-      <div className="relative scale-90 md:scale-100 w-[150px] h-9 mb-11">
-        <Link href="/">
-          <Image
-            src={"/images/logo.png"}
-            fill
-            sizes="(max-width: 768px) 100vw,
+      <Link
+        href="/"
+        className="relative scale-90 md:scale-100 w-[150px] h-9 mb-11 "
+      >
+        <ImageCustom
+          priority
+          src={"/images/logo.png"}
+          fill
+          sizes="(max-width: 768px) 100vw,
               (max-width: 1200px) 50vw,
               33vw"
-            alt="elinic"
-            className="object-contain cursor-pointer"
-          />
-        </Link>
-      </div>
+          alt="elinic"
+          className="object-contain cursor-pointer"
+        />
+      </Link>
       <div className="flex flex-col w-full">
         {items.map((item, index) => {
           if (item.subItem) {

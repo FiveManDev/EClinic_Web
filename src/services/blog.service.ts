@@ -3,7 +3,7 @@ import { CreatePostBlog, UpdatePostBlog } from "hooks/query/blog/useBlog"
 import axiosClient from "shared/axios/httpClient"
 import { URL_API } from "shared/constant/constant"
 import { HashTag } from "types/Base.type"
-import { IBlog } from "types/Blog"
+import { HashTagBlog, IBlog } from "types/Blog"
 import { IServerResponse } from "types/server/IServerResponse"
 class BlogService {
   async searchPosts(
@@ -133,7 +133,7 @@ class BlogService {
       const res: AxiosResponse = await axiosClient.get(
         `${URL_API.BLOG_HASHTAG}/getAllHashTag`
       )
-      return res as AxiosResponse<IServerResponse<HashTag[]>>
+      return res as AxiosResponse<IServerResponse<HashTagBlog[]>>
     } catch (error) {
       console.log("BlogService ~ error:", error)
     }
