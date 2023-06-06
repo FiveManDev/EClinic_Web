@@ -1,40 +1,13 @@
 import Editor from "components/Common/Editor/Editor"
 import { useSearchFamlyProfilesQuery } from "hooks/query/profile/useProfile"
-import { UploadImage } from "module/User/Forum/section/create"
 import ProfileItem from "module/User/Profile/section/profile/components/ProfileItem"
-import { ChangeEvent, useState } from "react"
-import { toast } from "react-hot-toast"
+import { useState } from "react"
 import { PAGE_SIZE } from "shared/constant/constant"
-import { ImageItem } from "types/Base.type"
 import { PropsStep } from "./StepOne"
 
 export const StepTwo = ({ onBack }: PropsStep) => {
   const profiles = useSearchFamlyProfilesQuery(1, PAGE_SIZE, "")
   const [note, setNote] = useState("")
-  const [images, setImages] = useState<ImageItem[]>([])
-  const removeImage = (key: string) => {
-    const newImages = images.filter((item) => item.key !== key)
-    setImages(newImages)
-  }
-  const handleFileImageChange = (event: ChangeEvent<HTMLInputElement>) => {
-    if (images.length < 4) {
-      if (event.target.files !== null && event.target.files?.length > 0) {
-        const currentFile = event.target.files[0]
-        const url = URL.createObjectURL(currentFile)
-        setImages([
-          ...images,
-          {
-            file: currentFile,
-            key: images.length.toString(),
-            url
-          }
-        ])
-        const imagesList = [...images.map((item) => item.file), currentFile]
-      }
-    } else {
-      toast.error("Up to 4 images")
-    }
-  }
   return (
     <>
       <div className="flex items-center gap-x-3">
@@ -87,22 +60,7 @@ export const StepTwo = ({ onBack }: PropsStep) => {
         </div>
         <div className="modal-filed">
           <span className="label">Ghi chú</span>
-          <div className="flex gap-8">
-            <Editor
-              placeholder="Write your anwers......"
-              className="w-full entry-content custom-quill"
-              value={note}
-              onChange={(value) => setNote(value)}
-            />
-          </div>
-        </div>
-        <div className="modal-filed">
-          <span className="label">Hình ảnh đính kèm (không bắt buộc)</span>
-          <UploadImage
-            images={images}
-            removeImage={removeImage}
-            onChange={(value) => handleFileImageChange(value)}
-          />
+          <Editor value={note} onChange={(value) => setNote(value)} />
         </div>
       </div>
     </>

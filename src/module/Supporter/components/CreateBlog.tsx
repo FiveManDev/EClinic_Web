@@ -8,9 +8,11 @@ import {
   MenuItem,
   OutlinedInput,
   Select,
-  SelectChangeEvent
+  SelectChangeEvent,
+  TextField
 } from "@mui/material"
 import { useQueryClient } from "@tanstack/react-query"
+import { AxiosError } from "axios"
 import SwitchCustom from "components/Common/IOSSwitch"
 import Spinner from "components/Common/Loading/LoadingIcon"
 import { UpdateCover } from "components/Common/UpLoadImage"
@@ -21,15 +23,15 @@ import {
   CreatePostBlog,
   UpdatePostBlog,
   useCreateBlogPostMutation,
+  useCreateHashtagBlogMutation,
   useGetAllHashTag,
   useUpdateBlogPostMutation
 } from "hooks/query/blog/useBlog"
 import dynamic from "next/dynamic"
-import { useEffect } from "react"
+import { useEffect, useState } from "react"
 import { FieldValues, useForm } from "react-hook-form"
 import { toast } from "react-hot-toast"
 import { QUERY_KEYS } from "shared/constant/constant"
-import { HashTag } from "types/Base.type"
 import { HashTagBlog, IBlog } from "types/Blog"
 import * as yup from "yup"
 const Editor = dynamic(() => import("components/Common/Editor/Editor"), {
@@ -64,11 +66,12 @@ interface Props {
 }
 const CreateBlog = ({ labelForm, post, mode = "create" }: Props) => {
   const queryClient = useQueryClient()
-
+  const [newHashtag, setNewHashtag] = useState<string>("")
   const confirm = useConfirm()
   const hashTags = useGetAllHashTag()
   const createPost = useCreateBlogPostMutation()
   const updatePost = useUpdateBlogPostMutation()
+  const createHashtag = useCreateHashtagBlogMutation()
   const {
     handleSubmit,
     control,
@@ -156,6 +159,21 @@ const CreateBlog = ({ labelForm, post, mode = "create" }: Props) => {
       metaTitle: ""
     })
   }
+  const handleCreateHashTag = () => {
+    if (newHashtag) {
+      createHashtag.mutate(newHashtag, {
+        onSuccess: () => {
+          setNewHashtag("")
+          queryClient.invalidateQueries([QUERY_KEYS.BLOG.HASHTASH])
+          toast.success("Create hashtag success")
+        },
+        onError: (error: unknown) => {
+          const data = error as AxiosError<{ message: string }>
+          toast.error(data?.response?.data?.message || "Create fail")
+        }
+      })
+    }
+  }
   useEffect(() => {
     if (post === undefined) {
       resetForm()
@@ -234,31 +252,50 @@ const CreateBlog = ({ labelForm, post, mode = "create" }: Props) => {
               onChange={() => setValue("isActive", !watchIsActive)}
             />
           </div>
-          <FormControl>
-            <InputLabel>Hashtags</InputLabel>
-            <Select
-              multiple
-              value={hashTagSelected?.map((item) => item.id) || []}
-              onChange={handleChange}
-              error={!!errors.hashtags}
-              input={<OutlinedInput label="Hashtags" />}
-              renderValue={(selected) => (
-                <Box sx={{ display: "flex", flexWrap: "wrap", gap: 0.5 }}>
-                  {selected.map((value) => (
-                    <Chip key={value} label={getHashtagName(value)} />
-                  ))}
-                </Box>
-              )}
-              MenuProps={MenuProps}
-            >
-              {hashTags.data?.data.data.map((name, index) => (
-                <MenuItem key={index} value={name.id}>
-                  {name.hashtagName}
-                </MenuItem>
-              ))}
-            </Select>
-            <FormHelperText error>{errors.hashtags?.message}</FormHelperText>
-          </FormControl>
+          <div className="flex flex-col gap-y-1">
+            <div className="flex w-full gap-x-1">
+              <TextField
+                value={newHashtag}
+                onChange={(e) => setNewHashtag(e.target.value)}
+                size="small"
+                helperText="Please enter your new hashtag here"
+              />
+              <CustomButton
+                onClick={handleCreateHashTag}
+                kind="primary"
+                className="max-h-10 min-h-[24px]"
+                isLoading={createHashtag.isLoading}
+                disabled={!newHashtag}
+              >
+                Create
+              </CustomButton>
+            </div>
+            <FormControl>
+              <InputLabel>Hashtags</InputLabel>
+              <Select
+                multiple
+                value={hashTagSelected?.map((item) => item.id) || []}
+                onChange={handleChange}
+                error={!!errors.hashtags}
+                input={<OutlinedInput label="Hashtags" />}
+                renderValue={(selected) => (
+                  <Box sx={{ display: "flex", flexWrap: "wrap", gap: 0.5 }}>
+                    {selected.map((value) => (
+                      <Chip key={value} label={getHashtagName(value)} />
+                    ))}
+                  </Box>
+                )}
+                MenuProps={MenuProps}
+              >
+                {hashTags.data?.data.data.map((name, index) => (
+                  <MenuItem key={index} value={name.id}>
+                    {name.hashtagName}
+                  </MenuItem>
+                ))}
+              </Select>
+              <FormHelperText error>{errors.hashtags?.message}</FormHelperText>
+            </FormControl>
+          </div>
           <CustomInput
             size="medium"
             label="Meta title"
@@ -287,9 +324,6 @@ const CreateBlog = ({ labelForm, post, mode = "create" }: Props) => {
           />
         </div>
         <div className="flex w-full mt-4 space-x-5">
-          <CustomButton kind="secondary" className="w-full ">
-            Preview
-          </CustomButton>
           <CustomButton
             kind="primary"
             type="submit"

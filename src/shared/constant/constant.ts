@@ -47,10 +47,10 @@ export const URL_API = {
   }
 } as const
 export const DEFAULT_ROUTER = {
-  USER: "/user",
-  ADMIN: "/admin",
-  DOCTOR: "/doctor",
-  SUPPORTER: "/sup"
+  USER: "/user/",
+  ADMIN: "/admin/",
+  DOCTOR: "/doctor/",
+  SUPPORTER: "/sup/"
 }
 export const LANGUAGE = {
   VIETNAM: "Vi",

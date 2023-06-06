@@ -1,20 +1,19 @@
 import { Chip } from "@mui/material"
 import CustomButton from "components/User/Button"
 import React, { PropsWithChildren } from "react"
+import { caculateAge } from "shared/helpers/helper"
+import { IProfileDoctor } from "types/Profile.type"
 
-const InfoGeneral = () => {
+const InfoGeneral = ({ doctor }: { doctor: IProfileDoctor }) => {
   return (
     <div className="flex flex-col w-full h-full px-6 border border-r-0 border-gray-300 border-solid border-y-0">
       <h3 className="text-2xl mb-7">Thông tin chung</h3>
       <div className="flex flex-col space-y-6">
         <FieldInfo title="Giới tính">
-          <p>Nam</p>
+          <p>{doctor.gender ? "Male" : "Female"}</p>
         </FieldInfo>
         <FieldInfo title="Tuổi">
-          <p>24 tuổi</p>
-        </FieldInfo>
-        <FieldInfo title="Ngôn ngữ">
-          <p>Tiếng Anh, Tiếng Việt</p>
+          <p>{caculateAge(doctor.dateOfBirth)} tuổi</p>
         </FieldInfo>
         <FieldInfo title="Chuyên Khoa">
           <div className="flex gap-2">
@@ -25,12 +24,6 @@ const InfoGeneral = () => {
               variant="outlined"
             />
           </div>
-        </FieldInfo>
-        <FieldInfo title="Học vấn">
-          <ul className="space-y-1">
-            <li>Đại Học Fpt</li>
-            <li>Đại Học Cần Thơ</li>
-          </ul>
         </FieldInfo>
       </div>
       <CustomButton kind="primary" className="w-full mt-7 rounded-xl">

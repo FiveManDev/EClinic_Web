@@ -1,25 +1,32 @@
+import { Skeleton } from "@mui/material"
 import ImageCustom from "components/Common/ImageCustom"
 import CustomButton from "components/User/Button"
 import { useRouter } from "next/router"
-import React from "react"
+import { combineName } from "shared/helpers/helper"
+import { IProfileDoctor } from "types/Profile.type"
 
-const CardDoctor = () => {
+interface IProps {
+  doctor: IProfileDoctor
+}
+const CardDoctor = ({ doctor }: IProps) => {
   const router = useRouter()
   return (
     <div className="bg-white rounded-[10px] p-5 w-full border border-solid border-[#EAEAEA]">
       <div className="flex gap-4">
-        <div className="relative w-[100px] h-[100px] rounded-md overflow-hidden">
+        <div className="relative w-[100px] h-[100px] ">
           <ImageCustom
             alt="avtar-doctor"
-            src="/images/sample.png"
+            src={doctor.avatar || "/images/sample.png"}
             fill
-            className="object-cover"
+            className="object-cover rounded-md "
           />
         </div>
         <div className="flex flex-col flex-1 gap-y-2">
           <div className="flex justify-between ">
             <div className="flex flex-col">
-              <span className="text-base font-semibold">Francis Mills</span>
+              <span className="text-base font-semibold">
+                {combineName(doctor.firstName, doctor.lastName)}
+              </span>
               <div className="flex items-center gap-x-2">
                 <svg
                   width={20}
@@ -40,7 +47,7 @@ const CardDoctor = () => {
               </div>
             </div>
             <CustomButton
-              onClick={() => router.push("/doctors/1")}
+              onClick={() => router.push(`/doctors/${doctor.userID}`)}
               kind="primary"
               size="small"
               className="max-h-[32px] rounded-[10px]"
@@ -48,18 +55,14 @@ const CardDoctor = () => {
               Booking
             </CustomButton>
           </div>
-          <div className="flex items-center justify-between">
-            <InfoItem content="1 Năm" label="Kinh nghiệm" />
-            <InfoItem content="Thạc sĩ" label="Bằng cấp" />
-            <InfoItem content="Nhi khoa" label="Chuyên khoa" />
+          <div className="flex items-center gap-6">
+            <InfoItem content={doctor.title} label="Chức vụ" />
+            <InfoItem content={doctor.specializationID} label="Chuyên khoa" />
             <InfoItem content="1234" label="Yêu thích" />
           </div>
           <div className="w-full bg-gray-200 h-[1px]"></div>
           <p className="text-sm text-gray-500 line-clamp-3">
-            Lorem, ipsum dolor sit amet consectetur adipisicing elit. Ducimus
-            deleniti, odio repudiandae consequuntur nihil iusto quam dicta
-            quidem, sed tempora assumenda officiis, perspiciatis commodi vel
-            optio odit iure? Magnam, corrupti.
+            {doctor.description}
           </p>
         </div>
       </div>
@@ -74,5 +77,38 @@ const InfoItem = ({ label = "", content = "" }) => {
     </div>
   )
 }
-
+export const CardDoctorSkeleton = () => {
+  return (
+    <div className="bg-white rounded-[10px] p-5 w-full border border-solid border-[#EAEAEA]">
+      <div className="flex gap-4">
+        <div className="relative w-[100px] h-[100px] overflow-hidden rounded-md">
+          <Skeleton variant="rounded" className="w-full h-full" />
+        </div>
+        <div className="flex flex-col flex-1 gap-y-2">
+          <div className="flex justify-between ">
+            <div className="flex flex-col">
+              <span className="text-base font-semibold">
+                <Skeleton variant="text" />
+              </span>
+              <div className="flex items-center gap-x-2">
+                <Skeleton variant="rounded" width={80} height={20} />
+              </div>
+            </div>
+            <Skeleton variant="rounded" width={60} height={32} />
+          </div>
+          <div className="flex items-center gap-6">
+            <Skeleton variant="rounded" width={60} height={10} />
+            <Skeleton variant="rounded" width={60} height={10} />
+            <Skeleton variant="rounded" width={60} height={10} />
+          </div>
+          <div className="w-full bg-gray-200 h-[1px]"></div>
+          <p className="flex flex-col text-sm text-gray-500 gap-y-1">
+            <Skeleton variant="text" />
+            <Skeleton variant="text" />
+          </p>
+        </div>
+      </div>
+    </div>
+  )
+}
 export default CardDoctor

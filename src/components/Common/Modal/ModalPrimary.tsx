@@ -9,6 +9,7 @@ const ModalPrimaryWrapper = styled(motion.div)`
   .footer {
     padding: 20px 0;
     border-top: 0.5px solid #cccc;
+    margin-top: 12px;
   }
 `
 const dropIn = {

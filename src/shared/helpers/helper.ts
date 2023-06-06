@@ -51,11 +51,16 @@ export const getBase64 = (file: any): Promise<string> =>
 export const getCurrentDate = (date: string) => {
   return dayjs(date, "ddd, DD MMM YYYY HH:mm:ss [GMT]").toISOString()
 }
-export const combineName = (lastName: string, firstName: string) => {
+export const combineName = (lastName?: string, firstName?: string) => {
   return lastName + " " + firstName
 }
 export const dayformat = (date: string) => {
   return dayjs(date).format("DD MMM YYYY")
+}
+export const caculateAge = (date: string) => {
+  const dateInput = new Date(date)
+  const currentDate = new Date()
+  return currentDate.getFullYear() - dateInput.getFullYear()
 }
 export const getDataPaginate = (
   response: AxiosResponse | undefined = undefined

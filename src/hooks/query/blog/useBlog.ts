@@ -86,6 +86,7 @@ export const useUpdateBlogPostMutation = () =>
   useMutation({
     mutationFn: (body: UpdatePostBlog) => blogService.updatePost(body)
   })
+//hashtag
 export const useGetAllHashTag = () => {
   const queryKey = [QUERY_KEYS.BLOG.HASHTASH]
   return useQuery({
@@ -93,3 +94,7 @@ export const useGetAllHashTag = () => {
     queryFn: () => blogService.getAllHashTag()
   })
 }
+export const useCreateHashtagBlogMutation = () =>
+  useMutation({
+    mutationFn: (hashtag: string) => blogService.createHashtag(hashtag)
+  })

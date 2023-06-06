@@ -1,6 +1,9 @@
 import { Grid, SpeedDial, SpeedDialAction, Typography } from "@mui/material"
 import { LoadingArea } from "components/Common/Loading/LoadingIcon"
-import { useGetBlogPostbyIdQuery } from "hooks/query/blog/useBlog"
+import {
+  useGetBlogPostbyIdQuery,
+  useSearchPostsBlog
+} from "hooks/query/blog/useBlog"
 import UserSecondaryLayout from "layout/User/UserSecondaryLayout"
 import Head from "next/head"
 import Image from "next/image"
@@ -8,9 +11,10 @@ import { useRouter } from "next/router"
 import { useTranslation } from "react-i18next"
 import { AiOutlineInstagram } from "react-icons/ai"
 import { HiOutlineShare } from "react-icons/hi2"
-import { combineName } from "shared/helpers/helper"
-import { dayformat } from "shared/helpers/helper"
+import { PAGE_SIZE } from "shared/constant/constant"
+import { combineName, dayformat } from "shared/helpers/helper"
 import { IBreadcrum } from "types/Base.type"
+import BlogPostCard from "./components/BlogPostCard"
 
 const actions = [
   {
@@ -52,14 +56,20 @@ const BlogDetailPage = () => {
   const { data, isLoading, isError } = useGetBlogPostbyIdQuery(
     router.query.id as string
   )
-  if (router.isFallback || isLoading) {
+  const postRelated = useSearchPostsBlog(
+    "",
+    1,
+    PAGE_SIZE,
+    data?.data.hashtags.map((has) => has.id) || []
+  )
+  if (router.isFallback || isLoading || postRelated.isLoading) {
     return (
       <>
         <LoadingArea />
       </>
     )
   }
-  if (isError) {
+  if (isError || postRelated.isError) {
     return <p>Error</p>
   }
   const breadrums: IBreadcrum[] = [
@@ -150,9 +160,9 @@ const BlogDetailPage = () => {
               Recent posts
             </h3>
             <Grid container spacing={3}>
-              {/* {recentPosts.map((post, index) => (
+              {postRelated.data?.data.data.map((post, index) => (
                 <BlogPostCard key={post.id} post={post} index={index + 1} />
-              ))} */}
+              ))}
             </Grid>
           </div>
         </div>

@@ -58,7 +58,8 @@ export async function middleware(req: NextRequest) {
     if (pathname === "/") {
       return true
     } else {
-      return pathname.substring(1).startsWith(path)
+      console.log(pathname.startsWith(path))
+      return pathname.startsWith(path)
     }
   })
   if (accessToken) {
@@ -70,9 +71,11 @@ export async function middleware(req: NextRequest) {
         return NextResponse.redirect(req.nextUrl)
       }
       switch (true) {
-        case pathname.includes("/user") && Object.values(ROLE).includes(role):
-        case pathname.includes("/doctor") && role === ROLE.DOCTOR:
-        case pathname.includes("/sup") && role === ROLE.SUPPORTER:
+        case pathname.includes(DEFAULT_ROUTER.USER) &&
+          Object.values(ROLE).includes(role):
+        case pathname.includes(DEFAULT_ROUTER.DOCTOR) && role === ROLE.DOCTOR:
+        case pathname.includes(DEFAULT_ROUTER.SUPPORTER) &&
+          role === ROLE.SUPPORTER:
         case role === ROLE.ADMIN:
           return NextResponse.next()
         case pathname.includes("/sign-in") || pathname.includes("/sign-up"):
