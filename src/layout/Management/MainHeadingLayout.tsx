@@ -4,7 +4,7 @@ interface Props extends PropsWithChildren {
 }
 const MainHeadingLayout = ({ heading, children }: Props) => {
   return (
-    <div className="flex-1 px-4 mt-5">
+    <div className="flex flex-col flex-1 px-4 mt-5">
       {heading && (
         <h1 className="mb-2 text-2xl font-semibold text-black1">{heading}</h1>
       )}

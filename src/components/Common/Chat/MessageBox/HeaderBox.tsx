@@ -9,7 +9,7 @@ interface IProps {
 }
 export const HeaderBox = ({ toggleInfo }: IProps) => {
   return (
-    <div className="flex justify-between px-5 pt-3 border border-t-0 border-gray-200 border-solid border-x-0">
+    <div className="flex justify-between px-5 py-3 border border-t-0 border-gray-200 border-solid border-x-0">
       <div className="flex space-x-2">
         <div className="relative w-10 h-10 overflow-hidden rounded-full">
           <ImageCustom

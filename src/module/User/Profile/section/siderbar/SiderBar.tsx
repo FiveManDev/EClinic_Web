@@ -13,6 +13,7 @@ import Profile from "../profile"
 import { TabsWrapper } from "./Tabs.style"
 import { HiOutlineChatBubbleLeftRight } from "react-icons/hi2"
 import ChatSection from "../chat/ChatSection"
+import ContainerChat from "components/Common/Chat/ContainerChat"
 
 const SiderBar = () => {
   const [tabIndex, setTabIndex] = useState(0)
@@ -65,7 +66,7 @@ const SiderBar = () => {
         key: 3,
         label: `Chat with doctor`,
         icon: <HiOutlineChatBubbleLeftRight />,
-        children: <ChatSection />
+        children: <ContainerChat />
       },
       {
         key: 4,

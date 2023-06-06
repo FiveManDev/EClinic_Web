@@ -93,7 +93,6 @@ const CreateBlog = ({ labelForm, post, mode = "create" }: Props) => {
       value.hashtags.length > 0
         ? value.hashtags.map((item: HashTagBlog) => item.id)
         : []
-    console.log("onSubmit ~ newHashTags:", newHashTags)
     if (mode === "update") {
       if (confirm) {
         const choice = await confirm({
