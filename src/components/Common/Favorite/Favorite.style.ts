@@ -46,7 +46,7 @@ const FavoriteWrapper = styled.button`
     path {
       fill: rgba(0, 0, 0, 0.25);
       stroke: "#ffffff";
-      stroke-width: 2px;
+      strokewidth: 2px;
       transition: fill 1s ease;
     }
   }

@@ -9,7 +9,7 @@ const AdminAppoinmentPage = () => {
       <Head>
         <title>Overview</title>
       </Head>
-      <MainHeadingLayout heading="Appoiment">
+      <MainHeadingLayout heading="Appointment">
         <TableAPM />
       </MainHeadingLayout>
     </>

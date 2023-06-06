@@ -11,3 +11,4 @@ export interface IPaginationSearch {
   pageSize: number
   searchText: string
 }
+export type IPaging = Omit<IPaginationSearch, "searchText">
