@@ -19,6 +19,7 @@ const Menu = () => {
               sizes="(max-width: 768px) 100vw,
               (max-width: 1200px) 50vw,
               33vw"
+              priority
               alt="elinic"
               className="object-contain cursor-pointer"
             />

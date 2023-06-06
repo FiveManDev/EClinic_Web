@@ -6,15 +6,19 @@ import { CustomInput } from "components/User/Input"
 import { useSearchPostsBlogAd } from "hooks/query/blog/useBlog"
 import useDebounce from "hooks/useDebounce"
 import { MRT_ColumnDef, MRT_PaginationState } from "material-react-table"
-import { useRouter } from "next/router"
+import Link from "next/link"
 import { useMemo, useState } from "react"
 import { HiOutlinePencilSquare } from "react-icons/hi2"
+import { useSelector } from "react-redux"
+import { ROLE } from "shared/constant/constant"
 import { combineName, dayformat, getDataPaginate } from "shared/helpers/helper"
 import colorsProvider from "shared/theme/colors"
+import { RootState } from "store/store"
 import { IBlog } from "types/Blog"
 
 const ListBlog = () => {
-  const router = useRouter()
+  const auth = useSelector((state: RootState) => state.auth)
+
   const [searchData, setSearchData] = useState("")
   const searchTextDebounce = useDebounce(searchData, 1500)
   const [pagination, setPagination] = useState<MRT_PaginationState>({
@@ -131,10 +135,14 @@ const ListBlog = () => {
         renderRowActions={({ row }) => (
           <Box sx={{ display: "flex", gap: "1rem" }}>
             <Tooltip arrow placement="left" title="Edit">
-              <IconButton
-                onClick={() => router.push(`/sup/blog/edit/${row.original.id}`)}
-              >
-                <HiOutlinePencilSquare />
+              <IconButton>
+                <Link
+                  href={`/${
+                    auth.user.role === ROLE.SUPPORTER ? "sup" : "admin"
+                  }/blog/edit/${row.original.id}`}
+                >
+                  <HiOutlinePencilSquare />
+                </Link>
               </IconButton>
             </Tooltip>
           </Box>

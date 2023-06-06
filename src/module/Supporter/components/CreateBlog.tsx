@@ -30,7 +30,7 @@ import { FieldValues, useForm } from "react-hook-form"
 import { toast } from "react-hot-toast"
 import { QUERY_KEYS } from "shared/constant/constant"
 import { HashTag } from "types/Base.type"
-import { IBlog } from "types/Blog"
+import { HashTagBlog, IBlog } from "types/Blog"
 import * as yup from "yup"
 const Editor = dynamic(() => import("components/Common/Editor/Editor"), {
   ssr: false,
@@ -91,8 +91,9 @@ const CreateBlog = ({ labelForm, post, mode = "create" }: Props) => {
   const onSubmit = async (value: FieldValues) => {
     const newHashTags =
       value.hashtags.length > 0
-        ? value.hashtags.map((item: HashTag) => item.hashtagID)
+        ? value.hashtags.map((item: HashTagBlog) => item.id)
         : []
+    console.log("onSubmit ~ newHashTags:", newHashTags)
     if (mode === "update") {
       if (confirm) {
         const choice = await confirm({
@@ -166,18 +167,18 @@ const CreateBlog = ({ labelForm, post, mode = "create" }: Props) => {
     const {
       target: { value }
     } = event
-    let newHashtags: HashTag[] = []
+    let newHashtags: HashTagBlog[] = []
     if (typeof value === "string") {
       newHashtags =
         hashTags.data?.data.data.filter((item) => {
-          if (item.hashtagID === value) {
+          if (item.id === value) {
             return item
           }
         }) || []
     } else {
       newHashtags =
         hashTags.data?.data.data.filter((item) => {
-          if (value.some((has) => has === item.hashtagID)) {
+          if (value.some((has) => has === item.id)) {
             return item
           }
         }) || []
@@ -186,7 +187,7 @@ const CreateBlog = ({ labelForm, post, mode = "create" }: Props) => {
   }
   const getHashtagName = (hashtagID: string) => {
     const selectedTag = hashTags.data?.data.data.find(
-      (tag) => tag.hashtagID === hashtagID
+      (tag) => tag.id === hashtagID
     )
     return selectedTag ? selectedTag.hashtagName : ""
   }
@@ -238,7 +239,7 @@ const CreateBlog = ({ labelForm, post, mode = "create" }: Props) => {
             <InputLabel>Hashtags</InputLabel>
             <Select
               multiple
-              value={hashTagSelected?.map((item) => item.hashtagID) || []}
+              value={hashTagSelected?.map((item) => item.id) || []}
               onChange={handleChange}
               error={!!errors.hashtags}
               input={<OutlinedInput label="Hashtags" />}
@@ -251,8 +252,8 @@ const CreateBlog = ({ labelForm, post, mode = "create" }: Props) => {
               )}
               MenuProps={MenuProps}
             >
-              {hashTags.data?.data.data.map((name) => (
-                <MenuItem key={name.hashtagID} value={name.hashtagID}>
+              {hashTags.data?.data.data.map((name, index) => (
+                <MenuItem key={index} value={name.id}>
                   {name.hashtagName}
                 </MenuItem>
               ))}
