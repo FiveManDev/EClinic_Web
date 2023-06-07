@@ -143,7 +143,6 @@ const SpecializationTab = () => {
                 accessorKey: "specializationName",
                 header: "Name",
                 size: 180,
-                enableClickToCopy: true,
                 Cell: ({ row }) => {
                     return (
                         <p className="line-clamp-1 max-w-[180px]">

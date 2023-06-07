@@ -46,7 +46,6 @@ const ListService = () => {
                 accessorKey: "serviceName",
                 header: "Name",
                 size: 180,
-                enableClickToCopy: true,
                 Cell: ({ row }) => {
                     return (
                         <p className="line-clamp-1 max-w-[180px]">
@@ -59,7 +58,6 @@ const ListService = () => {
                 accessorKey: "price",
                 header: "Price",
                 size: 110,
-                enableClickToCopy: true,
                 Cell: ({ row }) => {
                     return (
                         <p className="line-clamp-1 max-w-[110px]">
@@ -72,7 +70,6 @@ const ListService = () => {
                 accessorKey: "estimatedTime",
                 header: "EstimatedTime",
                 size: 80,
-                enableClickToCopy: true,
                 Cell: ({ row }) => {
                     return (
                         <p className="line-clamp-1 max-w-[80px]">
@@ -85,7 +82,6 @@ const ListService = () => {
                 accessorKey: "isActive",
                 header: "Status",
                 size: 110,
-                enableClickToCopy: true,
                 Cell: ({ row }) => {
                     return (
                         <p className="line-clamp-1 max-w-[110px]">
@@ -98,7 +94,6 @@ const ListService = () => {
                 accessorKey: "specialization",
                 header: "Specialization",
                 size: 180,
-                enableClickToCopy: true,
                 Cell: ({ row }) => {
                     return (
                         <p className="line-clamp-1 max-w-[180px]">
