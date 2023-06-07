@@ -60,6 +60,44 @@ const AdminLayout = ({ children }: PropsWithChildren) => {
       {
         icon: (
           <>
+            <svg stroke="currentColor"
+              xmlns="http://www.w3.org/2000/svg"
+              fill="currentColor"
+              strokeWidth="0"
+              viewBox="0 0 24 24"
+            >
+              <path fill="none" d="M0 0h24v24H0z"></path>
+              <path d="M20 6h-4V4c0-1.1-.9-2-2-2h-4c-1.1 0-2 .9-2 2v2H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V8c0-1.1-.9-2-2-2zM10 4h4v2h-4V4zm10 16H4V8h16v12z"></path>
+              <path d="M13 10h-2v3H8v2h3v3h2v-3h3v-2h-3z"></path>
+            </svg>
+          </>
+        ),
+        title: "Service",
+        link: "/admin/services"
+      },
+      {
+        icon: (
+          <>
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              fill="none"
+              viewBox="0 0 24 24"
+              strokeWidth={1.5}
+              stroke="currentColor"
+              className="w-6 h-6">
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                d="M3.75 21h16.5M4.5 3h15M5.25 3v18m13.5-18v18M9 6.75h1.5m-1.5 3h1.5m-1.5 3h1.5m3-6H15m-1.5 3H15m-1.5 3H15M9 21v-3.375c0-.621.504-1.125 1.125-1.125h3.75c.621 0 1.125.504 1.125 1.125V21" />
+            </svg>
+          </>
+        ),
+        title: "Specialization",
+        link: "/admin/specialization"
+      },
+      {
+        icon: (
+          <>
             <svg
               xmlns="http://www.w3.org/2000/svg"
               fill="none"
