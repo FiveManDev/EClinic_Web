@@ -79,7 +79,7 @@ const SupporterLayout = ({ children }: PropsWithChildren) => {
             </svg>
           </>
         ),
-        title: "Question Request",
+        title: "Question",
         link: "/sup/question-request"
       },
       {

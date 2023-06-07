@@ -8,15 +8,19 @@ import {
 } from "@mui/material"
 import { useQueryClient } from "@tanstack/react-query"
 import ImageCustom from "components/Common/ImageCustom"
-import { useGetUserMainProfilesByID } from "hooks/query/profile/useProfile"
+import {
+  useGetUserMainProfilesByID,
+  useSimpleProfile
+} from "hooks/query/profile/useProfile"
 import Image from "next/image"
 import Link from "next/link"
 import { useRouter } from "next/router"
 import { useState } from "react"
+import { useSelector } from "react-redux"
 import { QUERY_KEYS } from "shared/constant/constant"
 import { routers } from "shared/constant/routers"
 import { logoutUser } from "store/module/auth/action-creators"
-import { useAppDispatch } from "store/store"
+import { RootState, useAppDispatch } from "store/store"
 
 interface Props {
   menu: {
@@ -25,11 +29,12 @@ interface Props {
   }[]
 }
 const UserAvatar = ({ menu }: Props) => {
+  const auth = useSelector((state: RootState) => state.auth)
   const router = useRouter()
   const dispatch = useAppDispatch()
   const [anchorElUser, setAnchorElUser] = useState<null | HTMLElement>(null)
   const queryClient = useQueryClient()
-  const { isLoading, data } = useGetUserMainProfilesByID()
+  const { isLoading, data } = useSimpleProfile(auth.user.userId)
   const handleOpenUserMenu = (event: React.MouseEvent<HTMLElement>) => {
     setAnchorElUser(event.currentTarget)
   }
@@ -93,7 +98,7 @@ const UserAvatar = ({ menu }: Props) => {
                 Account
               </span>
               {/* profile basic */}
-              <div className="flex px-5 py-3 space-x-2 ">
+              <div className="flex items-center px-5 py-3 space-x-2">
                 <div className="relative overflow-hidden rounded-full w-9 h-9">
                   <Image
                     src={
@@ -111,13 +116,10 @@ const UserAvatar = ({ menu }: Props) => {
                     <div className="text-sm">
                       {data?.data?.firstName + " " + data?.data?.lastName}
                     </div>
-                    <small className="text-[10px] text-gray-400">
-                      {data?.data?.email}
-                    </small>
                   </div>
                 )}
               </div>
-              <div className="w-full h-[2px] bg-gray-100"></div>
+              n<div className="w-full h-[2px] bg-gray-100"></div>
               <div>
                 <span className="block px-5 mt-3 mb-2 text-xs font-semibold uppercase text-h1">
                   Eclinic

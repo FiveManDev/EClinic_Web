@@ -29,6 +29,7 @@ import { combineName, dayformat } from "shared/helpers/helper"
 import { IPost } from "types/Post"
 import ImageReview from "../components/ImageReview"
 import MultipleSelectChip from "../components/SelectMutitple"
+import { OverlayScrollbarsComponent } from "overlayscrollbars-react"
 type Props = {
   post: IPost
 }
@@ -98,94 +99,100 @@ const UpdateQuestion = ({ post }: Props) => {
         maxWidth="lg"
         scroll="paper"
       >
-        <DialogContent>
-          <Field>
-            <h3 className="text-2xl font-semibold">{post.title}</h3>
-            <time className="text-xs text-gray-400">
-              {dayformat(post.createdAt)}
-            </time>
-          </Field>
-          <Field>
-            <div className="flex gap-x-2">
-              <div className="relative flex-shrink-0 w-6 h-6">
-                <ImageCustom
-                  src={post.author.avatar}
-                  fill
-                  className="object-cover rounded-sm"
+        <OverlayScrollbarsComponent
+          defer
+          options={{ scrollbars: { autoHide: "scroll" } }}
+        >
+          <DialogContent>
+            <Field>
+              <h3 className="text-2xl font-semibold">{post.title}</h3>
+              <time className="text-xs text-gray-400">
+                {dayformat(post.createdAt)}
+              </time>
+            </Field>
+            <Field>
+              <div className="flex gap-x-2">
+                <div className="relative flex-shrink-0 w-6 h-6">
+                  <ImageCustom
+                    src={post.author.avatar}
+                    fill
+                    className="object-cover rounded-sm"
+                  />
+                </div>
+                <span>
+                  {combineName(post.author.firstName, post.author.lastName)}
+                </span>
+              </div>
+              <h3 className="text-sm font-normal leading-relaxed text-gray-500 ">
+                {post.content}
+              </h3>
+            </Field>
+            <Field>
+              <Label>Picture of disease symptoms</Label>
+              <ImageReview images={post.image} />
+            </Field>
+            <Field>
+              <Label htmlFor="content">
+                <div className="flex items-center space-x-1">
+                  <span> Fill your anwers here</span>
+                  <span>
+                    <Tooltip
+                      title="The answer must be clear and precise with specific evidence"
+                      placement="top"
+                    >
+                      <IconButton size="small">
+                        <AiOutlineQuestionCircle />
+                      </IconButton>
+                    </Tooltip>
+                  </span>
+                </div>
+              </Label>
+              <div className="w-full">
+                <Editor
+                  value={anwerData.content}
+                  onChange={(value) => handleChangeAnwerData("content", value)}
                 />
               </div>
-              <span>
-                {combineName(post.author.firstName, post.author.lastName)}
-              </span>
-            </div>
-            <h3 className="text-sm font-normal leading-relaxed text-gray-500 ">
-              {post.content}
-            </h3>
-          </Field>
-          <Field>
-            <Label>Picture of disease symptoms</Label>
-            <ImageReview images={post.image} />
-          </Field>
-          <Field>
-            <Label htmlFor="content">
-              <div className="flex items-center space-x-1">
-                <span> Fill your anwers here</span>
-                <span>
-                  <Tooltip
-                    title="The answer must be clear and precise with specific evidence"
-                    placement="top"
-                  >
-                    <IconButton size="small">
-                      <AiOutlineQuestionCircle />
-                    </IconButton>
-                  </Tooltip>
-                </span>
+            </Field>
+            <Field>
+              <Label htmlFor="title">
+                <div className="flex items-center space-x-1">
+                  <span> Tags for post </span>
+                  <span>
+                    <Tooltip title="Choose hashtag of the post" placement="top">
+                      <IconButton size="small">
+                        <AiOutlineQuestionCircle />
+                      </IconButton>
+                    </Tooltip>
+                  </span>
+                </div>
+              </Label>
+              <div className="flex mb-3 gap-x-1">
+                <InputCustom
+                  value={tagValue}
+                  className="w-full md:max-w-[412px]"
+                  placeholder="Create your tag"
+                  onChange={(e) => setTagValue(e.target.value)}
+                />
+                <CustomButton
+                  kind="primary"
+                  className="!rounded-[5px]"
+                  disabled={createtagMutation.isLoading}
+                  onClick={createTag}
+                >
+                  {createtagMutation.isLoading ? <Spinner /> : "Add"}
+                </CustomButton>
               </div>
-            </Label>
-            <Editor
-              placeholder="Write your anwers......"
-              className="w-full entry-content custom-quill"
-              value={anwerData.content}
-              onChange={(value) => handleChangeAnwerData("content", value)}
-            />
-          </Field>
-          <Field>
-            <Label htmlFor="title">
-              <div className="flex items-center space-x-1">
-                <span> Tags for post </span>
-                <span>
-                  <Tooltip title="Choose hashtag of the post" placement="top">
-                    <IconButton size="small">
-                      <AiOutlineQuestionCircle />
-                    </IconButton>
-                  </Tooltip>
-                </span>
-              </div>
-            </Label>
-            <div className="flex mb-3 gap-x-1">
-              <InputCustom
-                value={tagValue}
-                className="w-full md:max-w-[412px]"
-                placeholder="Create your tag"
-                onChange={(e) => setTagValue(e.target.value)}
+              <MultipleSelectChip
+                hashTags={anwerData.tags}
+                handleChange={(value) =>
+                  handleChangeAnwerData("tags", [...value])
+                }
               />
-              <CustomButton
-                kind="primary"
-                className="!rounded-[5px]"
-                disabled={createtagMutation.isLoading}
-                onClick={createTag}
-              >
-                {createtagMutation.isLoading ? <Spinner /> : "Add"}
-              </CustomButton>
-            </div>
-            <MultipleSelectChip
-              hashTags={anwerData.tags}
-              handleChange={(value) =>
-                handleChangeAnwerData("tags", [...value])
-              }
-            />
-          </Field>
-        </DialogContent>
+            </Field>
+          </DialogContent>
+        </OverlayScrollbarsComponent>
+
         <DialogActions>
           <CustomButton kind="secondary" onClick={handleClose}>
             Close

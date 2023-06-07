@@ -24,7 +24,8 @@ export const ROLE = {
   USER: "User",
   ADMIN: "Admin",
   DOCTOR: "Doctor",
-  SUPPORTER: "Supporter"
+  SUPPORTER: "Supporter",
+  EXPERT: "Expert"
 } as const
 export const URL_API = {
   AUTH: "identity/Authentication",
