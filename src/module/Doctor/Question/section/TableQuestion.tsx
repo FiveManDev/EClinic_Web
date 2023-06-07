@@ -101,10 +101,6 @@ export default function TableQuestion() {
     []
   )
   const paginationData = getDataPaginate(data)
-
-  if (isError) {
-    return <p> Error</p>
-  }
   return (
     <TableCustom
       pagination={pagination}
