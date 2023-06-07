@@ -1,11 +1,12 @@
 import { yupResolver } from "@hookform/resolvers/yup"
 import { Box, IconButton, Tooltip } from "@mui/material"
+import TableCustom from "components/Common/Table/TableCustom"
 import CustomButton from "components/User/Button"
 import { CustomInput } from "components/User/Input"
 import useConfirm from "context/ComfirmContext"
 import { CreateSpecialization, useCreateSpecializationMutation, useSearchSpecializationQuery, useUpdateSpecializationMutation } from "hooks/query/service/useService"
 import useDebounce from "hooks/useDebounce"
-import MaterialReactTable, {
+import {
     MRT_ColumnDef,
     MRT_PaginationState
 } from "material-react-table"
@@ -34,9 +35,10 @@ const SpecializationTab = () => {
     const searchTextDebounce = useDebounce(searchData, 1000)
     const { data, isLoading, isError, isRefetching, refetch } = useSearchSpecializationQuery({
         searchText: searchTextDebounce,
-        pageNumber: pagination.pageIndex,
+        pageNumber: pagination.pageIndex + 1,
         pageSize: pagination.pageSize
     })
+    const paginationData = getDataPaginate(data)
     const confirm = useConfirm()
     const createSpecialization = useCreateSpecializationMutation()
     const updateSpecialization = useUpdateSpecializationMutation()
@@ -173,24 +175,16 @@ const SpecializationTab = () => {
                     {mode === "create" ? "Create" : "Update"}
                 </CustomButton>
             </form>
-            <MaterialReactTable
-                columns={columns}
-                enableRowActions
-                manualPagination
-                enableStickyHeader
-                enableTopToolbar
-                enableGlobalFilter={false}
-                muiTableContainerProps={{ sx: { maxHeight: "600px" } }}
+            <TableCustom
+                pagination={pagination}
                 onPaginationChange={setPagination}
+                columns={columns}
                 data={data?.data?.data ?? []}
-                rowCount={getDataPaginate(data).PageSize ?? 0}
-                state={{
-                    isLoading,
-                    pagination,
-                    showAlertBanner: isError,
-                    showProgressBars: isRefetching
-                }}
-                positionActionsColumn="last"
+                rowCount={paginationData.TotalCount ?? 0}
+                pageCount={paginationData.TotalPages ?? 0}
+                isLoading={isLoading}
+                isError={isError}
+                isRefetching={isRefetching}
                 renderRowActions={({ row }) => (
                     <Box sx={{ display: "flex", gap: "1rem" }}>
                         <Tooltip arrow placement="left" title="Edit">

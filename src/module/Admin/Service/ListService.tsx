@@ -1,8 +1,9 @@
 import { Box, IconButton, Tooltip } from "@mui/material"
+import TableCustom from "components/Common/Table/TableCustom"
 import { CustomInput } from "components/User/Input"
 import { useSearchServiceForAdQuery } from "hooks/query/service/useService"
 import useDebounce from "hooks/useDebounce"
-import MaterialReactTable, {
+import {
     MRT_ColumnDef,
     MRT_PaginationState
 } from "material-react-table"
@@ -22,10 +23,10 @@ const ListService = () => {
 
     const { data, isLoading, isError, isRefetching } = useSearchServiceForAdQuery({
         searchText: searchTextDebounce,
-        pageNumber: pagination.pageIndex,
+        pageNumber: pagination.pageIndex + 1,
         pageSize: pagination.pageSize
     })
-
+    const paginationData = getDataPaginate(data)
     const columns = useMemo<MRT_ColumnDef<Service>[]>(
         () => [
             {
@@ -110,24 +111,16 @@ const ListService = () => {
         []
     )
     return (
-        <MaterialReactTable
-            columns={columns}
-            enableRowActions
-            manualPagination
-            enableStickyHeader
-            enableTopToolbar
-            enableGlobalFilter={false}
-            muiTableContainerProps={{ sx: { maxHeight: "600px" } }}
+        <TableCustom
+            pagination={pagination}
             onPaginationChange={setPagination}
+            columns={columns}
             data={data?.data?.data ?? []}
-            rowCount={getDataPaginate(data).PageSize ?? 0}
-            state={{
-                isLoading,
-                pagination,
-                showAlertBanner: isError,
-                showProgressBars: isRefetching
-            }}
-            positionActionsColumn="last"
+            rowCount={paginationData.TotalCount ?? 0}
+            pageCount={paginationData.TotalPages ?? 0}
+            isLoading={isLoading}
+            isError={isError}
+            isRefetching={isRefetching}
             renderRowActions={({ row }) => (
                 <Box sx={{ display: "flex", gap: "1rem" }}>
                     <Tooltip arrow placement="left" title="Edit">
