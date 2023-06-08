@@ -8,10 +8,7 @@ import {
 } from "@mui/material"
 import { useQueryClient } from "@tanstack/react-query"
 import ImageCustom from "components/Common/ImageCustom"
-import {
-  useGetUserMainProfilesByID,
-  useSimpleProfile
-} from "hooks/query/profile/useProfile"
+import { useSimpleProfile } from "hooks/query/profile/useProfile"
 import Image from "next/image"
 import Link from "next/link"
 import { useRouter } from "next/router"
@@ -119,7 +116,7 @@ const UserAvatar = ({ menu }: Props) => {
                   </div>
                 )}
               </div>
-              n<div className="w-full h-[2px] bg-gray-100"></div>
+              <div className="w-full h-[2px] bg-gray-100"></div>
               <div>
                 <span className="block px-5 mt-3 mb-2 text-xs font-semibold uppercase text-h1">
                   Eclinic

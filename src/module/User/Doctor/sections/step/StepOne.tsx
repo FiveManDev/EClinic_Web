@@ -13,12 +13,11 @@ const optionsPayment = [
   { label: "Stripe", value: "2" }
 ]
 export type PropsStep = {
-  onContinue: () => void
-  onCancel: () => void
+  onContinue?: () => void
+  onCancel?: () => void
   onBack?: () => void
 }
 export const StepOne = ({ onCancel, onContinue }: PropsStep) => {
-  const handleSelectTypeConnect = (option: Option) => {}
   const [date, setDate] = React.useState<Dayjs | null>(dayjs("2022-04-07"))
   return (
     <>

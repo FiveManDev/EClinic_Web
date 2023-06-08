@@ -1,10 +1,8 @@
 import UserSecondaryLayout from "layout/User/UserSecondaryLayout"
 import Head from "next/head"
-import React from "react"
 import { useTranslation } from "react-i18next"
 import { IBreadcrum } from "types/Base.type"
 import DetailDoctor from "./sections/DetailDoctor"
-import Booking from "./sections/Booking"
 
 const DoctorDetailPage = () => {
   const { t } = useTranslation(["base", "ser"])
