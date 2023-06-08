@@ -1,11 +1,12 @@
 import { Checkbox, Divider, FormControlLabel, Stack } from "@mui/material"
-import { DateCalendar, LocalizationProvider } from "@mui/x-date-pickers"
+import { CalendarPicker, LocalizationProvider } from "@mui/x-date-pickers"
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs"
 import classNames from "classnames"
 import TimePickerCustom from "components/Common/DatePicker/TimePickerCustom"
 import ModalPrimary from "components/Common/Modal/ModalPrimary"
 import TooltipIcon from "components/Common/ToolTipIcon"
 import CustomButton from "components/User/Button"
+import dayjs, { Dayjs } from "dayjs"
 import { useState } from "react"
 import { HiOutlineTrash, HiPlus } from "react-icons/hi2"
 
@@ -86,6 +87,7 @@ const ScheduleAPM = () => {
   const [isDuration, setIsDuration] = useState(false)
   const [weeklyHours, setWeeklyHours] = useState(initialData)
   const [showModal, setShowModal] = useState(false)
+  const [date, setDate] = useState<Dayjs | null>(dayjs("2022-04-07"))
 
   return (
     <section className="flex flex-col background-primary ">
@@ -100,7 +102,7 @@ const ScheduleAPM = () => {
               key={index}
               onClick={() => setIsDuration(false)}
               className={classNames(
-                "flex items-center justify-center rounded-md px-3 py-2 text-gray-400 bg-transparent border border-gray-400 border-solid hover:border-primary hover:border-2 hover:text-primary cursor-pointer"
+                "flex items-center justify-center rounded-md px-3 py-2 text-gray-400 bg-transparent border-2 border-gray-400 border-solid hover:border-primary  hover:text-primary cursor-pointer"
               )}
             >
               {item} min
@@ -109,7 +111,7 @@ const ScheduleAPM = () => {
           <button
             onClick={() => setIsDuration(true)}
             className={classNames(
-              "flex items-center rounded-md justify-center px-3 py-2 text-gray-400 bg-transparent border border-gray-400 border-solid hover:border-primary hover:border-2 hover:text-primary cursor-pointer"
+              "flex items-center rounded-md justify-center px-3 py-2 text-gray-400 bg-transparent  border-gray-400 border-solid hover:border-primary border-2 hover:text-primary cursor-pointer"
             )}
           >
             Custom
@@ -121,7 +123,7 @@ const ScheduleAPM = () => {
             <div className="flex items-center">
               <input
                 type="text"
-                className="rounded-md w-[140px] px-3 py-2 border border-gray-400 border-solid "
+                className="rounded-md w-[140px] px-3 py-2 border-2 border-gray-400 border-solid "
                 defaultValue={"60"}
               />
               <span className="px-2">min</span>
@@ -134,6 +136,23 @@ const ScheduleAPM = () => {
         <div className="grid grid-cols-5">
           <div className="col-span-3 py-6 mr-4">
             <h4 className="text-sm font-semibold">Set your weekly hours</h4>
+            <div className="flex py-4">
+              <FormControlLabel
+                control={<Checkbox />}
+                label={"Set All "}
+                className="max-w-[100px] w-full"
+              />
+              <div className="flex flex-col gap-y-2">
+                <div className="flex items-center">
+                  <TimePickerCustom />
+                  <span className="px-2">-</span>
+                  <TimePickerCustom />
+                </div>
+              </div>
+              <TooltipIcon title="Add new interval" className="ml-2">
+                <HiPlus />
+              </TooltipIcon>
+            </div>
             <Stack
               direction="column"
               divider={<Divider orientation="horizontal" flexItem />}
@@ -184,7 +203,11 @@ const ScheduleAPM = () => {
                   </h1>
                   <div className="mx-auto">
                     <LocalizationProvider dateAdapter={AdapterDayjs}>
-                      <DateCalendar showDaysOutsideCurrentMonth />
+                      <CalendarPicker
+                        showDaysOutsideCurrentMonth
+                        date={date}
+                        onChange={(newDate) => setDate(newDate)}
+                      />
                     </LocalizationProvider>
                   </div>
                 </div>
