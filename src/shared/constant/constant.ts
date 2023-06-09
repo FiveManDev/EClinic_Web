@@ -3,6 +3,7 @@ export const DEFAULT_URL_API = "https://localhost:8888"
 
 export const QUERY_KEYS = {
   LOGIN: "LOGIN",
+  SERVICE_PACKAGE: "SERVICE_PACKAGE",
   SERVICE: "SERVICE",
   SPECIALIZATION: "SPECIALIZATION",
   PROFILE: "PROFILE",
@@ -27,6 +28,7 @@ export const URL_API = {
   AUTH: "identity/Authentication",
   ACCOUNT: "identity/Account",
   MAIL: "mail/Mail",
+  SERVICE_PACKAGE: "serviceinformation/ServicePackage",
   SERVICE: "serviceinformation/Service",
   SPECIALIZATION: "serviceinformation/Specialization",
   PROFILE: "profile/Profile",

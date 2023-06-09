@@ -2,10 +2,10 @@
   "banner": {
     "menu": {
       "Portal": "Cổng thông tin",
-      "Services": "Dịch vụ",
+      "Services": "Gói dịch vụ",
       "Booking": "Đặt Khám",
       "Contact": "Liên hệ",
-      "Blog": "Blog",
+      "Blog": "Blogs",
       "Doctor": "Bác sĩ"
     },
     "title": "Hiểu, theo dõi, cải thiện sức khỏe",
@@ -27,12 +27,12 @@
   "service": {
     "title": "Các dịch vu phổ biến",
     "desc": "Hơn 30 dịch vụ chúng tôi có thể cung cấp cho bạn",
-    "btn": "Tất cả dịch vụ",
+    "btn": "Tất cả gói dịch vụ",
     "btnCard": "Xem trực tiếp"
   },
   "blog": {
     "title": "Tin tức sức khỏe cập nhật hàng ngày",
-    "btn": "Xem tất cả tin tức"
+    "btn": "Xem tất cả blogs"
   },
   "forum": {
     "title": "Hỏi đáp bác sĩ",
