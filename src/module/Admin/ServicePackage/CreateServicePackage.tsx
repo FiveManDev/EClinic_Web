@@ -108,7 +108,6 @@ const CreateServicePackage = ({ labelForm, servicePackage, mode = "create" }: Pr
                                 if (data?.isSuccess) {
                                     toast.success("Update a service package successfuly")
                                     queryClient.invalidateQueries([QUERY_KEYS.SERVICE_PACKAGE])
-                                    resetForm()
                                 } else {
                                     toast.error("Update a service package fail")
                                 }

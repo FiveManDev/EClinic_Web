@@ -26,9 +26,27 @@ class ServiceService {
     )
     return res as AxiosResponse<IServerResponse<ServicePackage[]>>
   }
+  async getAllServicePackage(data: IPaging) {
+    const res: AxiosResponse = await axiosClient.get(
+      `${URL_API.SERVICE_PACKAGE}/GetAllServicePackage`,
+      {
+        headers: {
+          PageNumber: data.pageNumber,
+          PageSize: data.pageSize
+        }
+      }
+    )
+    return res as AxiosResponse<IServerResponse<ServicePackage[]>>
+  }
   async getServicePackageByIDForAd(servicePackageId: string) {
     const res: AxiosResponse = await axiosClient.get(
       `${URL_API.SERVICE_PACKAGE}/GetServicePackageByIDForAd?servicePackageID=${servicePackageId}`
+    )
+    return res.data as IServerResponse<ServicePackage>
+  }
+  async getServicePackageByID(servicePackageId: string) {
+    const res: AxiosResponse = await axiosClient.get(
+      `${URL_API.SERVICE_PACKAGE}/GetServicePackageByID?servicePackageID=${servicePackageId}`
     )
     return res.data as IServerResponse<ServicePackage>
   }

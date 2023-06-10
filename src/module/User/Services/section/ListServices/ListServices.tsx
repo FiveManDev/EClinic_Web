@@ -1,21 +1,40 @@
-import { Pagination } from "@mui/material"
-import React from "react"
+import React, { useState } from "react"
 import CardService from "../../components/CardService"
+import { useGetAllServicePackageQuery } from "hooks/query/service/useService"
+import { ServicePackage } from "types/Service"
+import { IPagination } from "types/Pagination"
+import PaginationCustom from "components/Common/Pagination"
 
 const ListServices = () => {
+  const [pageIndex, setPageIndex] = useState(1)
+  const { data } = useGetAllServicePackageQuery({
+    pageNumber: 1,
+    pageSize: 12
+  })
+  const servicePackages: ServicePackage[] = data?.data?.data as ServicePackage[]
+  const paginateData = data?.headers["x-pagination"]
+    ? (JSON.parse(data.headers["x-pagination"]) as IPagination)
+    : {
+      PageIndex: pageIndex,
+      PageSize: 0,
+      TotalCount: 0,
+      TotalPages: 0,
+      HasPrevious: false,
+      HasNext: false
+    }
   return (
     <>
       <div className="grid grid-cols-2 gap-4 md:gap-8 lg:grid-cols-3">
-        {Array(15)
-          .fill(0)
-          .map((_, index) => (
-            <CardService key={index} />
-          ))}
+        {servicePackages?.map((item) => (
+          <CardService servicePackage={item} key={item.servicePackageID} />
+        )
+        )}
       </div>
-      <Pagination
-        count={10}
+      <PaginationCustom
+        onPageChange={(value) => setPageIndex(value)}
+        pagination={paginateData}
         color="primary"
-        className="pt-10 md:ml-auto md:w-fit"
+        className="pt-6 md:ml-auto md:w-fit"
         shape="rounded"
       />
     </>

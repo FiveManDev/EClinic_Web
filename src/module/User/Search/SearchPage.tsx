@@ -33,7 +33,7 @@ const SearchPage = () => {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <UserSecondaryLayout breadrums={breadrums}>
-        <div className="flex flex-col items-center mx-auto bg-white">
+        <div className="flex flex-col items-center mx-auto bg-white w-full">
           <div className="relative w-[560px] h-[250px]">
             <ImageCustom
               src={"/images/search-image.webp"}
@@ -80,7 +80,7 @@ const SearchPage = () => {
           </div>
         </div>
         <div className="flex flex-col gap-y-4">
-          <ResultsSearch />
+          {/* <ResultsSearch servicePackages={ } blogs={ } posts={ } /> */}
         </div>
       </UserSecondaryLayout>
     </>
