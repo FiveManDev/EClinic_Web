@@ -1,8 +1,6 @@
 import classNames from "classnames"
 import ImageCustom from "components/Common/ImageCustom"
-import CustomButton from "components/User/Button"
 import { useRouter } from "next/router"
-import { useTranslation } from "react-i18next"
 import { ServicePackage } from "types/Service"
 interface IProps {
   className?: string
@@ -10,7 +8,6 @@ interface IProps {
 }
 
 const CardService = ({ className, servicePackage }: IProps) => {
-  const { t } = useTranslation(["ser"])
   const router = useRouter()
   return (
     <div
@@ -18,6 +15,11 @@ const CardService = ({ className, servicePackage }: IProps) => {
         className,
         "overflow-hidden bg-white border border-solid border-[#EAEAEA] rounded-xl inline-block w-[340px]"
       )}
+      onClick={() =>
+        router.push(
+          `/services/${servicePackage?.servicePackageID}`
+        )
+      }
     >
       <div className="relative w-full h-[140px]">
         <ImageCustom
@@ -32,18 +34,6 @@ const CardService = ({ className, servicePackage }: IProps) => {
           {servicePackage?.servicePackageName}
         </h4>
         <div className="flex flex-col-reverse items-start justify-between mt-4 md:items-center gap-y-2 md:gap-y-0 md:flex-row">
-          <CustomButton
-            kind="primary"
-            size="small"
-            className="w-full rounded-sm md:w-fit h-9 md:h-10"
-            onClick={() =>
-              router.push(
-                `/services/${servicePackage?.servicePackageID}`
-              )
-            }
-          >
-            <span className="text-[10px] md:text-xs">{t("ser:btnItem")}</span>
-          </CustomButton>
           <div className="flex items-center gap-x-1 ">
             <svg
               width={17}

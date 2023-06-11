@@ -9,7 +9,7 @@ import { ServicePackage } from "types/Service"
 interface IProps {
   servicePackages?: ServicePackage[]
   blogs?: IBlog[]
-  posts: IPost[]
+  posts?: IPost[]
 }
 const ResultsSearch = ({ servicePackages, blogs, posts }: IProps) => {
   return (

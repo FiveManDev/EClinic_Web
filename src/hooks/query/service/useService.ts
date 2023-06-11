@@ -47,6 +47,23 @@ export const useSearchServicePackageForAdQuery = (data: IPaginationSearch) => {
       })
   })
 }
+export const useSearchServicePackageQuery = (data: IPaginationSearch) => {
+  const queryKey = [
+    QUERY_KEYS.SERVICE_PACKAGE,
+    data.pageNumber,
+    data.pageSize,
+    data.searchText
+  ]
+  return useQuery({
+    queryKey,
+    queryFn: () =>
+      serviceService.searchServicePackage({
+        pageNumber: data.pageNumber,
+        pageSize: data.pageSize,
+        searchText: data.searchText
+      })
+  })
+}
 export const useGetAllServicePackageQuery = (data: IPaging) => {
   const queryKey = [QUERY_KEYS.SERVICE_PACKAGE, data.pageNumber, data.pageSize]
   return useQuery({

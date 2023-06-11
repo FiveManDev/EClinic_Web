@@ -9,16 +9,39 @@ import { useRouter } from "next/router"
 import ResultsSearch from "./sections/results"
 import ChipCustom from "components/Common/Chip/Chip"
 import Head from "next/head"
+import { useSearchServicePackageQuery } from "hooks/query/service/useService"
+import useDebounce from "hooks/useDebounce"
+import { useSearchPostsForum } from "hooks/query/forum/useForum"
+import { IHashtag } from "types/Post"
+import { useSearchPostsBlog } from "hooks/query/blog/useBlog"
 
 const SearchPage = () => {
   const { t } = useTranslation(["home", "base"])
   const router = useRouter()
 
   const [searchValue, setSearchValue] = useState("")
+  const searchTextDebounce = useDebounce(searchValue, 1000)
   const breadrums: IBreadcrum[] = [
     { label: t("base:pages.home"), href: "/" },
     { label: t("base:pages.search") }
   ]
+  const ServicePackagesResult = useSearchServicePackageQuery({
+    searchText: searchTextDebounce,
+    pageNumber: 1,
+    pageSize: 10
+  })
+  const PostsForumResult = useSearchPostsForum(
+    searchTextDebounce,
+    1,
+    10,
+    []
+  )
+  const PostsBlogResult = useSearchPostsBlog(
+    searchTextDebounce,
+    1,
+    10,
+    []
+  )
   useEffect(() => {
     if (router.query.keyword) {
       setSearchValue(router.query.keyword?.toString())
@@ -80,7 +103,8 @@ const SearchPage = () => {
           </div>
         </div>
         <div className="flex flex-col gap-y-4">
-          {/* <ResultsSearch servicePackages={ } blogs={ } posts={ } /> */}
+          {ServicePackagesResult.isLoading ? "Loading" :
+            <ResultsSearch servicePackages={ServicePackagesResult.data?.data?.data} blogs={PostsBlogResult.data?.data?.data} posts={PostsForumResult.data?.data?.data} />}
         </div>
       </UserSecondaryLayout>
     </>
