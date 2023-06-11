@@ -84,7 +84,7 @@ const CreateServicePackage = ({ labelForm, servicePackage, mode = "create" }: Pr
     const watchDiscount = watch("discount")
     const watchIsActive = watch("isActive", servicePackage?.isActive ? true : false)
     const onFileChange = (file: File) => {
-        setValue("image", file)
+        setValue("image", (typeof file === "string") ? null : file)
     }
     const onSubmit = async (value: FieldValues) => {
         const newServices =
