@@ -1,20 +1,101 @@
 import { AxiosResponse } from "axios"
 import axiosClient from "shared/axios/httpClient"
 import { URL_API } from "shared/constant/constant"
-import { Service, Specialization } from "types/Service"
+import { Service, ServicePackage, Specialization } from "types/Service"
 import { IServerResponse } from "types/server/IServerResponse"
 import { IPaginationSearch, IPaging } from "types/Pagination"
 import {
   CreateServiceItem,
+  CreateServicePackageItem,
   CreateSpecialization,
-  UpdateService
+  UpdateService,
+  UpdateServicePackage
 } from "hooks/query/service/useService"
 
 class ServiceService {
+  //service package
+  async searchServicePackageForAd(data: IPaginationSearch) {
+    const res: AxiosResponse = await axiosClient.get(
+      `${URL_API.SERVICE_PACKAGE}/SearchServicePackageForAd?SearchText=${data.searchText}`,
+      {
+        headers: {
+          PageNumber: data.pageNumber,
+          PageSize: data.pageSize
+        }
+      }
+    )
+    return res as AxiosResponse<IServerResponse<ServicePackage[]>>
+  }
+  async getServicePackageByIDForAd(servicePackageId: string) {
+    const res: AxiosResponse = await axiosClient.get(
+      `${URL_API.SERVICE_PACKAGE}/GetServicePackageByIDForAd?servicePackageID=${servicePackageId}`
+    )
+    return res.data as IServerResponse<ServicePackage>
+  }
+  async createServicePackage(data: CreateServicePackageItem) {
+    try {
+      const formData = new FormData()
+      for (const [key, value] of Object.entries(data)) {
+        if (key === "serviceItemIds") {
+          value.forEach((hash: string) => {
+            formData.append(key, hash)
+          })
+        } else {
+          formData.append(key, value)
+        }
+      }
+      const res: AxiosResponse = await axiosClient.post(
+        `${URL_API.SERVICE_PACKAGE}/CreateServicePackage`,
+        formData,
+        {
+          headers: { "content-type": "multipart/form-data" }
+        }
+      )
+      return res.data as IServerResponse<string>
+    } catch (error) {
+      console.log("Service Package Service ~ error:", error)
+    }
+  }
+  async updateServicePackage(data: UpdateServicePackage) {
+    try {
+      const formData = new FormData()
+      for (const [key, value] of Object.entries(data)) {
+        if (key === "serviceItemIds") {
+          value.forEach((hash: string) => {
+            formData.append(key, hash)
+          })
+        } else {
+          formData.append(key, value)
+        }
+      }
+      const res: AxiosResponse = await axiosClient.put(
+        `${URL_API.SERVICE_PACKAGE}/UpdateServicePackage`,
+        formData,
+        {
+          headers: { "content-type": "multipart/form-data" }
+        }
+      )
+      return res.data as IServerResponse<string>
+    } catch (error) {
+      console.log("Service Package Service ~ error:", error)
+    }
+  }
   //service
+  async getAllServiceForAd(data: IPaging) {
+    const res: AxiosResponse = await axiosClient.get(
+      `${URL_API.SERVICE}/GetAllServiceForAd`,
+      {
+        headers: {
+          PageNumber: data.pageNumber,
+          PageSize: data.pageSize
+        }
+      }
+    )
+    return res as AxiosResponse<IServerResponse<Service[]>>
+  }
   async searchServiceForAd(data: IPaginationSearch) {
     const res: AxiosResponse = await axiosClient.get(
-      `${URL_API.SERVICE}/GetAllServiceForAd?SearchText=${data.searchText}`,
+      `${URL_API.SERVICE}/SearchServiceForAd?SearchText=${data.searchText}`,
       {
         headers: {
           PageNumber: data.pageNumber,

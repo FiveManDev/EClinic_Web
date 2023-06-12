@@ -13,20 +13,16 @@ export interface Specialization {
   specializationName: string
 }
 export interface ServicePackage {
-  ServicePackageID: string
-  ServicePackageName: string
-  Description: string
-  Image: any
-  Price: number
-  Discount: number
-  PriceDiscount: number
-  TotalOrder: number
-  EstimatedTime: number
-  IsActive: boolean
-  CreatedAt: string
-  UpdatedAt: string
-}
-export interface ServicePackageItem {
-  ServicePackageID: string
-  ServiceID: string
+  servicePackageID: string
+  servicePackageName: string
+  description: string
+  image: any
+  price: number
+  discount: number
+  totalOrder: number
+  estimatedTime: number
+  isActive: boolean
+  createdAt: string
+  updatedAt: string
+  serviceItems: Service[]
 }

@@ -2,7 +2,7 @@ import { useMutation, useQuery } from "@tanstack/react-query"
 import { QUERY_KEYS } from "shared/constant/constant"
 import { IPaginationSearch, IPaging } from "types/Pagination"
 import { serviceService } from "../../../services/service.service"
-import { Service, Specialization } from "types/Service"
+import { Service, ServicePackage, Specialization } from "types/Service"
 
 export type CreateServiceItem = Omit<
   Service,
@@ -16,8 +16,72 @@ export type UpdateService = Omit<
 > & {
   specializationID: string
 }
+export type CreateServicePackageItem = Omit<
+  ServicePackage,
+  "servicePackageID" | "totalOrder" | "createdAt" | "updatedAt" | "serviceItems"
+> & {
+  serviceItemIds: string[]
+}
+export type UpdateServicePackage = Omit<
+  ServicePackage,
+  "totalOrder" | "createdAt" | "updatedAt" | "serviceItems"
+> & {
+  serviceItemIds: string[]
+}
 export type CreateSpecialization = Omit<Specialization, "specializationID">
+//Service package
+export const useSearchServicePackageForAdQuery = (data: IPaginationSearch) => {
+  const queryKey = [
+    QUERY_KEYS.SERVICE_PACKAGE,
+    data.pageNumber,
+    data.pageSize,
+    data.searchText
+  ]
+  return useQuery({
+    queryKey,
+    queryFn: () =>
+      serviceService.searchServicePackageForAd({
+        pageNumber: data.pageNumber,
+        pageSize: data.pageSize,
+        searchText: data.searchText
+      })
+  })
+}
+export const useGetServicePackageByIDForAdQuery = (
+  servicePackageId: string
+) => {
+  const queryKey = [QUERY_KEYS.SERVICE_PACKAGE, servicePackageId]
+  return useQuery({
+    queryKey,
+    queryFn: () => serviceService.getServicePackageByIDForAd(servicePackageId)
+  })
+}
+export const useCreateServicePackageMutation = () => {
+  const createServicePackageMutation = useMutation({
+    mutationFn: (servicePackage: CreateServicePackageItem) =>
+      serviceService.createServicePackage(servicePackage)
+  })
+  return createServicePackageMutation
+}
+export const useUpdateServicePackageMutation = () => {
+  const updateServicePackageMutation = useMutation({
+    mutationFn: (servicePackage: UpdateServicePackage) =>
+      serviceService.updateServicePackage(servicePackage)
+  })
+  return updateServicePackageMutation
+}
 //Service
+export const useGetAllServiceForAdQuery = (data: IPaging) => {
+  const queryKey = [QUERY_KEYS.SERVICE, data.pageNumber, data.pageSize]
+  return useQuery({
+    queryKey,
+    queryFn: () =>
+      serviceService.getAllServiceForAd({
+        pageNumber: data.pageNumber,
+        pageSize: data.pageSize
+      })
+  })
+}
 export const useSearchServiceForAdQuery = (data: IPaginationSearch) => {
   const queryKey = [
     QUERY_KEYS.SERVICE,
