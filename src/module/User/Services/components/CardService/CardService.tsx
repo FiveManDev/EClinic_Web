@@ -1,29 +1,29 @@
 import classNames from "classnames"
 import ImageCustom from "components/Common/ImageCustom"
-import Tag from "components/Common/Tag"
-import CustomButton from "components/User/Button"
-import Link from "next/link"
-import { useTranslation } from "react-i18next"
-import { HiOutlineUser } from "react-icons/hi2"
+import { useRouter } from "next/router"
+import { ServicePackage } from "types/Service"
 interface IProps {
-  isDetail?: boolean
   className?: string
+  servicePackage?: ServicePackage
 }
 
-const CardService = ({ isDetail = true, className }: IProps) => {
-  const { t } = useTranslation(["ser"])
-
+const CardService = ({ className, servicePackage }: IProps) => {
+  const router = useRouter()
   return (
-    <Link
-      href={"/services/1"}
+    <div
       className={classNames(
         className,
-        "overflow-hidden bg-white border border-solid border-[#EAEAEA] rounded-xl inline-block w-full"
+        "overflow-hidden bg-white border border-solid border-[#EAEAEA] rounded-xl inline-block w-[340px]"
       )}
+      onClick={() =>
+        router.push(
+          `/services/${servicePackage?.servicePackageID}`
+        )
+      }
     >
       <div className="relative w-full h-[140px]">
         <ImageCustom
-          src={"/images/sample-2.png"}
+          src={servicePackage?.image || "/images/sample-2.png"}
           fill
           alt="service"
           classNameImage="object-cover"
@@ -31,53 +31,9 @@ const CardService = ({ isDetail = true, className }: IProps) => {
       </div>
       <div className="px-2 py-2 md:px-[18px] md:py-3">
         <h4 className="text-sm font-semibold md:text-lg text-h1 line-clamp-2">
-          Gói xét nghiệm tổng quát
+          {servicePackage?.servicePackageName}
         </h4>
-        {isDetail && <Tag className="w-fit">Tim mạch</Tag>}
-        {isDetail && (
-          <div className="flex items-center justify-between mt-4 md:mt-6">
-            <div className="flex items-center gap-x-1">
-              <HiOutlineUser />
-              <span>20</span>
-            </div>
-            <svg
-              width="97"
-              height="16"
-              viewBox="0 0 97 16"
-              fill="none"
-              xmlns="http://www.w3.org/2000/svg"
-            >
-              <path
-                d="M4.65298 13.9245L8.05265 12.1496L11.4523 13.9245C11.9417 14.18 12.5117 13.764 12.4178 13.22L11.7696 9.46692L14.5163 6.80812C14.9143 6.42285 14.6961 5.74839 14.1479 5.66928L10.3481 5.12098L8.64965 1.70346C8.4045 1.21017 7.7008 1.21017 7.45565 1.70346L5.75719 5.12098L1.95744 5.66928C1.40918 5.74839 1.19097 6.42285 1.58898 6.80812L4.33572 9.46692L3.68751 13.22C3.59355 13.764 4.16363 14.18 4.65298 13.9245Z"
-                fill="#92929D"
-              />
-              <path
-                d="M24.653 13.9245L28.0527 12.1496L31.4523 13.9245C31.9417 14.18 32.5117 13.764 32.4178 13.22L31.7696 9.46692L34.5163 6.80812C34.9143 6.42285 34.6961 5.74839 34.1479 5.66928L30.3481 5.12098L28.6497 1.70346C28.4045 1.21017 27.7008 1.21017 27.4556 1.70346L25.7572 5.12098L21.9574 5.66928C21.4092 5.74839 21.191 6.42285 21.589 6.80812L24.3357 9.46692L23.6875 13.22C23.5936 13.764 24.1636 14.18 24.653 13.9245Z"
-                fill="#92929D"
-              />
-              <path
-                d="M44.653 13.9245L48.0527 12.1496L51.4523 13.9245C51.9417 14.18 52.5117 13.764 52.4178 13.22L51.7696 9.46692L54.5163 6.80812C54.9143 6.42285 54.6961 5.74839 54.1479 5.66928L50.3481 5.12098L48.6497 1.70346C48.4045 1.21017 47.7008 1.21017 47.4556 1.70346L45.7572 5.12098L41.9574 5.66928C41.4092 5.74839 41.191 6.42285 41.589 6.80812L44.3357 9.46692L43.6875 13.22C43.5936 13.764 44.1636 14.18 44.653 13.9245Z"
-                fill="#92929D"
-              />
-              <path
-                d="M64.653 13.9245L68.0527 12.1496L71.4523 13.9245C71.9417 14.18 72.5117 13.764 72.4178 13.22L71.7696 9.46692L74.5163 6.80812C74.9143 6.42285 74.6961 5.74839 74.1479 5.66928L70.3481 5.12098L68.6497 1.70346C68.4045 1.21017 67.7008 1.21017 67.4556 1.70346L65.7572 5.12098L61.9574 5.66928C61.4092 5.74839 61.191 6.42285 61.589 6.80812L64.3357 9.46692L63.6875 13.22C63.5936 13.764 64.1636 14.18 64.653 13.9245Z"
-                fill="#92929D"
-              />
-              <path
-                d="M84.653 13.9245L88.0527 12.1496L91.4523 13.9245C91.9417 14.18 92.5117 13.764 92.4178 13.22L91.7696 9.46692L94.5163 6.80812C94.9143 6.42285 94.6961 5.74839 94.1479 5.66928L90.3481 5.12098L88.6497 1.70346C88.4045 1.21017 87.7008 1.21017 87.4556 1.70346L85.7572 5.12098L81.9574 5.66928C81.4092 5.74839 81.191 6.42285 81.589 6.80812L84.3357 9.46692L83.6875 13.22C83.5936 13.764 84.1636 14.18 84.653 13.9245Z"
-                fill="#92929D"
-              />
-            </svg>
-          </div>
-        )}
         <div className="flex flex-col-reverse items-start justify-between mt-4 md:items-center gap-y-2 md:gap-y-0 md:flex-row">
-          <CustomButton
-            kind="primary"
-            size="small"
-            className="w-full rounded-sm md:w-fit h-9 md:h-10"
-          >
-            <span className="text-[10px] md:text-xs">{t("ser:btnItem")}</span>
-          </CustomButton>
           <div className="flex items-center gap-x-1 ">
             <svg
               width={17}
@@ -103,11 +59,11 @@ const CardService = ({ isDetail = true, className }: IProps) => {
                 fill="#F4BF59"
               />
             </svg>
-            <span>120.000 đ</span>
+            <span> {(servicePackage?.price || 0) * (1 - ((servicePackage?.discount || 1) / 100))} VND</span>
           </div>
         </div>
       </div>
-    </Link>
+    </div>
   )
 }
 

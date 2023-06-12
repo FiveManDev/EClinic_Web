@@ -26,9 +26,39 @@ class ServiceService {
     )
     return res as AxiosResponse<IServerResponse<ServicePackage[]>>
   }
+  async searchServicePackage(data: IPaginationSearch) {
+    const res: AxiosResponse = await axiosClient.get(
+      `${URL_API.SERVICE_PACKAGE}/SearchServicePackageForAd?SearchText=${data.searchText}`,
+      {
+        headers: {
+          PageNumber: data.pageNumber,
+          PageSize: data.pageSize
+        }
+      }
+    )
+    return res as AxiosResponse<IServerResponse<ServicePackage[]>>
+  }
+  async getAllServicePackage(data: IPaging) {
+    const res: AxiosResponse = await axiosClient.get(
+      `${URL_API.SERVICE_PACKAGE}/GetAllServicePackage`,
+      {
+        headers: {
+          PageNumber: data.pageNumber,
+          PageSize: data.pageSize
+        }
+      }
+    )
+    return res as AxiosResponse<IServerResponse<ServicePackage[]>>
+  }
   async getServicePackageByIDForAd(servicePackageId: string) {
     const res: AxiosResponse = await axiosClient.get(
       `${URL_API.SERVICE_PACKAGE}/GetServicePackageByIDForAd?servicePackageID=${servicePackageId}`
+    )
+    return res.data as IServerResponse<ServicePackage>
+  }
+  async getServicePackageByID(servicePackageId: string) {
+    const res: AxiosResponse = await axiosClient.get(
+      `${URL_API.SERVICE_PACKAGE}/GetServicePackageByID?servicePackageID=${servicePackageId}`
     )
     return res.data as IServerResponse<ServicePackage>
   }
@@ -60,7 +90,7 @@ class ServiceService {
     try {
       const formData = new FormData()
       for (const [key, value] of Object.entries(data)) {
-        if (key === "serviceItemIds") {
+        if (key === "ServiceItemIds") {
           value.forEach((hash: string) => {
             formData.append(key, hash)
           })

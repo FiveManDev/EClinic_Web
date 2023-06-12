@@ -1,11 +1,14 @@
 import ImageCustom from "components/Common/ImageCustom"
-
-const CardBlog = () => {
+import { IBlog } from "types/Blog"
+interface Props {
+  blog?: IBlog
+}
+const CardBlog = ({ blog }: Props) => {
   return (
     <div className="flex flex-col w-full space-y-4">
       <div className="relative w-full h-[280px]">
         <ImageCustom
-          src={"/images/sample.png"}
+          src={blog?.coverImage || "/images/sample.png"}
           alt="image"
           sizes="(max-width: 768px) 100vw,
               (max-width: 1200px) 50vw,
@@ -16,16 +19,16 @@ const CardBlog = () => {
       </div>
       <div className="flex flex-col space-y-3">
         <h4 className="text-[22px] text-[#304050] font-semibold line-clamp-2">
-          Chương trình hội thảo:Trang bị kiến thức về sức...
+          {blog?.title}
         </h4>
         <div className="text-[#9A9FA5] text-xs space-x-1.5">
           <span>By</span>
-          <b className="font-bold text-black">Admin</b>
+          <b className="font-bold text-black">{blog?.author.firstName} {blog?.author.lastName}</b>
           <span>-</span>
-          <span>January 25, 2021</span>
+          <span>{blog?.updatedAt}</span>
         </div>
         <p className="text-base text-[#657280] line-clamp-3">
-          A leisurely start as not expected at our next campsite....
+          {blog?.content}
         </p>
       </div>
     </div>

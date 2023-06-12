@@ -22,16 +22,16 @@
   "appoiment": {
     "title": "Book an appointment online",
     "desc": "Make an appointment with good doctors who are dedicated to taking care of you and your family's health.",
-    "btn": "Booking"
+    "btn": "Booking now"
   },
   "service": {
-    "title": "Popular Services",
+    "title": "Popular Services Package",
     "desc": "We can provide over 30 services for you",
     "btn": "All Service Package",
     "btnCard": "Watch live"
   },
   "blog": {
-    "title": "Daily Health News Updates",
+    "title": "Daily Health Blogs",
     "btn": "View All Blogs"
   },
   "forum": {

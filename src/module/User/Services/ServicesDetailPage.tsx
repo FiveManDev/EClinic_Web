@@ -7,10 +7,23 @@ import React from "react"
 import { useTranslation } from "react-i18next"
 import { IBreadcrum } from "types/Base.type"
 import CardService from "./components/CardService"
+import { useRouter } from "next/router"
+import { useGetServicePackageByIDQuery } from "hooks/query/service/useService"
+import { ServicePackage } from "types/Service"
 
-const ServicesDetailPage = () => {
+interface Props {
+  servicePackages?: ServicePackage[]
+}
+const ServicesDetailPage = ({ servicePackages }: Props) => {
   const { t } = useTranslation(["base", "ser"])
-
+  const router = useRouter()
+  const { data, isLoading } = useGetServicePackageByIDQuery(
+    router.query.id! as string
+  )
+  const servicePackage: ServicePackage = data?.data as ServicePackage
+  if (isLoading) {
+    return <p>Loading Service Package Detail!</p>
+  }
   const breadrums: IBreadcrum[] = [
     { label: t("base:pages.home"), href: "/" },
     { label: t("base:pages.servies"), href: "/services" },
@@ -30,7 +43,7 @@ const ServicesDetailPage = () => {
             <div className="flex-col md:flex-row flex w-full  md:h-[320px] gap-y-4 md:gap-x-8 ">
               <div className="relative w-full h-56 md:h-full md:w-2/4">
                 <Image
-                  src={"/images/sample-2.png"}
+                  src={servicePackage?.image || "/images/sample-2.png"}
                   alt="detail-service"
                   fill
                   className="object-cover rounded-md"
@@ -38,9 +51,8 @@ const ServicesDetailPage = () => {
               </div>
               <div className="flex flex-col justify-between flex-1">
                 <div className="flex flex-col gap-y-4">
-                  <Tag>Tim mạch</Tag>
                   <h4 className="text-2xl font-semibold text-h1 line-clamp-2">
-                    Gói Xét nghiệm kiểm tra men gan mỡ máu
+                    {servicePackage?.servicePackageName}
                   </h4>
                   <span className="">
                     <svg
@@ -72,19 +84,24 @@ const ServicesDetailPage = () => {
                       />
                     </svg>
                   </span>
+                  <div className="flex w-[660px] flex-wrap">
+                    {servicePackage?.serviceItems?.map((service) => (
+                      <Tag key={service?.serviceID} className="mr-1 mb-1">{service.serviceName}</Tag>
+                    ))}
+                  </div>
                 </div>
                 <div className="mt-5 space-y-1 md:space-y-3 md:mt-0">
                   <div className="flex space-x-6">
                     <div className="flex flex-col md:gap-y-2">
                       <span className="text-lg font-semibold text-h1">
-                        $2000
+                        {(servicePackage?.price || 0) * (1 - ((servicePackage?.discount || 1) / 100))} VND
                       </span>
                       <span className="text-sm font-light text-gray-400">
                         {t("ser:price")}
                       </span>
                     </div>
                     <div className="flex flex-col md:gap-y-2">
-                      <span className="text-lg font-semibold text-h1">173</span>
+                      <span className="text-lg font-semibold text-h1">{servicePackage?.totalOrder}</span>
                       <span className="text-sm font-light text-gray-400">
                         {t("ser:totalSell")}
                       </span>
@@ -102,24 +119,7 @@ const ServicesDetailPage = () => {
               {t("ser:inforDetail")}
             </h3>
             <p className="text-[#696974] text-sm leading-loose mt-4">
-              Tết là dịp sum họp và mang lại cảm hứng , cùng chế độ sinh hoạt
-              không điều độ dẫn đến nhiều hệ lụy cho sức khỏe chúng ta. Gói xét
-              nghiệm kiểm tra men gan, mỡ máu ra đời với hạng mục thường quy như
-              men gan, mỡ máu... để đánh giá tình trạng sức khỏe, từ đó chủ động
-              điều chỉnh chế độ ăn uống, sinh hoạt. Phát hiện sớm các loại bệnh
-              ẩn nấp để có phương hướng điều trị từ giai đoạn sớm, nâng cao tỉ
-              lệ chữa khỏi và tiết kiệm chi phí. Quý khách có thể đặt lịch lấy
-              mẫu tại nhà và kết quả xét nghiệm sẽ có trong ngày. Sau đó, bác sĩ
-              gọi điện tư vấn chi tiết kết quả, đưa ra chế độ sinh hoạt phù hợp
-              hoặc nếu có bất thường, bác sĩ tư vấn người bệnh tới bệnh viện để
-              thực hiện thêm một số phương pháp chẩn đoán chuyên sâu nhằm phát
-              hiện chính xác bệnh, từ đó đưa ra phương pháp điều trị hiệu quả.
-              Bước 1: Điều dưỡng eDoctor đến tận nhà để lấy mẫu xét nghiệm và
-              chuyển đến Trung tâm Y Khoa Medic – Hòa Hảo để tiến hành các phân
-              tích. Bước 2: Kết quả phân tích sẽ được trả về tài khoản thông qua
-              hệ thống eDoctor tại website https://edoctor.io/ và ứng dụng
-              eDoctor. Bước 3: Bác sĩ liên hệ giải thích và tư vấn kết quả xét
-              nghiệm qua điện thoại.
+              {servicePackage?.description}
             </p>
           </div>
           <div className="mt-12 space-y-3">
@@ -128,11 +128,10 @@ const ServicesDetailPage = () => {
               {t("ser:specialService")}
             </h3>
             <div className="grid grid-cols-1 md:grid-cols-4">
-              {Array(4)
-                .fill(0)
-                .map((_, index) => (
-                  <CardService isDetail={false} key={index} />
-                ))}
+              {servicePackages?.map((item) => (
+                <CardService servicePackage={item} key={item.servicePackageID} />
+              )
+              )}
             </div>
           </div>
         </section>

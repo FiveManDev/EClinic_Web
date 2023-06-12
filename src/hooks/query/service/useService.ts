@@ -47,6 +47,34 @@ export const useSearchServicePackageForAdQuery = (data: IPaginationSearch) => {
       })
   })
 }
+export const useSearchServicePackageQuery = (data: IPaginationSearch) => {
+  const queryKey = [
+    QUERY_KEYS.SERVICE_PACKAGE,
+    data.pageNumber,
+    data.pageSize,
+    data.searchText
+  ]
+  return useQuery({
+    queryKey,
+    queryFn: () =>
+      serviceService.searchServicePackage({
+        pageNumber: data.pageNumber,
+        pageSize: data.pageSize,
+        searchText: data.searchText
+      })
+  })
+}
+export const useGetAllServicePackageQuery = (data: IPaging) => {
+  const queryKey = [QUERY_KEYS.SERVICE_PACKAGE, data.pageNumber, data.pageSize]
+  return useQuery({
+    queryKey,
+    queryFn: () =>
+      serviceService.getAllServicePackage({
+        pageNumber: data.pageNumber,
+        pageSize: data.pageSize
+      })
+  })
+}
 export const useGetServicePackageByIDForAdQuery = (
   servicePackageId: string
 ) => {
@@ -54,6 +82,13 @@ export const useGetServicePackageByIDForAdQuery = (
   return useQuery({
     queryKey,
     queryFn: () => serviceService.getServicePackageByIDForAd(servicePackageId)
+  })
+}
+export const useGetServicePackageByIDQuery = (servicePackageId: string) => {
+  const queryKey = [QUERY_KEYS.SERVICE_PACKAGE, servicePackageId]
+  return useQuery({
+    queryKey,
+    queryFn: () => serviceService.getServicePackageByID(servicePackageId)
   })
 }
 export const useCreateServicePackageMutation = () => {

@@ -2,7 +2,6 @@ import Head from "next/head"
 import Appoiment from "./section/appoiment/Appoiment"
 import Banner from "./section/banner/Banner"
 import Blog from "./section/blog"
-import Forum from "./section/forum"
 import Services from "./section/services/Services"
 
 export default function HomePage() {
@@ -20,7 +19,6 @@ export default function HomePage() {
           <Appoiment />
           <Services />
           <Blog />
-          {/* <Forum /> */}
         </div>
       </main>
     </>
