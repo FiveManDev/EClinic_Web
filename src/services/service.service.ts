@@ -90,7 +90,7 @@ class ServiceService {
     try {
       const formData = new FormData()
       for (const [key, value] of Object.entries(data)) {
-        if (key === "ServiceItemIds") {
+        if (key === "serviceItemIds") {
           value.forEach((hash: string) => {
             formData.append(key, hash)
           })
