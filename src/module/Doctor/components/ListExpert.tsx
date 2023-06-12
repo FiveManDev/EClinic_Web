@@ -1,6 +1,7 @@
 import { Box, IconButton, Tooltip } from "@mui/material"
 import ImageCustom from "components/Common/ImageCustom"
 import TableCustom from "components/Common/Table/TableCustom"
+import Tag from "components/Common/Tag"
 import { CustomInput } from "components/User/Input"
 import { useGetExpertProfilesQuery } from "hooks/query/profile/useProfile"
 import useDebounce from "hooks/useDebounce"
@@ -10,6 +11,7 @@ import { useRouter } from "next/router"
 import { useMemo, useState } from "react"
 import { HiOutlinePencilSquare } from "react-icons/hi2"
 import { combineName, dayformat, getDataPaginate } from "shared/helpers/helper"
+import colorsProvider from "shared/theme/colors"
 import { IProfileExpert } from "types/Profile.type"
 const ListExpert = () => {
   const router = useRouter()
@@ -63,6 +65,7 @@ const ListExpert = () => {
           )
         }
       },
+
       {
         accessorKey: "address",
         header: "Address",
@@ -77,6 +80,23 @@ const ListExpert = () => {
         size: 260,
         Cell: ({ row }) => {
           return <p className="line-clamp-1 ">{row.original.email}</p>
+        }
+      },
+      {
+        accessorKey: "enabledAccount",
+        header: "Status",
+        Cell: ({ row }) => {
+          return (
+            <Tag
+              color={
+                row.original.enabledAccount
+                  ? colorsProvider.success
+                  : colorsProvider.error
+              }
+            >
+              {row.original.enabledAccount ? "Active" : "Banned"}
+            </Tag>
+          )
         }
       },
       {

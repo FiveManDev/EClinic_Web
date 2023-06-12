@@ -1,10 +1,17 @@
 import React from "react"
 import Field from "../components/Field"
 
-const About = () => {
+const About = ({ data = "" }) => {
   return (
     <div className="flex flex-col w-full space-y-5">
-      <Field title="Chuyên môn">
+      <div
+        className="entry-content"
+        // Prevent XSS Attack recommen from React Docs
+        dangerouslySetInnerHTML={{
+          __html: data || ""
+        }}
+      ></div>
+      {/* <Field title="Chuyên môn">
         <p className="text-base font-light leading-relaxed text-gray-500">
           Lorem ipsum dolor sit amet consectetur adipisicing elit. Voluptas quis
           obcaecati dicta praesentium officia, ea exercitationem culpa possimus
@@ -250,7 +257,7 @@ const About = () => {
             </p>
           </li>
         </ul>
-      </Field>
+      </Field> */}
     </div>
   )
 }

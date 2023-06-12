@@ -113,6 +113,9 @@ const UserAvatar = ({ menu }: Props) => {
                     <div className="text-sm">
                       {data?.data?.firstName + " " + data?.data?.lastName}
                     </div>
+                    <small className="text-[10px] text-gray-400">
+                      @{data?.data?.email}
+                    </small>
                   </div>
                 )}
               </div>

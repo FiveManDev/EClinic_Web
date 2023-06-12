@@ -15,12 +15,6 @@ import { IHashtag } from "types/Post"
 import BlogPostCard from "./components/BlogPostCard"
 import BlogPostsSort from "./components/BlogPostsSort"
 
-const SORT_OPTIONS = [
-  { value: "latest", label: "Latest" },
-  { value: "popular", label: "Popular" },
-  { value: "oldest", label: "Oldest" }
-]
-
 export default function BlogPage() {
   const [pageIndex, setPageIndex] = useState(1)
 
@@ -77,7 +71,6 @@ export default function BlogPage() {
               placeholder={t("forum:search.input")}
             />
           </div>
-          <BlogPostsSort options={SORT_OPTIONS} />
         </Stack>
 
         <Grid container spacing={3}>

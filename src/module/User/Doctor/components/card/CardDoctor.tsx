@@ -1,8 +1,10 @@
 import { Skeleton } from "@mui/material"
 import ImageCustom from "components/Common/ImageCustom"
+import Tag from "components/Common/Tag"
 import CustomButton from "components/User/Button"
 import { useRouter } from "next/router"
 import { combineName } from "shared/helpers/helper"
+import colorsProvider from "shared/theme/colors"
 import { IProfileDoctor } from "types/Profile.type"
 
 interface IProps {
@@ -57,19 +59,23 @@ const CardDoctor = ({ doctor }: IProps) => {
           </div>
           <div className="flex items-center gap-6">
             <InfoItem content={doctor.title} label="Chức vụ" />
-            <InfoItem content={doctor.specializationID} label="Chuyên khoa" />
-            <InfoItem content="1234" label="Yêu thích" />
+            <InfoItem content={doctor.specializationName} label="Chuyên khoa" />
+            <InfoItem content={`$${doctor.price}`} label="Giá" />
           </div>
           <div className="w-full bg-gray-200 h-[1px]"></div>
-          <p className="text-sm text-gray-500 line-clamp-3">
-            {doctor.description}
-          </p>
+          <p className="text-sm text-gray-500 line-clamp-3">{doctor.content}</p>
         </div>
       </div>
     </div>
   )
 }
-const InfoItem = ({ label = "", content = "" }) => {
+const InfoItem = ({
+  label = "",
+  content = ""
+}: {
+  label: string
+  content: React.ReactNode
+}) => {
   return (
     <div className="flex flex-col ">
       <span className="text-[#B5B5BE] font-normal text-xs">{label}</span>

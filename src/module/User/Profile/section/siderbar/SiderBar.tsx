@@ -1,6 +1,7 @@
 import { Tab, Tabs } from "@mui/material"
 import { useRouter } from "next/router"
 import { SyntheticEvent, useMemo, useState } from "react"
+import { HiOutlineChatBubbleLeftRight } from "react-icons/hi2"
 import { MdLogout, MdOutlineHistory, MdOutlinePeopleAlt } from "react-icons/md"
 import { RiLockPasswordLine } from "react-icons/ri"
 import { routers } from "shared/constant/routers"
@@ -8,12 +9,10 @@ import { logoutUser } from "store/module/auth/action-creators"
 import { useAppDispatch } from "store/store"
 import LayoutItem from "../../components/layout"
 import ChangePassword from "../change-password"
+import ChatData from "../chat/ChatData"
 import HistoryQuestion from "../history-question"
 import Profile from "../profile"
 import { TabsWrapper } from "./Tabs.style"
-import { HiOutlineChatBubbleLeftRight } from "react-icons/hi2"
-import ChatSection from "../chat/ChatSection"
-import ContainerChat from "components/Common/Chat/ContainerChat"
 
 const SiderBar = () => {
   const [tabIndex, setTabIndex] = useState(0)
@@ -66,7 +65,7 @@ const SiderBar = () => {
         key: 3,
         label: `Chat with doctor`,
         icon: <HiOutlineChatBubbleLeftRight />,
-        children: <ContainerChat />
+        children: <ChatData />
       },
       {
         key: 4,

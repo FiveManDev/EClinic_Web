@@ -7,24 +7,13 @@ import Head from "next/head"
 import React, { useMemo } from "react"
 
 const Patient = () => {
-  const tabs = useMemo(
-    () => [
-      {
-        key: 0,
-        label: `All Patient`,
-        // children: <ListDoctor />
-        children: <ListPatient />
-      }
-    ],
-    []
-  )
   return (
     <>
       <Head>
         <title>Patient account</title>
       </Head>
       <MainHeadingLayout heading="Account Patient">
-        <TabsCustom tabs={tabs} />
+        <ListPatient />
       </MainHeadingLayout>
     </>
   )

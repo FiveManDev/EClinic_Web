@@ -129,7 +129,7 @@ const Form = () => {
               className="rounded-md md:h-[42px]"
               type="submit"
             >
-              {isSubmitting ? <Spinner /> : "Sign Up"}
+              {isSubmitting ? <Spinner /> : "Reset"}
             </CustomButton>
           </form>
           <p className="text-center mt-5 text-[#4E5D78">

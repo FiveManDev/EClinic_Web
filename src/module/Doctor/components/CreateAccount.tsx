@@ -8,6 +8,7 @@ import {
 } from "@mui/material"
 import DatePickerCustom from "components/Common/DatePicker/DatePickerCustom"
 import SwitchCustom from "components/Common/IOSSwitch"
+import { Option, SelectCustom } from "components/Common/Select/SelectCustom"
 import Tag from "components/Common/Tag"
 import CustomButton from "components/User/Button"
 import { CustomInput } from "components/User/Input"
@@ -19,6 +20,7 @@ import {
   useCreateProfileDoctorMutation,
   useUpdateProfileDoctorMutation
 } from "hooks/query/profile/useProfile"
+import { useGetAllSpecializationQuery } from "hooks/query/service/useService"
 import { Uploadfile } from "module/User/Profile/section/profile/components/form/Edit"
 import dynamic from "next/dynamic"
 import { useEffect } from "react"
@@ -29,6 +31,7 @@ import * as yup from "yup"
 const Editor = dynamic(() => import("components/Common/Editor/Editor"), {
   ssr: false
 })
+
 const schema = yup.object({
   email: yup
     .string()
@@ -50,9 +53,11 @@ const schema = yup.object({
       "Please enter valid phone number"
     ),
   workStart: yup.string().required("Please enter date of working start"),
+  price: yup.number().required("Please enter price of booking"),
   address: yup.string().required("Please enter address"),
   title: yup.string().required("Please enter position"),
-  description: yup.string().required("Please enter description")
+  description: yup.string().required("Please enter description"),
+  content: yup.string().required("Please enter content")
 })
 interface Props {
   labelForm: string
@@ -76,9 +81,38 @@ const CreateAccount = ({ labelForm, profile, mode = "create" }: Props) => {
     resolver: yupResolver(schema),
     defaultValues: profile
   })
+  const specializations = useGetAllSpecializationQuery({
+    pageNumber: 1,
+    pageSize: 100
+  })
   watch("avatar", null)
+  const watchSpecId = watch("specializationID", profile?.specializationID)
   const watchGender = watch("gender", profile ? profile?.gender : true)
   const watchDesc = watch("description")
+  const watchIsactive = watch("isActive", profile?.isActive ? true : false)
+  const watchEnabledAccount = watch(
+    "enabledAccount",
+    profile?.enabledAccount ? true : false
+  )
+  const resetForm = () => {
+    reset({
+      profileID: "",
+      userID: "",
+      firstName: "",
+      lastName: "",
+      avatar: null,
+      gender: true,
+      dateOfBirth: dayjs().toString(),
+      address: "",
+      email: "",
+      phone: "",
+      title: "",
+      workStart: dayjs().toString(),
+      description: "",
+      enabledAccount: false,
+      isActive: false
+    })
+  }
   const onFileChange = (file: File) => {
     setValue("avatar", file)
   }
@@ -92,7 +126,8 @@ const CreateAccount = ({ labelForm, profile, mode = "create" }: Props) => {
         if (choice) {
           updateProfileDoctorMutation.mutate(
             {
-              ...value
+              ...value,
+              workEnd: dayjs().format("YYYY-MM-DDTHH:mm:ss")
             } as UpdateDoctorProfile,
             {
               onSuccess: (data) => {
@@ -112,12 +147,14 @@ const CreateAccount = ({ labelForm, profile, mode = "create" }: Props) => {
     } else {
       createProfileDoctorMutation.mutate(
         {
-          ...value
+          ...value,
+          workEnd: dayjs().format("YYYY-MM-DDTHH:mm:ss")
         } as CreateDoctorProfile,
         {
           onSuccess: (data) => {
             if (data.isSuccess) {
               toast.success("Add successfuly")
+              resetForm()
             } else {
               toast.error("Add error")
             }
@@ -131,38 +168,19 @@ const CreateAccount = ({ labelForm, profile, mode = "create" }: Props) => {
   }
   useEffect(() => {
     if (profile === undefined) {
-      reset({
-        profileID: "",
-        userID: "",
-        firstName: "",
-        lastName: "",
-        avatar: null,
-        gender: true,
-        dateOfBirth: dayjs().toString(),
-        address: "",
-        email: "",
-        phone: "",
-        title: "",
-        workStart: dayjs().toString(),
-        description: ""
-      })
+      resetForm()
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [profile])
-
+  const handleSelectSpec = (option: Option) => {
+    setValue("specializationID", option.value)
+  }
   return (
     <form
       className="flex flex-col w-full gap-y-6 md:gap-y-0 md:flex-row gap-x-5"
       onSubmit={handleSubmit(onSubmit)}
     >
       <div className="relative background-primary w-full md:max-w-[360px] flex flex-col items-center h-fit py-16">
-        <Tag
-          color="#07AB55"
-          className="absolute top-0 right-0 -translate-x-1/4 translate-y-2/4"
-        >
-          Active
-        </Tag>
-
         <Uploadfile
           imageUrl={profile?.avatar as string | null}
           onFileChange={onFileChange}
@@ -172,10 +190,29 @@ const CreateAccount = ({ labelForm, profile, mode = "create" }: Props) => {
         </p>
         <div className="flex items-center justify-between w-full max-w-[260px] mt-6">
           <div className="flex flex-col">
-            <span className="text-base font-medium text-black2">Publish</span>
+            <span className="text-base font-medium text-black2">
+              Publish Profile
+            </span>
+            <p className="text-xs text-disable">
+              Apply disable profile to user
+            </p>
+          </div>
+          <SwitchCustom
+            checked={watchIsactive}
+            onChange={(e) => setValue("isActive", e.target.checked)}
+          />
+        </div>
+        <div className="flex items-center justify-between w-full max-w-[260px] mt-6">
+          <div className="flex flex-col">
+            <span className="text-base font-medium text-black2">
+              Block Account
+            </span>
             <p className="text-xs text-disable">Apply disable account</p>
           </div>
-          <SwitchCustom />
+          <SwitchCustom
+            checked={watchEnabledAccount}
+            onChange={(e) => setValue("enabledAccount", e.target.checked)}
+          />
         </div>
       </div>
       <div className="flex-1 background-primary">
@@ -200,7 +237,31 @@ const CreateAccount = ({ labelForm, profile, mode = "create" }: Props) => {
                 helperText={errors.lastName?.message?.toString()}
               />
             </div>
-
+            <div className="flex space-x-3">
+              <CustomInput
+                size="medium"
+                label="Price for booking"
+                control={control}
+                name="price"
+                error={!!errors.price}
+                helperText={errors.price?.message?.toString()}
+              />
+              <SelectCustom
+                size="medium"
+                value={watchSpecId}
+                isLoading={specializations.isLoading}
+                placeholder="Specialization"
+                options={
+                  specializations.data?.data.data.map((spec) => {
+                    return {
+                      value: spec.specializationID,
+                      label: spec.specializationName
+                    }
+                  })!
+                }
+                onSelectOption={handleSelectSpec}
+              />
+            </div>
             <div className="flex space-x-3">
               <CustomInput
                 size="medium"
@@ -293,16 +354,16 @@ const CreateAccount = ({ labelForm, profile, mode = "create" }: Props) => {
                 />
               </RadioGroup>
             </FormControl>
-            {/* <CustomInput
+            <CustomInput
               size="medium"
               multiline
-              label="About"
+              label="Content"
               rows={4}
               control={control}
-              name="description"
-              error={!!errors.description}
-              helperText={errors.description?.message?.toString()}
-            /> */}
+              name="content"
+              error={!!errors.content}
+              helperText={errors.content?.message?.toString()}
+            />
             <Editor
               onChange={(data: string) => {
                 setValue("description", data)

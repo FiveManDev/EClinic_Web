@@ -11,7 +11,6 @@ const Doctor = () => {
       {
         key: 0,
         label: `All Doctor`,
-        // children: <ListDoctor />
         children: <ListDoctor />
       },
       {

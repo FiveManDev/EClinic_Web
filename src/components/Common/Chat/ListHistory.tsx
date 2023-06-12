@@ -73,7 +73,7 @@ export const HistoryItem = ({ room }: HistoryProps) => {
             {dayformat(room.createdAt)}
           </time>
         </div>
-        <span className="text-xs text-disable line-clamp-2">
+        <span className="text-xs text-disable line-clamp-1">
           {room.chatMessage.content}
         </span>
       </div>

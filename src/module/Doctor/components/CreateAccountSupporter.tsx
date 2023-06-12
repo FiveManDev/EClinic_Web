@@ -23,6 +23,7 @@ import { Uploadfile } from "module/User/Profile/section/profile/components/form/
 import { useEffect } from "react"
 import { FieldValues, useForm } from "react-hook-form"
 import { toast } from "react-hot-toast"
+import colorsProvider from "shared/theme/colors"
 import { IProfileSupporter } from "types/Profile.type"
 import * as yup from "yup"
 
@@ -78,6 +79,10 @@ const CreateAccountSupporter = ({
   })
   watch("avatar", null)
   const watchGender = watch("gender", profile ? profile?.gender : true)
+  const watchEndable = watch(
+    "enabledAccount",
+    profile?.enabledAccount ? true : false
+  )
   const onFileChange = (file: File) => {
     setValue("avatar", file)
   }
@@ -94,7 +99,8 @@ const CreateAccountSupporter = ({
       email: "",
       phone: "",
       workStart: dayjs().toString(),
-      description: ""
+      description: "",
+      enabledAccount: false
     })
   }
   const onSubmit = async (value: FieldValues) => {
@@ -107,13 +113,13 @@ const CreateAccountSupporter = ({
         if (choice) {
           updateSupporterDoctorMutation.mutate(
             {
-              ...value
+              ...value,
+              workEnd: dayjs().format("YYYY-MM-DDTHH:mm:ss")
             } as UpdateSupporterProfile,
             {
               onSuccess: (data) => {
                 if (data.isSuccess) {
                   toast.success("Update successfuly")
-                  resetForm()
                 } else {
                   toast.error("Update error")
                 }
@@ -128,12 +134,14 @@ const CreateAccountSupporter = ({
     } else {
       createSupporterDoctorMutation.mutate(
         {
-          ...value
+          ...value,
+          workEnd: dayjs().format("YYYY-MM-DDTHH:mm:ss")
         } as CreateSupporterProfile,
         {
           onSuccess: (data) => {
             if (data.isSuccess) {
               toast.success("Add successfuly")
+              resetForm()
             } else {
               toast.error("Add error")
             }
@@ -159,12 +167,11 @@ const CreateAccountSupporter = ({
     >
       <div className="relative background-primary w-full md:max-w-[360px] flex flex-col items-center h-fit py-16">
         <Tag
-          color="#07AB55"
           className="absolute top-0 right-0 -translate-x-1/4 translate-y-2/4"
+          color={watchEndable ? colorsProvider.success : colorsProvider.error}
         >
-          Active
+          {watchEndable ? "Active" : "Banned"}
         </Tag>
-
         <Uploadfile
           imageUrl={profile?.avatar as string | null}
           onFileChange={onFileChange}
@@ -177,7 +184,12 @@ const CreateAccountSupporter = ({
             <span className="text-base font-medium text-black2">Publish</span>
             <p className="text-xs text-disable">Apply disable account</p>
           </div>
-          <SwitchCustom />
+          <SwitchCustom
+            checked={watchEndable}
+            onChange={(e) => {
+              setValue("enabledAccount", e.target.checked)
+            }}
+          />
         </div>
       </div>
       <div className="flex-1 background-primary">

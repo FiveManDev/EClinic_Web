@@ -3,30 +3,31 @@ import CardBlog from "module/User/Home/section/blog/components/CardBlog/CardBlog
 import CardService from "module/User/Services/components/CardService"
 import Link from "next/link"
 import React, { PropsWithChildren } from "react"
-
-const ResultsSearch = () => {
+import { IBlog } from "types/Blog"
+import { IPost } from "types/Post"
+import { ServicePackage } from "types/Service"
+interface IProps {
+  servicePackages?: ServicePackage[]
+  blogs?: IBlog[]
+  posts?: IPost[]
+}
+const ResultsSearch = ({ servicePackages, blogs, posts }: IProps) => {
   return (
     <div className="mt-6 space-y-8">
-      <LayoutItem label="Dịch vụ" link="/">
-        {Array(4)
-          .fill(0)
-          .map((item, index) => (
-            <CardService key={index} />
-          ))}
+      <LayoutItem label="Service Package" link="/services">
+        {servicePackages?.map((item) => (
+          < CardService key={item.servicePackageID} servicePackage={item} />
+        ))}
       </LayoutItem>
-      {/* <LayoutItem label="Hỏi đáp" link="/">
-        {Array(4)
-          .fill(0)
-          .map((item, index) => (
-            <CardForum key={index} />
-          ))}
-      </LayoutItem> */}
-      <LayoutItem label="Tin tức hằng ngày" link="/">
-        {Array(4)
-          .fill(0)
-          .map((item, index) => (
-            <CardBlog key={index} />
-          ))}
+      <LayoutItem label="Forum" link="/forum">
+        {posts?.map((item) => (
+          <CardForum key={item.id} post={item} />
+        ))}
+      </LayoutItem>
+      <LayoutItem label="Daily blogs" link="/blog">
+        {blogs?.map((item) => (
+          <CardBlog key={item.id} blog={item} />
+        ))}
       </LayoutItem>
     </div>
   )

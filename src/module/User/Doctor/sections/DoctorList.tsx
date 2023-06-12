@@ -14,7 +14,7 @@ const DoctorList = ({ searchText }: IProps) => {
 
   const { data, isLoading } = useGetDoctorProfilesQuery({
     searchText,
-    pageNumber: pagination.pageIndex + 1,
+    pageNumber: pagination.pageIndex,
     pageSize: pagination.pageSize
   })
   const paginateData = getDataPaginate(data)

@@ -7,6 +7,8 @@ import SvgColor from "components/Common/svg-color/index"
 import Link from "next/link"
 import { dayformat } from "shared/helpers/helper"
 import { IBlog } from "types/Blog"
+import Tag from "components/Common/Tag"
+import colorsProvider from "shared/theme/colors"
 // ----------------------------------------------------------------------
 
 const StyledCardMedia = styled("div")({
@@ -136,6 +138,13 @@ export default function BlogPostCard({ post, index }: IProps) {
           >
             {post.title}
           </StyledTitle>
+          <div className="flex items-center gap-2 mt-4">
+            {post.hashtags.slice(0, 3).map((item, index) => (
+              <Tag color={colorsProvider.gray80} key={index}>
+                {item.hashtagName}
+              </Tag>
+            ))}
+          </div>
         </CardContent>
       </Card>
     </Grid>

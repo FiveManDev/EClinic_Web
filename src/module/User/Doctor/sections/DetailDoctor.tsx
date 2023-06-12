@@ -1,22 +1,19 @@
 import ImageCustom from "components/Common/ImageCustom"
 import ModalPrimary from "components/Common/Modal/ModalPrimary"
+import Tag from "components/Common/Tag"
 import CustomButton from "components/User/Button"
-import { OverlayScrollbarsComponent } from "overlayscrollbars-react"
-import { useEffect, useState } from "react"
-import About from "./About"
-import { StepOne } from "./step/StepOne"
-import { StepTwo } from "./step/StepTwo"
-import { DetailDoctorModalWrapper } from "./styles"
 import { useGetDoctorProfilesByIdQuery } from "hooks/query/profile/useProfile"
 import { useRouter } from "next/router"
+import { OverlayScrollbarsComponent } from "overlayscrollbars-react"
+import { useEffect, useState } from "react"
 import { combineName } from "shared/helpers/helper"
-import Feedback from "./Feedback"
-import classNames from "classnames"
-import Tag from "components/Common/Tag"
 import colorsProvider from "shared/theme/colors"
+import About from "./About"
+import { StepOne } from "./step/StepOne"
 import StepThree from "./step/StepThree"
+import { StepTwo } from "./step/StepTwo"
+import { DetailDoctorModalWrapper } from "./styles"
 const DetailDoctor = () => {
-  const [tab, setTab] = useState(1)
   const router = useRouter()
   const { data, isLoading } = useGetDoctorProfilesByIdQuery(
     router.query.id! as string
@@ -90,13 +87,15 @@ const DetailDoctor = () => {
               />
             </div>
             <h1 className="text-lg font-semibold">
-              {combineName(data?.data.firstName, data?.data.lastName)}
+              {data.data.title +
+                "." +
+                combineName(data?.data.firstName, data?.data.lastName)}
             </h1>
             <Tag
-              color={colorsProvider.secondary}
+              color={colorsProvider.pending}
               className="px-4 py-2 font-semibold rounded-lg"
             >
-              {data.data.title}
+              {"$ " + data.data.price}
             </Tag>
             <Tag
               color={colorsProvider.success}
@@ -124,9 +123,7 @@ const DetailDoctor = () => {
             </Tag>
           </div>
           <p className="text-sm leading-normal text-center text-disable">
-            MDS - Periodonyology and Oral Impantology, BDS Oral And
-            MaxilloFacial Surgeon, Dentist 18 Years Experience Overall (18 years
-            as specialist)
+            {data.data.content}
           </p>
           <div className="flex items-center gap-x-2">
             <span className="text-icon">
@@ -156,7 +153,7 @@ const DetailDoctor = () => {
           </CustomButton>
         </div>
         <div className="col-span-2 background-primary">
-          <About />
+          <About data={data.data.description} />
           {/* {tab === 1 ? (
             <About />
           ) : (
