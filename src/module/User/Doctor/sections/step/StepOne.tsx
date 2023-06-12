@@ -13,12 +13,11 @@ const optionsPayment = [
   { label: "Stripe", value: "2" }
 ]
 export type PropsStep = {
-  onContinue: () => void
-  onCancel: () => void
+  onContinue?: () => void
+  onCancel?: () => void
   onBack?: () => void
 }
 export const StepOne = ({ onCancel, onContinue }: PropsStep) => {
-  const handleSelectTypeConnect = (option: Option) => {}
   const [date, setDate] = React.useState<Dayjs | null>(dayjs("2022-04-07"))
   return (
     <>
@@ -56,7 +55,7 @@ export const StepOne = ({ onCancel, onContinue }: PropsStep) => {
             />
           </LocalizationProvider>
         </div>
-        <div className="modal-filed">
+        <div className="flex-1 modal-filed">
           <span className="label">Chọn giờ</span>
           <div className="grid h-full grid-cols-3 gap-3 overflow-y-auto">
             {Array(20)
@@ -74,7 +73,7 @@ export const StepOne = ({ onCancel, onContinue }: PropsStep) => {
           </div>
         </div>
       </div>
-      <div className="grid grid-cols-2 mt-6 gap-x-3 h-36">
+      {/* <div className="grid grid-cols-2 mt-6 gap-x-3 h-36">
         <div className="modal-filed">
           <span className="label">Hình thức kết nối</span>
           <SelectCustom
@@ -91,7 +90,7 @@ export const StepOne = ({ onCancel, onContinue }: PropsStep) => {
             onSelectOption={handleSelectTypeConnect}
           />
         </div>
-      </div>
+      </div> */}
     </>
   )
 }

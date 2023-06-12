@@ -2,9 +2,11 @@ import { configureStore } from "@reduxjs/toolkit"
 import { useDispatch } from "react-redux"
 import { isProduction } from "shared/helpers/helper"
 import authSlice from "./module/auth/auth-slice"
+import { chatsSlice } from "./module/chat/chat-slice"
 export const store = configureStore({
   reducer: {
-    auth: authSlice
+    auth: authSlice,
+    chats: chatsSlice.reducer
   },
   devTools: isProduction() ? false : true
 })

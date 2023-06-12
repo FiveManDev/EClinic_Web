@@ -1,6 +1,7 @@
 import { Box, IconButton, Tooltip } from "@mui/material"
 import ImageCustom from "components/Common/ImageCustom"
 import TableCustom from "components/Common/Table/TableCustom"
+import Tag from "components/Common/Tag"
 import { CustomInput } from "components/User/Input"
 import { useGetDoctorProfilesQuery } from "hooks/query/profile/useProfile"
 import useDebounce from "hooks/useDebounce"
@@ -10,6 +11,7 @@ import { useRouter } from "next/router"
 import { useMemo, useState } from "react"
 import { HiOutlinePencilSquare } from "react-icons/hi2"
 import { combineName, dayformat, getDataPaginate } from "shared/helpers/helper"
+import colorsProvider from "shared/theme/colors"
 import { IProfileDoctor } from "types/Profile.type"
 const ListDoctor = () => {
   const router = useRouter()
@@ -71,13 +73,40 @@ const ListDoctor = () => {
           return <p className="line-clamp-2">{row.original.address}</p>
         }
       },
-      // {
-      //   accessorKey: "address",
-      //   header: "Status",
-      //   Cell: () => {
-      //     return <Tag color="#4FD8DE">Active</Tag>
-      //   }
-      // },
+      {
+        accessorKey: "enabledAccount",
+        header: "Allow access",
+        Cell: ({ row }) => {
+          return (
+            <Tag
+              color={
+                row.original.enabledAccount
+                  ? colorsProvider.success
+                  : colorsProvider.error
+              }
+            >
+              {row.original.enabledAccount ? "Active" : "Banned"}
+            </Tag>
+          )
+        }
+      },
+      {
+        accessorKey: "isActive",
+        header: "Show Profile ",
+        Cell: ({ row }) => {
+          return (
+            <Tag
+              color={
+                row.original.isActive
+                  ? colorsProvider.success
+                  : colorsProvider.error
+              }
+            >
+              {row.original.isActive ? "Active" : "Banned"}
+            </Tag>
+          )
+        }
+      },
       {
         accessorKey: "email",
         header: "Email",

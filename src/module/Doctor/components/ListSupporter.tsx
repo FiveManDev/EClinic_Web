@@ -1,6 +1,7 @@
 import { Box, IconButton, Tooltip } from "@mui/material"
 import ImageCustom from "components/Common/ImageCustom"
 import TableCustom from "components/Common/Table/TableCustom"
+import Tag from "components/Common/Tag"
 import { CustomInput } from "components/User/Input"
 import { useGetSupportersQuery } from "hooks/query/profile/useProfile"
 import useDebounce from "hooks/useDebounce"
@@ -13,6 +14,7 @@ import { useRouter } from "next/router"
 import { useMemo, useState } from "react"
 import { HiOutlinePencilSquare } from "react-icons/hi2"
 import { combineName, dayformat, getDataPaginate } from "shared/helpers/helper"
+import colorsProvider from "shared/theme/colors"
 import { IProfileSupporter } from "types/Profile.type"
 const ListSupporter = () => {
   const router = useRouter()
@@ -74,13 +76,23 @@ const ListSupporter = () => {
           return <p className="line-clamp-2">{row.original.address}</p>
         }
       },
-      // {
-      //   accessorKey: "address",
-      //   header: "Status",
-      //   Cell: () => {
-      //     return <Tag color="#4FD8DE">Active</Tag>
-      //   }
-      // },
+      {
+        accessorKey: "enabledAccount",
+        header: "Status",
+        Cell: ({ row }) => {
+          return (
+            <Tag
+              color={
+                row.original.enabledAccount
+                  ? colorsProvider.success
+                  : colorsProvider.error
+              }
+            >
+              {row.original.enabledAccount ? "Active" : "Banned"}
+            </Tag>
+          )
+        }
+      },
       {
         accessorKey: "email",
         header: "Email",
@@ -120,12 +132,24 @@ const ListSupporter = () => {
             </p>
           )
         }
+      },
+      {
+        accessorKey: "workEnd",
+        header: "Date end work",
+        size: 120,
+        Cell: ({ row }) => {
+          return (
+            <p className="line-clamp-1 max-w-[120px]">
+              {row.original.workEnd ? dayformat(row.original.workEnd) : "Work"}
+            </p>
+          )
+        }
       }
     ],
     []
   )
   const paginationData = getDataPaginate(data)
-
+  console.log("ListSupporter ~ data?.data?.data:", data?.data?.data)
   return (
     <TableCustom
       pagination={pagination}

@@ -3,10 +3,13 @@ import classNames from "classnames"
 import ImageCustom from "components/Common/ImageCustom"
 import React from "react"
 import { HiOutlineEllipsisHorizontal } from "react-icons/hi2"
+import { dayformat } from "shared/helpers/helper"
+import { ChatMessage } from "types/Chat"
 interface IProps {
   kind?: "owner" | "other"
+  message: ChatMessage
 }
-const TextMessage = ({ kind = "other" }: IProps) => {
+const TextMessage = ({ kind = "other", message }: IProps) => {
   return (
     <div
       className={classNames(
@@ -29,7 +32,9 @@ const TextMessage = ({ kind = "other" }: IProps) => {
         )}
       >
         <div className="flex flex-col">
-          <time className="text-xs text-disable">Today 7.59 am</time>
+          <time className="text-xs text-disable">
+            {dayformat(message.createdAt)}
+          </time>
           <div
             className={classNames(
               "max-w-[266px] rounded-xl py-3 text-sm",
@@ -38,10 +43,12 @@ const TextMessage = ({ kind = "other" }: IProps) => {
                 : "rounded-br-none pr-[10px] pl-7 bg-primary bg-opacity-80 text-white"
             )}
           >
-            <p>Lorem ipsum dolor sit amet consectetur adipisicing elit.</p>
+            <p className="break-words break-all whitespace-normal">
+              {message.content}
+            </p>
           </div>
         </div>
-        <IconButton>
+        <IconButton size="small">
           <span className="text-3xl text-disable">
             <HiOutlineEllipsisHorizontal />
           </span>

@@ -57,10 +57,10 @@ const InputMessage = () => {
         </MenuItem>
       </MenuWrapper>
 
-      <div className="flex-1 px-2 py-1 bg-gray-100 rounded-md ">
+      <div className="flex-1 w-full px-2 py-1 bg-gray-100 rounded-md">
         <input
           type="text"
-          className="py-2.5 my-auto bg-transparent border-none outline-none placeholder:text-disable text-grayPrimary"
+          className="py-2.5 my-auto bg-transparent border-none outline-none placeholder:text-disable text-grayPrimary w-full"
           placeholder="Type a message"
         />
       </div>

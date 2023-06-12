@@ -24,7 +24,7 @@ const TimePickerCustom = () => {
         onClick={(e) => handleClick(e)}
         type="text"
         placeholder="From"
-        className="flex items-center justify-center w-full px-3 py-2 text-gray-400 bg-transparent border border-gray-400 border-solid rounded-md cursor-pointer hover:border-primary hover:border-2 "
+        className="flex items-center justify-center w-full px-3 py-2 text-gray-400 bg-transparent border-2 border-gray-400 border-solid rounded-md cursor-pointer hover:border-primary "
       />
       <Popover
         id={id}

@@ -1,4 +1,4 @@
-import Image from "next/image"
+import ImageCustom from "components/Common/ImageCustom"
 import Link from "next/link"
 
 const Footer = () => {
@@ -9,20 +9,15 @@ const Footer = () => {
           <div className="grid gap-8 grid-1 md:grid-cols-2 lg:grid-cols-4">
             <div>
               <h6 className="flex items-center justify-center mb-4 font-semibold uppercase md:justify-start">
-                <div className="relative w-[130px] h-9 ">
-                  <Link href="/">
-                    <Image
-                      src={"/images/logo.png"}
-                      width={130}
-                      height={36}
-                      sizes="(max-width: 768px) 100vw,
-                      (max-width: 1200px) 50vw,
-                      33vw"
-                      alt="elinic"
-                      className="cursor-pointer"
-                    />
-                  </Link>
-                </div>
+                <Link href="/" className="relative w-[130px] h-9">
+                  <ImageCustom
+                    src={"/images/logo.png"}
+                    fill
+                    priority
+                    alt="elinic"
+                    className="cursor-pointer"
+                  />
+                </Link>
               </h6>
               <p className="leading-7">
                 Công ty công nghệ cung cấp giải pháp y tế, duy nhất tại Việt Nam

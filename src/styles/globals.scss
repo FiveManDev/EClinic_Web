@@ -159,18 +159,18 @@
     @apply border-none;
   }
 }
-.MuiDateCalendar-root {
+.MuiCalendarPicker-root {
   border-radius: 8px;
   margin: 0;
   display: flex;
   flex-shrink: 0;
   width: fit-content;
   height: auto;
-  .MuiDayCalendar-header,
-  .MuiDayCalendar-weekContainer {
+  .MuiDayPicker-header,
+  .MuiDayPicker-weekContainer {
     gap: 18px;
   }
-  .MuiDayCalendar-monthContainer {
+  .MuiDayPicker-monthContainer {
     display: flex;
     flex-direction: column;
   }

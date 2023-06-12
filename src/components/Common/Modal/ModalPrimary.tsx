@@ -9,6 +9,7 @@ const ModalPrimaryWrapper = styled(motion.div)`
   .footer {
     padding: 20px 0;
     border-top: 0.5px solid #cccc;
+    margin-top: 12px;
   }
 `
 const dropIn = {
@@ -38,15 +39,12 @@ interface ModalProps {
 }
 
 const ModalPrimary = ({ show, onClose, children }: ModalProps) => {
-  const nodeRef = useRef(null)
-  useOnClickOutside(nodeRef, () => onClose())
   return (
     <>
       <AnimatePresence initial={false} onExitComplete={() => null} mode="wait">
         {show && (
           <Backdrop>
             <ModalPrimaryWrapper
-              ref={nodeRef}
               variants={dropIn}
               initial="hidden"
               animate="visible"

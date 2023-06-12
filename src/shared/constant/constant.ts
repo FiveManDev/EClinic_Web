@@ -16,13 +16,19 @@ export const QUERY_KEYS = {
   BLOG: {
     POST: "POST_BLOG",
     HASHTASH: "POST_BLOG_HASHTAG"
+  },
+  CHAT: {
+    MESSAGE: "CHAT_MESSAGE",
+    ROOM: "CHAT_ROOM",
+    ROOM_TYPE: "CHAT_ROOM_TYPE"
   }
 } as const
 export const ROLE = {
   USER: "User",
   ADMIN: "Admin",
   DOCTOR: "Doctor",
-  SUPPORTER: "Supporter"
+  SUPPORTER: "Supporter",
+  EXPERT: "Expert"
 } as const
 export const URL_API = {
   AUTH: "identity/Authentication",
@@ -39,13 +45,19 @@ export const URL_API = {
   BLOG_HASHTAG: "Blog/Hashtag",
   FORUM_POST_COMMENT: "forum/Comment",
   FORUM_POST_ANWERS: "forum/Answer",
-  FORUM_POST_HASHTAG: "forum/Hashtag"
+  FORUM_POST_HASHTAG: "forum/Hashtag",
+  //Chat
+  CHAT: {
+    ROOM: "Communication/Rooms",
+    CHATMESSAGE: "Communication/ChatMessages",
+    RoomTypes: "Communication/RoomTypes"
+  }
 } as const
 export const DEFAULT_ROUTER = {
-  USER: "/user",
-  ADMIN: "/admin",
-  DOCTOR: "/doctor",
-  SUPPORTER: "/sup"
+  USER: "/user/",
+  ADMIN: "/admin/",
+  DOCTOR: "/doctor/",
+  SUPPORTER: "/sup/"
 }
 export const LANGUAGE = {
   VIETNAM: "Vi",

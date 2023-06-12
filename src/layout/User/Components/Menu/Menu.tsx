@@ -11,20 +11,21 @@ const Menu = () => {
   return (
     <>
       <div className="flex items-center justify-between px-5 lg:max-w-[1440px]  w-full h-full mx-auto">
-        <div className="relative scale-90 md:scale-100 w-[150px] h-9 md:hidden ">
-          <Link href="/">
-            <Image
-              src={"/images/logo.png"}
-              fill
-              sizes="(max-width: 768px) 100vw,
+        <Link
+          href="/"
+          className="relative scale-90 md:scale-100 w-[150px] h-9 md:hidden "
+        >
+          <Image
+            src={"/images/logo.png"}
+            fill
+            sizes="(max-width: 768px) 100vw,
               (max-width: 1200px) 50vw,
               33vw"
-              priority
-              alt="elinic"
-              className="object-contain cursor-pointer"
-            />
-          </Link>
-        </div>
+            priority
+            alt="elinic"
+            className="object-contain cursor-pointer"
+          />
+        </Link>
         <Navbar show={show} onClose={handlerNav} />
         {/* Humberger */}
         <span className="cursor-pointer md:hidden" onClick={() => handlerNav()}>

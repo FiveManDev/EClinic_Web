@@ -3,12 +3,12 @@ import Button from "@mui/material/Button"
 import classNames from "classnames"
 import Spinner from "components/Common/Loading/LoadingIcon"
 interface Props extends ButtonProps {
-  kind: "primary" | "secondary" | "tertiary"
+  kind?: "primary" | "secondary" | "tertiary"
   isLoading?: boolean
 }
 
 const CustomButton = ({
-  kind,
+  kind = "primary",
   className,
   isLoading = false,
   ...props
@@ -23,7 +23,7 @@ const CustomButton = ({
     <Button
       variant={variant}
       className={classNames(
-        `rounded-[10px] flex items-center justify-center h-11 min-w-[95px] normal-case hover:scale-[1.02] transition-all ${
+        `rounded-[10px] flex items-center justify-center min-h-[44px] min-w-[95px] normal-case hover:scale-[1.02] transition-all ${
           kind === "primary"
             ? "bg-primary hover:bg-opacity-90"
             : "border-primary outline-primary text-primary"

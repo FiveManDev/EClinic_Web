@@ -2,7 +2,10 @@ import DoctorLayout from "layout/Management/DoctorLayout"
 import dynamic from "next/dynamic"
 import { NextPageWithLayout } from "pages/page"
 const AppoinmentPage = dynamic(
-  () => import("module/Doctor/Appoinments/AppoinmentPage")
+  () => import("module/Doctor/Appoinments/AppoinmentPage"),
+  {
+    ssr: false
+  }
 )
 
 const Page: NextPageWithLayout = () => {

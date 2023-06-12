@@ -2,7 +2,6 @@ import { AxiosResponse } from "axios"
 import { CreatePostBlog, UpdatePostBlog } from "hooks/query/blog/useBlog"
 import axiosClient from "shared/axios/httpClient"
 import { URL_API } from "shared/constant/constant"
-import { HashTag } from "types/Base.type"
 import { HashTagBlog, IBlog } from "types/Blog"
 import { IServerResponse } from "types/server/IServerResponse"
 class BlogService {
@@ -137,6 +136,15 @@ class BlogService {
     } catch (error) {
       console.log("BlogService ~ error:", error)
     }
+  }
+  async createHashtag(hashTag: string) {
+    const res: AxiosResponse = await axiosClient.post(
+      `${URL_API.BLOG_HASHTAG}/CreateHashtag?HashtagName=${hashTag}`,
+      {
+        headers: { "content-type": "multipart/form-data" }
+      }
+    )
+    return res.data as IServerResponse<string>
   }
   async upLoadImage(file: File) {
     try {

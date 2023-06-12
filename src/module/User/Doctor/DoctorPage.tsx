@@ -1,21 +1,24 @@
+import { Slider } from "@mui/material"
+import CheckBoxCustom from "components/Common/Checkbox"
+import InputCustom from "components/Common/Input"
 import CustomButton from "components/User/Button"
+import useDebounce from "hooks/useDebounce"
 import UserSecondaryLayout from "layout/User/UserSecondaryLayout"
 import Head from "next/head"
-import React, { useEffect } from "react"
+import { ChangeEvent, useEffect, useState } from "react"
 import { useTranslation } from "react-i18next"
-import { IBreadcrum } from "types/Base.type"
-import ListServices from "../Services/section/ListServices/ListServices"
-import FilterBar from "../components/filterBar/FilterBar"
-import InputCustom from "components/Common/Input"
 import { HiMagnifyingGlass } from "react-icons/hi2"
-import CheckBoxCustom from "components/Common/Checkbox"
-import { Slider } from "@mui/material"
+import { IBreadcrum } from "types/Base.type"
+import FilterBar from "../components/filterBar/FilterBar"
 import DoctorList from "./sections/DoctorList"
 
 const DoctorPage = () => {
   const { t } = useTranslation(["base", "ser"])
-  const [showFilter, setShowFilter] = React.useState(false)
-  const [state, setState] = React.useState({
+  const [searchData, setSearchData] = useState("")
+  const searchTextDebounce = useDebounce(searchData, 1500)
+
+  const [showFilter, setShowFilter] = useState(false)
+  const [state, setState] = useState({
     tieuhoa: false,
     nhikhoa: false
   })
@@ -28,7 +31,7 @@ const DoctorPage = () => {
     { label: t("base:pages.home"), href: "/" },
     { label: t("base:pages.doctors") }
   ]
-  const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+  const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
     setState({
       ...state,
       [event.target.name]: event.target.checked
@@ -78,9 +81,11 @@ const DoctorPage = () => {
             <div className="space-y-2">
               <h3>Tìm kiếm bác sĩ</h3>
               <InputCustom
+                value={searchData}
+                onChange={(e) => setSearchData(e.target.value)}
                 icon={<HiMagnifyingGlass />}
                 className="w-full md:max-w-[412px]"
-                placeholder={t("ser:search.input")}
+                placeholder={"Search by doctor's name"}
               />
             </div>
             <div className="space-y-2">
@@ -115,7 +120,7 @@ const DoctorPage = () => {
             </CustomButton>
           </FilterBar>
           <div className="flex-1 md:ml-16">
-            <DoctorList />
+            <DoctorList searchText={searchTextDebounce} />
           </div>
         </div>
       </UserSecondaryLayout>

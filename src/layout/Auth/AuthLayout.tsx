@@ -1,5 +1,6 @@
 import ImageCustom from "components/Common/ImageCustom"
 import Image from "next/image"
+import Link from "next/link"
 import { ReactNode } from "react"
 
 type Props = {
@@ -18,7 +19,10 @@ const AuthLayout = ({ children }: Props) => {
               alt="cover"
               priority
             />
-            <div className="absolute top-5 left-5 w-[160px] h-[50px]">
+            <Link
+              href={"/"}
+              className="absolute top-5 left-5 w-[160px] h-[50px]"
+            >
               <ImageCustom
                 priority
                 src={"/images/logo.png"}
@@ -26,7 +30,7 @@ const AuthLayout = ({ children }: Props) => {
                 alt="cover"
                 className="object-contain"
               />
-            </div>
+            </Link>
           </div>
           <main className="w-full m-auto max-w-[540px]">{children}</main>
         </div>

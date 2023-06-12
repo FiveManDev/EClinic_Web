@@ -1,9 +1,8 @@
 import classNames from "classnames"
 import ImageCustom from "components/Common/ImageCustom"
-import Image from "next/image"
 import Link from "next/link"
 import { useRouter } from "next/router"
-import { ReactNode, useEffect, useState } from "react"
+import { ReactNode, useState } from "react"
 export type ItemSidebar = {
   icon?: ReactNode
   title?: string

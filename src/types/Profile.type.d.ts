@@ -9,6 +9,7 @@ export interface Profile {
   address: string
   email: string
   phone: string
+  enabledAccount: boolean
 }
 
 export interface IProfile extends Profile {
@@ -19,15 +20,23 @@ export interface IProfile extends Profile {
 export interface IProfileDoctor extends Profile {
   title: string
   workStart: string
+  workEnd: string
   description: string
+  content: string
   specializationID: string
+  specializationName: string
+  price: number
+  isActive: boolean
 }
 export interface IProfileSupporter extends Profile {
   workStart: string
+  workEnd: string
   description: string
+  workEnd: string
 }
 export interface IProfileExpert extends Profile {
   workStart: string
+  workEnd: string
   description: string
 }
 
