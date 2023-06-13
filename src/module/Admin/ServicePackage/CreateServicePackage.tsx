@@ -84,13 +84,14 @@ const CreateServicePackage = ({ labelForm, servicePackage, mode = "create" }: Pr
     const watchDiscount = watch("discount")
     const watchIsActive = watch("isActive", servicePackage?.isActive ? true : false)
     const onFileChange = (file: File) => {
-        setValue("image", (typeof file === "string") ? null : file)
+        setValue("image", file)
     }
     const onSubmit = async (value: FieldValues) => {
         const newServices =
             value.serviceItems.length > 0
                 ? value.serviceItems.map((item: Service) => item.serviceID)
                 : []
+        const image = (typeof value.image === "string") ? null : value.image
         if (mode === "update") {
             if (confirm) {
                 const choice = await confirm({
@@ -101,6 +102,7 @@ const CreateServicePackage = ({ labelForm, servicePackage, mode = "create" }: Pr
                     updateServicePackage.mutate(
                         {
                             ...value,
+                            image,
                             serviceItemIds: newServices
                         } as UpdateServicePackage,
                         {
@@ -148,9 +150,9 @@ const CreateServicePackage = ({ labelForm, servicePackage, mode = "create" }: Pr
             servicePackageName: "",
             description: "",
             image: "",
-            price: undefined,
-            discount: undefined,
-            estimatedTime: undefined,
+            price: 0,
+            discount: 0,
+            estimatedTime: 0,
             isActive: false,
             serviceItems: []
         })
@@ -167,12 +169,13 @@ const CreateServicePackage = ({ labelForm, servicePackage, mode = "create" }: Pr
         } = event
         let newServices: Service[] = []
         let newPrice: number = 0
-        let newDiscount: number = 0
+        let newEstimatedTime: number = 0
         if (typeof value === "string") {
             newServices =
                 services.data?.data.data.filter((item) => {
                     if (item.serviceID === value) {
                         newPrice = item.price
+                        newEstimatedTime = item.estimatedTime
                         return item
                     }
                 }) || []
@@ -181,13 +184,14 @@ const CreateServicePackage = ({ labelForm, servicePackage, mode = "create" }: Pr
                 services.data?.data.data.filter((item) => {
                     if (value.some((has) => has === item.serviceID)) {
                         newPrice += item.price
+                        newEstimatedTime += item.estimatedTime
                         return item
                     }
                 }) || []
         }
         setValue("serviceItems", newServices)
         setValue("price", newPrice)
-        setValue("discount", newDiscount)
+        setValue("estimatedTime", newEstimatedTime)
     }
     const getServiceName = (serviceID: string) => {
         const selectedService = services.data?.data.data.find(
