@@ -328,7 +328,7 @@ const CreateBlog = ({ labelForm, post, mode = "create" }: Props) => {
             kind="primary"
             type="submit"
             className="w-full "
-            isLoading={createPost.isLoading}
+            isLoading={createPost.isLoading || updatePost.isLoading}
           >
             {mode === "create" ? "Post" : "Update blog"}
           </CustomButton>

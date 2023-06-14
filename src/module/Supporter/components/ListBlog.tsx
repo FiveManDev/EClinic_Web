@@ -50,12 +50,14 @@ const ListBlog = () => {
           return (
             <div className="flex items-center space-x-2">
               <div className="relative flex-shrink-0 w-16 h-12">
-                <ImageCustom
-                  src={row.original.coverImage}
-                  fill
-                  alt="user-avatar"
-                  className="object-cover rounded-md"
-                />
+                {row.original.coverImage && (
+                  <ImageCustom
+                    src={row.original.coverImage}
+                    fill
+                    alt="user-avatar"
+                    className="object-cover rounded-md"
+                  />
+                )}
               </div>
               <div className="flex flex-col">
                 <h4 className="text-base font-medium text-h1 line-clamp-1">
