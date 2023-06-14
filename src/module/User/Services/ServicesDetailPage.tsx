@@ -6,7 +6,7 @@ import Image from "next/image"
 import React from "react"
 import { useTranslation } from "react-i18next"
 import { IBreadcrum } from "types/Base.type"
-import CardService from "./components/CardService"
+import CardService from "../Home/section/services/components/card/CardService"
 import { useRouter } from "next/router"
 import { useGetServicePackageByIDQuery } from "hooks/query/service/useService"
 import { ServicePackage } from "types/Service"
@@ -127,7 +127,7 @@ const ServicesDetailPage = ({ servicePackages }: Props) => {
               {" "}
               {t("ser:specialService")}
             </h3>
-            <div className="grid grid-cols-1 md:grid-cols-4">
+            <div className="grid grid-cols-1 md:grid-cols-4 gap-1">
               {servicePackages?.map((item) => (
                 <CardService servicePackage={item} key={item.servicePackageID} />
               )

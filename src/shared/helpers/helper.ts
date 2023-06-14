@@ -119,3 +119,7 @@ export function hexToRGBA(hexCode = "", opacity = 1) {
 export function isImage(file: File) {
   return /^image\//.test(file?.type)
 }
+export const stripHtmlTags = (htmlString: string) => {
+  if (!htmlString) return ""
+  return htmlString.replace(/<[^>]*>/g, "")
+}

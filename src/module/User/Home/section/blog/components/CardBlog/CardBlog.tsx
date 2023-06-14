@@ -1,9 +1,11 @@
 import ImageCustom from "components/Common/ImageCustom"
+import { dayformat, stripHtmlTags } from "shared/helpers/helper"
 import { IBlog } from "types/Blog"
 interface Props {
-  blog?: IBlog
+  blog: IBlog
 }
 const CardBlog = ({ blog }: Props) => {
+  const contentText = stripHtmlTags(blog?.content);
   return (
     <div className="flex flex-col w-full space-y-4">
       <div className="relative w-full h-[280px]">
@@ -25,10 +27,10 @@ const CardBlog = ({ blog }: Props) => {
           <span>By</span>
           <b className="font-bold text-black">{blog?.author.firstName} {blog?.author.lastName}</b>
           <span>-</span>
-          <span>{blog?.updatedAt}</span>
+          <span>{dayformat(blog.updatedAt)}</span>
         </div>
         <p className="text-base text-[#657280] line-clamp-3">
-          {blog?.content}
+          {contentText}
         </p>
       </div>
     </div>
