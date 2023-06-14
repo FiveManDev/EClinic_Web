@@ -17,10 +17,10 @@ interface Props {
     key: number
     label: string
     children: ReactNode
-  }[],
+  }[]
   defaultTabIndex?: number
 }
-const TabsCustom = ({ tabs, defaultTabIndex = 1 }: Props) => {
+const TabsCustom = ({ tabs, defaultTabIndex = 0 }: Props) => {
   const [tabIndex, setTabIndex] = useState(defaultTabIndex)
   return (
     <>
