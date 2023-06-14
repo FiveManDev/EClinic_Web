@@ -173,8 +173,10 @@ const CreateServicePackage = ({ labelForm, servicePackage, mode = "create" }: Pr
             newServices =
                 services.data?.data.data.filter((item) => {
                     if (item.serviceID === value) {
-                        newPrice = item.price
-                        newEstimatedTime = item.estimatedTime
+                        if (item.isActive) {
+                            newPrice = item.price
+                            newEstimatedTime = item.estimatedTime
+                        }
                         return item
                     }
                 }) || []
@@ -182,8 +184,10 @@ const CreateServicePackage = ({ labelForm, servicePackage, mode = "create" }: Pr
             newServices =
                 services.data?.data.data.filter((item) => {
                     if (value.some((has) => has === item.serviceID)) {
-                        newPrice += item.price
-                        newEstimatedTime += item.estimatedTime
+                        if (item.isActive) {
+                            newPrice += item.price
+                            newEstimatedTime += item.estimatedTime
+                        }
                         return item
                     }
                 }) || []

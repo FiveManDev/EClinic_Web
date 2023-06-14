@@ -69,6 +69,7 @@ const CreateService = ({ service, mode = "create" }: Props) => {
     const watchSpec = watch("specialization", service?.specialization)
     const onSubmit = async (value: FieldValues) => {
         const specializationID = value.specialization.specializationID
+        const status = value.isActive
         if (mode === "update") {
             if (confirm) {
                 const choice = await confirm({
@@ -84,9 +85,12 @@ const CreateService = ({ service, mode = "create" }: Props) => {
                         {
                             onSuccess: (data) => {
                                 if (data.isSuccess) {
-                                    toast.success("Update a service successfuly")
+                                    if (!status) {
+                                        toast.success("Please update service package that use this service!")
+                                    }
+                                    toast.success("Update a service successfuly!")
                                 } else {
-                                    toast.error("Update a service fail")
+                                    toast.error("Update a service fail!")
                                 }
                             },
                             onError: () => {
