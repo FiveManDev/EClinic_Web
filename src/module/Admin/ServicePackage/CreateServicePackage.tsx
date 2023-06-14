@@ -129,7 +129,6 @@ const CreateServicePackage = ({ labelForm, servicePackage, mode = "create" }: Pr
                 } as CreateServicePackageItem,
                 {
                     onSuccess: (data) => {
-                        console.log("test", value.description);
                         if (data?.isSuccess) {
                             toast.success("Create a service package successfuly")
                             resetForm()

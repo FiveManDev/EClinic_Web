@@ -1,6 +1,6 @@
 import CardForum from "module/User/components/CardForum"
 import CardBlog from "module/User/Home/section/blog/components/CardBlog/CardBlog"
-import CardService from "module/User/Services/components/CardService"
+import CardService from "../../../Home/section/services/components/card/CardService"
 import Link from "next/link"
 import React, { PropsWithChildren } from "react"
 import { IBlog } from "types/Blog"

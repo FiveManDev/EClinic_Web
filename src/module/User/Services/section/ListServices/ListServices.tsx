@@ -1,5 +1,5 @@
 import React, { useState } from "react"
-import CardService from "../../components/CardService"
+import CardService from "../../../Home/section/services/components/card/CardService"
 import { useGetAllServicePackageQuery } from "hooks/query/service/useService"
 import { ServicePackage } from "types/Service"
 import { IPagination } from "types/Pagination"

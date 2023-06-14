@@ -28,7 +28,7 @@ class ServiceService {
   }
   async searchServicePackage(data: IPaginationSearch) {
     const res: AxiosResponse = await axiosClient.get(
-      `${URL_API.SERVICE_PACKAGE}/SearchServicePackageForAd?SearchText=${data.searchText}`,
+      `${URL_API.SERVICE_PACKAGE}/SearchServicePackage?SearchText=${data.searchText}`,
       {
         headers: {
           PageNumber: data.pageNumber,

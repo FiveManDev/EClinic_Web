@@ -102,7 +102,7 @@ const TableAPM = () => {
           ) : cell.getValue() === 1 ? (
             <Tag color="#4FD8DE">Complete</Tag>
           ) : (
-            <Tag color="#D72755">Canceled</Tag>
+            <Tag color="#D72755">Cancelled</Tag>
           )
         }
       },
