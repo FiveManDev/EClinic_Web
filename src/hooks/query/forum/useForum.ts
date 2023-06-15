@@ -36,7 +36,8 @@ export const useGetPostsNoActiveQuery = (
   const queryKey = [QUERY_KEYS.FORUM.POST, pageNumber, pageSize]
   return useQuery({
     queryKey,
-    queryFn: () => forumService.getPostsNoActive(pageNumber, pageSize)
+    queryFn: () => forumService.getPostsNoActive(pageNumber, pageSize),
+    keepPreviousData: true
   })
 }
 export const useGetPostNoAnserForumQuery = (

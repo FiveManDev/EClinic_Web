@@ -1,17 +1,14 @@
 import { useMutation, useQuery } from "@tanstack/react-query"
-import { useEffect, useState } from "react"
-import { QUERY_KEYS, ROLE } from "shared/constant/constant"
+import { QUERY_KEYS } from "shared/constant/constant"
 import { IPaginationSearch } from "types/Pagination"
 import {
   IProfile,
   IProfileDoctor,
   IProfileExpert,
   IProfileSupporter,
-  IRelationShip,
-  Profile
+  IRelationShip
 } from "types/Profile.type"
 import { profileService } from "../../../services/profile.service"
-import { IServerResponse } from "types/server/IServerResponse"
 
 export type CreateDoctorProfile = Omit<IProfileDoctor, "profileID" | "userID">
 export type UpdateDoctorProfile = Omit<IProfileDoctor, "profileID">
@@ -127,7 +124,8 @@ export const useGetDoctorProfilesQuery = (data: IPaginationSearch) => {
         pageNumber: data.pageNumber,
         pageSize: data.pageSize,
         searchText: data.searchText
-      })
+      }),
+    keepPreviousData: true
   })
 }
 export const useGetDoctorProfilesByIdQuery = (userID: string) => {
@@ -166,7 +164,8 @@ export const useGetSupportersQuery = (data: IPaginationSearch) => {
         pageNumber: data.pageNumber,
         pageSize: data.pageSize,
         searchText: data.searchText
-      })
+      }),
+    keepPreviousData: true
   })
 }
 export const useGetSupporterByIdQuery = (userID: string) => {
@@ -205,7 +204,8 @@ export const useGetExpertProfilesQuery = (data: IPaginationSearch) => {
         pageNumber: data.pageNumber,
         pageSize: data.pageSize,
         searchText: data.searchText
-      })
+      }),
+    keepPreviousData: true
   })
 }
 export const useGetExpertProfilesByIdQuery = (userID: string) => {
@@ -229,6 +229,7 @@ export const useGetPatientProfilesQuery = (data: IPaginationSearch) => {
         pageNumber: data.pageNumber,
         pageSize: data.pageSize,
         searchText: data.searchText
-      })
+      }),
+    keepPreviousData: true
   })
 }
