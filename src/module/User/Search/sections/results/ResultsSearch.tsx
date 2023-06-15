@@ -15,16 +15,31 @@ const ResultsSearch = ({ servicePackages, blogs, posts }: IProps) => {
   return (
     <div className="mt-6 space-y-8">
       <LayoutItem label="Service Package" link="/services">
+        {servicePackages?.length === 0 && (
+          <div className="text-lg font-semibold text-h1">
+            No results were found!
+          </div>
+        )}
         {servicePackages?.map((item) => (
           < CardService key={item.servicePackageID} servicePackage={item} />
         ))}
       </LayoutItem>
       <LayoutItem label="Forum" link="/forum">
+        {posts?.length === 0 && (
+          <div className="text-lg font-semibold text-h1">
+            No results were found!
+          </div>
+        )}
         {posts?.map((item) => (
           <CardForum key={item.id} post={item} />
         ))}
       </LayoutItem>
       <LayoutItem label="Daily blogs" link="/blog">
+        {blogs?.length === 0 && (
+          <div className="text-lg font-semibold text-h1">
+            No results were found!
+          </div>
+        )}
         {blogs?.map((item) => (
           <CardBlog key={item.id} blog={item} />
         ))}
