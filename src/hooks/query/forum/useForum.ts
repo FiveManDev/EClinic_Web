@@ -174,9 +174,7 @@ export const useGetHashtagBySortQuery = (
   const queryKey = [QUERY_KEYS.HASHTAG, pageNumber, pageSize]
   return useQuery({
     queryKey,
-    queryFn: () => forumService.getTagSortByCount(pageNumber, pageSize),
-    retry: 1,
-    staleTime: 1000 * 6
+    queryFn: () => forumService.getTagSortByCount(pageNumber, pageSize)
   })
 }
 export const useCreatetagMutation = () =>

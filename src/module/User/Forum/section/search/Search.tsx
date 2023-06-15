@@ -1,15 +1,16 @@
 import { Chip, Skeleton } from "@mui/material"
+import { useInfiniteQuery } from "@tanstack/react-query"
 import classNames from "classnames"
 import ChipCustom from "components/Common/Chip/Chip"
 import InputCustom from "components/Common/Input"
 import Spinner from "components/Common/Loading/LoadingIcon"
 import CustomButton from "components/User/Button"
-import { useGetHashtagBySortQuery } from "hooks/query/forum/useForum"
-import { useEffect, useState } from "react"
+import { useState } from "react"
 import { useTranslation } from "react-i18next"
 import { AiOutlinePlus } from "react-icons/ai"
 import { HiMagnifyingGlass } from "react-icons/hi2"
-import { PAGE_SIZE } from "shared/constant/constant"
+import { forumService } from "services/forum.service"
+import { PAGE_SIZE, QUERY_KEYS } from "shared/constant/constant"
 import { getDataPaginate } from "shared/helpers/helper"
 import { IHashtag } from "types/Post"
 
@@ -29,10 +30,19 @@ const Search = ({
 }: Props) => {
   const { t } = useTranslation("forum")
   const [keyword, setKeyword] = useState("")
-  const [pageIndexTag, setPageIndexTag] = useState(1)
-  const [tags, setTags] = useState<IHashtag[]>([])
-  const tagsQuery = useGetHashtagBySortQuery(pageIndexTag, PAGE_SIZE)
-  const pagination = getDataPaginate(tagsQuery.data)
+  const tagsQuery = useInfiniteQuery(
+    [QUERY_KEYS.HASHTAG, PAGE_SIZE],
+    async ({ pageParam = 1 }) => {
+      const res = await forumService.getTagSortByCount(pageParam, PAGE_SIZE)
+      return res
+    },
+    {
+      getNextPageParam: (lastPage) =>
+        getDataPaginate(lastPage).HasNext
+          ? getDataPaginate(lastPage).PageIndex + 1
+          : undefined
+    }
+  )
   const handleSearchBykeyword = (hashtagCurrent: IHashtag) => {
     const checkExits = tagsActive.some(
       (item) => item.hashtagID === hashtagCurrent.hashtagID
@@ -47,12 +57,6 @@ const Search = ({
     }
     onChangeHashTags(newHashTags)
   }
-  useEffect(() => {
-    if (tagsQuery.status === "success") {
-      setTags((prevStag) => [...prevStag, ...tagsQuery.data.data.data])
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [tagsQuery.status])
   return (
     <div className="flex flex-col space-y-3">
       <div className="flex gap-x-1">
@@ -74,8 +78,8 @@ const Search = ({
       <div className="w-full px-4 py-5 background-primary">
         <h3 className="text-xl">{t("search.heading")}</h3>
         <ul className="flex flex-wrap items-center w-full gap-4 mt-3 overflow-auto list-none">
-          {tags.length > 0 &&
-            tags.map((item, index) => {
+          {tagsQuery.data?.pages.map((page) =>
+            page.data.data.map((item, index) => {
               const check = tagsActive.some(
                 (tag) => tag.hashtagID === item.hashtagID
               )
@@ -88,7 +92,8 @@ const Search = ({
                   />
                 </li>
               )
-            })}
+            })
+          )}
 
           {tagsQuery.isLoading &&
             new Array(3).fill(null).map((item, index) => (
@@ -98,14 +103,14 @@ const Search = ({
             ))}
           <Chip
             onClick={() => {
-              pagination.HasNext && setPageIndexTag(pageIndexTag + 1)
+              tagsQuery.hasNextPage && tagsQuery.fetchNextPage()
             }}
             label="Load more"
             icon={<AiOutlinePlus className="text-base" />}
             clickable
             className={classNames(
               "!bg-opacity-25 rounded-md font-semibold",
-              !pagination.HasNext && "hidden"
+              !tagsQuery.hasNextPage && "hidden"
             )}
             color="primary"
           />

@@ -38,6 +38,7 @@ const Navbar = ({ show = false, onClose }: Props) => {
               33vw"
             alt="elinic"
             className="cursor-pointer"
+            priority
           />
         </Link>
         <ul className="flex flex-col items-center space-y-6 list-none md:flex-row md:space-y-0 md:space-x-10">
