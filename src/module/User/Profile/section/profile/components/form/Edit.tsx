@@ -33,6 +33,7 @@ interface Props {
   onDelete: (profileId: string) => void
   labelForm: string
   profile?: IProfile & IRelationShip
+  isLoading: boolean
 }
 
 const schema = yup.object({
@@ -67,7 +68,13 @@ const schema = yup.object({
     .typeError("Height must be numbers")
     .required("Please enter your weight")
 })
-const Edit = ({ onSubmit, onDelete, labelForm, profile }: Props) => {
+const Edit = ({
+  onSubmit,
+  onDelete,
+  labelForm,
+  profile,
+  isLoading = false
+}: Props) => {
   const confirm = useConfirm()
 
   const relationShipQuery = useAllRelationship()
@@ -310,7 +317,12 @@ const Edit = ({ onSubmit, onDelete, labelForm, profile }: Props) => {
                 </CustomButton>
               )}
 
-            <CustomButton kind="primary" type="submit">
+            <CustomButton
+              disabled={isLoading}
+              isLoading={isLoading}
+              kind="primary"
+              type="submit"
+            >
               {profile ? "Update profile" : "Add new profile"}
             </CustomButton>
           </div>

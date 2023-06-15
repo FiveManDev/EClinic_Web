@@ -15,9 +15,9 @@ import { useSelector } from "react-redux"
 import { PAGE_SIZE } from "shared/constant/constant"
 import { RootState } from "store/store"
 import { IProfile, IRelationShip } from "types/Profile.type"
-import Edit from "./components/form/Edit"
 import ProfileDisplay from "./components/ProfileDisplay/ProfileDisplay"
 import ProfileItem from "./components/ProfileItem"
+import Edit from "./components/form/Edit"
 
 type Action = "add" | "edit" | "view"
 const Profile = () => {
@@ -113,6 +113,7 @@ const Profile = () => {
       }
     })
   }
+
   return (
     <div className="flex w-full bg-white">
       <div className="w-[340px] flex flex-col space-y-4">
@@ -148,6 +149,9 @@ const Profile = () => {
       <div className="flex-1 px-6 ml-4 border border-r-0 border-gray-200 border-dashed border-y-0">
         {(mode == "add" || mode === "edit") && (
           <Edit
+            isLoading={
+              createProfileMutaiton.isLoading || deleteProfileMutation.isLoading
+            }
             labelForm={
               mode === "add"
                 ? "Add new profile of your family"
@@ -160,6 +164,7 @@ const Profile = () => {
         )}
         {mode == "view" && (
           <ProfileDisplay
+            isLoading={updateProfileMutaiton.isLoading}
             profile={ownerProfile}
             onEdit={(profileId) => handleChangeForm(profileId, "edit")}
           />

@@ -54,7 +54,8 @@ export const useSearchPostsBlogAd = (
   return useQuery({
     queryKey,
     queryFn: () =>
-      blogService.searchBlogForAd(keyword, pageNumber, pageSize, tags)
+      blogService.searchBlogForAd(keyword, pageNumber, pageSize, tags),
+    keepPreviousData: true
   })
 }
 export const useGetAllBlog = (pageNumber: number, pageSize: number) => {

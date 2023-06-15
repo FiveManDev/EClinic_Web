@@ -4,6 +4,7 @@ import Tag from "components/Common/Tag"
 import dayjs from "dayjs"
 import React from "react"
 import { RELATIONSHIPS } from "shared/constant/constant"
+import { dayformat } from "shared/helpers/helper"
 import { IProfile, IRelationShip } from "types/Profile.type"
 interface Props {
   data?: IProfile & IRelationShip
@@ -22,7 +23,7 @@ const ProfileItem = ({ data, onClick, loading = false }: Props) => {
         {data && (
           <div className="relative w-20 h-20 overflow-hidden rounded-md">
             <ImageCustom
-              src={data.avatar as string}
+              src={(data.avatar as string) || "/images/default.jpeg"}
               alt={data.lastName}
               sizes="(max-width: 768px) 100vw,
               (max-width: 1200px) 50vw,
@@ -59,7 +60,7 @@ const ProfileItem = ({ data, onClick, loading = false }: Props) => {
                 {data.firstName + " " + data.lastName}
               </span>
               <time className="text-xs text-gray-400">
-                {dayjs(data.dateOfBirth).format("L")}
+                {dayformat(data.dateOfBirth)}
               </time>
             </>
           )}

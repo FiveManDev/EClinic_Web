@@ -149,7 +149,6 @@ const ListSupporter = () => {
     []
   )
   const paginationData = getDataPaginate(data)
-  console.log("ListSupporter ~ data?.data?.data:", data?.data?.data)
   return (
     <TableCustom
       pagination={pagination}

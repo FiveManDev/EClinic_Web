@@ -79,7 +79,6 @@ const FormLogin = () => {
         const res = await authService.signInWithGoogle(profile.access_token)
         try {
           if (res.isSuccess) {
-            console.log("login ~ res:", res)
             handleNavigate(res.data.accessToken, res.data.refreshToken)
             toast.success("Sign in successfuly")
           } else {

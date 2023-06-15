@@ -24,7 +24,7 @@ import "../assets/styles/app.scss"
 import { NextPageWithLayout } from "./page"
 import "overlayscrollbars/overlayscrollbars.css"
 import "react-quill/dist/quill.snow.css"
-import { ReactQueryDevtools } from '@tanstack/react-query-devtools'
+import { ReactQueryDevtools } from "@tanstack/react-query-devtools"
 
 interface AppPropsWithLayout extends AppProps {
   Component: NextPageWithLayout
@@ -38,7 +38,7 @@ const cache = createCache({
   prepend: true
 })
 //checking is authenticated
-const queryClient = new QueryClient({
+export const queryClient = new QueryClient({
   defaultOptions: {
     queries: {
       refetchOnWindowFocus: false

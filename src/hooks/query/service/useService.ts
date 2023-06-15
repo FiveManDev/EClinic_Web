@@ -44,7 +44,8 @@ export const useSearchServicePackageForAdQuery = (data: IPaginationSearch) => {
         pageNumber: data.pageNumber,
         pageSize: data.pageSize,
         searchText: data.searchText
-      })
+      }),
+    keepPreviousData: true
   })
 }
 export const useSearchServicePackageQuery = (data: IPaginationSearch) => {
@@ -131,7 +132,8 @@ export const useSearchServiceForAdQuery = (data: IPaginationSearch) => {
         pageNumber: data.pageNumber,
         pageSize: data.pageSize,
         searchText: data.searchText
-      })
+      }),
+    keepPreviousData: true
   })
 }
 export const useGetServiceByIDForAdQuery = (serviceId: string) => {
@@ -181,7 +183,8 @@ export const useSearchSpecializationQuery = (data: IPaginationSearch) => {
         pageNumber: data.pageNumber,
         pageSize: data.pageSize,
         searchText: data.searchText
-      })
+      }),
+    keepPreviousData: true
   })
 }
 export const useCreateSpecializationMutation = () => {
