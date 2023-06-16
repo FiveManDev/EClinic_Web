@@ -1,18 +1,32 @@
 import { IconButton, InputAdornment, OutlinedInput } from "@mui/material"
 import ChipCustom from "components/Common/Chip/Chip"
 import { useRouter } from "next/router"
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import { useTranslation } from "react-i18next"
 import { SearchWrapper } from "./Search.styles"
+import { useGetBlogTagSortByCountQuery } from "hooks/query/blog/useBlog";
+import { useGetHashtagBySortQuery } from "hooks/query/forum/useForum";
+import { toast } from "react-hot-toast"
 
 const Search = () => {
   const { t } = useTranslation("home")
   const [searchValue, setSearchValue] = useState("")
+  const [searchTag, setSearchTag] = useState("")
   const router = useRouter()
-
+  const getBlogTagSortByCount = useGetBlogTagSortByCountQuery(1, 5)
+  const getTagSortByCount = useGetHashtagBySortQuery(1, 5)
   const handleSubmit = () => {
-    router.push(`/search?keyword=${searchValue}`)
+    if (!searchValue && !searchTag) {
+      toast.error("you have not entered a keyword!")
+      return
+    }
+    router.push(`/search?keyword=${searchValue}&searchTag=${searchTag}`)
   }
+  useEffect(() => {
+    if (searchTag) {
+      handleSubmit();
+    }
+  }, [searchTag]);
   return (
     <SearchWrapper className="absolute bottom-0 translate-y-2/4 w-full p-4  mx-auto bg-white rounded-xl md:p-8 shadow-[0px_1px_4px_rgba(0,_0,_0,_0.15)]">
       <div className="flex items-center justify-between space-x-2 md:space-x-4 h-11 md:h-[72px]">
@@ -40,9 +54,18 @@ const Search = () => {
           {t("banner.search.keyword")}
         </h4>
         <ul className="flex items-center w-full space-x-4 overflow-auto list-none">
-          {new Array(7).fill(null).map((item, index) => (
-            <li key={index}>
-              <ChipCustom label="Covid-19" />
+          {getBlogTagSortByCount.data?.data.data.map((item) => (
+            <li key={item.id}>
+              <ChipCustom label={item.hashtagName} onClick={() =>
+                setSearchTag(item.id)
+              } />
+            </li>
+          ))}
+          {getTagSortByCount.data?.data.data.map((item) => (
+            <li key={item.hashtagID}>
+              <ChipCustom label={item.hashtagName} onClick={() =>
+                setSearchTag(item.hashtagID)
+              } />
             </li>
           ))}
         </ul>

@@ -99,3 +99,13 @@ export const useCreateHashtagBlogMutation = () =>
   useMutation({
     mutationFn: (hashtag: string) => blogService.createHashtag(hashtag)
   })
+export const useGetBlogTagSortByCountQuery = (
+  pageNumber: number,
+  pageSize: number
+) => {
+  const queryKey = [QUERY_KEYS.BLOG.HASHTASH, pageNumber, pageSize]
+  return useQuery({
+    queryKey,
+    queryFn: () => blogService.getTagSortByCount(pageNumber, pageSize)
+  })
+}

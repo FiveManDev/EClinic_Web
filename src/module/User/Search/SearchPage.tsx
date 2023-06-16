@@ -12,14 +12,17 @@ import Head from "next/head"
 import { useSearchServicePackageQuery } from "hooks/query/service/useService"
 import useDebounce from "hooks/useDebounce"
 import { useSearchPostsForum } from "hooks/query/forum/useForum"
-import { IHashtag } from "types/Post"
 import { useSearchPostsBlog } from "hooks/query/blog/useBlog"
-
+import { useGetBlogTagSortByCountQuery } from "hooks/query/blog/useBlog";
+import { useGetHashtagBySortQuery } from "hooks/query/forum/useForum";
 const SearchPage = () => {
   const { t } = useTranslation(["home", "base"])
   const router = useRouter()
+  const getBlogTagSortByCount = useGetBlogTagSortByCountQuery(1, 5)
+  const getTagSortByCount = useGetHashtagBySortQuery(1, 5)
 
   const [searchValue, setSearchValue] = useState("")
+  const [searchTag, setSearchTag] = useState("")
   const searchTextDebounce = useDebounce(searchValue, 1000)
   const breadrums: IBreadcrum[] = [
     { label: t("base:pages.home"), href: "/" },
@@ -34,17 +37,20 @@ const SearchPage = () => {
     searchTextDebounce,
     1,
     10,
-    []
+    searchTag ? [searchTag] : []
   )
   const PostsBlogResult = useSearchPostsBlog(
     searchTextDebounce,
     1,
     10,
-    []
+    searchTag ? [searchTag] : []
   )
   useEffect(() => {
     if (router.query.keyword) {
       setSearchValue(router.query.keyword?.toString())
+    }
+    if (router.query.searchTag) {
+      setSearchTag(router.query.searchTag?.toString())
     }
   }, [router.query])
   return (
@@ -56,7 +62,7 @@ const SearchPage = () => {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <UserSecondaryLayout breadrums={breadrums}>
-        <div className="flex flex-col items-center mx-auto bg-white w-full">
+        <div className="flex flex-col items-center mx-auto bg-white w-full pb-3">
           <div className="relative w-[560px] h-[250px]">
             <ImageCustom
               src={"/images/search-image.webp"}
@@ -94,9 +100,18 @@ const SearchPage = () => {
           <div className="flex flex-col items-center mt-4 space-y-3 max-w-[500px]">
             <h3>Từ khóa được tìm kiếm nhiều nhất:</h3>
             <ul className="flex flex-wrap items-center justify-center w-full gap-4 list-none">
-              {new Array(7).fill(null).map((item, index) => (
-                <li key={index}>
-                  <ChipCustom label="Covid-19" />
+              {getBlogTagSortByCount.data?.data.data.map((item) => (
+                <li key={item.id}>
+                  <ChipCustom label={item.hashtagName}
+                    isActive={searchTag === item.id}
+                    onClick={() => setSearchTag(searchTag === item.id ? '' : item.id)} />
+                </li>
+              ))}
+              {getTagSortByCount.data?.data.data.map((item) => (
+                <li key={item.hashtagID}>
+                  <ChipCustom isActive={searchTag === item.hashtagID}
+                    label={item.hashtagName}
+                    onClick={() => setSearchTag(searchTag === item.hashtagID ? '' : item.hashtagID)} />
                 </li>
               ))}
             </ul>
