@@ -10,7 +10,10 @@ import {
 } from "types/Profile.type"
 import { profileService } from "../../../services/profile.service"
 
-export type CreateDoctorProfile = Omit<IProfileDoctor, "profileID" | "userID">
+export type CreateDoctorProfile = Omit<
+  IProfileDoctor,
+  "profileID" | "userID" | "specialization"
+>
 export type UpdateDoctorProfile = Omit<IProfileDoctor, "profileID">
 
 export type CreateSupporterProfile = Omit<

@@ -4,22 +4,16 @@ import ImageCustom from "components/Common/ImageCustom"
 import TableCustom from "components/Common/Table/TableCustom"
 import Tag from "components/Common/Tag"
 import { CustomInput } from "components/User/Input"
-import {
-  useGetPatientProfilesQuery,
-  useUpdateProfileMutation
-} from "hooks/query/profile/useProfile"
+import { useChangeStatusMutation } from "hooks/query/account/useAccount"
+import { useGetPatientProfilesQuery } from "hooks/query/profile/useProfile"
 import useDebounce from "hooks/useDebounce"
-import MaterialReactTable, {
-  MRT_ColumnDef,
-  MRT_PaginationState
-} from "material-react-table"
+import { MRT_ColumnDef, MRT_PaginationState } from "material-react-table"
 
 import { useMemo, useState } from "react"
-import { FieldValues } from "react-hook-form"
 import { toast } from "react-hot-toast"
 import { combineName, dayformat, getDataPaginate } from "shared/helpers/helper"
 import colorsProvider from "shared/theme/colors"
-import { IProfile, IRelationShip, Profile } from "types/Profile.type"
+import { Profile } from "types/Profile.type"
 const ListPatient = () => {
   const [pagination, setPagination] = useState<MRT_PaginationState>({
     pageIndex: 1,
@@ -27,7 +21,7 @@ const ListPatient = () => {
   })
   const [searchData, setSearchData] = useState("")
   const searchTextDebounce = useDebounce(searchData, 1500)
-  const updateProfile = useUpdateProfileMutation()
+  const updateStatus = useChangeStatusMutation()
 
   const { data, isLoading, isError, isRefetching, refetch } =
     useGetPatientProfilesQuery({
@@ -49,7 +43,7 @@ const ListPatient = () => {
   //       toast.error("Update error")
   //     }
   //   })
-// }
+  // }
   const columns = useMemo<MRT_ColumnDef<Profile>[]>(
     () => [
       {
@@ -148,7 +142,17 @@ const ListPatient = () => {
     []
   )
   const paginationData = getDataPaginate(data)
-
+  const onUpdateState = (value: string) => {
+    updateStatus.mutate(value, {
+      onSuccess: () => {
+        toast.success("Change status sucess")
+        refetch()
+      },
+      onError: () => {
+        toast.error("Change status fail")
+      }
+    })
+  }
   return (
     <TableCustom
       pagination={pagination}
@@ -162,7 +166,12 @@ const ListPatient = () => {
       isRefetching={isRefetching}
       renderRowActions={({ row }) => (
         <Box sx={{ display: "flex", gap: "1rem" }}>
-          <SwitchCustom />
+          <SwitchCustom
+            checked={row.original.enabledAccount}
+            onClick={() => {
+              onUpdateState(row.original.userID)
+            }}
+          />
         </Box>
       )}
       renderTopToolbarCustomActions={() => (

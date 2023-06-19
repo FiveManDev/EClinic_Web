@@ -141,7 +141,11 @@ class ProfileService {
   async updateDoctorProfile(data: UpdateDoctorProfile) {
     const formData = new FormData()
     for (const [key, value] of Object.entries(data)) {
-      formData.append(key, value)
+      if (key === "workEnd") {
+        formData.append(key, value || "")
+      } else {
+        formData.append(key, value)
+      }
     }
     const res = await axiosClient.put(
       `${URL_API.PROFILE}/UpdateDoctorProfile`,

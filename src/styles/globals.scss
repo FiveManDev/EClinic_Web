@@ -159,24 +159,26 @@
     @apply border-none;
   }
 }
-.MuiCalendarPicker-root {
-  border-radius: 8px;
-  margin: 0;
-  display: flex;
-  flex-shrink: 0;
-  width: fit-content;
-  height: auto;
-  .MuiDayPicker-header,
-  .MuiDayPicker-weekContainer {
-    gap: 18px;
-  }
-  .MuiDayPicker-monthContainer {
+.modal-filed {
+  .MuiCalendarPicker-root {
+    border-radius: 8px;
+    margin: 0;
     display: flex;
-    flex-direction: column;
-  }
-  .MuiPickersDay-dayWithMargin {
-    font-size: 16px;
-    font-weight: 300;
+    flex-shrink: 0;
+    width: fit-content;
+    height: auto;
+    .MuiDayPicker-header,
+    .MuiDayPicker-weekContainer {
+      gap: 18px;
+    }
+    .MuiDayPicker-monthContainer {
+      display: flex;
+      flex-direction: column;
+    }
+    .MuiPickersDay-dayWithMargin {
+      font-size: 16px;
+      font-weight: 300;
+    }
   }
 }
 .MuiInputBase-formControl {

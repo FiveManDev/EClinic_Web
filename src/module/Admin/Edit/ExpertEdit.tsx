@@ -1,4 +1,4 @@
-import { useGetExpertProfilesByIdQuery } from "hooks/query/profile/useProfile"
+import { useGetSupporterByIdQuery } from "hooks/query/profile/useProfile"
 import MainHeadingLayout from "layout/Management/MainHeadingLayout"
 import CreateAccountExpert from "module/Doctor/components/CreateAccountExpert"
 import Head from "next/head"
@@ -6,7 +6,7 @@ import { useRouter } from "next/router"
 
 const ExpertEdit = () => {
   const router = useRouter()
-  const { data, isLoading } = useGetExpertProfilesByIdQuery(
+  const { data, isLoading } = useGetSupporterByIdQuery(
     router.query.id! as string
   )
   if (isLoading) {

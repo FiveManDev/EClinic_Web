@@ -23,7 +23,7 @@ const CustomButton = ({
     <Button
       variant={variant}
       className={classNames(
-        `rounded-[10px] flex items-center justify-center min-h-[44px] min-w-[95px] normal-case hover:scale-[1.02] transition-all ${
+        `rounded-[10px] flex items-center justify-center min-h-[44px] min-w-[95px] normal-case hover:scale-[1.02] transition-all active:scale-95 focus:ring-4 ${
           kind === "primary"
             ? "bg-primary hover:bg-opacity-90"
             : "border-primary outline-primary text-primary"

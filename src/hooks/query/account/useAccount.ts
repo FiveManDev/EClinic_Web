@@ -30,3 +30,8 @@ export const useAccountResetPassowordMutation = () => {
     mutationFn: (value: IResetPassowrd) => authService.resetPassword(value)
   })
 }
+export const useChangeStatusMutation = () => {
+  return useMutation({
+    mutationFn: (userId: string) => authService.changeStatus(userId)
+  })
+}

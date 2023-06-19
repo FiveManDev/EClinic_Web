@@ -23,8 +23,8 @@ export interface IProfileDoctor extends Profile {
   workEnd: string
   description: string
   content: string
+  specialization: Specialization
   specializationID: string
-  specializationName: string
   price: number
   isActive: boolean
 }
@@ -43,4 +43,8 @@ export interface IProfileExpert extends Profile {
 export interface IRelationShip {
   relationshipID: string
   relationshipName: string
+}
+export interface Specialization {
+  specializationID: string
+  specializationName: string
 }
