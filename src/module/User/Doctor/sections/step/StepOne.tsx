@@ -45,7 +45,7 @@ export const StepOne = ({ onCancel, onContinue }: PropsStep) => {
         </div>
       </div>
       <div className="flex gap-8">
-        <div className=" modal-filed">
+        <div className="modal-filed">
           <span className="label">Chọn ngày</span>
           <LocalizationProvider dateAdapter={AdapterDayjs}>
             <CalendarPicker

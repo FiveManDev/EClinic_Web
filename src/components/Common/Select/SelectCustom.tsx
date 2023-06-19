@@ -1,13 +1,12 @@
 import {
   FormControl,
-  FormControlPropsSizeOverrides,
+  FormHelperText,
   InputLabel,
   MenuItem,
   Select,
   SelectChangeEvent
 } from "@mui/material"
 import classNames from "classnames"
-import { useState } from "react"
 export type Option = {
   label: string
   value: string
@@ -22,6 +21,7 @@ interface SelectProps {
   isLoading?: boolean
   value: string
   size?: "small" | "medium"
+  error?: string
 }
 
 export const SelectCustom = ({
@@ -31,7 +31,8 @@ export const SelectCustom = ({
   placeholder,
   value,
   isLoading = false,
-  size = "small"
+  size = "small",
+  error = ""
 }: SelectProps) => {
   const handleChange = (event: SelectChangeEvent) => {
     const value = options.find((item) => item.value == event.target.value)
@@ -40,7 +41,11 @@ export const SelectCustom = ({
 
   return (
     <div className={classNames("relative min-w-[200px] h-10 ", className)}>
-      <FormControl size={size === "small" ? "small" : "medium"} fullWidth>
+      <FormControl
+        size={size === "small" ? "small" : "medium"}
+        fullWidth
+        error={!!error}
+      >
         <InputLabel>{placeholder}</InputLabel>
         <Select value={value} label={placeholder} onChange={handleChange}>
           {isLoading ? (
@@ -53,6 +58,7 @@ export const SelectCustom = ({
             ))
           )}
         </Select>
+        {!!error && <FormHelperText>{error}</FormHelperText>}
       </FormControl>
     </div>
   )

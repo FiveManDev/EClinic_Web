@@ -8,7 +8,7 @@ interface Props extends FormControlProps {
   label: string
   control: Control<any>
   // eslint-disable-next-line no-unused-vars
-  onErrorField: (value: string) => void
+  onErrorField?: (value: string) => void
   errorMessage?: string | undefined
   inputFormat?: string
 }
@@ -33,7 +33,9 @@ const DatePickerCustom = ({
         disableFuture
         label={label || "Date of birth"}
         inputFormat={inputFormat}
-        onError={(reason) => onErrorField(reason?.toString() || "")}
+        onError={(reason) =>
+          onErrorField && onErrorField(reason?.toString() || "")
+        }
         {...field}
         renderInput={(params) => (
           <div className="flex flex-col ">

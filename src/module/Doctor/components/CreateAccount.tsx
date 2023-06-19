@@ -57,7 +57,8 @@ const schema = yup.object({
   address: yup.string().required("Please enter address"),
   title: yup.string().required("Please enter position"),
   description: yup.string().required("Please enter description"),
-  content: yup.string().required("Please enter content")
+  content: yup.string().required("Please enter content"),
+  specializationID: yup.string().required("Please choose specialization")
 })
 interface Props {
   labelForm: string
@@ -86,14 +87,14 @@ const CreateAccount = ({ labelForm, profile, mode = "create" }: Props) => {
     pageSize: 100
   })
   watch("avatar", null)
-  const watchSpecId = watch("specializationID", profile?.specializationID)
-  const watchGender = watch("gender", profile ? profile?.gender : true)
-  const watchDesc = watch("description")
-  const watchIsactive = watch("isActive", profile?.isActive ? true : false)
-  const watchEnabledAccount = watch(
-    "enabledAccount",
-    profile?.enabledAccount ? true : false
+  const watchSpecId = watch(
+    "specializationID",
+    profile?.specialization.specializationID
   )
+  const watchGender = watch("gender", profile?.gender)
+  const watchDesc = watch("description")
+  const watchIsactive = watch("isActive", profile?.isActive)
+  const watchEnabledAccount = watch("enabledAccount", profile?.enabledAccount)
   const resetForm = () => {
     reset({
       profileID: "",
@@ -108,15 +109,18 @@ const CreateAccount = ({ labelForm, profile, mode = "create" }: Props) => {
       phone: "",
       title: "",
       workStart: dayjs().toString(),
+      workEnd: undefined,
       description: "",
       enabledAccount: false,
-      isActive: false
+      isActive: false,
+      price: 0
     })
   }
   const onFileChange = (file: File) => {
     setValue("avatar", file)
   }
   const onSubmit = async (value: FieldValues) => {
+    console.log("onSubmit ~ value:", value)
     if (mode === "update") {
       if (confirm) {
         const choice = await confirm({
@@ -126,8 +130,7 @@ const CreateAccount = ({ labelForm, profile, mode = "create" }: Props) => {
         if (choice) {
           updateProfileDoctorMutation.mutate(
             {
-              ...value,
-              workEnd: dayjs().format("YYYY-MM-DDTHH:mm:ss")
+              ...value
             } as UpdateDoctorProfile,
             {
               onSuccess: (data) => {
@@ -147,8 +150,7 @@ const CreateAccount = ({ labelForm, profile, mode = "create" }: Props) => {
     } else {
       createProfileDoctorMutation.mutate(
         {
-          ...value,
-          workEnd: dayjs().format("YYYY-MM-DDTHH:mm:ss")
+          ...value
         } as CreateDoctorProfile,
         {
           onSuccess: (data) => {
@@ -169,6 +171,8 @@ const CreateAccount = ({ labelForm, profile, mode = "create" }: Props) => {
   useEffect(() => {
     if (profile === undefined) {
       resetForm()
+    } else {
+      setValue("specializationID", profile.specialization.specializationID)
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [profile])
@@ -247,6 +251,7 @@ const CreateAccount = ({ labelForm, profile, mode = "create" }: Props) => {
                 helperText={errors.price?.message?.toString()}
               />
               <SelectCustom
+                error={errors.specializationID?.message?.toString()}
                 size="medium"
                 value={watchSpecId}
                 isLoading={specializations.isLoading}
@@ -323,15 +328,21 @@ const CreateAccount = ({ labelForm, profile, mode = "create" }: Props) => {
                 }}
                 errorMessage={errors.workStart?.message?.toString()}
               />
-              <CustomInput
+              <DatePickerCustom
                 size="medium"
-                label="Phone number"
+                label="Date end work"
                 control={control}
-                name="phone"
-                error={!!errors.phone}
-                helperText={errors.phone?.message?.toString()}
+                name="workEnd"
               />
             </div>
+            <CustomInput
+              size="medium"
+              label="Phone number"
+              control={control}
+              name="phone"
+              error={!!errors.phone}
+              helperText={errors.phone?.message?.toString()}
+            />
             <FormControl>
               <FormLabel>Gender</FormLabel>
               <RadioGroup

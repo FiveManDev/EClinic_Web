@@ -111,13 +111,13 @@ const CreateAccountExpert = ({
         if (choice) {
           updateExpertMutation.mutate(
             {
-              ...value,  workEnd: dayjs().format("YYYY-MM-DDTHH:mm:ss")
+              ...value,
+              workEnd: dayjs().format("YYYY-MM-DDTHH:mm:ss")
             } as UpdateExpertProfile,
             {
               onSuccess: (data) => {
                 if (data.isSuccess) {
                   toast.success("Update successfuly")
-                  resetForm()
                 } else {
                   toast.error("Update error")
                 }
@@ -139,6 +139,7 @@ const CreateAccountExpert = ({
           onSuccess: (data) => {
             if (data.isSuccess) {
               toast.success("Add successfuly")
+              resetForm()
             } else {
               toast.error("Add error")
             }
