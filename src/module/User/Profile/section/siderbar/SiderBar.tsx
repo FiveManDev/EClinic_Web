@@ -13,6 +13,7 @@ import ChatData from "../chat/ChatData"
 import HistoryQuestion from "../history-question"
 import Profile from "../profile"
 import { TabsWrapper } from "./Tabs.style"
+import AppointmentSchedule from "../appoiment/AppointmentSchedule"
 
 const SiderBar = () => {
   const [tabIndex, setTabIndex] = useState(0)
@@ -69,6 +70,12 @@ const SiderBar = () => {
       },
       {
         key: 4,
+        label: `Appointment schedule`,
+        icon: <MdOutlineHistory />,
+        children: <AppointmentSchedule />
+      },
+      {
+        key: 5,
         label: `Logout`,
         icon: <MdLogout />,
         onclick: () => logout()
@@ -82,7 +89,7 @@ const SiderBar = () => {
         orientation="vertical"
         value={tabIndex}
         onChange={handleTabChange}
-        className="p-0 rounded-sm background-primary h-fit"
+        className="p-0 rounded-sm background-primary h-fit tab-wrapper"
       >
         {tabs.map((tab) => (
           <Tab

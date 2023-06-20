@@ -3,8 +3,8 @@ export interface IRoom {
   isClosed: boolean
   createdAt: string
   roomType: RoomType
-  roomAuthor: RoomAuthor
-  chatMessage: ChatMessage
+  roomAuthor: ProfileChat
+  chatMessage: Message
 }
 
 export interface RoomType {
@@ -12,14 +12,20 @@ export interface RoomType {
   roomTypeName: string
 }
 
-export interface RoomAuthor {
+export interface IMessage {
+  myProfile: ProfileChat
+  otherProfile: ProfileChat
+  message: Message[]
+}
+
+export interface ProfileChat {
   userID: string
   firstName: string
   lastName: string
   avatar: string
 }
 
-export interface ChatMessage {
+export interface Message {
   chatMessageID: string
   userID: string
   content: string

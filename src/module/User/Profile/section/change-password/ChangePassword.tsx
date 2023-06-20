@@ -22,13 +22,18 @@ const ChangePassword = () => {
   const {
     handleSubmit,
     control,
+    reset,
     formState: { errors }
   } = useForm({
     mode: "onSubmit",
     resolver: yupResolver(schema)
   })
   const handleChangePassowrd = (value: FieldValues) => {
-    mutate(value as IChangePassowrd)
+    mutate(value as IChangePassowrd, {
+      onSuccess: () => {
+        reset()
+      }
+    })
   }
   return (
     <form
@@ -60,8 +65,8 @@ const ChangePassword = () => {
         errorMessage={errors.confirmPassword?.message?.toString()}
       />
       <div className=""></div>
-      <CustomButton kind="primary" className="text-base " type="submit">
-        {isLoading ? <Spinner /> : "Update password"}
+      <CustomButton type="submit" isLoading={isLoading}>
+        Update password
       </CustomButton>
     </form>
   )

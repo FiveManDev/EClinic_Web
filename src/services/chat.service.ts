@@ -1,7 +1,7 @@
 import { AxiosResponse } from "axios"
 import axiosClient from "shared/axios/httpClient"
 import { URL_API } from "shared/constant/constant"
-import { ChatMessage, IRoom, RoomType } from "types/Chat"
+import { IMessage, IRoom, RoomType } from "types/Chat"
 import { IServerResponse } from "types/server/IServerResponse"
 class ChatService {
   //room
@@ -85,7 +85,7 @@ class ChatService {
           }
         }
       )
-      return res as AxiosResponse<IServerResponse<ChatMessage[]>>
+      return res as AxiosResponse<IServerResponse<IMessage>>
     } catch (error) {
       console.log("BlogService ~ error:", error)
     }
@@ -100,6 +100,16 @@ class ChatService {
     } catch (error) {
       console.log("BlogService ~ error:", error)
     }
+  }
+  async createMessage(roomId: string, content: string) {
+    const res = await axiosClient.post(
+      `${URL_API.CHAT.CHATMESSAGE}/CreateMessage`,
+      {
+        content,
+        roomId
+      }
+    )
+    return res.data as AxiosResponse<IServerResponse<string>>
   }
 }
 export const chatService = new ChatService()
