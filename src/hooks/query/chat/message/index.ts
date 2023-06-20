@@ -1,4 +1,4 @@
-import { useQuery } from "@tanstack/react-query"
+import { useMutation, useQuery } from "@tanstack/react-query"
 import { chatService } from "services/chat.service"
 import { QUERY_KEYS } from "shared/constant/constant"
 
@@ -13,3 +13,8 @@ export const useGetAllMessageOfRoomQuery = (
     queryFn: () => chatService.getAllMessageOfRoom(pageNumber, pageSize, roomId)
   })
 }
+export const useCreateChatMessage = () =>
+  useMutation({
+    mutationFn: ({ roomId, content }: { roomId: string; content: string }) =>
+      chatService.createMessage(roomId, content)
+  })

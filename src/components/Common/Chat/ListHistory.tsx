@@ -1,4 +1,4 @@
-import React, { useEffect } from "react"
+import React, { useEffect, useState } from "react"
 import InputCustom from "../Input"
 import { HiMagnifyingGlass } from "react-icons/hi2"
 import ImageCustom from "../ImageCustom"
@@ -11,6 +11,7 @@ interface IProps {
   data: IRoom[]
 }
 const ListHistory = ({ data }: IProps) => {
+  const [searchValue, setSearchValue] = useState("")
   const dispatch = useDispatch()
   useEffect(() => {
     dispatch(chatsSlice.actions.onShowChatRoom(data[0].roomID))
@@ -21,7 +22,10 @@ const ListHistory = ({ data }: IProps) => {
       <div className="px-5 pt-10 pb-4">
         <h1 className="mb-3 text-2xl text-h1">Message</h1>
         <InputCustom
-          onChange={(e) => {}}
+          value={searchValue}
+          onChange={(e) => {
+            setSearchValue(e.target.value)
+          }}
           icon={<HiMagnifyingGlass />}
           className="w-full md:max-w-[412px]"
           placeholder="Search for message"
@@ -61,14 +65,14 @@ export const HistoryItem = ({ room }: HistoryProps) => {
           className="object-cover rounded-full"
         />
       </div>
-      <div className="flex flex-col justify-between">
+      <div className="flex flex-col justify-between flex-1">
         <div className="flex items-center justify-between">
-          <span className="text-sm font-medium text-h1">
+          <p className="text-sm font-medium text-h1 max-w-[110px] line-clamp-1">
             {combineName(
               room?.roomAuthor.firstName,
               room?.roomAuthor?.lastName
             )}
-          </span>
+          </p>
           <time className="text-xs align-top text-black2 ">
             {dayformat(room.createdAt)}
           </time>

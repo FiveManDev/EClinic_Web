@@ -16,7 +16,8 @@ export const useGetAllRoomOfUserQuery = (
   const queryKey = [QUERY_KEYS.CHAT.ROOM, pageNumber, pageSize]
   return useQuery({
     queryKey,
-    queryFn: () => chatService.getAllRoomOfUser(pageNumber, pageSize)
+    queryFn: () => chatService.getAllRoomOfUser(pageNumber, pageSize),
+    keepPreviousData: true
   })
 }
 export const useGetAllRoomOfSupporterQuery = (

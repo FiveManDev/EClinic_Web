@@ -4,10 +4,10 @@ import ImageCustom from "components/Common/ImageCustom"
 import React from "react"
 import { HiOutlineEllipsisHorizontal } from "react-icons/hi2"
 import { dayformat } from "shared/helpers/helper"
-import { ChatMessage } from "types/Chat"
+import { Message } from "types/Chat"
 interface IProps {
   kind?: "owner" | "other"
-  message: ChatMessage
+  message: Message
 }
 const TextMessage = ({ kind = "other", message }: IProps) => {
   return (
