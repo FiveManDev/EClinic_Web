@@ -296,8 +296,8 @@ const CreateAccount = ({ labelForm, profile, mode = "create" }: Props) => {
                     reason === "invalidDate"
                       ? "Please enter valid date"
                       : reason === "disableFuture"
-                      ? "The birthday cannot be less than the current date"
-                      : ""
+                        ? "The birthday cannot be less than the current date"
+                        : ""
                   setError("dateOfBirth", { type: "focus", message })
                 }}
                 errorMessage={errors.dateOfBirth?.message?.toString()}
@@ -322,8 +322,8 @@ const CreateAccount = ({ labelForm, profile, mode = "create" }: Props) => {
                     reason === "invalidDate"
                       ? "Please enter valid date"
                       : reason === "disableFuture"
-                      ? "The birthday cannot be less than the current date"
-                      : ""
+                        ? "The birthday cannot be less than the current date"
+                        : ""
                   setError("workStart", { type: "focus", message })
                 }}
                 errorMessage={errors.workStart?.message?.toString()}

@@ -3,7 +3,11 @@ import axiosClient from "shared/axios/httpClient"
 import { URL_API } from "shared/constant/constant"
 import { Service, ServicePackage, Specialization } from "types/Service"
 import { IServerResponse } from "types/server/IServerResponse"
-import { IPaginationSearch, IPaging } from "types/Pagination"
+import {
+  IPaginationSearch,
+  IPaginationSearchServicePackageFiltered,
+  IPaging
+} from "types/Pagination"
 import {
   CreateServiceItem,
   CreateServicePackageItem,
@@ -38,6 +42,31 @@ class ServiceService {
     )
     return res as AxiosResponse<IServerResponse<ServicePackage[]>>
   }
+  async searchServicePackageFiltered(
+    data: IPaginationSearchServicePackageFiltered
+  ) {
+    let url = `${URL_API.SERVICE_PACKAGE}/SearchServicePackageFiltered?`
+
+    if (data.searchText) {
+      url += `SearchText=${encodeURIComponent(data.searchText)}`
+    }
+
+    if (data.specializationIDs.length > 0) {
+      for (const specializationID of data.specializationIDs) {
+        url += `&SpecializationIDs=${encodeURIComponent(specializationID)}`
+      }
+    }
+
+    const res: AxiosResponse = await axiosClient.get(url, {
+      headers: {
+        PageNumber: data.pageNumber,
+        PageSize: data.pageSize
+      }
+    })
+
+    return res as AxiosResponse<IServerResponse<ServicePackage[]>>
+  }
+
   async getAllServicePackage(data: IPaging) {
     const res: AxiosResponse = await axiosClient.get(
       `${URL_API.SERVICE_PACKAGE}/GetAllServicePackage`,
