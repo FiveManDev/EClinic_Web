@@ -1,29 +1,33 @@
-import React, { useEffect, useState } from "react"
-import InputCustom from "../Input"
-import { HiMagnifyingGlass } from "react-icons/hi2"
-import ImageCustom from "../ImageCustom"
-import { OverlayScrollbarsComponent } from "overlayscrollbars-react"
-import { IRoom } from "types/Chat"
-import { combineName, dayformat } from "shared/helpers/helper"
-import { useDispatch, useSelector } from "react-redux"
-import { chatsSlice } from "store/module/chat/chat-slice"
-import { roomIdChatSelector } from "store/module/chat/chat-selector"
-import classNames from "classnames"
 import { Skeleton } from "@mui/material"
+import classNames from "classnames"
+import { OverlayScrollbarsComponent } from "overlayscrollbars-react"
+import { HiMagnifyingGlass } from "react-icons/hi2"
+import { useDispatch, useSelector } from "react-redux"
+import { combineName, dayformat } from "shared/helpers/helper"
+import {
+  roomIdChatSelector,
+  searchChatSelector
+} from "store/module/chat/chat-selector"
+import { chatsSlice } from "store/module/chat/chat-slice"
+import { IRoom } from "types/Chat"
+import ImageCustom from "../ImageCustom"
+import InputCustom from "../Input"
 interface IProps {
   data: IRoom[]
   isLoading: boolean
 }
 const ListHistory = ({ data, isLoading = false }: IProps) => {
-  const [searchValue, setSearchValue] = useState("")
+  const searchKeyword = useSelector(searchChatSelector)
+  const dispatch = useDispatch()
+
   return (
     <div className="flex flex-col bg-gray-50 w-full max-w-[320px]">
       <div className="px-5 pt-10 pb-4">
         <h1 className="mb-3 text-2xl text-h1">Message</h1>
         <InputCustom
-          value={searchValue}
+          value={searchKeyword}
           onChange={(e) => {
-            setSearchValue(e.target.value)
+            dispatch(chatsSlice.actions.onSearch(e.target.value))
           }}
           icon={<HiMagnifyingGlass />}
           className="w-full md:max-w-[412px]"

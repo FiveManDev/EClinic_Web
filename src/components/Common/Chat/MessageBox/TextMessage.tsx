@@ -7,11 +7,13 @@ interface IProps {
   kind?: "owner" | "other"
   message?: Message
   isLoading?: boolean
+  avatar?: string
 }
 const TextMessage = ({
   kind = "other",
   message,
-  isLoading = false
+  isLoading = false,
+  avatar
 }: IProps) => {
   return (
     <div
@@ -30,7 +32,7 @@ const TextMessage = ({
       ) : (
         <div className="relative w-10 h-10 overflow-hidden rounded-full">
           <ImageCustom
-            src={"/images/avatars/avatar_2.jpg"}
+            src={avatar || "/images/avatars/avatar_2.jpg"}
             fill
             alt="user-avatar"
             className="object-cover"

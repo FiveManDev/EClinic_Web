@@ -41,10 +41,12 @@ const MessageBox = ({ toggleInfo }: IProps) => {
       return res
     },
     {
-      getPreviousPageParam: (lastPage) =>
-        getDataPaginate(lastPage).HasNext
-          ? getDataPaginate(lastPage).PageIndex + 1
-          : undefined
+      getPreviousPageParam: (lastPage) => {
+        if (getDataPaginate(lastPage).HasNext) {
+          return getDataPaginate(lastPage).PageIndex + 1
+        }
+        return undefined
+      }
     }
   )
   const handleCreateMessage = (content: string) => {
@@ -66,7 +68,6 @@ const MessageBox = ({ toggleInfo }: IProps) => {
       )
     }
   }
-
   const scrollToBottom = () => {
     if (refScroll.current) {
       refScroll.current.lastElementChild?.scrollIntoView({
@@ -75,7 +76,6 @@ const MessageBox = ({ toggleInfo }: IProps) => {
       })
     }
   }
-
   useEffect(() => {
     const connection = new signalR.HubConnectionBuilder()
       .withUrl(`https://localhost:8686/message`, {
@@ -98,13 +98,11 @@ const MessageBox = ({ toggleInfo }: IProps) => {
       })
     connection.on("Response", (message: any) => {
       if (message !== "JoinRoom") {
-        scrollToBottom()
         setMessages((prevMes) => [...prevMes, message])
       }
     })
     // Cleanup the connection on component unmount
     return () => {
-      setMessages([])
       connection.stop()
     }
   }, [roomId])
@@ -118,14 +116,9 @@ const MessageBox = ({ toggleInfo }: IProps) => {
         // Calculate the scroll distance from the bottom
         const scrollDistanceFromBottom =
           scrollHeight - (scrollTop + clientHeight)
-
-        if (scrollDistanceFromBottom <= 30) {
-          setIsBottom(true)
-        } else {
-          setIsBottom(false)
-        }
-        if (scrollTop === 0) {
-          roomData.hasPreviousPage && roomData.fetchPreviousPage()
+        setIsBottom(scrollDistanceFromBottom <= 30)
+        if (scrollTop === 0 && roomData.hasPreviousPage) {
+          roomData.fetchPreviousPage()
         }
       }
     }
@@ -140,8 +133,18 @@ const MessageBox = ({ toggleInfo }: IProps) => {
         scrollContainer.removeEventListener("scroll", handleScroll)
       }
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [refScroll])
+  }, [refScroll, roomData.hasPreviousPage])
+  //handle when create message success
+  useEffect(() => {
+    if (messages[messages.length - 1]?.userID === auth.user.userId) {
+      scrollToBottom()
+    }
+  }, [messages])
+  useEffect(() => {
+    if (roomData.data?.pages.length === 1) {
+      scrollToBottom()
+    }
+  }, [roomData.data])
   return (
     <div className="flex flex-col w-full h-full border border-gray-200 border-solid border-y-0">
       <HeaderBox
@@ -182,6 +185,11 @@ const MessageBox = ({ toggleInfo }: IProps) => {
             roomData.data?.pages.map((item) =>
               item?.data.data.message.map((mess) => (
                 <TextMessage
+                  avatar={
+                    mess.userID === auth.user.userId
+                      ? item.data.data.myProfile.avatar
+                      : item.data.data.otherProfile.avatar
+                  }
                   message={mess}
                   key={mess.chatMessageID}
                   kind={mess.userID === auth.user.userId ? "owner" : "other"}
@@ -191,6 +199,11 @@ const MessageBox = ({ toggleInfo }: IProps) => {
           {messages.length > 0 &&
             messages.map((mess) => (
               <TextMessage
+                avatar={
+                  mess.userID === auth.user.userId
+                    ? roomData.data?.pages[0]?.data.data.myProfile.avatar
+                    : roomData.data?.pages[0]?.data.data.otherProfile.avatar
+                }
                 message={mess}
                 key={mess.chatMessageID}
                 kind={mess.userID === auth.user.userId ? "owner" : "other"}
