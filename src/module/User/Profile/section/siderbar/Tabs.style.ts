@@ -1,41 +1,39 @@
 import styled from "@emotion/styled"
+import colorsProvider from "shared/theme/colors"
 
 export const TabsWrapper = styled.div`
   width: 100%;
   display: flex;
   .tab-wrapper {
     .MuiTabs-flexContainer {
+      border-radius: 10px;
       display: flex;
       justify-content: flex-start;
       background-color: white;
-      .MuiTab-labelIcon {
-        font-weight: 500;
-      }
+      padding: 33px 53px 33px 24px;
     }
     .MuiTab-root {
       width: 100%;
       display: flex;
       flex-direction: row;
-      align-items: center;
       justify-content: flex-start;
-      column-gap: 16px;
       text-transform: none;
       font-size: 14px;
-      font-weight: 300;
       padding: 0px 20px;
-      transition: all 0.25s ease-out;
-      min-height: 50px;
-      .MuiTab-iconWrapper {
-        margin-bottom: 0;
-        font-size: 22px;
-      }
+      min-height: 46px;
+      font-weight: 400;
+      color: ${colorsProvider.black2};
     }
     .Mui-selected {
-      background-color: rgba(2, 78, 213, 0.1);
-      border-left: 3px solid #235ee8;
+      color: ${colorsProvider.primary};
     }
     .MuiTabs-indicator {
-      display: none;
+      border-radius: 10px;
+      background-color: rgba(2, 78, 213, 0.1);
+      color: ${colorsProvider.primary};
+      width: 80%;
+      margin: 0 auto;
+      right: 30px;
     }
   }
 `

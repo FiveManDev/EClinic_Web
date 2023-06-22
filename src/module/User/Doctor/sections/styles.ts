@@ -1,4 +1,5 @@
 import styled from "@emotion/styled"
+import colorsProvider from "shared/theme/colors"
 
 export const DetailDoctorModalWrapper = styled.div`
   display: flex;
@@ -10,6 +11,7 @@ export const DetailDoctorModalWrapper = styled.div`
   .MuiDateCalendar-root {
     background-color: #fafafb;
     padding: 16px 22px;
+    border: 1px solid ${colorsProvider.carbon};
   }
   .modal-filed {
     display: flex;

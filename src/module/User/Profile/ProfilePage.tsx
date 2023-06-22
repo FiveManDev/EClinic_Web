@@ -5,11 +5,6 @@ import { IBreadcrum } from "types/Base.type"
 import SiderBar from "./section/siderbar"
 
 const ProfilePage = () => {
-  const { t } = useTranslation(["base"])
-  const breadrums: IBreadcrum[] = [
-    { label: t("base:pages.home"), href: "/" },
-    { label: t("base:pages.profile") }
-  ]
   return (
     <>
       <Head>
@@ -18,7 +13,7 @@ const ProfilePage = () => {
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <link rel="icon" href="/images/favicon.png" />
       </Head>
-      <UserSecondaryLayout breadrums={breadrums}>
+      <UserSecondaryLayout breadrums={[]}>
         <div className="w-full">
           <SiderBar />
         </div>

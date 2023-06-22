@@ -18,7 +18,7 @@ class ChatService {
       )
       return res as AxiosResponse<IServerResponse<IRoom[]>>
     } catch (error) {
-      console.log("BlogService ~ error:", error)
+      console.log("ChatService ~ error:", error)
     }
   }
   async getAllRoomOfUser(pageNumber: number, pageSize: number) {
@@ -34,7 +34,7 @@ class ChatService {
       )
       return res as AxiosResponse<IServerResponse<IRoom[]>>
     } catch (error) {
-      console.log("BlogService ~ error:", error)
+      console.log("ChatServices ~ error:", error)
     }
   }
   async getAllRoomOfSupporter(pageNumber: number, pageSize: number) {
@@ -50,7 +50,7 @@ class ChatService {
       )
       return res as AxiosResponse<IServerResponse<IRoom[]>>
     } catch (error) {
-      console.log("BlogService ~ error:", error)
+      console.log("ChatServices ~ error:", error)
     }
   }
   async getAllRoomOfDoctor(pageNumber: number, pageSize: number) {
@@ -66,7 +66,7 @@ class ChatService {
       )
       return res as AxiosResponse<IServerResponse<IRoom[]>>
     } catch (error) {
-      console.log("BlogService ~ error:", error)
+      console.log("ChatServices ~ error:", error)
     }
   }
   //chat message
@@ -87,7 +87,7 @@ class ChatService {
       )
       return res as AxiosResponse<IServerResponse<IMessage>>
     } catch (error) {
-      console.log("BlogService ~ error:", error)
+      console.log("ChatServices ~ error:", error)
     }
   }
   //Roomtype
@@ -98,7 +98,7 @@ class ChatService {
       )
       return res as AxiosResponse<IServerResponse<RoomType[]>>
     } catch (error) {
-      console.log("BlogService ~ error:", error)
+      console.log("ChatServices ~ error:", error)
     }
   }
   async createMessage(roomId: string, content: string) {

@@ -17,17 +17,6 @@ const Reschedule = () => {
     <DetailDoctorModalWrapper className="max-w-[505px] gap-y-6">
       <div className="flex flex-col gap-y-2">
         <h3 className="text-2xl text-h1">Đặt lịch cuộc hẹn</h3>
-        <p className="font-light text-gray-500">
-          Lựa chọn lịch hẹn và hình thức kết nối
-        </p>
-      </div>
-      <div className="modal-filed max-w-[200px]">
-        <span className="label">Hình thức kết nối</span>
-        <SelectCustom
-          placeholder="Chọn địa điểm"
-          options={optionsConnect}
-          onSelectOption={handleSelectTypeConnect}
-        />
       </div>
       <div className="flex flex-col gap-8">
         <div className=" modal-filed">

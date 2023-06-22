@@ -3,7 +3,6 @@ import { IconButton } from "@mui/material"
 import Menu from "@mui/material/Menu"
 import MenuItem from "@mui/material/MenuItem"
 import classNames from "classnames"
-import { useCreateChatMessage } from "hooks/query/chat/message"
 import React, { useState } from "react"
 import {
   HiOutlinePaperAirplane,
@@ -19,10 +18,17 @@ const MenuWrapper = styled(Menu)`
 interface Props {
   // eslint-disable-next-line no-unused-vars
   onCreate: (value: string) => void
+  // eslint-disable-next-line no-unused-vars
+  onChange: (value: string) => void
   isLoading: boolean
+  value: string
 }
-const InputMessage = ({ onCreate, isLoading = false }: Props) => {
-  const [messageText, setMessageText] = useState("")
+const InputMessage = ({
+  value,
+  onChange,
+  onCreate,
+  isLoading = false
+}: Props) => {
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null)
   const open = Boolean(anchorEl)
   const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
@@ -57,18 +63,12 @@ const InputMessage = ({ onCreate, isLoading = false }: Props) => {
             <span>Attack images</span>
           </div>
         </MenuItem>
-        <MenuItem onClick={handleClose}>
-          <div className="flex items-center space-x-2">
-            <HiOutlinePaperClip />
-            <span>Attack files</span>
-          </div>
-        </MenuItem>
       </MenuWrapper>
 
-      <div className="flex-1 w-full px-2 py-1 bg-gray-100 rounded-md">
+      <div className="flex-1 w-full px-2 py-1 bg-gray-100 rounded-md ">
         <input
-          value={messageText}
-          onChange={(e) => setMessageText(e.target.value)}
+          value={value}
+          onChange={(e) => onChange(e.target.value)}
           type="text"
           className="py-2.5 my-auto bg-transparent border-none outline-none placeholder:text-disable text-grayPrimary w-full"
           placeholder="Type a message"
@@ -77,15 +77,15 @@ const InputMessage = ({ onCreate, isLoading = false }: Props) => {
       <div
         className={classNames(
           "flex items-center justify-center w-10 h-10 rounded-full bg-primary transition-all",
-          (!messageText || isLoading) &&
+          (!value || isLoading) &&
             "bg-carbon bg-opacity-50 cursor-none pointer-events-none"
         )}
       >
         <IconButton
           size="small"
           className="text-white"
-          disabled={!messageText || isLoading}
-          onClick={() => onCreate(messageText)}
+          disabled={!value || isLoading}
+          onClick={() => onCreate(value)}
         >
           <HiOutlinePaperAirplane />
         </IconButton>

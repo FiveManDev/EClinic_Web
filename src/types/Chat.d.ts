@@ -34,3 +34,4 @@ export interface Message {
   isMyChat: boolean
   createdAt: string
 }
+export type TypeMessage = "Text" | "Image"

@@ -12,11 +12,8 @@ const ChatPage = () => {
     pageIndex,
     PAGE_SIZE
   )
-  if (isLoading) {
-    return <p>Loading...</p>
-  }
   if (isError) {
-    return <p>Errrorr</p>
+    return <p>Errorr....</p>
   }
   return (
     <>
@@ -24,7 +21,7 @@ const ChatPage = () => {
         <title>Chat</title>
       </Head>
       <MainHeadingLayout heading="Chat with paintent">
-        <ContainerChat data={data?.data.data || []} />
+        <ContainerChat data={data?.data.data || []} isLoading={isLoading} />
       </MainHeadingLayout>
     </>
   )
