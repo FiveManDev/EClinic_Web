@@ -10,13 +10,10 @@ const ChatData = () => {
     pageIndex,
     PAGE_SIZE
   )
-  if (isLoading) {
-    return <p>Loading...</p>
-  }
   if (isError) {
     return <p>Errrorr</p>
   }
-  return <ContainerChat data={data?.data.data || []} />
+  return <ContainerChat isLoading={isLoading} data={data?.data.data || []} />
 }
 
 export default ChatData

@@ -5,18 +5,17 @@ import ImageCustom from "../ImageCustom"
 import { OverlayScrollbarsComponent } from "overlayscrollbars-react"
 import { IRoom } from "types/Chat"
 import { combineName, dayformat } from "shared/helpers/helper"
-import { useDispatch } from "react-redux"
+import { useDispatch, useSelector } from "react-redux"
 import { chatsSlice } from "store/module/chat/chat-slice"
+import { roomIdChatSelector } from "store/module/chat/chat-selector"
+import classNames from "classnames"
+import { Skeleton } from "@mui/material"
 interface IProps {
   data: IRoom[]
+  isLoading: boolean
 }
-const ListHistory = ({ data }: IProps) => {
+const ListHistory = ({ data, isLoading = false }: IProps) => {
   const [searchValue, setSearchValue] = useState("")
-  const dispatch = useDispatch()
-  useEffect(() => {
-    dispatch(chatsSlice.actions.onShowChatRoom(data[0].roomID))
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [])
   return (
     <div className="flex flex-col bg-gray-50 w-full max-w-[320px]">
       <div className="px-5 pt-10 pb-4">
@@ -36,49 +35,80 @@ const ListHistory = ({ data }: IProps) => {
         options={{ scrollbars: { autoHide: "scroll" } }}
       >
         <div className="h-full space-y-4">
-          {data.map((item, index) => (
-            <HistoryItem room={item} key={index} />
-          ))}
+          {isLoading &&
+            Array(6)
+              .fill(0)
+              .map((_, index) => (
+                <HistoryItem isLoading={isLoading} key={index} />
+              ))}
+          {data.length > 0 &&
+            data.map((item, index) => <HistoryItem room={item} key={index} />)}
         </div>
       </OverlayScrollbarsComponent>
     </div>
   )
 }
 interface HistoryProps {
-  room: IRoom
+  room?: IRoom
+  isLoading?: boolean
 }
-export const HistoryItem = ({ room }: HistoryProps) => {
+export const HistoryItem = ({ room, isLoading = false }: HistoryProps) => {
+  const roomId = useSelector(roomIdChatSelector)
   const dispatch = useDispatch()
   const onClickItem = () => {
-    dispatch(chatsSlice.actions.onShowChatRoom(room.roomID))
+    if (room) {
+      dispatch(chatsSlice.actions.onShowChatRoom(room.roomID))
+    }
   }
   return (
     <div
-      className="flex gap-x-3 items-center bg-white px-5 py-[6px] cursor-pointer hover:bg-blue-100 transition-all"
+      className={classNames(
+        "flex gap-x-3 items-center bg-white px-5 py-[6px] cursor-pointer hover:bg-blue-100 transition-all",
+        roomId === room?.roomID && "bg-carbon"
+      )}
       onClick={onClickItem}
     >
-      <div className="relative flex-shrink-0 w-10 h-10">
-        <ImageCustom
-          src={room?.roomAuthor.avatar || "/images/avatars/avatar_2.jpg"}
-          fill
-          alt="user-avatar"
-          className="object-cover rounded-full"
+      {isLoading && (
+        <Skeleton
+          variant="circular"
+          width={40}
+          height={40}
+          className="flex-shrink-0"
         />
-      </div>
+      )}
+      {room?.roomAuthor && (
+        <div className="relative flex-shrink-0 w-10 h-10">
+          <ImageCustom
+            src={room?.roomAuthor.avatar || "/images/avatars/avatar_2.jpg"}
+            fill
+            alt="user-avatar"
+            className="object-cover rounded-full"
+          />
+        </div>
+      )}
+
       <div className="flex flex-col justify-between flex-1">
         <div className="flex items-center justify-between">
+          {isLoading && (
+            <>
+              <Skeleton variant="text" width={80} />
+            </>
+          )}
           <p className="text-sm font-medium text-h1 max-w-[110px] line-clamp-1">
-            {combineName(
-              room?.roomAuthor.firstName,
-              room?.roomAuthor?.lastName
-            )}
+            {room?.roomAuthor &&
+              combineName(
+                room?.roomAuthor.firstName,
+                room?.roomAuthor?.lastName
+              )}
           </p>
           <time className="text-xs align-top text-black2 ">
-            {dayformat(room.createdAt)}
+            {isLoading && <Skeleton variant="text" width={60} />}
+            {room?.roomAuthor && dayformat(room?.createdAt)}
           </time>
         </div>
         <span className="text-xs text-disable line-clamp-1">
-          {room.chatMessage.content}
+          {isLoading && <Skeleton variant="text" width={100} />}
+          {room?.chatMessage && room?.chatMessage.content}
         </span>
       </div>
     </div>

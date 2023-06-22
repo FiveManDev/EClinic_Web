@@ -54,8 +54,8 @@ export const getCurrentDate = (date: string) => {
 export const combineName = (lastName?: string, firstName?: string) => {
   return lastName + " " + firstName
 }
-export const dayformat = (date: string) => {
-  return dayjs(date).format("DD MMM YYYY")
+export const dayformat = (date?: string) => {
+  return dayjs(date).format("DD MMM YYYY") || ""
 }
 export const caculateAge = (date: string) => {
   const dateInput = new Date(date)

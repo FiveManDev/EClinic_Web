@@ -1,19 +1,30 @@
 import { Tab, Tabs } from "@mui/material"
 import { useRouter } from "next/router"
 import { SyntheticEvent, useMemo, useState } from "react"
-import { HiOutlineChatBubbleLeftRight } from "react-icons/hi2"
-import { MdLogout, MdOutlineHistory, MdOutlinePeopleAlt } from "react-icons/md"
-import { RiLockPasswordLine } from "react-icons/ri"
 import { routers } from "shared/constant/routers"
 import { logoutUser } from "store/module/auth/action-creators"
 import { useAppDispatch } from "store/store"
 import LayoutItem from "../../components/layout"
-import ChangePassword from "../change-password"
-import ChatData from "../chat/ChatData"
-import HistoryQuestion from "../history-question"
-import Profile from "../profile"
+const Profile = dynamic(() => import("../profile"), {
+  ssr: false
+})
+const ChangePassword = dynamic(() => import("../change-password"), {
+  ssr: false
+})
+const HistoryQuestion = dynamic(() => import("../profile"), {
+  ssr: false
+})
+const ChatData = dynamic(() => import("../chat/ChatData"), {
+  ssr: false
+})
+const AppointmentSchedule = dynamic(
+  () => import("../appoiment/AppointmentSchedule"),
+  {
+    ssr: false
+  }
+)
 import { TabsWrapper } from "./Tabs.style"
-import AppointmentSchedule from "../appoiment/AppointmentSchedule"
+import dynamic from "next/dynamic"
 
 const SiderBar = () => {
   const [tabIndex, setTabIndex] = useState(0)
@@ -35,7 +46,6 @@ const SiderBar = () => {
       {
         key: 0,
         label: `Profile`,
-        icon: <MdOutlinePeopleAlt />,
         children: (
           <LayoutItem label="Profile">
             <Profile />
@@ -45,7 +55,6 @@ const SiderBar = () => {
       {
         key: 1,
         label: `Change password`,
-        icon: <RiLockPasswordLine />,
         children: (
           <LayoutItem label="Change password">
             <ChangePassword />
@@ -55,7 +64,6 @@ const SiderBar = () => {
       {
         key: 2,
         label: `History of question`,
-        icon: <MdOutlineHistory />,
         children: (
           <LayoutItem label="History of question">
             <HistoryQuestion />
@@ -65,19 +73,16 @@ const SiderBar = () => {
       {
         key: 3,
         label: `Chat with doctor`,
-        icon: <HiOutlineChatBubbleLeftRight />,
         children: <ChatData />
       },
       {
         key: 4,
         label: `Appointment schedule`,
-        icon: <MdOutlineHistory />,
         children: <AppointmentSchedule />
       },
       {
         key: 5,
         label: `Logout`,
-        icon: <MdLogout />,
         onclick: () => logout()
       }
     ],
@@ -89,12 +94,11 @@ const SiderBar = () => {
         orientation="vertical"
         value={tabIndex}
         onChange={handleTabChange}
-        className="p-0 rounded-sm background-primary h-fit tab-wrapper"
+        className="h-fit tab-wrapper"
       >
         {tabs.map((tab) => (
           <Tab
             onClick={tab?.onclick}
-            icon={tab.icon}
             label={tab.label}
             key={tab.key}
             value={tab.key}

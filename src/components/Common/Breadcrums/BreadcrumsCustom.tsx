@@ -12,17 +12,18 @@ interface BreadcrumbsProps {
 
 const BreadcrumsCustom: React.FC<BreadcrumbsProps> = ({ items }) => (
   <Breadcrumbs>
-    {items.map((item, index) =>
-      item.href ? (
-        <Link key={index} className="text-inherit" href={item.href}>
-          {item.label}
-        </Link>
-      ) : (
-        <Typography key={index} className="text-primary">
-          {item.label}
-        </Typography>
-      )
-    )}
+    {items.length > 0 &&
+      items.map((item, index) =>
+        item.href ? (
+          <Link key={index} className="text-inherit" href={item.href}>
+            {item.label}
+          </Link>
+        ) : (
+          <Typography key={index} className="text-primary">
+            {item.label}
+          </Typography>
+        )
+      )}
   </Breadcrumbs>
 )
 

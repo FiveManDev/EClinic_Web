@@ -26,7 +26,7 @@ const Loader = styled.div`
   }
 `
 
-const Spinner = ({ color = "#fff" }) => {
+export const Spinner = ({ color = "#fff" }) => {
   return <Loader color={color} />
 }
 export const LoadingArea = () => {

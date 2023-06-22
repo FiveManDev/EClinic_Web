@@ -1,9 +1,16 @@
 import ImageCustom from "components/Common/ImageCustom"
+import ModalPrimary from "components/Common/Modal/ModalPrimary"
+import ModalSuccess from "components/Common/Modal/ModalSuccess"
 import Tag from "components/Common/Tag"
 import CustomButton from "components/User/Button"
+import Reschedule from "module/Doctor/components/Reschedule"
+import { OverlayScrollbarsComponent } from "overlayscrollbars-react"
+import { useState } from "react"
 import colorsProvider from "shared/theme/colors"
 
 const DoctorBookingItem = () => {
+  const [showModal, setShowModal] = useState(false)
+  const [isSuccess, setIsSuccess] = useState(false)
   return (
     <div className="flex flex-col p-4 bg-white rounded-lg shadow">
       <div className="flex items-center top gap-x-4">
@@ -49,8 +56,51 @@ const DoctorBookingItem = () => {
       <div className="h-[1px] w-full bg-gray-200 my-4"></div>
       <div className="flex items-center gap-x-4 justify-self-end">
         <CustomButton kind="secondary">Book Again</CustomButton>
-        <CustomButton>Rechedule</CustomButton>
+        <CustomButton
+          onClick={() => {
+            setShowModal(true)
+          }}
+        >
+          Rechedule
+        </CustomButton>
       </div>
+      <ModalPrimary show={showModal} onClose={() => setShowModal(false)}>
+        <OverlayScrollbarsComponent
+          defer
+          options={{ scrollbars: { autoHide: "scroll" } }}
+        >
+          <Reschedule />
+        </OverlayScrollbarsComponent>
+
+        <div className="footer">
+          <div className="flex justify-between px-6">
+            <CustomButton kind="tertiary" onClick={() => setShowModal(false)}>
+              Cancel
+            </CustomButton>
+            <CustomButton
+              kind="primary"
+              onClick={() => {
+                setShowModal(false)
+                setIsSuccess(true)
+              }}
+            >
+              Reschedule
+            </CustomButton>
+          </div>
+        </div>
+      </ModalPrimary>
+      <ModalSuccess setIsSuccess={setIsSuccess} isSuccess={isSuccess}>
+        <h1 className="text-4xl font-bold text-center text-black1">
+          Rescheduling Success
+        </h1>
+        <p className="max-w-[400px] text-gray80 text-center mt-4">
+          Appointment successfully changed. The doctor you selected will contact
+          you.
+        </p>
+        <CustomButton className="mt-3" onClick={() => setIsSuccess(false)}>
+          Close
+        </CustomButton>
+      </ModalSuccess>
     </div>
   )
 }

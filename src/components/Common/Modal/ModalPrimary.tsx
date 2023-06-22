@@ -1,10 +1,9 @@
 import styled from "@emotion/styled"
 import classNames from "classnames"
 import { AnimatePresence, motion } from "framer-motion"
-import React, { useRef } from "react"
+import React from "react"
 import { HiXMark } from "react-icons/hi2"
 import Backdrop from "../Backdrop"
-import useOnClickOutside from "hooks/useClickOutSide"
 const ModalPrimaryWrapper = styled(motion.div)`
   .footer {
     padding: 20px 0;
@@ -36,9 +35,15 @@ interface ModalProps {
   show: boolean
   onClose: () => void
   children: React.ReactNode
+  closeButton?: boolean
 }
 
-const ModalPrimary = ({ show, onClose, children }: ModalProps) => {
+const ModalPrimary = ({
+  show,
+  onClose,
+  children,
+  closeButton = true
+}: ModalProps) => {
   return (
     <>
       <AnimatePresence initial={false} onExitComplete={() => null} mode="wait">
@@ -55,15 +60,17 @@ const ModalPrimary = ({ show, onClose, children }: ModalProps) => {
                   "relative bg-white w-fit mx-auto shadow-lg z-50  transition-opacity transition-scale duration-300 rounded-[20px]"
                 )}
               >
-                <div className="absolute top-0 right-0 translate-x-1/3 -translate-y-1/3 z-20 h-[46px] w-[46px] rounded-full p-1 bg-white cursor-pointer">
-                  <motion.button
-                    whileHover={{ scale: 1.1 }}
-                    onClick={onClose}
-                    className="bg-[#44444F] w-full h-full flex items-center justify-center border-none outline-none rounded-full cursor-pointer hover:bg-opacity-90 transition-all"
-                  >
-                    <HiXMark className="text-lg text-white" />
-                  </motion.button>
-                </div>
+                {closeButton && (
+                  <div className="absolute top-0 right-0 translate-x-1/3 -translate-y-1/3 z-20 h-[46px] w-[46px] rounded-full p-1 bg-white cursor-pointer">
+                    <motion.button
+                      whileHover={{ scale: 1.1 }}
+                      onClick={onClose}
+                      className="bg-[#44444F] w-full h-full flex items-center justify-center border-none outline-none rounded-full cursor-pointer hover:bg-opacity-90 transition-all"
+                    >
+                      <HiXMark className="text-lg text-white" />
+                    </motion.button>
+                  </div>
+                )}
                 {children}
               </div>
             </ModalPrimaryWrapper>
