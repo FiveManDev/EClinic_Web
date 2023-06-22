@@ -1,40 +1,96 @@
-import CustomButton from "components/User/Button"
-import UserSecondaryLayout from "layout/User/UserSecondaryLayout"
-import Head from "next/head"
-import React, { useEffect } from "react"
-import { useTranslation } from "react-i18next"
-import { IBreadcrum } from "types/Base.type"
-import FilterBar from "../components/filterBar/FilterBar"
-import ListServices from "./section/ListServices/ListServices"
-import InputCustom from "components/Common/Input"
-import { HiMagnifyingGlass } from "react-icons/hi2"
-import CheckBoxCustom from "components/Common/Checkbox"
-import { Rating, Slider } from "@mui/material"
+import { useState, useEffect } from "react";
+import { useTranslation } from "react-i18next";
+import Head from "next/head";
+import CustomButton from "components/User/Button";
+import UserSecondaryLayout from "layout/User/UserSecondaryLayout";
+import FilterBar from "../components/filterBar/FilterBar";
+import ListServices from "./section/ListServices/ListServices";
+import InputCustom from "components/Common/Input";
+import { HiMagnifyingGlass } from "react-icons/hi2";
+import CheckBoxCustom from "components/Common/Checkbox";
+import { useGetAllSpecializationQuery } from "hooks/query/service/useService";
+import { Specialization } from "types/Service";
+import useDebounce from "hooks/useDebounce";
+import { IBreadcrum } from "types/Base.type";
+import { t } from "i18next";
+
+interface SpecializationWithChecked extends Specialization {
+  checked: boolean;
+}
+
+const breadrums: IBreadcrum[] = [
+  { label: t("base:pages.home"), href: "/" },
+  { label: t("base:pages.servies") },
+];
 
 const ServicesPage = () => {
-  const { t } = useTranslation(["base", "ser"])
-  const [showFilter, setShowFilter] = React.useState(false)
-  const [rating, setRating] = React.useState<number | null>(2)
+  const { t } = useTranslation(["base", "ser"]);
+  const { data } = useGetAllSpecializationQuery({
+    pageNumber: 1,
+    pageSize: 100,
+  });
+  const specializations: Specialization[] = data?.data?.data as Specialization[];
 
-  const [state, setState] = React.useState({
-    tieuhoa: false,
-    nhikhoa: false
-  })
+  const [specializationsState, setSpecializationsState] = useState<SpecializationWithChecked[]>(
+    []
+  );
+  const [initialSpecializationsState, setInitialSpecializationsState] = useState<SpecializationWithChecked[]>([]);
+
+  const [specializationIds, setSpecializationIds] = useState([])
+
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setState({
-      ...state,
-      [event.target.name]: event.target.checked
-    })
-  }
+    const { name, checked } = event.target;
+
+    setSpecializationsState((prevState) =>
+      prevState.map((specialization) =>
+        specialization.specializationID === name
+          ? { ...specialization, checked }
+          : specialization
+      )
+    );
+    setSpecializationIds((prevState) => {
+      let updatedIds = [...prevState]; // Create a new array with the values from prevState
+
+      const index = updatedIds.indexOf(name as never);
+      if (index !== -1) {
+        // If name exists in prevState, remove it
+        updatedIds.splice(index, 1);
+      } else {
+        // If name doesn't exist in prevState, add it
+        updatedIds.push(name as never);
+      }
+      return updatedIds;
+    });
+
+  };
+
+
+  const [searchValue, setSearchValue] = useState("");
+  const searchTextDebounce = useDebounce(searchValue, 1000);
+  const [showFilter, setShowFilter] = useState(false);
+  const handleReset = () => {
+    setSearchValue("");
+    setSpecializationsState(initialSpecializationsState);
+    setSpecializationIds([]);
+  };
   useEffect(() => {
-    if (window.innerWidth > 768) {
-      setShowFilter(true)
+    if (typeof window !== "undefined" && window.innerWidth > 768) {
+      setShowFilter(true);
     }
-  }, [])
-  const breadrums: IBreadcrum[] = [
-    { label: t("base:pages.home"), href: "/" },
-    { label: t("base:pages.servies") }
-  ]
+    if (specializations) {
+      setSpecializationsState(specializations.map((specialization) => ({
+        ...specialization,
+        checked: false,
+      })));
+      setInitialSpecializationsState(
+        specializations.map((specialization) => ({
+          ...specialization,
+          checked: false,
+        }))
+      );
+    }
+  }, [specializations]);
+
   return (
     <>
       <Head>
@@ -49,8 +105,8 @@ const ServicesPage = () => {
             <CustomButton
               kind="secondary"
               size="small"
-              className="h-10  mx-auto w-[140px] rounded-[3px]"
-              onClick={() => setShowFilter(!showFilter)}
+              className="h-10 mx-auto w-[140px] rounded-[3px]"
+              onClick={() => setShowFilter((prevShowFilter) => !prevShowFilter)}
             >
               <div className="flex items-center gap-2">
                 <span>
@@ -75,72 +131,51 @@ const ServicesPage = () => {
           </div>
         </div>
         <div className="flex mt-6 md:mt-10 ">
-          <FilterBar
-            show={showFilter}
-            onClose={() => setShowFilter(!showFilter)}
-          >
+          <FilterBar show={showFilter} onClose={() => setShowFilter((prevShowFilter) => !prevShowFilter)}>
             <div className="space-y-2">
               <h3>{t("ser:search.label")}</h3>
               <InputCustom
                 icon={<HiMagnifyingGlass />}
                 className="w-full md:max-w-[412px]"
                 placeholder={t("ser:search.input")}
+                onChange={(e) => setSearchValue(e.target.value)}
+                value={searchValue}
               />
             </div>
             <div className="space-y-2">
               <h3>{t("ser:specialist.label")}</h3>
-              <div className="flex flex-col ">
-                <CheckBoxCustom
-                  name="tieuhoa"
-                  label="Tiêu hóa"
-                  checked={state.tieuhoa}
-                  onChange={handleChange}
-                />
-                <CheckBoxCustom
-                  name="nhikhoa"
-                  label="Nhi khoa"
-                  checked={state.nhikhoa}
-                  onChange={handleChange}
-                />
+              <div className="flex flex-col">
+                {specializationsState.length > 0 ? (
+                  specializationsState.map((specialization) => (
+                    <CheckBoxCustom
+                      key={specialization.specializationID}
+                      name={specialization.specializationID}
+                      label={specialization.specializationName}
+                      checked={specialization.checked}
+                      onChange={handleChange}
+                    />
+                  ))
+                ) : (
+                  <p>System does not have any specializations!</p>
+                )}
               </div>
             </div>
-            <div className="space-y-2">
-              <h3>{t("ser:range.label")}</h3>
-              <div className="w-[95%]">
-                <Slider
-                  size="medium"
-                  defaultValue={1000}
-                  valueLabelDisplay="auto"
-                />
-              </div>
-            </div>
-            <div className="space-y-2">
-              <h3>{t("ser:rate.label")}</h3>
-              <Rating
-                name="simple-controlled"
-                value={rating}
-                onChange={(_, newValue) => {
-                  setRating(newValue)
-                }}
-              />
-            </div>
-            <CustomButton
-              kind="primary"
-              size="small"
-              className="h-10  rounded-[3px]"
-            >
+            <CustomButton kind="primary" size="small" className="h-10 rounded-[3px]" onClick={handleReset}>
               <div className="flex items-center gap-2">
                 <span>{t("ser:btn")}</span>
               </div>
             </CustomButton>
           </FilterBar>
           <div className="flex-1 md:ml-16">
-            <ListServices />
+            <ListServices
+              searchText={searchTextDebounce}
+              specializationIDs={specializationIds}
+            />
           </div>
         </div>
       </UserSecondaryLayout>
     </>
-  )
-}
+  );
+};
 
-export default ServicesPage
+export default ServicesPage;
