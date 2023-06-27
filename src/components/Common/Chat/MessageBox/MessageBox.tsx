@@ -18,6 +18,7 @@ import ButtonScroll from "./ButtonScroll"
 import { HeaderBox } from "./HeaderBox"
 import InputMessage from "./InputMessage"
 import TextMessage from "./TextMessage"
+import VideoCall from "./VideoCall"
 
 interface IProps {
   toggleInfo: () => void
@@ -133,12 +134,14 @@ const MessageBox = ({ toggleInfo }: IProps) => {
         scrollContainer.removeEventListener("scroll", handleScroll)
       }
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [refScroll, roomData.hasPreviousPage])
   //handle when create message success
   useEffect(() => {
     if (messages[messages.length - 1]?.userID === auth.user.userId) {
       scrollToBottom()
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [messages])
   useEffect(() => {
     if (roomData.data?.pages.length === 1) {
@@ -146,13 +149,14 @@ const MessageBox = ({ toggleInfo }: IProps) => {
     }
   }, [roomData.data])
   return (
-    <div className="flex flex-col w-full h-full border border-gray-200 border-solid border-y-0">
+    <div className="flex flex-col w-full h-full border border-gray-200 border-solid border-y-0 ">
       <HeaderBox
         isLoading={roomData.isLoading}
         author={roomData.data?.pages[0]?.data.data.otherProfile}
         toggleInfo={toggleInfo}
       />
-      <div className="relative flex-1 w-full overflow-y-hidden scroll-custom">
+      <VideoCall />
+      <div className="relative flex-1 w-full overflow-y-hidden scroll-custom ">
         <AnimatePresence
           initial={false}
           onExitComplete={() => null}
@@ -160,9 +164,8 @@ const MessageBox = ({ toggleInfo }: IProps) => {
         >
           {!isBottom && <ButtonScroll onClick={scrollToBottom} />}
         </AnimatePresence>
-
         <div
-          className="flex flex-col h-full px-5 py-6 space-y-4 overflow-y-auto scroll-custom scroll-smooth"
+          className="flex flex-col h-full px-5 py-6 space-y-4 overflow-y-auto scroll-custom scroll-smooth md:h-[500px]"
           ref={refScroll}
         >
           {roomData.isFetchingPreviousPage && (

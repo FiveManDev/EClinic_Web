@@ -14,9 +14,7 @@ const ProfilePage = () => {
         <link rel="icon" href="/images/favicon.png" />
       </Head>
       <UserSecondaryLayout breadrums={[]}>
-        <div className="w-full">
-          <SiderBar />
-        </div>
+        <SiderBar />
       </UserSecondaryLayout>
     </>
   )

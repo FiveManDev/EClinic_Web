@@ -1,8 +1,13 @@
 import MainHeadingLayout from "layout/Management/MainHeadingLayout"
 import TabsCustom from "layout/Management/components/TabsCustom"
+import dynamic from "next/dynamic"
 import { useMemo } from "react"
-import DoctorBooking from "./components/DoctorBooking"
-
+const DoctorBooking = dynamic(() => import("./components/DoctorBooking"), {
+  ssr: false
+})
+const ServicesBooking = dynamic(() => import("./components/ServicesBooking"), {
+  ssr: false
+})
 const AppointmentSchedule = () => {
   const tabs = useMemo(
     () => [
@@ -14,14 +19,7 @@ const AppointmentSchedule = () => {
       {
         key: 1,
         label: `Services`,
-        children: (
-          <p>
-            Lorem, ipsum dolor sit amet consectetur adipisicing elit. Explicabo
-            iste numquam vero vitae tempora nostrum natus excepturi voluptas!
-            Nesciunt consequatur eos laudantium sapiente alias repudiandae earum
-            quia veniam iure aspernatur?
-          </p>
-        )
+        children: <ServicesBooking />
       }
     ],
     []

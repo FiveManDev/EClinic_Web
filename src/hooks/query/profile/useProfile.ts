@@ -24,6 +24,15 @@ export type UpdateSupporterProfile = Omit<IProfileSupporter, "userID">
 
 export type CreateExpertProfile = Omit<IProfileExpert, "profileID" | "userID">
 export type UpdateExpertProfile = Omit<IProfileExpert, "userID">
+
+export interface SearchDoctor {
+  pageNumber: number
+  pageSize: number
+  searchText: string
+  specializationID: string
+  startPrice: number
+  endPrice: number
+}
 export const useProfieId = (userId: string) => {
   const queryKey = [QUERY_KEYS.PROFILE, userId]
   const profileQuery = useQuery({
@@ -129,6 +138,20 @@ export const useGetDoctorProfilesQuery = (data: IPaginationSearch) => {
         searchText: data.searchText
       }),
     keepPreviousData: true
+  })
+}
+export const useSearchDoctorProfilesQuery = (data: SearchDoctor) => {
+  const queryKey = [
+    QUERY_KEYS.PROFILE,
+    data.pageNumber,
+    data.pageSize,
+    data.searchText,
+    data.specializationID,
+    data.endPrice
+  ]
+  return useQuery({
+    queryKey,
+    queryFn: () => profileService.searchDoctorProfiles(data)
   })
 }
 export const useGetDoctorProfilesByIdQuery = (userID: string) => {

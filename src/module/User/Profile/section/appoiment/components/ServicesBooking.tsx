@@ -1,6 +1,6 @@
 import classNames from "classnames"
 import { useState } from "react"
-import DoctorBookingItem from "./DoctorBookingItem"
+import ServiceBooking from "./ServiceBooking"
 export type KindAppoiment = "cancelled" | "completed" | "upcomming"
 const filterList: KindAppoiment[] = ["upcomming", "cancelled", "completed"]
 const moockData: KindAppoiment[] = [
@@ -26,7 +26,7 @@ const moockData: KindAppoiment[] = [
   "completed"
 ]
 
-const DoctorBooking = () => {
+const ServicesBooking = () => {
   const [type, setType] = useState<KindAppoiment>("upcomming")
   return (
     <div className="flex flex-col">
@@ -52,11 +52,11 @@ const DoctorBooking = () => {
       <div className="grid grid-cols-2 gap-4">
         {moockData.map(
           (item, index) =>
-            item === type && <DoctorBookingItem kind={item} key={index} />
+            item === type && <ServiceBooking kind={item} key={index} />
         )}
       </div>
     </div>
   )
 }
 
-export default DoctorBooking
+export default ServicesBooking

@@ -2,6 +2,7 @@ import AlertCustom from "components/User/Alert"
 import {
   createContext,
   PropsWithChildren,
+  ReactNode,
   useCallback,
   useContext,
   useRef,
@@ -9,8 +10,8 @@ import {
 } from "react"
 type Props = {
   open?: boolean
-  title?: string
-  content?: string
+  title?: ReactNode
+  content?: ReactNode
   btnAgree?: string
   btnDisagree?: string
 }
