@@ -146,6 +146,22 @@ class BlogService {
     )
     return res.data as IServerResponse<string>
   }
+  async getTagSortByCount(pageNumber: number, pageSize: number) {
+    try {
+      const res: AxiosResponse = await axiosClient.get(
+        `${URL_API.BLOG_HASHTAG}/GetTagSortByCount`,
+        {
+          headers: {
+            PageNumber: pageNumber,
+            PageSize: pageSize
+          }
+        }
+      )
+      return res as AxiosResponse<IServerResponse<HashTagBlog[]>>
+    } catch (error) {
+      console.log("getTagSortByCount ~ error:", error)
+    }
+  }
   async upLoadImage(file: File) {
     try {
       const formData = new FormData()

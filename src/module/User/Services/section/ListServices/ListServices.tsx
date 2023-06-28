@@ -1,15 +1,22 @@
 import React, { useState } from "react"
 import CardService from "../../../Home/section/services/components/card/CardService"
-import { useGetAllServicePackageQuery } from "hooks/query/service/useService"
+import { useSearchServicePackageFilteredQuery } from "hooks/query/service/useService"
 import { ServicePackage } from "types/Service"
 import { IPagination } from "types/Pagination"
 import PaginationCustom from "components/Common/Pagination"
 
-const ListServices = () => {
+interface Props {
+  searchText?: string,
+  specializationIDs?: string[]
+}
+
+const ListServices = ({ searchText = "", specializationIDs = [] }: Props) => {
   const [pageIndex, setPageIndex] = useState(1)
-  const { data } = useGetAllServicePackageQuery({
+  const { data } = useSearchServicePackageFilteredQuery({
     pageNumber: 1,
-    pageSize: 12
+    pageSize: 12,
+    searchText: searchText,
+    specializationIDs: specializationIDs
   })
   const servicePackages: ServicePackage[] = data?.data?.data as ServicePackage[]
   const paginateData = data?.headers["x-pagination"]

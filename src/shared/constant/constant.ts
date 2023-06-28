@@ -21,7 +21,8 @@ export const QUERY_KEYS = {
     MESSAGE: "CHAT_MESSAGE",
     ROOM: "CHAT_ROOM",
     ROOM_TYPE: "CHAT_ROOM_TYPE"
-  }
+  },
+  PAYMENT: "PAYMENT"
 } as const
 export const ROLE = {
   USER: "User",
@@ -46,6 +47,7 @@ export const URL_API = {
   FORUM_POST_COMMENT: "forum/Comment",
   FORUM_POST_ANWERS: "forum/Answer",
   FORUM_POST_HASHTAG: "forum/Hashtag",
+  PAYMENT: "payment/Transaction",
   //Chat
   CHAT: {
     ROOM: "Communication/Rooms",

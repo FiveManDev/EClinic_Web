@@ -1,6 +1,10 @@
 import { useMutation, useQuery } from "@tanstack/react-query"
 import { QUERY_KEYS } from "shared/constant/constant"
-import { IPaginationSearch, IPaging } from "types/Pagination"
+import {
+  IPaginationSearch,
+  IPaginationSearchServicePackageFiltered,
+  IPaging
+} from "types/Pagination"
 import { serviceService } from "../../../services/service.service"
 import { Service, ServicePackage, Specialization } from "types/Service"
 
@@ -63,6 +67,28 @@ export const useSearchServicePackageQuery = (data: IPaginationSearch) => {
         pageSize: data.pageSize,
         searchText: data.searchText
       })
+  })
+}
+export const useSearchServicePackageFilteredQuery = (
+  data: IPaginationSearchServicePackageFiltered
+) => {
+  const queryKey = [
+    QUERY_KEYS.SERVICE_PACKAGE,
+    data.pageNumber,
+    data.pageSize,
+    data.searchText,
+    data.specializationIDs
+  ]
+  return useQuery({
+    queryKey,
+    queryFn: () =>
+      serviceService.searchServicePackageFiltered({
+        pageNumber: data.pageNumber,
+        pageSize: data.pageSize,
+        searchText: data.searchText,
+        specializationIDs: data.specializationIDs
+      }),
+    keepPreviousData: true
   })
 }
 export const useGetAllServicePackageQuery = (data: IPaging) => {

@@ -11,5 +11,8 @@ export interface IPaginationSearch {
   pageSize: number
   searchText: string
 }
-
+export interface IPaginationSearchServicePackageFiltered
+  extends IPaginationSearch {
+  specializationIDs: string[]
+}
 export type IPaging = Omit<IPaginationSearch, "searchText">
