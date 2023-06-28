@@ -62,13 +62,12 @@ const ModalPrimary = ({
               >
                 {closeButton && (
                   <div className="absolute top-0 right-0 translate-x-1/3 -translate-y-1/3 z-20 h-[46px] w-[46px] rounded-full p-1 bg-white cursor-pointer">
-                    <motion.button
-                      whileHover={{ scale: 1.1 }}
+                    <button
                       onClick={onClose}
-                      className="bg-[#44444F] w-full h-full flex items-center justify-center border-none outline-none rounded-full cursor-pointer hover:bg-opacity-90 transition-all"
+                      className="bg-[#44444F] w-full h-full flex items-center justify-center border-none outline-none rounded-full cursor-pointer hover:bg-opacity-90 transition-all active:scale-90"
                     >
                       <HiXMark className="text-lg text-white" />
-                    </motion.button>
+                    </button>
                   </div>
                 )}
                 {children}

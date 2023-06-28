@@ -7,7 +7,7 @@ import {
 } from "@mui/material"
 import Zoom from "@mui/material/Zoom"
 import { TransitionProps } from "@mui/material/transitions"
-import React from "react"
+import React, { ReactNode } from "react"
 import CustomButton from "../Button"
 
 const Transition = React.forwardRef(function Transition(
@@ -22,8 +22,8 @@ type Props = {
   handleClose: () => void
   onConfirm: () => void
   open?: boolean
-  title?: string
-  content?: string
+  title?: ReactNode
+  content?: ReactNode
   btnAgree?: string
   btnDisagree?: string
 }

@@ -45,7 +45,9 @@ const CardDoctor = ({ doctor }: IProps) => {
                   />
                 </svg>
 
-                <span className="text-[#92929D] text-sm">Nhi Khoa</span>
+                <span className="text-[#92929D] text-sm">
+                  {doctor.specialization.specializationName}
+                </span>
               </div>
             </div>
             <CustomButton
@@ -59,7 +61,7 @@ const CardDoctor = ({ doctor }: IProps) => {
           </div>
           <div className="flex items-center gap-6">
             <InfoItem content={doctor.title} label="Chức vụ" />
-            <InfoItem content={doctor.specializationName} label="Chuyên khoa" />
+
             <InfoItem content={`$${doctor.price}`} label="Giá" />
           </div>
           <div className="w-full bg-gray-200 h-[1px]"></div>

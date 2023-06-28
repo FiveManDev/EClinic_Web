@@ -4,7 +4,9 @@ import {
   HiOutlineInformationCircle,
   HiOutlineVideoCamera
 } from "react-icons/hi2"
+import { useSelector } from "react-redux"
 import { combineName } from "shared/helpers/helper"
+import { RootState } from "store/store"
 import { ProfileChat } from "types/Chat"
 interface IProps {
   toggleInfo: () => void
@@ -16,6 +18,7 @@ export const HeaderBox = ({
   author,
   isLoading = false
 }: IProps) => {
+  const role = useSelector((state: RootState) => state.auth.user.role)
   return (
     <div className="flex justify-between px-5 py-3 border border-t-0 border-gray-200 border-solid border-x-0">
       <div className="flex space-x-2">
@@ -55,13 +58,16 @@ export const HeaderBox = ({
         </div>
       </div>
       <div className="flex items-center gap-x-2">
-        <Tooltip title="Call video" placement="top">
-          <IconButton>
-            <span className="text-3xl text-secondary">
-              <HiOutlineVideoCamera />
-            </span>
-          </IconButton>
-        </Tooltip>
+        {role !== "User" && (
+          <Tooltip title="Call video" placement="top">
+            <IconButton>
+              <span className="text-3xl text-secondary">
+                <HiOutlineVideoCamera />
+              </span>
+            </IconButton>
+          </Tooltip>
+        )}
+
         <Tooltip title="View profile" placement="top">
           <IconButton onClick={toggleInfo}>
             <span className="text-3xl text-disable">

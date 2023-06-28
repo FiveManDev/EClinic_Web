@@ -11,10 +11,33 @@ import { KindAppoiment } from "./DoctorBooking"
 interface Props {
   kind: KindAppoiment
 }
+import useConfirm from "context/ComfirmContext"
 
-const DoctorBookingItem = ({ kind }: Props) => {
+const ServiceBooking = ({ kind }: Props) => {
+  const confirm = useConfirm()
+
   const [showModal, setShowModal] = useState(false)
   const [isSuccess, setIsSuccess] = useState(false)
+
+  const handleCancel = async () => {
+    if (confirm) {
+      const choice = await confirm({
+        title: <h3 className="text-2xl text-error">Cancel Appoitment</h3>,
+        content: (
+          <div className="flex flex-col gap-y-2w">
+            <p>Are you sure you want to cancel your appoiment?</p>
+            <p>
+              Only <strong className="text-lg font-bold">50%</strong> of the
+              funds will be returned to your account.
+            </p>
+          </div>
+        ),
+        btnAgree: "Yes, Cancel",
+        btnDisagree: "Back"
+      })
+      console.log("handleCancel ~ choice:", choice)
+    }
+  }
   return (
     <div className="flex flex-col p-4 bg-white rounded-lg shadow">
       <div className="flex items-center top gap-x-4">
@@ -29,8 +52,6 @@ const DoctorBookingItem = ({ kind }: Props) => {
         <div className="flex flex-col justify-between h-full">
           <h4 className="text-lg font-semibold">Dr. Adian Allende</h4>
           <div className="flex items-center gap-x-2">
-            <span>Video Call</span>
-            <span>-</span>
             <Tag
               color={
                 kind === "completed"
@@ -50,27 +71,15 @@ const DoctorBookingItem = ({ kind }: Props) => {
             <span>15:00 Pm</span>
           </div>
         </div>
-        <Tag color={colorsProvider.primary} className="cursor-pointer">
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            fill="none"
-            viewBox="0 0 24 24"
-            strokeWidth={1.5}
-            stroke="currentColor"
-            className="w-6 h-6"
-          >
-            <path
-              strokeLinecap="round"
-              d="M15.75 10.5l4.72-4.72a.75.75 0 011.28.53v11.38a.75.75 0 01-1.28.53l-4.72-4.72M4.5 18.75h9a2.25 2.25 0 002.25-2.25v-9a2.25 2.25 0 00-2.25-2.25h-9A2.25 2.25 0 002.25 7.5v9a2.25 2.25 0 002.25 2.25z"
-            />
-          </svg>
-        </Tag>
       </div>
       {kind !== "cancelled" && (
         <>
           <div className="h-[1px] w-full bg-gray-200 my-4"></div>
           <div className="flex items-center gap-x-4 justify-self-end">
-            <CustomButton kind="secondary">
+            <CustomButton
+              kind="secondary"
+              onClick={() => kind === "upcomming" && handleCancel()}
+            >
               {kind === "completed" ? "Book Again" : "Cancel Appoiment"}
             </CustomButton>
             {kind == "upcomming" && (
@@ -129,4 +138,4 @@ const DoctorBookingItem = ({ kind }: Props) => {
   )
 }
 
-export default DoctorBookingItem
+export default ServiceBooking

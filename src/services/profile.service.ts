@@ -15,6 +15,7 @@ import {
   CreateDoctorProfile,
   CreateExpertProfile,
   CreateSupporterProfile,
+  SearchDoctor,
   UpdateDoctorProfile,
   UpdateExpertProfile,
   UpdateSupporterProfile
@@ -110,6 +111,19 @@ class ProfileService {
     const res: AxiosResponse = await axiosClient.get(
       `${URL_API.PROFILE}/GetDoctorProfiles?SearchText=${data.searchText}`,
       {
+        headers: {
+          PageNumber: data.pageNumber,
+          PageSize: data.pageSize
+        }
+      }
+    )
+    return res as AxiosResponse<IServerResponse<IProfileDoctor[]>>
+  }
+  async searchDoctorProfiles(data: SearchDoctor) {
+    const res: AxiosResponse = await axiosClient.get(
+      `${URL_API.PROFILE}/SearchDoctorProfiles`,
+      {
+        params: data,
         headers: {
           PageNumber: data.pageNumber,
           PageSize: data.pageSize
