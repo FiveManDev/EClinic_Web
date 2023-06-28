@@ -186,7 +186,7 @@ const MessageBox = ({ toggleInfo }: IProps) => {
           {roomData.data &&
             roomData.data?.pages?.length > 0 &&
             roomData.data?.pages.map((item) =>
-              item?.data.data.message.map((mess) => (
+              item?.data.data?.message?.map((mess) => (
                 <TextMessage
                   avatar={
                     mess.userID === auth.user.userId

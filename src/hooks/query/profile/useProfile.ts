@@ -62,6 +62,7 @@ export const useSimpleProfile = (userId: string) => {
   })
   return profileQuery
 }
+
 export const useGetUserMainProfilesByID = () => {
   const queryKey = [QUERY_KEYS.PROFILE]
   return useQuery({

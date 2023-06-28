@@ -90,6 +90,26 @@ class ChatService {
       console.log("ChatServices ~ error:", error)
     }
   }
+  async getAllImageOfRoom(
+    pageNumber: number,
+    pageSize: number,
+    roomId: string
+  ) {
+    try {
+      const res: AxiosResponse = await axiosClient.get(
+        `${URL_API.CHAT.CHATMESSAGE}/GetAllImageOfRoom?roomId=${roomId}`,
+        {
+          headers: {
+            PageNumber: pageNumber,
+            PageSize: pageSize
+          }
+        }
+      )
+      return res as AxiosResponse<IServerResponse<string[]>>
+    } catch (error) {
+      console.log("ChatServices ~ error:", error)
+    }
+  }
   //Roomtype
   async getAllRoomType() {
     try {

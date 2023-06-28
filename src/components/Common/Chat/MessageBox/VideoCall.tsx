@@ -105,7 +105,7 @@ const VideoCall = () => {
     })
   }
   const handleChangeSizeVideo = () => {
-    dispatch(headerSlice.actions.onChangeZIndex(isFullScreen ? 20 : 0))
+    dispatch(headerSlice.actions.onChangeZIndex(isFullScreen ? 50 : 0))
     setIsFullScreen(!isFullScreen)
   }
   const handleCloseVideoCall = () => {
@@ -142,13 +142,13 @@ const VideoCall = () => {
             : "relative w-full mx-auto overflow-hidden rounded-xl h-96"
         )}
       >
-        <h1>Current user id is {peerId}</h1>
+        {/* <h1>Current user id is {peerId}</h1>
         <input
           type="text"
           value={remotePeerIdValue}
           onChange={(e) => setRemotePeerIdValue(e.target.value)}
         />
-        <button onClick={() => call(remotePeerIdValue)}>Call</button>
+        <button onClick={() => call(remotePeerIdValue)}>Call</button> */}
         <Tooltip
           title="Full screen"
           placement="top"
