@@ -2,10 +2,24 @@ import { IconButton, Tooltip } from "@mui/material"
 import classNames from "classnames"
 import Peer from "peerjs"
 import { useEffect, useRef, useState } from "react"
-import { useDispatch } from "react-redux"
+import { useDispatch, useSelector } from "react-redux"
 import { headerSlice } from "store/module/header/header-slice"
+import * as signalR from "@microsoft/signalr"
+import { token } from "shared/utils/token"
+import { roomIdChatSelector } from "store/module/chat/chat-selector"
+
+const getNavigator = () => {
+  const newNavigator: any = window.navigator
+  var getUserMedia =
+    newNavigator.getUserMedia ||
+    newNavigator.webkitGetUserMedia ||
+    newNavigator.mozGetUserMedia
+  return getUserMedia
+}
 
 const VideoCall = () => {
+  const roomId = useSelector(roomIdChatSelector)
+
   const [peerId, setPeerId] = useState("")
   const dispatch = useDispatch()
 
@@ -16,6 +30,38 @@ const VideoCall = () => {
   const remoteVideoRef = useRef<HTMLVideoElement | null>(null)
   const peerInstance = useRef<any>(null)
   const callRef = useRef<any>(null)
+  const connnectionRef = useRef<signalR.HubConnection | null>(null)
+  useEffect(() => {
+    if (roomId) {
+      const connection = new signalR.HubConnectionBuilder()
+        .withUrl(`https://localhost:8686/message`, {
+          accessTokenFactory: () => token.getToken().access_token || ""
+        })
+        .withAutomaticReconnect()
+        .build()
+
+      connnectionRef.current = connection
+      connnectionRef.current
+        .start()
+        .then(function () {
+          connection
+            .invoke("JoinGroup", peerId)
+            .then(() => {})
+            .catch(function (err) {
+              return console.error(err.toString())
+            })
+        })
+        .catch(function (err) {
+          return console.error(err.toString())
+        })
+    }
+    connnectionRef.current!.on("Response", (message: any) => {})
+
+    // Cleanup the connection on component unmount
+    return () => {
+      connnectionRef.current!.stop()
+    }
+  }, [peerId])
 
   useEffect(() => {
     const peer = new Peer()
@@ -24,13 +70,9 @@ const VideoCall = () => {
     })
 
     peer.on("call", (call) => {
-      const newNavigator: any = window.navigator
-      var getUserMedia =
-        newNavigator.getUserMedia ||
-        newNavigator.webkitGetUserMedia ||
-        newNavigator.mozGetUserMedia
+      const newUserMedia = getNavigator()
 
-      getUserMedia({ video: true, audio: true }, (mediaStream: any) => {
+      newUserMedia({ video: true, audio: true }, (mediaStream: any) => {
         if (remoteVideoRef.current) {
           currentUserVideoRef.current!.srcObject = mediaStream
           currentUserVideoRef.current!.play()
@@ -49,13 +91,8 @@ const VideoCall = () => {
     peerInstance.current = peer
   }, [])
   const call = (remotePeerId: any) => {
-    const newNavigator: any = window.navigator
-    var getUserMedia =
-      newNavigator.getUserMedia ||
-      newNavigator.webkitGetUserMedia ||
-      newNavigator.mozGetUserMedia
-
-    getUserMedia({ video: true, audio: true }, (mediaStream: any) => {
+    const newUserMedia = getNavigator()
+    newUserMedia({ video: true, audio: true }, (mediaStream: any) => {
       currentUserVideoRef.current!.srcObject = mediaStream
       currentUserVideoRef.current!.play()
 
