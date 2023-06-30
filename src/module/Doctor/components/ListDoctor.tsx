@@ -194,26 +194,6 @@ const ListDoctor = () => {
         />
       )}
     />
-    // <MaterialReactTable
-    //   columns={columns}
-    //   enableRowActions
-    //   manualPagination
-    //   enableStickyHeader
-    //   enableTopToolbar
-    //   enableGlobalFilter={false}
-    //   muiTableContainerProps={{ sx: { maxHeight: "600px" } }}
-    //   onPaginationChange={setPagination}
-    //   data={data?.data?.data ?? []}
-    //   rowCount={getDataPaginate(data).PageSize ?? 0}
-    //   state={{
-    //     isLoading,
-    //     pagination,
-    //     showAlertBanner: isError,
-    //     showProgressBars: isRefetching
-    //   }}
-    //   positionActionsColumn="last"
-
-    // />
   )
 }
 

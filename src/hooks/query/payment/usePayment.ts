@@ -1,8 +1,8 @@
 import { useMutation, useQuery } from "@tanstack/react-query"
 import { QUERY_KEYS } from "shared/constant/constant"
 import { IPaging } from "types/Pagination"
+import { RefundTransaction, TransactionQuery } from "types/Payment"
 import { paymentService } from "../../../services/payment.service"
-import { RefundTransaction } from "types/Payment"
 
 //payment
 export const useGetPaymentByIDQuery = (paymentID: string) => {
@@ -49,4 +49,16 @@ export const useRefundTransactionMutation = () => {
   })
 
   return refundTransaction
+}
+export const useGetTransactionQuery = (data: TransactionQuery) => {
+  const queryKey = [
+    QUERY_KEYS.PAYMENT,
+    data.endTime,
+    data.startTime,
+    data.timeType
+  ]
+  return useQuery({
+    queryKey,
+    queryFn: () => paymentService.getTransactionQuery(data)
+  })
 }

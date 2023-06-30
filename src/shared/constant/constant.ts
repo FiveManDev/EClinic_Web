@@ -59,7 +59,8 @@ export const DEFAULT_ROUTER = {
   USER: "/user/",
   ADMIN: "/admin/",
   DOCTOR: "/doctor/",
-  SUPPORTER: "/sup/"
+  SUPPORTER: "/sup/",
+  EXPERT: "/expert/"
 }
 export const LANGUAGE = {
   VIETNAM: "Vi",
@@ -76,5 +77,10 @@ export const RELATIONSHIPS = {
   BROTHER: "Em",
   ME: "Me",
   CHILREN: "Con cái"
+}
+export const TIME_STYPE_PAYMENT = {
+  Day: 0,
+  Month: 1,
+  Year: 2
 }
 export const PAGE_SIZE = 10

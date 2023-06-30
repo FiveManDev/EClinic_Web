@@ -55,6 +55,7 @@ export async function middleware(req: NextRequest) {
         case pathname.includes("/user") && Object.values(ROLE).includes(role):
         case pathname.includes("/doctor") && role === ROLE.DOCTOR:
         case pathname.includes("/sup") && role === ROLE.SUPPORTER:
+        case pathname.includes("/expert") && role === ROLE.EXPERT:
         case role === ROLE.ADMIN:
           return NextResponse.next()
         case pathname.includes("/sign-in") || pathname.includes("/sign-up"):

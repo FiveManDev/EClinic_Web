@@ -8,7 +8,9 @@ import {
   PaymentWithoutAuthor,
   Refund,
   RefundWithoutReason,
-  RefundTransaction
+  RefundTransaction,
+  TransactionQuery,
+  Statistics
 } from "types/Payment"
 
 class PaymentService {
@@ -60,6 +62,16 @@ class PaymentService {
       refundTrans
     )
     return res.data as IServerResponse<null>
+  }
+  //Transaction
+  async getTransactionQuery(query: TransactionQuery) {
+    const res = await axiosClient.get(
+      `${URL_API.PAYMENT}/getTransactionQuery`,
+      {
+        params: query
+      }
+    )
+    return res.data as IServerResponse<Statistics[]>
   }
 }
 

@@ -17,7 +17,7 @@ interface SelectProps {
   // eslint-disable-next-line no-unused-vars
   onSelectOption: (option: Option) => void
   className?: string
-  placeholder: string
+  placeholder?: string
   isLoading?: boolean
   value: string
   size?: "small" | "medium"
@@ -46,7 +46,7 @@ export const SelectCustom = ({
         fullWidth
         error={!!error}
       >
-        <InputLabel>{placeholder}</InputLabel>
+        {placeholder && <InputLabel>{placeholder}</InputLabel>}
         <Select value={value} label={placeholder} onChange={handleChange}>
           {isLoading ? (
             <div>loading</div>

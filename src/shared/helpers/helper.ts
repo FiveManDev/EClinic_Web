@@ -36,6 +36,9 @@ export const routerByRole = (role: ITokenDecode["role"]) => {
     case "Doctor":
       url = "/doctor"
       break
+    case "Expert":
+      url = "/expert"
+      break
     default:
       break
   }

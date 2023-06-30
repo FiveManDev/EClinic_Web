@@ -1,5 +1,5 @@
 export interface ITokenDecode {
-  role: "Admin" | "Supporter" | "Doctor" | "User"
+  role: "Admin" | "Supporter" | "Doctor" | "User" | "Expert"
   iat: string
   UserID: string
   exp: number
