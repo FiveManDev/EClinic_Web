@@ -1,8 +1,9 @@
 import styled from "@emotion/styled"
-import React, { PropsWithChildren } from "react"
+import { PropsWithChildren, ReactNode } from "react"
 
 interface Props extends PropsWithChildren {
   heading: string
+  elementRight?: ReactNode
 }
 const Wrapper = styled.div`
   .MuiPaper-root.MuiPaper-rounded.MuiPaper-elevation {
@@ -14,11 +15,14 @@ const Wrapper = styled.div`
     }
   }
 `
-const WrapperHeading = ({ heading, children }: Props) => {
+const WrapperHeading = ({ heading, elementRight, children }: Props) => {
   return (
     <>
       <Wrapper className="flex flex-col w-full bg-white rounded-lg">
-        <h3 className="p-4 text-xl font-semibold text-gray80">{heading}</h3>
+        <div className="flex items-center justify-between p-4">
+          <h3 className="text-xl font-semibold text-gray80">{heading}</h3>
+          {elementRight}
+        </div>
         {children}
       </Wrapper>
     </>

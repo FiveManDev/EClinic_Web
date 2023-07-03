@@ -7,17 +7,17 @@ import { authService } from "services/auth.service"
 import { VERSION } from "shared/constant/constant"
 import { token } from "shared/utils/token"
 
-class HttpClient {
+export class HttpClient {
   instance: AxiosInstance
   cancelTokenSource: CancelTokenSource
-  constructor() {
+  constructor(baseURL: string) {
     /**
      * cancelTokenSource
      * This can be useful for cases such as when a user navigates away from a page before a request has completed, or when a user initiates a new request before a previous one has completed.
      */
     this.cancelTokenSource = axios.CancelToken.source()
     this.instance = axios.create({
-      baseURL: `${process.env.NEXT_PUBLIC_API_URL}/api/v${VERSION}/`,
+      baseURL: baseURL,
       timeout: 100000,
       headers: {
         "Content-Type": "application/json"
@@ -59,6 +59,8 @@ class HttpClient {
     )
   }
 }
-const axiosClient = new HttpClient().instance
+const axiosClient = new HttpClient(
+  `${process.env.NEXT_PUBLIC_API_URL}/api/v${VERSION}/`
+).instance
 
 export default axiosClient

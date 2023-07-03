@@ -17,13 +17,13 @@ const DrawerCustom = ({
     <>
       {show && (
         <div
-          className="fixed top-0 right-0 z-40 w-full h-full bg-black md:hidden md:relative md:w-0 md:h-0 bg-opacity-20"
+          className="fixed top-0 right-0 z-40 w-full h-full bg-black md:z-0 md:hidden md:relative md:w-0 md:h-0 bg-opacity-20"
           onClick={() => onClose()}
         ></div>
       )}
       <div
         className={classNames(
-          "fixed z-50 md:relative left-0 top-0  md:h-auto h-full bg-white md:bg-transparent shadow-md md:shadow-none transition-all",
+          "fixed z-50 md:z-0 md:relative left-0 top-0  md:h-auto h-full bg-white md:bg-transparent shadow-md md:shadow-none transition-all",
           show ? "" : "-translate-x-full md:translate-x-0",
           className
         )}

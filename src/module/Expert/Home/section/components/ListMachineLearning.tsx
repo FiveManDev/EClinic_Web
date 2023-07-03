@@ -1,93 +1,129 @@
-import { Box, IconButton, Tooltip } from "@mui/material"
+import InputCustom from "components/Common/Input"
 import TableCustom from "components/Common/Table/TableCustom"
-import { CustomInput } from "components/User/Input"
-import { MRT_ColumnDef } from "material-react-table"
-import React, { useMemo, useState } from "react"
-import { HiOutlinePencilSquare } from "react-icons/hi2"
+import {
+  useCreateMachineLearningMutation,
+  useGetAllMachineLearningQuery,
+  useUpdateMachineLearningMutation
+} from "hooks/query/ai"
+import { MRT_ColumnDef, MaterialReactTableProps } from "material-react-table"
+import { useMemo, useState } from "react"
+import { toast } from "react-hot-toast"
+import colorsProvider from "shared/theme/colors"
+import { MachineLearning } from "types/AI"
+import ButtonTable from "./ButtonTable"
 import WrapperHeading from "./WrapperHeading"
-
-interface SAMPLE {
-  id: number
-  name: string
-}
-
-const data: SAMPLE[] = [
-  {
-    id: 1,
-    name: "Machine learning 1"
-  },
-  {
-    id: 2,
-    name: "Machine learning 2"
-  },
-  {
-    id: 3,
-    name: "Machine learning 3"
-  },
-  {
-    id: 4,
-    name: "Machine learning4"
-  },
-  {
-    id: 5,
-    name: "Machine learning 5"
-  }
-]
+import { queryClient } from "pages/_app"
+import { QUERY_KEYS } from "shared/constant/constant"
 
 const ListMachineLearning = () => {
-  const [searchData, setSearchData] = useState("")
-
-  const columns = useMemo<MRT_ColumnDef<SAMPLE>[]>(
+  const [isCreate, setIsCreate] = useState(false)
+  const [valueInput, setValueInput] = useState("")
+  const { data, isLoading, isError, isRefetching, refetch } =
+    useGetAllMachineLearningQuery()
+  const update = useUpdateMachineLearningMutation()
+  const create = useCreateMachineLearningMutation()
+  const columns = useMemo<MRT_ColumnDef<MachineLearning>[]>(
     () => [
       {
-        accessorKey: "id",
+        accessorKey: "MachineID",
         header: "Id",
         enableClickToCopy: true,
+        enableEditing: false,
         Cell: ({ row }) => {
-          return <p className="line-clamp-1 max-w-[160px]">{row.original.id}</p>
+          return (
+            <p className="line-clamp-1 max-w-[160px]">
+              {row.original.MachineID}
+            </p>
+          )
         }
       },
       {
-        accessorKey: "name",
+        accessorKey: "MachineName",
         header: "Name",
         Cell: ({ row }) => {
           return (
-            <p className="line-clamp-1 max-w-[180px]">{row.original.name}</p>
+            <p className="line-clamp-1 max-w-[260px]">
+              {row.original.MachineName}
+            </p>
           )
         }
       }
     ],
     []
   )
-
+  const handleSaveRow: MaterialReactTableProps<MachineLearning>["onEditingRowSave"] =
+    async ({ exitEditingMode, values }) => {
+      update.mutate(values, {
+        onSuccess: () => {
+          toast.success("Update complete")
+          exitEditingMode()
+          refetch()
+          queryClient.invalidateQueries({
+            queryKey: [QUERY_KEYS.AI.Model]
+          })
+        },
+        onError: () => {
+          toast.error("An error occurred during the update")
+        }
+      })
+    }
+  const handleCreate = () => {
+    if (valueInput) {
+      create.mutate(valueInput, {
+        onSuccess: () => {
+          toast.success("Create complete")
+          setIsCreate(false)
+          setValueInput("")
+          refetch()
+        },
+        onError: () => {
+          toast.error("An error occurred during the create")
+        }
+      })
+    } else {
+      toast.error("Please fill value")
+    }
+  }
   return (
-    <WrapperHeading heading="Machine learning">
+    <WrapperHeading
+      heading="Machine learning"
+      elementRight={
+        <>
+          {!isCreate ? (
+            <ButtonTable
+              content={"Create a new Machine learning"}
+              onClick={() => setIsCreate(true)}
+            />
+          ) : (
+            <div className="flex items-center w-2/3 gap-2">
+              <InputCustom
+                placeholder="Machine learning's name"
+                value={valueInput}
+                onChange={(e) => setValueInput(e.target.value)}
+              />
+              <div className="flex items-center gap-2">
+                <ButtonTable content={"Create"} onClick={handleCreate} />
+                <ButtonTable
+                  content={"Cancel"}
+                  color={colorsProvider.error}
+                  onClick={() => setIsCreate(false)}
+                />
+              </div>
+            </div>
+          )}
+        </>
+      }
+    >
       <TableCustom
-        pagination={{ pageIndex: 1, pageSize: 10 }}
-        // onPaginationChange={setPagination}
+        initialState={{ pagination: { pageSize: 5, pageIndex: 0 } }}
         columns={columns}
-        data={data ?? []}
-        rowCount={data.length ?? 0}
-        // pageCount={paginationData.TotalPages ?? 0}
-        isLoading={false}
-        isError={false}
-        isRefetching={false}
-        renderRowActions={({ row }) => (
-          <Box sx={{ display: "flex", gap: "1rem" }}>
-            <Tooltip arrow placement="left" title="Edit">
-              <IconButton onClick={() => {}}>
-                <HiOutlinePencilSquare />
-              </IconButton>
-            </Tooltip>
-          </Box>
-        )}
-        renderTopToolbarCustomActions={() => (
-          <CustomInput
-            placeholder="Search data here"
-            className="max-w-[300px] w-full"
-            onChange={(e) => setSearchData(e.target.value)}
-          />
-        )}
+        data={data?.data.data ?? []}
+        isLoading={isLoading}
+        isError={isError}
+        isRefetching={isRefetching}
+        editingMode="row"
+        enableEditing
+        onEditingRowSave={handleSaveRow}
       />
     </WrapperHeading>
   )

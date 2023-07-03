@@ -36,7 +36,7 @@ const HomePage = () => {
       <Head>
         <title>Overview</title>
       </Head>
-      <MainHeadingLayout heading="Manament">
+      <MainHeadingLayout heading="Management ">
         <TabsCustom tabs={tabs} />
       </MainHeadingLayout>
     </>
