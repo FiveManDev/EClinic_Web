@@ -18,7 +18,7 @@ interface UpdateCoverProps
   > {
   imageUrl: string | null
   // eslint-disable-next-line no-unused-vars
-  onFileChange: (file: File) => void
+  onFileChange: (file: File | null) => void
   isError?: boolean
 }
 export const UpdateCover = ({
@@ -27,7 +27,8 @@ export const UpdateCover = ({
   isError = false,
   ...props
 }: UpdateCoverProps) => {
-  const { image, handleImageChange, setImage } = useImageFile(imageUrl)
+  const { image, handleImageChange, setImage, handleRemoveImage } =
+    useImageFile(imageUrl)
   const onImageChange = (e: ChangeEvent<HTMLInputElement>) => {
     const file = handleImageChange(e)
     if (isImage(file!)) {
@@ -48,7 +49,8 @@ export const UpdateCover = ({
           className="absolute top-0 right-0 z-20 flex items-center justify-center w-6 h-6 text-white transition-all bg-black rounded-full cursor-pointer -translate-x-2/4 translate-y-2/4 bg-opacity-40 hover:bg-opacity-30 hover:scale-105"
           onClick={(e) => {
             e.stopPropagation()
-            setImage("")
+            handleRemoveImage()
+            onFileChange(null)
           }}
         >
           <svg
