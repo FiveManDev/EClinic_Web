@@ -1,34 +1,35 @@
-import { Box, IconButton, MenuItem, Tooltip } from "@mui/material"
+import { Box, IconButton, Tooltip } from "@mui/material"
 import TableCustom from "components/Common/Table/TableCustom"
 import Tag from "components/Common/Tag"
-import {
-  useGetAllDeepLearningQuery,
-  useGetAllMachineLearningQuery,
-  useGetAllModelQuery
-} from "hooks/query/ai"
+import { useActiveModelMutation, useGetAllModelQuery } from "hooks/query/ai"
 import { MRT_ColumnDef } from "material-react-table"
 import { useMemo, useState } from "react"
-import { HiOutlinePencilSquare } from "react-icons/hi2"
+import { HiOutlineLockClosed, HiOutlinePencilSquare } from "react-icons/hi2"
 import colorsProvider from "shared/theme/colors"
 import { Model } from "types/AI"
+import ButtonTable from "./ButtonTable"
 import UpdateModel from "./UpdateModel"
 import WrapperHeading from "./WrapperHeading"
+import { toast } from "react-hot-toast"
+import useConfirm from "context/ComfirmContext"
 
 const ListModel = () => {
+  const confirm = useConfirm()
   const [actionModel, setActionModel] = useState({
     active: false,
     type: "edit" as "edit" | "create",
     value: null as Model | null
   })
-  const { data, isLoading, isError, isRefetching } = useGetAllModelQuery()
-  const deepLearning = useGetAllDeepLearningQuery()
-  const machineLearning = useGetAllMachineLearningQuery()
+  const activeModel = useActiveModelMutation()
+  const { data, isLoading, isError, isRefetching, refetch } =
+    useGetAllModelQuery()
   const columns = useMemo<MRT_ColumnDef<Model>[]>(
     () => [
       {
         accessorKey: "ModelID",
         header: "Id",
         enableClickToCopy: true,
+        size: 60,
         Cell: ({ row }) => {
           return (
             <p className="line-clamp-1 max-w-[60px]">{row.original.ModelID}</p>
@@ -48,7 +49,8 @@ const ListModel = () => {
       },
       {
         accessorKey: "Accuracy",
-        header: "Model Name",
+        header: "Accuracy",
+        size: 60,
         Cell: ({ row }) => {
           return (
             <Tag color={colorsProvider.success}>{row.original.Accuracy}</Tag>
@@ -64,14 +66,6 @@ const ListModel = () => {
               {row.original.DeepLearning.DeepName}
             </Tag>
           )
-        },
-        muiTableBodyCellEditTextFieldProps: {
-          select: true, //change to select for a dropdown
-          children: deepLearning.data?.data.data.map((state) => (
-            <MenuItem key={state.DeepID} value={state.DeepID}>
-              {state.DeepName}
-            </MenuItem>
-          ))
         }
       },
       {
@@ -83,31 +77,11 @@ const ListModel = () => {
               {row.original.MachineLearning.MachineName}
             </Tag>
           )
-        },
-        muiTableBodyCellEditTextFieldProps: {
-          select: true, //change to select for a dropdown
-          children: machineLearning.data?.data.data.map((state) => (
-            <MenuItem key={state.MachineID} value={state.MachineID}>
-              {state.MachineName}
-            </MenuItem>
-          ))
         }
       },
       {
         accessorKey: "IsActive",
         header: "Active",
-        muiTableBodyCellEditTextFieldProps: {
-          select: true,
-          children: [true, false].map((state, index) => (
-            <MenuItem key={index} value={2}>
-              <Tag
-                color={state ? colorsProvider.success : colorsProvider.error}
-              >
-                {state ? "Active" : "Banned"}
-              </Tag>
-            </MenuItem>
-          ))
-        },
         Cell: ({ row }) => (
           <Tag
             color={
@@ -121,26 +95,46 @@ const ListModel = () => {
         )
       }
     ],
-    [deepLearning, machineLearning]
+    []
   )
-  // const handleSaveRow: MaterialReactTableProps<Model>["onEditingRowSave"] =
-  // async ({ exitEditingMode, values }) => {
-  //   update.mutate(values, {
-  //     onSuccess: () => {
-  //       toast.success("Update complete")
-  //       exitEditingMode()
-  //       refetch()
-  //       queryClient.invalidateQueries({
-  //         queryKey: [QUERY_KEYS.AI.Model]
-  //       })
-  //     },
-  //     onError: () => {
-  //       toast.error("An error occurred during the update")
-  //     }
-  //   })
-  // }
+  const handleActiveModel = async (value: Model) => {
+    if (confirm) {
+      const choice = await confirm({
+        title: "Change status",
+        content: "Are you sure you want to change status this model?"
+      })
+      if (choice) {
+        activeModel.mutate(value.ModelID, {
+          onSuccess() {
+            toast.success("Change status completed")
+            refetch()
+          },
+          onError() {
+            toast.success("Change status fail")
+          }
+        })
+      }
+    }
+  }
   return (
-    <WrapperHeading heading="Model list">
+    <WrapperHeading
+      heading="Model list"
+      elementRight={
+        <>
+          <ButtonTable
+            content={"Create a new Model"}
+            onClick={() =>
+              setActionModel((prevState) => ({
+                ...prevState,
+                type: "create",
+                value: null,
+                active: true
+              }))
+            }
+          />
+        </>
+      }
+    >
       <TableCustom
         initialState={{ pagination: { pageSize: 5, pageIndex: 0 } }}
         columns={columns}
@@ -149,7 +143,7 @@ const ListModel = () => {
         isError={isError}
         isRefetching={isRefetching}
         renderRowActions={({ row }) => (
-          <Box sx={{ display: "flex", gap: "1rem" }}>
+          <Box sx={{ display: "flex", gap: "1rem", paddingRight: 10 }}>
             <Tooltip arrow placement="left" title="Edit">
               <IconButton
                 onClick={() => {
@@ -163,12 +157,21 @@ const ListModel = () => {
                 <HiOutlinePencilSquare />
               </IconButton>
             </Tooltip>
+            <Tooltip arrow placement="left" title="Change status">
+              <IconButton onClick={() => handleActiveModel(row.original)}>
+                <HiOutlineLockClosed />
+              </IconButton>
+            </Tooltip>
           </Box>
         )}
       />
       <UpdateModel
         onModalChange={(value) => {
-          setActionModel((prevstate) => ({ ...prevstate, active: value }))
+          setActionModel((prevstate) => ({
+            ...prevstate,
+            active: value,
+            value: value ? prevstate.value : null
+          }))
         }}
         model={actionModel.value}
         show={actionModel.active}

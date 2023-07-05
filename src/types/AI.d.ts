@@ -14,3 +14,14 @@ export interface Model {
   MachineLearning: MachineLearning
   DeepLearning: DeepLearning
 }
+export interface PredictHistory {
+  PredictID: string
+  Result: "Monkeypox" | "Chickenpox" | "Measles" | "Normal" | "Unknown"
+  PredictTime: string
+  ModelName: string
+}
+export interface PredictModel {
+  file: any
+  Note: string
+  ModelID?: string
+}

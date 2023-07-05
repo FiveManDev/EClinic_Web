@@ -1,12 +1,15 @@
 import { useMutation, useQuery } from "@tanstack/react-query"
 import { aiService } from "services/ai.service"
-import { QUERY_KEYS } from "shared/constant/constant"
-import { DeepLearning, MachineLearning, Model } from "types/AI"
+import { QUERY_KEYS, ROLE } from "shared/constant/constant"
+import { DeepLearning, MachineLearning, Model, PredictModel } from "types/AI"
 
-export type ModelAction = Omit<Model, "MachineLearning" | "DeepLearning"> & {
+export type ModelAction = Omit<
+  Model,
+  "MachineLearning" | "DeepLearning" | "IsActive"
+> & {
   MachineID: string
   DeepID: string
-  file: File
+  file: any
 }
 
 export const useGetAllMachineLearningQuery = () => {
@@ -48,7 +51,31 @@ export const useGetAllModelQuery = () => {
     queryFn: () => aiService.getAllModel()
   })
 }
+export const useCreateModelMutation = () =>
+  useMutation({
+    mutationFn: (data: ModelAction) => aiService.createModel(data)
+  })
 export const useUpdateModelMutation = () =>
   useMutation({
-    mutationFn: (data: DeepLearning) => aiService.updateDeepLearning(data)
+    mutationFn: (data: ModelAction) => aiService.updateModel(data)
+  })
+export const useActiveModelMutation = () =>
+  useMutation({
+    mutationFn: (modelId: string) => aiService.activeModel(modelId)
+  })
+//History
+export const useGetAllHistory = (pageNumber: number, pageSize: number) => {
+  const queryKey = [QUERY_KEYS.AI.History, pageNumber, pageSize]
+  return useQuery({
+    queryKey,
+    queryFn: () => aiService.getAllHistory(pageNumber, pageSize)
+  })
+}
+//Predict
+export const usePredictMutation = (role: string) =>
+  useMutation({
+    mutationFn: (data: PredictModel) =>
+      role === ROLE.EXPERT
+        ? aiService.expertPredict(data)
+        : aiService.doctorPredict(data)
   })

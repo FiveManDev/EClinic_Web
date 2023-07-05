@@ -94,7 +94,7 @@ const FormLogin = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [profile])
   return (
-    <div className=" w-full  bg-white rounded-md shadow-[1.69138px_-2.81897px_19.7328px_rgba(205,_205,_212,_0.1)] px-4 py-6 mt-7">
+    <div className="w-full px-4 py-6 rounded-md  mt-7">
       <ButtonIcon
         text="Log in with Google"
         icon={<GoogleIcon />}

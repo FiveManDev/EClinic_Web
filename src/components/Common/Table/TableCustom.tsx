@@ -24,6 +24,7 @@ const TableCustom = <T extends Record<string, any>>({
   isLoading,
   isError,
   isRefetching,
+  enableRowActions = true,
   tableContainerProps = { sx: { maxHeight: "600px" } },
   ...props
 }: ReusableTableProps<T>) => {
@@ -32,7 +33,6 @@ const TableCustom = <T extends Record<string, any>>({
       <MaterialReactTable
         {...props}
         columns={columns}
-        enableRowActions
         manualPagination
         enableStickyHeader
         enableTopToolbar
