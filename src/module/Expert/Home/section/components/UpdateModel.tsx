@@ -157,7 +157,7 @@ const UpdateModel = ({ show, onModalChange, model }: Props) => {
             isLoading={deepLearning.isLoading}
             placeholder="Deep Learning"
             size="medium"
-            options={deepLearning.data?.data.data.map((item) => ({
+            options={deepLearning.data?.data?.data?.map((item) => ({
               label: item.DeepName,
               value: item.DeepID
             }))}

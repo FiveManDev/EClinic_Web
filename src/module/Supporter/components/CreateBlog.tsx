@@ -88,7 +88,7 @@ const CreateBlog = ({ labelForm, post, mode = "create" }: Props) => {
   const watchDesc = watch("content")
   const watchCoverImage = watch("coverImage")
   const watchIsActive = watch("isActive", post?.isActive ? true : false)
-  const onFileChange = (file: File) => {
+  const onFileChange = (file: File | null) => {
     setValue("coverImage", file)
   }
   const onSubmit = async (value: FieldValues) => {

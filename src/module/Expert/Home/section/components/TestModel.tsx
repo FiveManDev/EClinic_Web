@@ -13,8 +13,18 @@ import { ROLE } from "shared/constant/constant"
 import colorsProvider from "shared/theme/colors"
 import { RootState } from "store/store"
 import { PredictModel } from "types/AI"
+import * as yup from "yup"
+import { yupResolver } from "@hookform/resolvers/yup"
+
 const TestModel = () => {
   const role = useSelector((auth: RootState) => auth.auth.user.role)
+  const schema = yup.object({
+    ModelID:
+      role === ROLE.EXPERT
+        ? yup.string().required("Please select model")
+        : yup.string()
+  })
+
   const [show, setShow] = useState(false)
   const model = useGetAllModelQuery()
   const { data, isLoading, mutate } = usePredictMutation(role)
@@ -25,23 +35,28 @@ const TestModel = () => {
     formState: { errors },
     control
   } = useForm<PredictModel>({
-    mode: "onSubmit"
+    mode: "onSubmit",
+    resolver: yupResolver(schema)
   })
   const watchCoverImage = watch("file")
   const modelId = watch("ModelID")
 
-  const onFileChange = (file: File) => {
+  const onFileChange = (file: File | null) => {
     setValue("file", file)
   }
   const onSubmit = async (value: PredictModel) => {
-    mutate(value, {
-      onSuccess() {
-        setShow(true)
-      },
-      onError() {
-        toast.error("Prediction failure")
-      }
-    })
+    if (value.file) {
+      mutate(value, {
+        onSuccess() {
+          setShow(true)
+        },
+        onError() {
+          toast.error("Prediction failure")
+        }
+      })
+    } else {
+      toast.error("Please input image")
+    }
   }
 
   return (
