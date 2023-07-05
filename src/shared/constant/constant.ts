@@ -22,7 +22,14 @@ export const QUERY_KEYS = {
     ROOM: "CHAT_ROOM",
     ROOM_TYPE: "CHAT_ROOM_TYPE"
   },
-  PAYMENT: "PAYMENT"
+  PAYMENT: "PAYMENT",
+  AI: {
+    MachineLearning: "MachineLearning",
+    DeepLearning: "DeepLearning",
+    Model: "Model",
+    History: "History",
+    AIPredict: "AIPredict"
+  }
 } as const
 export const ROLE = {
   USER: "User",
@@ -53,13 +60,21 @@ export const URL_API = {
     ROOM: "Communication/Rooms",
     CHATMESSAGE: "Communication/ChatMessages",
     RoomTypes: "Communication/RoomTypes"
+  },
+  AI: {
+    MachineLearning: "MachineLearning",
+    DeepLearning: "DeepLearning",
+    Model: "Model",
+    History: "History",
+    AIPredict: "AIPredict"
   }
 } as const
 export const DEFAULT_ROUTER = {
   USER: "/user/",
   ADMIN: "/admin/",
   DOCTOR: "/doctor/",
-  SUPPORTER: "/sup/"
+  SUPPORTER: "/sup/",
+  EXPERT: "/expert/"
 }
 export const LANGUAGE = {
   VIETNAM: "Vi",
@@ -76,5 +91,10 @@ export const RELATIONSHIPS = {
   BROTHER: "Em",
   ME: "Me",
   CHILREN: "Con cái"
+}
+export const TIME_STYPE_PAYMENT = {
+  Day: 0,
+  Month: 1,
+  Year: 2
 }
 export const PAGE_SIZE = 10

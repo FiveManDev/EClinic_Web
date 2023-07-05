@@ -25,3 +25,12 @@ export interface Author {
   lastName: string
   avatar: string
 }
+export interface TransactionQuery {
+  startTime: string
+  endTime: string
+  timeType: number
+}
+export interface Statistics {
+  time: string
+  totalAmount: number
+}

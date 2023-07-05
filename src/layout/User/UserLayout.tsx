@@ -21,6 +21,8 @@ const pathDefaultByRole = (role: string) =>
     ? DEFAULT_ROUTER.ADMIN
     : role === ROLE.DOCTOR
     ? DEFAULT_ROUTER.DOCTOR
+    : role === ROLE.EXPERT
+    ? DEFAULT_ROUTER.EXPERT
     : DEFAULT_ROUTER.SUPPORTER
 const UserLayout: React.FC<IUserLayout> = ({
   children,

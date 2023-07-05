@@ -1,8 +1,10 @@
+import styled from "@emotion/styled"
 import classNames from "classnames"
 import ImageCustom from "components/Common/ImageCustom"
 import Link from "next/link"
 import { useRouter } from "next/router"
 import { ReactNode, useState } from "react"
+import colorsProvider from "shared/theme/colors"
 export type ItemSidebar = {
   icon?: ReactNode
   title?: string
@@ -13,28 +15,31 @@ export type ItemSidebar = {
 export type Props = {
   items: ItemSidebar[]
 }
+const StyleLink = styled(Link)`
+  position: relative;
+  ~ .expand::before {
+    content: "";
+    position: absolute;
+    height: 16px;
+    width: 4px;
+    left: 0px;
+    top: 12px;
+    background-color: ${colorsProvider.primary};
+    border-radius: 0px 1.998px 1.998px 0px;
+  }
+`
+
 const SideBar = ({ items }: Props) => {
-  const { asPath, route } = useRouter()
+  const { asPath } = useRouter()
   const [expandITem, setExpandITem] = useState<null | number>(null)
   const classItem =
-    "flex items-center text-[15px] gap-x-5 p-3 font-medium mb-1 text-gray80 cursor-pointer"
+    "flex items-center text-xs gap-x-4 px-4 py-2 font-medium mb-1 text-gray80 cursor-pointer"
   const classActive =
-    "border-[4px] border-primary border-solid border-y-0 border-r-0 bg-primary bg-opacity-10 !text-primary"
+    "bg-primary bg-opacity-[0.08] rounded-xl !text-primary expand"
   const classHover =
-    "hover:bg-primary hover:bg-opacity-10 hover:text-primary transition-all hover:border-[4px] hover:border-primary hover:border-solid hover:border-y-0 hover:border-r-0"
-  // useEffect(() => {
-  //   items.some((item, idx) =>
-  //     item.subItem?.some((subItem) => {
-  //       if (subItem.link === asPath) {
-  //         setExpandITem(idx)
-  //         return true
-  //       }
-  //       return false
-  //     })
-  //   )
-  // }, [route])
+    "hover:bg-primary hover:bg-opacity-10 hover:text-primary transition-all rounded-[4px]"
   return (
-    <nav className="flex flex-col items-center py-6 w-[220px] flex-shrink-0 bg-white border border-dashed border-gray-200 border-y-0 border-l-0 border-r p-0 rounded-none ">
+    <nav className="flex flex-col items-center py-6 w-[220px] flex-shrink-0 bg-white border border-dashed border-gray-200 border-y-0 border-l-0 border-r px-3 rounded-none ">
       <Link
         href="/"
         className="relative scale-90 md:scale-100 w-[150px] h-9 mb-11 "
@@ -91,7 +96,7 @@ const SideBar = ({ items }: Props) => {
                   <ul className="flex flex-col w-full py-3 mt-2 list-disc rounded-sm">
                     {item.subItem.map((subItem) => {
                       return (
-                        <Link
+                        <StyleLink
                           href={subItem.link || asPath}
                           key={subItem.link}
                           className={classNames(
@@ -107,7 +112,7 @@ const SideBar = ({ items }: Props) => {
                           >
                             {subItem?.title}
                           </li>
-                        </Link>
+                        </StyleLink>
                       )
                     })}
                   </ul>
@@ -116,7 +121,7 @@ const SideBar = ({ items }: Props) => {
             )
           } else {
             return (
-              <Link
+              <StyleLink
                 href={item.link ? item.link : asPath}
                 key={index}
                 className={classNames(
@@ -128,7 +133,7 @@ const SideBar = ({ items }: Props) => {
               >
                 <span className="w-6 h-6">{item.icon}</span>
                 <span>{item.title}</span>
-              </Link>
+              </StyleLink>
             )
           }
         })}

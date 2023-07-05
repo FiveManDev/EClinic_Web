@@ -17,6 +17,7 @@ import FilterBar from "../components/filterBar/FilterBar"
 import DoctorList from "./sections/DoctorList"
 
 const DoctorPage = () => {
+  const [loadIndex, setLoadIndex] = useState(6)
   const { t } = useTranslation(["base", "ser"])
   const [searchData, setSearchData] = useState({
     searchText: "",
@@ -122,18 +123,30 @@ const DoctorPage = () => {
             <div className="space-y-2">
               <h3>{t("ser:specialist.label")}</h3>
               <div className="flex flex-col ">
-                {specializations.data?.data.data.map((item) => (
-                  <CheckBoxCustom
-                    key={item.specializationID}
-                    name={item.specializationID}
-                    label={item.specializationName}
-                    checked={
-                      searchData.specializationID === item.specializationID
-                    }
-                    onChange={handleChange}
-                  />
-                ))}
-                <button className="border-none outline-none">Load more</button>
+                {specializations.data?.data.data.map((item, index) => {
+                  if (index < loadIndex) {
+                    return (
+                      <CheckBoxCustom
+                        key={item.specializationID}
+                        name={item.specializationID}
+                        label={item.specializationName}
+                        checked={
+                          searchData.specializationID === item.specializationID
+                        }
+                        onChange={handleChange}
+                      />
+                    )
+                  }
+                })}
+                {specializations.data?.data.data.length &&
+                  loadIndex < specializations.data?.data.data.length && (
+                    <button
+                      className="border-none outline-none"
+                      onClick={() => setLoadIndex(loadIndex + 5)}
+                    >
+                      Load more
+                    </button>
+                  )}
               </div>
             </div>
             <div className="space-y-2">
