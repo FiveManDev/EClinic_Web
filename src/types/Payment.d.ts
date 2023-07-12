@@ -34,3 +34,10 @@ export interface Statistics {
   time: string
   totalAmount: number
 }
+export interface PaymentBookingService {
+  userID: string
+  profileID: string
+  price: string
+  servicePackageId: string
+  appoinmentTime: string
+}

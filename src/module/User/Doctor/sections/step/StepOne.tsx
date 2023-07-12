@@ -1,7 +1,6 @@
 import { Chip } from "@mui/material"
 import { CalendarPicker, LocalizationProvider } from "@mui/x-date-pickers"
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs"
-import { Option, SelectCustom } from "components/Common/Select/SelectCustom"
 import dayjs, { Dayjs } from "dayjs"
 import React from "react"
 const optionsConnect = [
@@ -49,6 +48,7 @@ export const StepOne = ({ onCancel, onContinue }: PropsStep) => {
           <span className="label">Chọn ngày</span>
           <LocalizationProvider dateAdapter={AdapterDayjs}>
             <CalendarPicker
+              disablePast
               showDaysOutsideCurrentMonth
               date={date}
               onChange={(newDate) => setDate(newDate)}

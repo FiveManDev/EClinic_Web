@@ -1,6 +1,6 @@
 import { AxiosResponse } from "axios"
 import axiosClient from "shared/axios/httpClient"
-import { URL_API } from "shared/constant/constant"
+import { PAYMENT, URL_API } from "shared/constant/constant"
 import { IServerResponse } from "types/server/IServerResponse"
 import { IPaging } from "types/Pagination"
 import {
@@ -10,20 +10,21 @@ import {
   RefundWithoutReason,
   RefundTransaction,
   TransactionQuery,
-  Statistics
+  Statistics,
+  PaymentBookingService
 } from "types/Payment"
 
 class PaymentService {
   //Payment
   async getPaymentByID(paymentID: string) {
     const res: AxiosResponse = await axiosClient.get(
-      `${URL_API.PAYMENT}/GetPaymentByID?PaymentID=${paymentID}`
+      `${URL_API.PAYMENT.TRANSACTION}/GetPaymentByID?PaymentID=${paymentID}`
     )
     return res.data as IServerResponse<Payment>
   }
   async getAllPaymentTransaction(data: IPaging) {
     const res: AxiosResponse = await axiosClient.get(
-      `${URL_API.PAYMENT}/GetAllPaymentTransaction`,
+      `${URL_API.PAYMENT.TRANSACTION}/GetAllPaymentTransaction`,
       {
         headers: {
           PageNumber: data.pageNumber,
@@ -33,16 +34,35 @@ class PaymentService {
     )
     return res as AxiosResponse<IServerResponse<PaymentWithoutAuthor[]>>
   }
+  async paymentBookingService(data: PaymentBookingService, type: string) {
+    if (type === PAYMENT.MOMO.name) {
+      const res: AxiosResponse = await axiosClient.get(
+        `${URL_API.PAYMENT.MOMO}/PaymentRequestForBookingPackage`,
+        {
+          params: data
+        }
+      )
+      return res.data as IServerResponse<string>
+    } else if (type === PAYMENT.VNPAY.name) {
+      const res: AxiosResponse = await axiosClient.get(
+        `${URL_API.PAYMENT.VNPAY}/PaymentRequestForBookingPackage`,
+        {
+          params: data
+        }
+      )
+      return res.data as IServerResponse<string>
+    }
+  }
   //Refund
   async getRefundByID(refundID: string) {
     const res: AxiosResponse = await axiosClient.get(
-      `${URL_API.PAYMENT}/GetRefundByID?RefundID=${refundID}`
+      `${URL_API.PAYMENT.TRANSACTION}/GetRefundByID?RefundID=${refundID}`
     )
     return res.data as IServerResponse<Refund>
   }
   async getAllRefundTransaction(data: IPaging) {
     const res: AxiosResponse = await axiosClient.get(
-      `${URL_API.PAYMENT}/GetAllRefundTransaction`,
+      `${URL_API.PAYMENT.TRANSACTION}/GetAllRefundTransaction`,
       {
         headers: {
           PageNumber: data.pageNumber,
@@ -58,7 +78,7 @@ class PaymentService {
       refundTrans
     )
     const res = await axiosClient.post(
-      `${URL_API.PAYMENT}/RefundTransaction`,
+      `${URL_API.PAYMENT.TRANSACTION}/RefundTransaction`,
       refundTrans
     )
     return res.data as IServerResponse<null>
@@ -66,7 +86,7 @@ class PaymentService {
   //Transaction
   async getTransactionQuery(query: TransactionQuery) {
     const res = await axiosClient.get(
-      `${URL_API.PAYMENT}/getTransactionQuery`,
+      `${URL_API.PAYMENT.TRANSACTION}/getTransactionQuery`,
       {
         params: query
       }

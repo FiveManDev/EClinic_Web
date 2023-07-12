@@ -45,7 +45,7 @@ const VideoCall = () => {
         .start()
         .then(function () {
           connection
-            .invoke("JoinGroup", peerId)
+            .invoke("JoinCall", peerId)
             .then(() => {})
             .catch(function (err) {
               return console.error(err.toString())

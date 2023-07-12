@@ -6,7 +6,7 @@ import { RootState } from "store/store"
 const MENU = [
   {
     title: "Hồ sơ ",
-    href: "/user/profile"
+    href: "/user/my-profile"
   }
 ]
 const TopBar = () => {

@@ -4,11 +4,13 @@ import { isProduction } from "shared/helpers/helper"
 import authSlice from "./module/auth/auth-slice"
 import { chatsSlice } from "./module/chat/chat-slice"
 import { headerSlice } from "./module/header/header-slice"
+import { bookingServiceSlice } from "./module/booking/service/booking-service-slice"
 export const store = configureStore({
   reducer: {
     auth: authSlice,
     chats: chatsSlice.reducer,
-    header: headerSlice.reducer
+    header: headerSlice.reducer,
+    bookingService: bookingServiceSlice.reducer
   },
   devTools: isProduction() ? false : true
 })

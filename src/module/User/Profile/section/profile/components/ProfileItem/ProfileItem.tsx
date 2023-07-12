@@ -1,22 +1,25 @@
 import { Skeleton } from "@mui/material"
+import classNames from "classnames"
 import ImageCustom from "components/Common/ImageCustom"
 import Tag from "components/Common/Tag"
-import dayjs from "dayjs"
-import React from "react"
 import { RELATIONSHIPS } from "shared/constant/constant"
 import { dayformat } from "shared/helpers/helper"
 import { IProfile, IRelationShip } from "types/Profile.type"
 interface Props {
   data?: IProfile & IRelationShip
   onClick: () => void
+  className?: string
   loading: boolean
 }
 
-const ProfileItem = ({ data, onClick, loading = false }: Props) => {
+const ProfileItem = ({ data, onClick, loading = false, className }: Props) => {
   return (
     <>
       <li
-        className="flex px-2 py-2 transition-all rounded-md cursor-pointer gap-x-3 hover:bg-gray-100"
+        className={classNames(
+          "flex px-2 py-2 transition-all rounded-md cursor-pointer gap-x-3 hover:bg-gray-100",
+          className
+        )}
         onClick={onClick}
       >
         {loading && <Skeleton variant="rounded" width={64} height={64} />}
@@ -50,8 +53,12 @@ const ProfileItem = ({ data, onClick, loading = false }: Props) => {
           )}
           {loading && (
             <>
-              <Skeleton variant="text" sx={{ fontSize: "1rem" }} />
-              <Skeleton variant="text" sx={{ fontSize: "0.75rem" }} />
+              <Skeleton variant="text" sx={{ fontSize: "1rem" }} width={115} />
+              <Skeleton
+                variant="text"
+                sx={{ fontSize: "0.75rem" }}
+                width={115}
+              />
             </>
           )}
           {data && (

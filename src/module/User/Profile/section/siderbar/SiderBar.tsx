@@ -1,84 +1,60 @@
 import { Tab, Tabs } from "@mui/material"
 import { useRouter } from "next/router"
-import { SyntheticEvent, useMemo, useState } from "react"
+import {
+  PropsWithChildren,
+  SyntheticEvent,
+  useEffect,
+  useMemo,
+  useState
+} from "react"
 import { routers } from "shared/constant/routers"
 import { logoutUser } from "store/module/auth/action-creators"
 import { useAppDispatch } from "store/store"
 import LayoutItem from "../../components/layout"
-const Profile = dynamic(() => import("../profile"), {
-  ssr: false
-})
-const ChangePassword = dynamic(() => import("../change-password"), {
-  ssr: false
-})
-const HistoryQuestion = dynamic(() => import("../profile"), {
-  ssr: false
-})
-const ChatData = dynamic(() => import("../chat/ChatData"), {
-  ssr: false
-})
-const AppointmentSchedule = dynamic(
-  () => import("../appoiment/AppointmentSchedule"),
-  {
-    ssr: false
-  }
-)
 import { TabsWrapper } from "./Tabs.style"
-import dynamic from "next/dynamic"
-
-const SiderBar = () => {
+const SiderBar = ({ children }: PropsWithChildren) => {
   const [tabIndex, setTabIndex] = useState(0)
   const dispatch = useAppDispatch()
   const router = useRouter()
 
-  const handleTabChange = (
-    event: SyntheticEvent<Element, Event>,
-    value: any
-  ) => {
+  const handleTabChange = (_: SyntheticEvent<Element, Event>, value: any) => {
+    const selectedTab = tabs.find((tab) => tab.key === value)
+    if (selectedTab) {
+      router.push(selectedTab.slug as string)
+    }
     setTabIndex(value)
   }
   const logout = () => {
     dispatch(logoutUser())
     router.push(routers.signIn)
   }
+
   const tabs = useMemo(
     () => [
       {
         key: 0,
         label: `Profile`,
-        children: (
-          <LayoutItem label="Profile">
-            <Profile />
-          </LayoutItem>
-        )
+        slug: "/user/my-profile"
       },
       {
         key: 1,
         label: `Change password`,
-        children: (
-          <LayoutItem label="Change password">
-            <ChangePassword />
-          </LayoutItem>
-        )
+        slug: "/user/change-password"
       },
       {
         key: 2,
         label: `History of question`,
-        children: (
-          <LayoutItem label="History of question">
-            <HistoryQuestion />
-          </LayoutItem>
-        )
+        slug: "/user/history-question"
       },
       {
         key: 3,
         label: `Chat with doctor`,
-        children: <ChatData />
+        slug: "/user/chat"
       },
       {
         key: 4,
-        label: `Appointment schedule`,
-        children: <AppointmentSchedule />
+        slug: "/user/app-schedule",
+        label: `Appointment schedule`
       },
       {
         key: 5,
@@ -88,6 +64,13 @@ const SiderBar = () => {
     ],
     []
   )
+  useEffect(() => {
+    if (router.pathname) {
+      const currentTab = tabs.find((item) => router.pathname === item.slug)
+      setTabIndex(currentTab?.key as number)
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [router.pathname])
   return (
     <TabsWrapper>
       <Tabs
@@ -105,15 +88,15 @@ const SiderBar = () => {
           />
         ))}
       </Tabs>
-      {tabs.map((tab) => {
-        if (tab.key === tabIndex) {
-          return (
-            <div className="flex-1 ml-6" key={tab.key}>
-              {tab.children}
-            </div>
-          )
-        }
-      })}
+      <div className="flex-1 ml-6">
+        <LayoutItem
+          label={
+            (tabs.find((tab) => tab.key === tabIndex)?.label as string) || ""
+          }
+        >
+          {children}
+        </LayoutItem>
+      </div>
     </TabsWrapper>
   )
 }
