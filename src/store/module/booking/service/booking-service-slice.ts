@@ -31,6 +31,9 @@ export const bookingServiceSlice = createSlice({
     },
     appoinmentTimeChange: (state, action) => {
       state.appoinmentTime = action.payload
+    },
+    resetBookingService: () => {
+      return initialState // Reset the state to its initial state
     }
   }
 })

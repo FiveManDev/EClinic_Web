@@ -1,16 +1,53 @@
-import React from "react"
-import { PropsStep } from "./StepOne"
-import Tag from "components/Common/Tag"
-import colorsProvider from "shared/theme/colors"
-import { combineName } from "shared/helpers/helper"
 import ImageCustom from "components/Common/ImageCustom"
-import { IProfileDoctor } from "types/Profile.type"
-import InputCustom from "components/Common/Input"
+import Payment from "components/Common/Payment"
+import Tag from "components/Common/Tag"
 import CustomButton from "components/User/Button"
-interface Props extends PropsStep {
-  profile: IProfileDoctor
-}
-const StepThree = ({ onBack, profile }: Props) => {
+import { useDispatch, useSelector } from "react-redux"
+import { BOOKING_TYPE } from "shared/constant/constant"
+import { combineName, dayformat } from "shared/helpers/helper"
+import colorsProvider from "shared/theme/colors"
+import { selectBookingDoctor } from "store/module/booking/doctor/booking-doctor-selector"
+import { bookingDoctorSlice } from "store/module/booking/doctor/booking-doctor-slice"
+import { PropsStep } from "./StepOne"
+import { usePaymentBookingDoctorMutation } from "hooks/query/payment/usePayment"
+import { RootState } from "store/store"
+import { useRouter } from "next/router"
+import { toast } from "react-hot-toast"
+interface Props extends PropsStep {}
+const StepThree = ({ onBack }: Props) => {
+  const router = useRouter()
+  const userId = useSelector((state: RootState) => state.auth.user.userId)
+  const paymentMutation = usePaymentBookingDoctorMutation()
+  const dispatch = useDispatch()
+  const dataBooking = useSelector(selectBookingDoctor)
+  const price =
+    dataBooking.bookingType === BOOKING_TYPE.Offline.toString()
+      ? dataBooking.doctor?.price
+      : Math.floor(dataBooking.doctor?.price! * 0.2)
+  const onSubmit = () => {
+    paymentMutation.mutate(
+      {
+        data: {
+          userID: userId,
+          profileID: dataBooking.profile?.profileID as string,
+          doctorID: dataBooking.doctor?.userID as string,
+          price: price?.toString() as string,
+          bookingTime: dataBooking.bookingTime,
+          bookingType: dataBooking.bookingType,
+          scheduleID: dataBooking.slot?.slotID as string
+        },
+        type: dataBooking.method
+      },
+      {
+        onSuccess(data) {
+          router.push(data?.message as string)
+        },
+        onError() {
+          toast.error("Booking doctor fail")
+        }
+      }
+    )
+  }
   return (
     <>
       <div className="flex items-center gap-x-3">
@@ -41,7 +78,12 @@ const StepThree = ({ onBack, profile }: Props) => {
         <div className="flex flex-col gap-y-2">
           <div className="flex items-center gap-x-4">
             <div className="flex flex-col flex-1 gap-y-1">
-              <h1 className="text-lg font-medium">Le Nhat Quynh</h1>
+              <h1 className="text-lg font-medium">
+                {combineName(
+                  dataBooking.profile?.firstName,
+                  dataBooking.profile?.lastName
+                )}
+              </h1>
               <div className="flex items-center w-full gap-x-6">
                 <div className="flex items-center gap-x-1">
                   <span className="text-icon">
@@ -61,7 +103,7 @@ const StepThree = ({ onBack, profile }: Props) => {
                     </svg>
                   </span>
                   <time className="text-base font-medium text-black2">
-                    On Sep 28, 2021
+                    {dayformat(dataBooking.bookingTime.toString())}
                   </time>
                 </div>
                 <div className="flex items-center gap-x-1">
@@ -82,7 +124,7 @@ const StepThree = ({ onBack, profile }: Props) => {
                     </svg>
                   </span>
                   <time className="text-base font-medium text-black2">
-                    At 05:30 PM
+                    At {dataBooking.slot?.startTime}
                   </time>
                 </div>
               </div>
@@ -95,91 +137,92 @@ const StepThree = ({ onBack, profile }: Props) => {
             <div className="relative w-[60px] h-[60px]">
               <ImageCustom
                 fill
-                src={profile?.avatar || "/images/sample.png"}
+                src={dataBooking.doctor?.avatar}
                 alt="avatar-image"
                 className="object-cover rounded-md"
               />
             </div>
             <div className="flex flex-col gap-y-1">
               <h1 className="text-lg font-medium">
-                {combineName(profile?.firstName, profile?.lastName)}
+                {combineName(
+                  dataBooking.doctor?.firstName,
+                  dataBooking.doctor?.lastName
+                )}
               </h1>
-              <Tag
-                color={colorsProvider.success}
-                className="px-4 py-2 font-semibold rounded-lg"
-              >
-                <div className="flex items-center gap-x-1">
-                  <span>
-                    <svg
-                      xmlns="http://www.w3.org/2000/svg"
-                      fill="none"
-                      viewBox="0 0 24 24"
-                      strokeWidth={1.5}
-                      stroke="currentColor"
-                      className="w-5 h-5"
-                    >
-                      <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        d="M19.5 14.25v-2.625a3.375 3.375 0 00-3.375-3.375h-1.5A1.125 1.125 0 0113.5 7.125v-1.5a3.375 3.375 0 00-3.375-3.375H8.25m5.231 13.481L15 17.25m-4.5-15H5.625c-.621 0-1.125.504-1.125 1.125v16.5c0 .621.504 1.125 1.125 1.125h12.75c.621 0 1.125-.504 1.125-1.125V11.25a9 9 0 00-9-9zm3.75 11.625a2.625 2.625 0 11-5.25 0 2.625 2.625 0 015.25 0z"
-                      />
-                    </svg>
-                  </span>
-                  <span>Sản phụ khoa</span>
-                </div>
-              </Tag>
+              <div className="flex items-center gap-x-2">
+                <Tag
+                  color={colorsProvider.success}
+                  className="px-4 py-2 font-semibold rounded-lg"
+                >
+                  <div className="flex items-center gap-x-1">
+                    <span>
+                      <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        fill="none"
+                        viewBox="0 0 24 24"
+                        strokeWidth={1.5}
+                        stroke="currentColor"
+                        className="w-5 h-5"
+                      >
+                        <path
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          d="M19.5 14.25v-2.625a3.375 3.375 0 00-3.375-3.375h-1.5A1.125 1.125 0 0113.5 7.125v-1.5a3.375 3.375 0 00-3.375-3.375H8.25m5.231 13.481L15 17.25m-4.5-15H5.625c-.621 0-1.125.504-1.125 1.125v16.5c0 .621.504 1.125 1.125 1.125h12.75c.621 0 1.125-.504 1.125-1.125V11.25a9 9 0 00-9-9zm3.75 11.625a2.625 2.625 0 11-5.25 0 2.625 2.625 0 015.25 0z"
+                        />
+                      </svg>
+                    </span>
+                    <span>
+                      {dataBooking.doctor?.specialization.specializationName}
+                    </span>
+                  </div>
+                </Tag>
+                <Tag
+                  color={colorsProvider.secondary}
+                  className="px-4 py-2 font-semibold rounded-lg"
+                >
+                  <div className="flex items-center gap-x-1">
+                    <span>
+                      {dataBooking.bookingType ===
+                      BOOKING_TYPE.Offline.toString()
+                        ? "Offline"
+                        : "Online"}
+                    </span>
+                  </div>
+                </Tag>
+              </div>
             </div>
-            <div className="ml-auto text-base text-black1">$396.00</div>
+            <div className="ml-auto text-base text-black1">{price} VND</div>
           </div>
         </div>
         <Divider></Divider>
-        <div className="flex justify-between mt-3">
+        {/* <div className="flex justify-between mt-3">
           <h3 className="text-base font-medium text-black1">Subtotal</h3>
-          <span className="text-base text-black1">$396.00</span>
+          <span className="text-base text-black1">{dataBooking.bookingType ===BOOKING_TYPE.Offline.toString()}</span>
         </div>
-        <Divider></Divider>
-        <div className="flex mb-3 gap-x-2">
+        <Divider></Divider> */}
+        {/* <div className="flex mb-3 gap-x-2">
           <InputCustom
             className="w-full md:max-w-[300px]"
             placeholder="Enter your voucher code"
           />
           <CustomButton className="!rounded-[5px]">
-            {/* {createtagMutation.isLoading ? <Spinner /> : "Add"} */}
             Apply
           </CustomButton>
-        </div>
+        </div> */}
         <div className="flex justify-between mt-3">
           <h3 className="text-base font-medium text-black1">Total</h3>
-          <span className="text-base text-black1">$396.00</span>
+          <span className="text-base text-black1">{price} VND</span>
         </div>
         <Divider></Divider>
         <div className="flex flex-col gap-y-2">
-          <h3 className="text-lg text-black1">Payment Method</h3>
-          <ul className="flex items-center gap-4">
-            <li className="px-3 py-[6px] border border-solid border-carbon cursor-pointer rounded-md flex items-center justify-center">
-              <div className="relative w-6 h-6">
-                <ImageCustom
-                  src={"/images/momo.png"}
-                  fill
-                  alt="momo"
-                  className="object-cover"
-                />
-              </div>
-            </li>
-            <li className="px-3 py-[6px] border border-solid border-carbon cursor-pointer rounded-md flex items-center justify-center">
-              <div className="relative w-6 h-6">
-                <ImageCustom
-                  src={"/images/vnpay.png"}
-                  fill
-                  alt="momo"
-                  className="object-cover"
-                />
-              </div>
-            </li>
-          </ul>
+          <Payment
+            methodSelected={dataBooking.method}
+            onChangeMethod={(value) =>
+              dispatch(bookingDoctorSlice.actions.methodChange(value))
+            }
+          />
         </div>
-        <CustomButton className="mt-6">
-          {/* {createtagMutation.isLoading ? <Spinner /> : "Add"} */}
+        <CustomButton className="mt-6" onClick={onSubmit}>
           Confirm and Pay
         </CustomButton>
       </div>

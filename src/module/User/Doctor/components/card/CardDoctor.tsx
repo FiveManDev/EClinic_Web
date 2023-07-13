@@ -2,6 +2,7 @@ import { Skeleton } from "@mui/material"
 import ImageCustom from "components/Common/ImageCustom"
 import Tag from "components/Common/Tag"
 import CustomButton from "components/User/Button"
+import Link from "next/link"
 import { useRouter } from "next/router"
 import { combineName } from "shared/helpers/helper"
 import colorsProvider from "shared/theme/colors"
@@ -50,14 +51,15 @@ const CardDoctor = ({ doctor }: IProps) => {
                 </span>
               </div>
             </div>
-            <CustomButton
-              onClick={() => router.push(`/doctors/${doctor.userID}`)}
-              kind="primary"
-              size="small"
-              className="max-h-[32px] rounded-[10px]"
-            >
-              Booking
-            </CustomButton>
+            <Link href={`/doctors/${doctor.userID}`}>
+              <CustomButton
+                kind="primary"
+                size="small"
+                className="max-h-[32px] rounded-[10px]"
+              >
+                Booking
+              </CustomButton>
+            </Link>
           </div>
           <div className="flex items-center gap-6">
             <InfoItem content={doctor.title} label="Chức vụ" />

@@ -12,8 +12,10 @@ import { logoutUser } from "store/module/auth/action-creators"
 import { useAppDispatch } from "store/store"
 import LayoutItem from "../../components/layout"
 import { TabsWrapper } from "./Tabs.style"
+import Head from "next/head"
 const SiderBar = ({ children }: PropsWithChildren) => {
   const [tabIndex, setTabIndex] = useState(0)
+  const [tabTitle, setTabTitle] = useState("")
   const dispatch = useAppDispatch()
   const router = useRouter()
 
@@ -23,6 +25,7 @@ const SiderBar = ({ children }: PropsWithChildren) => {
       router.push(selectedTab.slug as string)
     }
     setTabIndex(value)
+    setTabTitle(selectedTab?.label || "")
   }
   const logout = () => {
     dispatch(logoutUser())
@@ -68,36 +71,36 @@ const SiderBar = ({ children }: PropsWithChildren) => {
     if (router.pathname) {
       const currentTab = tabs.find((item) => router.pathname === item.slug)
       setTabIndex(currentTab?.key as number)
+      setTabTitle(currentTab?.label || "")
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [router.pathname])
   return (
-    <TabsWrapper>
-      <Tabs
-        orientation="vertical"
-        value={tabIndex}
-        onChange={handleTabChange}
-        className="h-fit tab-wrapper"
-      >
-        {tabs.map((tab) => (
-          <Tab
-            onClick={tab?.onclick}
-            label={tab.label}
-            key={tab.key}
-            value={tab.key}
-          />
-        ))}
-      </Tabs>
-      <div className="flex-1 ml-6">
-        <LayoutItem
-          label={
-            (tabs.find((tab) => tab.key === tabIndex)?.label as string) || ""
-          }
+    <>
+      <Head>
+        <title>{tabTitle}</title>
+      </Head>
+      <TabsWrapper>
+        <Tabs
+          orientation="vertical"
+          value={tabIndex}
+          onChange={handleTabChange}
+          className="h-fit tab-wrapper"
         >
-          {children}
-        </LayoutItem>
-      </div>
-    </TabsWrapper>
+          {tabs.map((tab) => (
+            <Tab
+              onClick={tab?.onclick}
+              label={tab.label}
+              key={tab.key}
+              value={tab.key}
+            />
+          ))}
+        </Tabs>
+        <div className="flex-1 ml-6">
+          <LayoutItem label={tabTitle}>{children}</LayoutItem>
+        </div>
+      </TabsWrapper>
+    </>
   )
 }
 

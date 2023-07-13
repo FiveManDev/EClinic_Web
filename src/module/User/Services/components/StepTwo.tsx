@@ -41,7 +41,7 @@ const StepTwo = ({ onBack }: Props) => {
         paymentMutation.mutate(
           {
             data: {
-              appoinmentTime: appoinmentTime.toString(),
+              appoinmentTime: appoinmentTime,
               price: servicePackage?.price.toString() as string,
               profileID: profile?.profileID as string,
               servicePackageId: servicePackage?.servicePackageID as string,

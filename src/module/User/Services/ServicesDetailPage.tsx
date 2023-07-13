@@ -54,7 +54,13 @@ const ServicesDetailPage = ({ servicePackages }: Props) => {
         <title>Forum page</title>
       </Head>
       <UserSecondaryLayout breadrums={breadrums}>
-        <BookingModel show={show} onClose={() => setShow(false)} />
+        <BookingModel
+          show={show}
+          onClose={() => {
+            dispatch(bookingServiceSlice.actions.resetBookingService())
+            setShow(false)
+          }}
+        />
         <section className="flex flex-col mt-6 gap-x-10">
           <div className="flex-1">
             <div className="flex-col md:flex-row flex w-full  md:h-[320px] gap-y-4 md:gap-x-8 ">

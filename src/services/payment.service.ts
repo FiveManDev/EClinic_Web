@@ -11,7 +11,8 @@ import {
   RefundTransaction,
   TransactionQuery,
   Statistics,
-  PaymentBookingService
+  PaymentBookingService,
+  PaymentBookingDoctor
 } from "types/Payment"
 
 class PaymentService {
@@ -53,6 +54,22 @@ class PaymentService {
       return res.data as IServerResponse<string>
     }
   }
+  async paymentBookingDoctor(data: PaymentBookingDoctor, type: string) {
+    const paymentUrl =
+      type === PAYMENT.MOMO.name
+        ? `${URL_API.PAYMENT.MOMO}/PaymentRequestForBookingDoctor`
+        : type === PAYMENT.VNPAY.name
+        ? `${URL_API.PAYMENT.VNPAY}/PaymentRequestForBookingDoctor`
+        : ""
+
+    if (paymentUrl) {
+      const res: AxiosResponse = await axiosClient.get(paymentUrl, {
+        params: data
+      })
+      return res.data as IServerResponse<string>
+    }
+  }
+
   //Refund
   async getRefundByID(refundID: string) {
     const res: AxiosResponse = await axiosClient.get(

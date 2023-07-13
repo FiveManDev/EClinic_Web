@@ -1,13 +1,27 @@
-import Editor from "components/Common/Editor/Editor"
 import { useSearchFamlyProfilesQuery } from "hooks/query/profile/useProfile"
 import ProfileItem from "module/User/Profile/section/profile/components/ProfileItem"
-import { useState } from "react"
-import { PAGE_SIZE } from "shared/constant/constant"
+import { BOOKING_TYPE, PAGE_SIZE } from "shared/constant/constant"
 import { PropsStep } from "./StepOne"
+import InputCustom from "components/Common/Input"
+import { useState } from "react"
+import useDebounce from "hooks/useDebounce"
+import { useDispatch, useSelector } from "react-redux"
+import {
+  selectBookingType,
+  selectProfileWithDoctor
+} from "store/module/booking/doctor/booking-doctor-selector"
+import { bookingDoctorSlice } from "store/module/booking/doctor/booking-doctor-slice"
+import EmtyData from "components/Common/Empty"
+import { Option, SelectCustom } from "components/Common/Select/SelectCustom"
+import { IconButton, Tooltip } from "@mui/material"
 
 export const StepTwo = ({ onBack }: PropsStep) => {
-  const profiles = useSearchFamlyProfilesQuery(1, PAGE_SIZE, "")
-  const [note, setNote] = useState("")
+  const dispatch = useDispatch()
+  const [searchData, setSearchData] = useState("")
+  const profile = useSelector(selectProfileWithDoctor)
+  const bookingType = useSelector(selectBookingType)
+  const searchTextDebounce = useDebounce(searchData, 1000)
+  const profiles = useSearchFamlyProfilesQuery(1, PAGE_SIZE, searchTextDebounce)
   return (
     <>
       <div className="flex items-center gap-x-3">
@@ -35,33 +49,87 @@ export const StepTwo = ({ onBack }: PropsStep) => {
       <div className="flex justify-between my-8 ">
         <div className="flex flex-col gap-y-2">
           <h3 className="text-2xl text-h1">Thông tin bổ sung</h3>
-          <p className="font-light text-gray-500">Không bắt buộc</p>
         </div>
       </div>
-      <div className="flex flex-col gap-y-3">
-        <div className="modal-filed">
-          <span className="label">Chọn hồ sơ bạn muốn đặt khám</span>
-          <ul className="max-h-[600px] overflow-auto gap-2 grid grid-cols-2">
-            {profiles.data?.data.data?.map((item, index) => (
-              <ProfileItem
-                data={item}
-                key={index}
-                loading={false}
-                onClick={() => console.log(item)}
+      <div className="mb-4 modal-filed">
+        <div className="flex items-center gap-x-1">
+          <span className="label">Chọn phương thức giao tiếp</span>
+          <Tooltip
+            title={
+              <ul className="flex flex-col list-disc">
+                <li>If you choose online, you have to pay 100%.</li>
+                <li>If you choose offline, you must deposit 20%</li>
+              </ul>
+            }
+            placement="top"
+          >
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              fill="none"
+              viewBox="0 0 24 24"
+              strokeWidth={1.5}
+              stroke="currentColor"
+              className="w-6 h-6"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                d="M9.879 7.519c1.171-1.025 3.071-1.025 4.242 0 1.172 1.025 1.172 2.687 0 3.712-.203.179-.43.326-.67.442-.745.361-1.45.999-1.45 1.827v.75M21 12a9 9 0 11-18 0 9 9 0 0118 0zm-9 5.25h.008v.008H12v-.008z"
               />
-            ))}
-            {profiles.isLoading &&
-              Array(2)
-                .fill(0)
-                .map((_, index) => (
-                  <ProfileItem onClick={() => {}} key={index} loading={true} />
-                ))}
-          </ul>
+            </svg>
+          </Tooltip>
         </div>
-        <div className="modal-filed">
-          <span className="label">Ghi chú</span>
-          <Editor value={note} onChange={(value) => setNote(value)} />
+        <SelectCustom
+          size="small"
+          className="max-w-[160px]"
+          value={bookingType.toString()}
+          options={
+            Object.keys(BOOKING_TYPE).map((item, index) => ({
+              label: item,
+              value: index.toString()
+            })) as Option[]
+          }
+          onSelectOption={(value) => {
+            dispatch(bookingDoctorSlice.actions.bookingTypeChange(value.value))
+          }}
+        />
+      </div>
+      <div className="modal-filed ">
+        <span className="label">Chọn hồ sơ bạn muốn đặt khám</span>
+        <div className="flex mb-3 gap-x-2">
+          <InputCustom
+            onChange={(e) => setSearchData(e.target.value)}
+            value={searchData}
+            className="w-full md:max-w-[300px]"
+            placeholder="Find a profile by keyword"
+          />
         </div>
+        <ul className="max-h-[600px] overflow-auto gap-2 grid grid-cols-2">
+          {profiles.data?.data.data?.map((item, index) => (
+            <ProfileItem
+              className={
+                profile?.profileID === item.profileID
+                  ? "border border-primary border-solid bg-primary bg-opacity-5"
+                  : ""
+              }
+              data={item}
+              key={index}
+              loading={false}
+              onClick={() =>
+                dispatch(bookingDoctorSlice.actions.profileChange(item))
+              }
+            />
+          ))}
+          {profiles.isLoading &&
+            Array(2)
+              .fill(0)
+              .map((_, index) => (
+                <ProfileItem onClick={() => {}} key={index} loading={true} />
+              ))}
+        </ul>
+        {profiles.data?.data.data && profiles.data?.data.data?.length < 1 && (
+          <EmtyData />
+        )}
       </div>
     </>
   )

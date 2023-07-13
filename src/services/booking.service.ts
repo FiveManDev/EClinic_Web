@@ -2,6 +2,8 @@ import { AxiosResponse } from "axios"
 import axiosClient from "shared/axios/httpClient"
 import { URL_API } from "shared/constant/constant"
 import { IServerResponse } from "types/server/IServerResponse"
+import { BookingSchedule, BookingService as BookingType } from "types/Booking"
+
 class BookingService {
   async getAllBookingPackageForUser(
     pageNumber: number,
@@ -18,9 +20,35 @@ class BookingService {
           }
         }
       )
-      return res as AxiosResponse<IServerResponse<BookingService[]>>
+      return res as AxiosResponse<IServerResponse<BookingType[]>>
     } catch (error) {
       console.log("BlogService ~ error:", error)
+    }
+  }
+  async updateBookingPackageStatusCancel(bookingPackageId: string) {
+    try {
+      const res: AxiosResponse = await axiosClient.put(
+        `${URL_API.BOOKING.SERVICE}/updateBookingPackageStatusCancel?bookingPackageID=${bookingPackageId}`
+      )
+      return res.data as IServerResponse<string>
+    } catch (error) {
+      console.log("BlogService ~ error:", error)
+    }
+  }
+  async getDoctorScheduleForUser(date: string, doctorId: string) {
+    try {
+      const res: AxiosResponse = await axiosClient.get(
+        `${URL_API.BOOKING.DOCTOR_SCHEDULE}/getDoctorScheduleForUser`,
+        {
+          params: {
+            date,
+            doctorId
+          }
+        }
+      )
+      return res.data as IServerResponse<BookingSchedule>
+    } catch (error) {
+      console.log("BookingService ~ getDoctorScheduleForUser ~ error:", error)
     }
   }
 }

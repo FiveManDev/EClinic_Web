@@ -21,3 +21,15 @@ interface Service {
   servicePackageName: string
   image: string
 }
+export interface BookingSchedule {
+  calenderID: string
+  time: string
+  slots: Slot[]
+}
+
+export interface Slot {
+  slotID: string
+  startTime: string
+  endTime: string
+  isBooking: boolean
+}

@@ -2,6 +2,7 @@ import { useMutation, useQuery } from "@tanstack/react-query"
 import { QUERY_KEYS } from "shared/constant/constant"
 import { IPaging } from "types/Pagination"
 import {
+  PaymentBookingDoctor,
   PaymentBookingService,
   RefundTransaction,
   TransactionQuery
@@ -28,14 +29,17 @@ export const useGetAllPaymentTransactionQuery = (data: IPaging) => {
   })
 }
 export const usePaymentBookingServiceMutation = () => {
-  const refundTransaction = useMutation({
+  return useMutation({
     mutationFn: (data: { data: PaymentBookingService; type: string }) =>
       paymentService.paymentBookingService(data.data, data.type)
   })
-
-  return refundTransaction
 }
-
+export const usePaymentBookingDoctorMutation = () => {
+  return useMutation({
+    mutationFn: (data: { data: PaymentBookingDoctor; type: string }) =>
+      paymentService.paymentBookingDoctor(data.data, data.type)
+  })
+}
 //refund
 export const useGetRefundByIDQuery = (refundID: string) => {
   const queryKey = [QUERY_KEYS.PAYMENT, refundID]

@@ -29,6 +29,10 @@ export const QUERY_KEYS = {
     Model: "Model",
     History: "History",
     AIPredict: "AIPredict"
+  },
+  BOOKING: {
+    SERVICE: "BOOKING/SERVICE",
+    DOCTOR: "BOOKING/DOCTOR"
   }
 } as const
 export const ROLE = {
@@ -75,7 +79,7 @@ export const URL_API = {
   BOOKING: {
     DOCTOR: "booking/BookingDoctor",
     SERVICE: "booking/BookingPackage",
-    DOCTOR_SCHEDULE: "booking/DoctorShedule"
+    DOCTOR_SCHEDULE: "booking/DoctorSchedule"
   }
 } as const
 export const DEFAULT_ROUTER = {
@@ -121,4 +125,8 @@ export const STATUS_BOOKING = {
   UPCOMING: 1,
   DONE: 2,
   CANCEL: 3
+}
+export const BOOKING_TYPE = {
+  Online: 0,
+  Offline: 1
 }

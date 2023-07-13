@@ -41,3 +41,12 @@ export interface PaymentBookingService {
   servicePackageId: string
   appoinmentTime: string
 }
+export interface PaymentBookingDoctor {
+  userID: string
+  profileID: string
+  doctorID: string
+  price: string
+  bookingTime: string
+  bookingType: string
+  scheduleID: string
+}
