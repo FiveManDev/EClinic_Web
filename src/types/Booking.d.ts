@@ -7,7 +7,16 @@ export interface BookingService {
   appoinmentTime: string
   bookingStatus: number
 }
-
+export interface IBookingDoctor {
+  bookingID: string
+  doctorProfile: Profile
+  userProfile: Profile
+  price: string
+  bookingTime: string
+  bookingType: string
+  bookingStatus: string
+  slot: Slot
+}
 interface Profile {
   profileID: string
   userID: string

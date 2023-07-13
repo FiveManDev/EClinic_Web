@@ -2,7 +2,11 @@ import { AxiosResponse } from "axios"
 import axiosClient from "shared/axios/httpClient"
 import { URL_API } from "shared/constant/constant"
 import { IServerResponse } from "types/server/IServerResponse"
-import { BookingSchedule, BookingService as BookingType } from "types/Booking"
+import {
+  BookingSchedule,
+  BookingService as BookingType,
+  IBookingDoctor
+} from "types/Booking"
 
 class BookingService {
   async getAllBookingPackageForUser(
@@ -22,7 +26,27 @@ class BookingService {
       )
       return res as AxiosResponse<IServerResponse<BookingType[]>>
     } catch (error) {
-      console.log("BlogService ~ error:", error)
+      console.log("BookingService ~ error:", error)
+    }
+  }
+  async getAllBookingDoctorForUser(
+    pageNumber: number,
+    pageSize: number,
+    status: number
+  ) {
+    try {
+      const res: AxiosResponse = await axiosClient.get(
+        `${URL_API.BOOKING.DOCTOR}/GetAllBookingDoctorForUser?BookingStatus=${status}`,
+        {
+          headers: {
+            PageNumber: pageNumber,
+            PageSize: pageSize
+          }
+        }
+      )
+      return res as AxiosResponse<IServerResponse<IBookingDoctor[]>>
+    } catch (error) {
+      console.log("BookingService ~ error:", error)
     }
   }
   async updateBookingPackageStatusCancel(bookingPackageId: string) {
@@ -32,7 +56,17 @@ class BookingService {
       )
       return res.data as IServerResponse<string>
     } catch (error) {
-      console.log("BlogService ~ error:", error)
+      console.log("BookingService ~ error:", error)
+    }
+  }
+  async updateBookingDoctorStatusCancel(bookingDoctorId: string) {
+    try {
+      const res: AxiosResponse = await axiosClient.put(
+        `${URL_API.BOOKING.DOCTOR}/updateBookingDoctorStatusCancel?BookingID=${bookingDoctorId}`
+      )
+      return res.data as IServerResponse<string>
+    } catch (error) {
+      console.log("BookingService ~ error:", error)
     }
   }
   async getDoctorScheduleForUser(date: string, doctorId: string) {

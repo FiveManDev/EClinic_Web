@@ -14,7 +14,7 @@ const TabButton: React.FC<ServicesBookingProps> = ({ setType, type }) => {
         <button
           key={index}
           className={classNames(
-            "flex items-center justify-center px-4 py-[10px] outline-none border-none focus:ring-4 rounded-md cursor-pointer normal-case bg-opacity-10",
+            "flex items-center justify-center px-4 py-[10px] outline-none border-none focus:ring-4 rounded-md cursor-pointer normal-case bg-opacity-10 transition-all",
             type === index + 1 && `ring-4 ring-opacity-60 `,
             index === STATUS_BOOKING.UPCOMING
               ? "text-success ring-success bg-success"
