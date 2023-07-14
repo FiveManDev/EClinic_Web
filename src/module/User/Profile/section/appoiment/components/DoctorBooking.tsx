@@ -8,7 +8,6 @@ import EmtyData from "components/Common/Empty"
 import { getDataPaginate } from "shared/helpers/helper"
 import PaginationCustom from "components/Common/Pagination"
 export type KindAppoiment = "cancelled" | "completed" | "upcomming"
-const filterList: KindAppoiment[] = ["upcomming", "cancelled", "completed"]
 const DoctorBooking = () => {
   const [type, setType] = useState<number>(1)
   const [pageIndex, setPageIndex] = useState(1)

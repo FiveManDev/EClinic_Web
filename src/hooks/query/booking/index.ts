@@ -1,6 +1,7 @@
 import { useMutation, useQuery } from "@tanstack/react-query"
 import { bookingService } from "services/booking.service"
 import { QUERY_KEYS } from "shared/constant/constant"
+import { CreateScheduleDoctor, UpdateScheduleDoctor } from "types/Booking"
 
 export const useGetAllBookingPackageForUserQuery = (
   pageNumber: number,
@@ -43,3 +44,13 @@ export const useGetDoctorScheduleForUser = (date: string, doctorId: string) => {
     queryFn: () => bookingService.getDoctorScheduleForUser(date, doctorId)
   })
 }
+export const useCreateDoctorScheduleMutation = () =>
+  useMutation({
+    mutationFn: (data: CreateScheduleDoctor) =>
+      bookingService.createDoctorSchedule(data)
+  })
+export const useUpdateDoctorScheduleMutation = () =>
+  useMutation({
+    mutationFn: (data: UpdateScheduleDoctor) =>
+      bookingService.updateDoctorSchedule(data)
+  })

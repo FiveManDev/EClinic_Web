@@ -42,3 +42,12 @@ export interface Slot {
   endTime: string
   isBooking: boolean
 }
+export interface CreateScheduleDoctor {
+  doctorID: string
+  time: string
+  slots: Slot[]
+}
+export interface UpdateScheduleDoctor {
+  calenderID: string
+  slots: Slot[]
+}

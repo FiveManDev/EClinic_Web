@@ -5,7 +5,10 @@ import { IServerResponse } from "types/server/IServerResponse"
 import {
   BookingSchedule,
   BookingService as BookingType,
-  IBookingDoctor
+  CreateScheduleDoctor,
+  IBookingDoctor,
+  Slot,
+  UpdateScheduleDoctor
 } from "types/Booking"
 
 class BookingService {
@@ -83,6 +86,28 @@ class BookingService {
       return res.data as IServerResponse<BookingSchedule>
     } catch (error) {
       console.log("BookingService ~ getDoctorScheduleForUser ~ error:", error)
+    }
+  }
+  async createDoctorSchedule(data: CreateScheduleDoctor) {
+    try {
+      const res: AxiosResponse = await axiosClient.post(
+        `${URL_API.BOOKING.DOCTOR_SCHEDULE}/CreateDoctorSchedule`,
+        data
+      )
+      return res.data as IServerResponse<string>
+    } catch (error) {
+      console.log("BookingService ~ error:", error)
+    }
+  }
+  async updateDoctorSchedule(data: UpdateScheduleDoctor) {
+    try {
+      const res: AxiosResponse = await axiosClient.put(
+        `${URL_API.BOOKING.DOCTOR_SCHEDULE}/UpdateDoctorSchedule`,
+        data
+      )
+      return res.data as IServerResponse<string>
+    } catch (error) {
+      console.log("BookingService ~ error:", error)
     }
   }
 }
