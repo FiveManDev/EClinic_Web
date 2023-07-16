@@ -15,7 +15,7 @@ export const useGetAllBookingPackageForUserQuery = (
       bookingService.getAllBookingPackageForUser(pageNumber, pageSize, status)
   })
 }
-export const useGetAllBookingDoctorForUserQuery = (
+export const useGetAllBookingDoctorQuery = (
   pageNumber: number,
   pageSize: number,
   status: number
@@ -25,6 +25,18 @@ export const useGetAllBookingDoctorForUserQuery = (
     queryKey,
     queryFn: () =>
       bookingService.getAllBookingDoctorForUser(pageNumber, pageSize, status)
+  })
+}
+export const useGetAllBookingDoctorForAdQuery = (
+  pageNumber: number,
+  pageSize: number,
+  status: number
+) => {
+  const queryKey = [QUERY_KEYS.BOOKING.DOCTOR, pageNumber, pageSize, status]
+  return useQuery({
+    queryKey,
+    queryFn: () =>
+      bookingService.getAllBookingDoctorForAd(pageNumber, pageSize, status)
   })
 }
 export const useUpdateStateBookingServiceMutation = () =>

@@ -1,6 +1,6 @@
 export interface BookingService {
   bookingID: string
-  profile: Profile
+  profile: ProfileBooking
   price: number
   bookingTime: string
   service: Service
@@ -9,15 +9,15 @@ export interface BookingService {
 }
 export interface IBookingDoctor {
   bookingID: string
-  doctorProfile: Profile
-  userProfile: Profile
+  doctorProfile: ProfileBooking
+  userProfile: ProfileBooking
   price: string
   bookingTime: string
   bookingType: string
-  bookingStatus: string
+  bookingStatus: number
   slot: Slot
 }
-interface Profile {
+export interface ProfileBooking {
   profileID: string
   userID: string
   firstName: string

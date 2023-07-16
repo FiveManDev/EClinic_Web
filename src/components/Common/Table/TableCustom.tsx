@@ -38,6 +38,7 @@ const TableCustom = <T extends Record<string, any>>({
         enableTopToolbar
         enableGlobalFilter={false}
         muiTableContainerProps={tableContainerProps}
+        enableRowActions={enableRowActions}
         data={data}
         rowCount={rowCount}
         state={{

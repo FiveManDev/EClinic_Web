@@ -54,7 +54,7 @@ const DoctorBookingItem = ({ kind, data }: Props) => {
       <div className="flex items-center top gap-x-4">
         <div className="relative w-32 h-28">
           <ImageCustom
-            src={"/images/avatars/avatar_1.jpg"}
+            src={data.doctorProfile.avatar}
             fill
             alt="image doctor"
             className="object-cover rounded-lg"
@@ -69,7 +69,9 @@ const DoctorBookingItem = ({ kind, data }: Props) => {
           </h4>
           <div className="flex items-center gap-x-2">
             <span>
-              {data.bookingType === "0" ? "Video Call" : "At the clinic"}
+              {data.bookingType.toString() === "0"
+                ? "Video Call"
+                : "At the clinic"}
             </span>
             <span>-</span>
             <Tag

@@ -7,7 +7,7 @@ type Props = {
   data?: Author
   loading?: boolean
 }
-const Info = ({ data, loading = true }: Props) => {
+const Info = ({ data, loading = false }: Props) => {
   const { t } = useTranslation("forum")
 
   return (

@@ -15,7 +15,10 @@ import { StepTwo } from "./step/StepTwo"
 import { DetailDoctorModalWrapper } from "./styles"
 import { useAppDispatch } from "store/store"
 import { bookingDoctorSlice } from "store/module/booking/doctor/booking-doctor-slice"
+import ModalSuccess from "components/Common/Modal/ModalSuccess"
 const DetailDoctor = () => {
+  const [isActive, setIsActive] = useState(false)
+
   const dispatch = useAppDispatch()
   const router = useRouter()
   const { data, isLoading } = useGetDoctorProfilesByIdQuery(
@@ -36,6 +39,13 @@ const DetailDoctor = () => {
       dispatch(bookingDoctorSlice.actions.doctorChange(data.data))
     }
   }, [data?.data])
+  useEffect(() => {
+    if (router.query.bookingId) {
+      setTimeout(() => {
+        setIsActive(true)
+      }, 1500)
+    }
+  }, [router.query.bookingId])
   if (isLoading) {
     return <p>Loading</p>
   }
@@ -177,6 +187,25 @@ const DetailDoctor = () => {
           )} */}
         </div>
       </div>
+      <ModalSuccess
+        isSuccess={isActive}
+        setIsSuccess={() => setIsActive(false)}
+      >
+        <h1 className="text-4xl font-bold text-center text-black1">
+          Congratulations
+        </h1>
+        <p className="mt-5 text-sm font-light text-center text-black2">
+          Your Appointment Request is Successfully!
+        </p>
+        <CustomButton
+          className="mt-3"
+          onClick={() =>
+            router.push(process.env.NEXT_PUBLIC_APP_URL + "/doctors")
+          }
+        >
+          Make a New Appointment
+        </CustomButton>
+      </ModalSuccess>
     </div>
   )
 }

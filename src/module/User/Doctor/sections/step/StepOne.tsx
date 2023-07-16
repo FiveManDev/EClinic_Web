@@ -103,7 +103,7 @@ export const StepOne = ({ onCancel, onContinue }: PropsStep) => {
                       ? colorsProvider.error
                       : colorsProvider.disable
                   }
-                  className="w-full cursor-pointer"
+                  className="w-full cursor-pointer h-fit"
                 >
                   <p
                     className={item.isBooking ? "line-through" : ""}

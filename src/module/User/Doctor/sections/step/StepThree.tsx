@@ -222,7 +222,11 @@ const StepThree = ({ onBack }: Props) => {
             }
           />
         </div>
-        <CustomButton className="mt-6" onClick={onSubmit}>
+        <CustomButton
+          className="mt-6"
+          onClick={onSubmit}
+          isLoading={paymentMutation.isLoading}
+        >
           Confirm and Pay
         </CustomButton>
       </div>
