@@ -1,7 +1,12 @@
 import { useMutation, useQuery } from "@tanstack/react-query"
 import { QUERY_KEYS } from "shared/constant/constant"
 import { IPaging } from "types/Pagination"
-import { RefundTransaction, TransactionQuery } from "types/Payment"
+import {
+  PaymentBookingDoctor,
+  PaymentBookingService,
+  RefundTransaction,
+  TransactionQuery
+} from "types/Payment"
 import { paymentService } from "../../../services/payment.service"
 
 //payment
@@ -21,6 +26,18 @@ export const useGetAllPaymentTransactionQuery = (data: IPaging) => {
         pageNumber: data.pageNumber,
         pageSize: data.pageSize
       })
+  })
+}
+export const usePaymentBookingServiceMutation = () => {
+  return useMutation({
+    mutationFn: (data: { data: PaymentBookingService; type: string }) =>
+      paymentService.paymentBookingService(data.data, data.type)
+  })
+}
+export const usePaymentBookingDoctorMutation = () => {
+  return useMutation({
+    mutationFn: (data: { data: PaymentBookingDoctor; type: string }) =>
+      paymentService.paymentBookingDoctor(data.data, data.type)
   })
 }
 //refund

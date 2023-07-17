@@ -29,6 +29,10 @@ export const QUERY_KEYS = {
     Model: "Model",
     History: "History",
     AIPredict: "AIPredict"
+  },
+  BOOKING: {
+    SERVICE: "BOOKING/SERVICE",
+    DOCTOR: "BOOKING/DOCTOR"
   }
 } as const
 export const ROLE = {
@@ -54,7 +58,11 @@ export const URL_API = {
   FORUM_POST_COMMENT: "forum/Comment",
   FORUM_POST_ANWERS: "forum/Answer",
   FORUM_POST_HASHTAG: "forum/Hashtag",
-  PAYMENT: "payment/Transaction",
+  PAYMENT: {
+    TRANSACTION: "payment/Transaction",
+    MOMO: "payment/MomoPayment",
+    VNPAY: "payment/VNPayPayment"
+  },
   //Chat
   CHAT: {
     ROOM: "Communication/Rooms",
@@ -67,6 +75,11 @@ export const URL_API = {
     Model: "Model",
     History: "History",
     AIPredict: "AIPredict"
+  },
+  BOOKING: {
+    DOCTOR: "booking/BookingDoctor",
+    SERVICE: "booking/BookingPackage",
+    DOCTOR_SCHEDULE: "booking/DoctorSchedule"
   }
 } as const
 export const DEFAULT_ROUTER = {
@@ -98,3 +111,22 @@ export const TIME_STYPE_PAYMENT = {
   Year: 2
 }
 export const PAGE_SIZE = 10
+export const PAYMENT = {
+  MOMO: {
+    name: "momo",
+    image: "/images/momo.png"
+  },
+  VNPAY: {
+    name: "vnpay",
+    image: "/images/vnpay.png"
+  }
+}
+export const STATUS_BOOKING = {
+  UPCOMING: 1,
+  DONE: 2,
+  CANCEL: 3
+}
+export const BOOKING_TYPE = {
+  Online: 0,
+  Offline: 1
+}

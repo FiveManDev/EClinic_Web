@@ -13,7 +13,13 @@ import { StepOne } from "./step/StepOne"
 import StepThree from "./step/StepThree"
 import { StepTwo } from "./step/StepTwo"
 import { DetailDoctorModalWrapper } from "./styles"
+import { useAppDispatch } from "store/store"
+import { bookingDoctorSlice } from "store/module/booking/doctor/booking-doctor-slice"
+import ModalSuccess from "components/Common/Modal/ModalSuccess"
 const DetailDoctor = () => {
+  const [isActive, setIsActive] = useState(false)
+
+  const dispatch = useAppDispatch()
   const router = useRouter()
   const { data, isLoading } = useGetDoctorProfilesByIdQuery(
     router.query.id! as string
@@ -28,6 +34,18 @@ const DetailDoctor = () => {
       setCurrentStep(1)
     }
   }, [showModal])
+  useEffect(() => {
+    if (data?.isSuccess && data.data) {
+      dispatch(bookingDoctorSlice.actions.doctorChange(data.data))
+    }
+  }, [data?.data])
+  useEffect(() => {
+    if (router.query.bookingId) {
+      setTimeout(() => {
+        setIsActive(true)
+      }, 1500)
+    }
+  }, [router.query.bookingId])
   if (isLoading) {
     return <p>Loading</p>
   }
@@ -36,7 +54,13 @@ const DetailDoctor = () => {
   }
   return (
     <div className="flex flex-col">
-      <ModalPrimary show={showModal} onClose={() => setShowModal(false)}>
+      <ModalPrimary
+        show={showModal}
+        onClose={() => {
+          dispatch(bookingDoctorSlice.actions.resetBookingDoctor())
+          setShowModal(false)
+        }}
+      >
         <OverlayScrollbarsComponent
           defer
           options={{ scrollbars: { autoHide: "scroll" } }}
@@ -54,7 +78,7 @@ const DetailDoctor = () => {
                 onContinue={() => onChangeStep(currentStep)}
               />
             ) : (
-              <StepThree profile={data?.data} onBack={() => onChangeStep(2)} />
+              <StepThree onBack={() => onChangeStep(2)} />
             )}
           </DetailDoctorModalWrapper>
         </OverlayScrollbarsComponent>
@@ -163,29 +187,26 @@ const DetailDoctor = () => {
           )} */}
         </div>
       </div>
+      <ModalSuccess
+        isSuccess={isActive}
+        setIsSuccess={() => setIsActive(false)}
+      >
+        <h1 className="text-4xl font-bold text-center text-black1">
+          Congratulations
+        </h1>
+        <p className="mt-5 text-sm font-light text-center text-black2">
+          Your Appointment Request is Successfully!
+        </p>
+        <CustomButton
+          className="mt-3"
+          onClick={() =>
+            router.push(process.env.NEXT_PUBLIC_APP_URL + "/doctors")
+          }
+        >
+          Make a New Appointment
+        </CustomButton>
+      </ModalSuccess>
     </div>
   )
-}
-{
-  /* <div className="flex items-center mx-auto p-2 bg-primary1 rounded-[10px] text-sm text-black1 mb-10">
-        <div
-          className={classNames(
-            "cursor-pointer px-5 py-[10px] flex items-center justify-center transition-all",
-            tab === 1 && "bg-white rounded-lg"
-          )}
-          onClick={() => setTab(1)}
-        >
-          Profile Infor
-        </div>
-        <div
-          className={classNames(
-            "cursor-pointer px-5 py-[10px] flex items-center justify-center transition-all",
-            tab === 2 && "bg-white rounded-lg"
-          )}
-          onClick={() => setTab(2)}
-        >
-          Reviews
-        </div>
-      </div> */
 }
 export default DetailDoctor

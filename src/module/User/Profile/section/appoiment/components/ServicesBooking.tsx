@@ -1,60 +1,51 @@
-import classNames from "classnames"
+import EmtyData from "components/Common/Empty"
+import PaginationCustom from "components/Common/Pagination"
+import TabButton from "components/User/Booking/TabButton"
+import { useGetAllBookingPackageForUserQuery } from "hooks/query/booking"
 import { useState } from "react"
-import ServiceBooking from "./ServiceBooking"
-export type KindAppoiment = "cancelled" | "completed" | "upcomming"
-const filterList: KindAppoiment[] = ["upcomming", "cancelled", "completed"]
-const moockData: KindAppoiment[] = [
-  "cancelled",
-  "upcomming",
-  "cancelled",
-  "completed",
-  "upcomming",
-  "cancelled",
-  "cancelled",
-  "completed",
-  "upcomming",
-  "upcomming",
-  "cancelled",
-  "completed",
-  "completed",
-  "cancelled",
-  "upcomming",
-  "completed",
-  "upcomming",
-  "upcomming",
-  "cancelled",
-  "completed"
-]
+import { PAGE_SIZE } from "shared/constant/constant"
+import { getDataPaginate } from "shared/helpers/helper"
+import ServiceBookingCard from "./ServiceBookingCard"
 
 const ServicesBooking = () => {
-  const [type, setType] = useState<KindAppoiment>("upcomming")
+  const [type, setType] = useState<number>(1)
+  const [pageIndex, setPageIndex] = useState(1)
+
+  const bookingData = useGetAllBookingPackageForUserQuery(
+    pageIndex,
+    PAGE_SIZE,
+    type
+  )
+
+  if (bookingData.isError) {
+    return (
+      <>
+        <EmtyData />
+      </>
+    )
+  }
+  const paginateData = getDataPaginate(bookingData.data)
+
   return (
     <div className="flex flex-col">
-      <div className="flex items-center mb-6 gap-x-3">
-        {filterList.map((item, index) => (
-          <button
-            key={index}
-            className={classNames(
-              "flex items-center justify-center px-4 py-[10px] outline-none border-none focus:ring-4 rounded-md cursor-pointer capitalize",
-              type === item && "ring-4",
-              item === "completed"
-                ? "text-success"
-                : item === "upcomming"
-                ? "text-pending"
-                : "text-error"
-            )}
-            onClick={() => setType(item)}
-          >
-            {item}
-          </button>
-        ))}
-      </div>
-      <div className="grid grid-cols-2 gap-4">
-        {moockData.map(
-          (item, index) =>
-            item === type && <ServiceBooking kind={item} key={index} />
-        )}
-      </div>
+      <TabButton setType={setType} type={type} />
+      {bookingData.isLoading && <p>Loaing....</p>}
+      {bookingData.data?.data && bookingData.data?.data.data.length > 0 ? (
+        <div className="grid grid-cols-2 gap-4">
+          {bookingData.data?.data.data.map((booking, index) => (
+            <ServiceBookingCard kind={type} data={booking} key={index} />
+          ))}
+        </div>
+      ) : (
+        <EmtyData />
+      )}
+      <PaginationCustom
+        onPageChange={(value) => setPageIndex(value)}
+        pagination={paginateData}
+        color="primary"
+        className="pt-6 md:ml-auto md:w-fit"
+        shape="rounded"
+      />
     </div>
   )
 }

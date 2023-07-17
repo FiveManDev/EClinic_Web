@@ -16,7 +16,7 @@ interface Props {
 const MENU = [
   {
     title: "Hồ sơ ",
-    href: "/user/profile"
+    href: "/user/my-profile"
   }
 ]
 const Navbar = ({ show = false, onClose }: Props) => {

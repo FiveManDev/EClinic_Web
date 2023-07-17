@@ -1,84 +1,63 @@
 import { Tab, Tabs } from "@mui/material"
 import { useRouter } from "next/router"
-import { SyntheticEvent, useMemo, useState } from "react"
+import {
+  PropsWithChildren,
+  SyntheticEvent,
+  useEffect,
+  useMemo,
+  useState
+} from "react"
 import { routers } from "shared/constant/routers"
 import { logoutUser } from "store/module/auth/action-creators"
 import { useAppDispatch } from "store/store"
 import LayoutItem from "../../components/layout"
-const Profile = dynamic(() => import("../profile"), {
-  ssr: false
-})
-const ChangePassword = dynamic(() => import("../change-password"), {
-  ssr: false
-})
-const HistoryQuestion = dynamic(() => import("../profile"), {
-  ssr: false
-})
-const ChatData = dynamic(() => import("../chat/ChatData"), {
-  ssr: false
-})
-const AppointmentSchedule = dynamic(
-  () => import("../appoiment/AppointmentSchedule"),
-  {
-    ssr: false
-  }
-)
 import { TabsWrapper } from "./Tabs.style"
-import dynamic from "next/dynamic"
-
-const SiderBar = () => {
+import Head from "next/head"
+const SiderBar = ({ children }: PropsWithChildren) => {
   const [tabIndex, setTabIndex] = useState(0)
+  const [tabTitle, setTabTitle] = useState("")
   const dispatch = useAppDispatch()
   const router = useRouter()
 
-  const handleTabChange = (
-    event: SyntheticEvent<Element, Event>,
-    value: any
-  ) => {
+  const handleTabChange = (_: SyntheticEvent<Element, Event>, value: any) => {
+    const selectedTab = tabs.find((tab) => tab.key === value)
+    if (selectedTab) {
+      router.push(selectedTab.slug as string)
+    }
     setTabIndex(value)
+    setTabTitle(selectedTab?.label || "")
   }
   const logout = () => {
     dispatch(logoutUser())
     router.push(routers.signIn)
   }
+
   const tabs = useMemo(
     () => [
       {
         key: 0,
         label: `Profile`,
-        children: (
-          <LayoutItem label="Profile">
-            <Profile />
-          </LayoutItem>
-        )
+        slug: "/user/my-profile"
       },
       {
         key: 1,
         label: `Change password`,
-        children: (
-          <LayoutItem label="Change password">
-            <ChangePassword />
-          </LayoutItem>
-        )
+        slug: "/user/change-password"
       },
       {
         key: 2,
         label: `History of question`,
-        children: (
-          <LayoutItem label="History of question">
-            <HistoryQuestion />
-          </LayoutItem>
-        )
+        slug: "/user/history-question"
       },
       {
         key: 3,
         label: `Chat with doctor`,
-        children: <ChatData />
+        slug: "/user/chat"
       },
       {
         key: 4,
-        label: `Appointment schedule`,
-        children: <AppointmentSchedule />
+        slug: "/user/app-schedule",
+        label: `Appointment schedule`
       },
       {
         key: 5,
@@ -88,33 +67,40 @@ const SiderBar = () => {
     ],
     []
   )
+  useEffect(() => {
+    if (router.pathname) {
+      const currentTab = tabs.find((item) => router.pathname === item.slug)
+      setTabIndex(currentTab?.key as number)
+      setTabTitle(currentTab?.label || "")
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [router.pathname])
   return (
-    <TabsWrapper>
-      <Tabs
-        orientation="vertical"
-        value={tabIndex}
-        onChange={handleTabChange}
-        className="h-fit tab-wrapper"
-      >
-        {tabs.map((tab) => (
-          <Tab
-            onClick={tab?.onclick}
-            label={tab.label}
-            key={tab.key}
-            value={tab.key}
-          />
-        ))}
-      </Tabs>
-      {tabs.map((tab) => {
-        if (tab.key === tabIndex) {
-          return (
-            <div className="flex-1 ml-6" key={tab.key}>
-              {tab.children}
-            </div>
-          )
-        }
-      })}
-    </TabsWrapper>
+    <>
+      <Head>
+        <title>{tabTitle}</title>
+      </Head>
+      <TabsWrapper>
+        <Tabs
+          orientation="vertical"
+          value={tabIndex}
+          onChange={handleTabChange}
+          className="h-fit tab-wrapper"
+        >
+          {tabs.map((tab) => (
+            <Tab
+              onClick={tab?.onclick}
+              label={tab.label}
+              key={tab.key}
+              value={tab.key}
+            />
+          ))}
+        </Tabs>
+        <div className="flex-1 ml-6">
+          <LayoutItem label={tabTitle}>{children}</LayoutItem>
+        </div>
+      </TabsWrapper>
+    </>
   )
 }
 

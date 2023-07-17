@@ -1,19 +1,12 @@
 import { Box, Chip, Drawer, TextField } from "@mui/material"
-import ImageCustom from "components/Common/ImageCustom"
-import ModalPrimary from "components/Common/Modal/ModalPrimary"
 import TooltipIcon from "components/Common/ToolTipIcon"
-import CustomButton from "components/User/Button"
 import { CustomInput } from "components/User/Input"
-import { OverlayScrollbarsComponent } from "overlayscrollbars-react"
 import { useState } from "react"
 import { HiOutlineEye, HiOutlineTrash } from "react-icons/hi2"
 import { dayformat } from "shared/helpers/helper"
-import Reschedule from "./Reschedule"
 const DetailBooking = () => {
   const style = "border border-solid border-gray80"
   const [show, setShow] = useState(false)
-  const [showModal, setShowModal] = useState(false)
-
   return (
     <>
       <div className="flex items-center gap-x-3">
@@ -84,59 +77,9 @@ const DetailBooking = () => {
                     variant="filled"
                   />
                 </div>
-                <div className="flex flex-col gap-y-2">
-                  <span className="text-base">Attached images </span>
-                  <div className="grid grid-cols-2 gap-3">
-                    {Array(4)
-                      .fill(0)
-                      .map((_, index) => (
-                        <div
-                          key={index}
-                          className="relative w-full h-[200px] rounded-lg overflow-hidden"
-                        >
-                          <ImageCustom
-                            src="/images/products/product_1.jpg"
-                            alt="image"
-                            fill
-                          />
-                        </div>
-                      ))}
-                  </div>
-                </div>
-                <div className="flex items-center gap-x-2">
-                  <CustomButton kind="tertiary">Close</CustomButton>
-                  <CustomButton
-                    kind="primary"
-                    onClick={() => {
-                      setShowModal(true)
-                    }}
-                  >
-                    Re-Schedule
-                  </CustomButton>
-                </div>
               </div>
             </div>
           </Box>
-          <ModalPrimary show={showModal} onClose={() => setShowModal(false)}>
-            <OverlayScrollbarsComponent
-              defer
-              options={{ scrollbars: { autoHide: "scroll" } }}
-            >
-              <Reschedule />
-            </OverlayScrollbarsComponent>
-
-            <div className="footer">
-              <div className="flex justify-between px-6">
-                <CustomButton
-                  kind="tertiary"
-                  onClick={() => setShowModal(false)}
-                >
-                  Cancel
-                </CustomButton>
-                <CustomButton kind="primary">Reschedule</CustomButton>
-              </div>
-            </div>
-          </ModalPrimary>
         </Drawer>
       </div>
     </>
