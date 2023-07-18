@@ -3,16 +3,21 @@ import ImageCustom from "components/Common/ImageCustom"
 import { Option, SelectCustom } from "components/Common/Select/SelectCustom"
 import TableCustom from "components/Common/Table/TableCustom"
 import Tag from "components/Common/Tag"
-import { useGetAllBookingDoctorForAdQuery } from "hooks/query/booking"
+import useConfirm from "context/ComfirmContext"
+import {
+  useGetAllBookingServicerForAdQuery,
+  useUpdateStateBookingServiceDoneMutation
+} from "hooks/query/booking"
 import { MRT_PaginationState, type MRT_ColumnDef } from "material-react-table"
-import { useRouter } from "next/router"
+import { queryClient } from "pages/_app"
 import { useMemo, useState } from "react"
+import { toast } from "react-hot-toast"
+import { AiOutlineFileDone } from "react-icons/ai"
 import { useSelector } from "react-redux"
-import { ROLE, STATUS_BOOKING } from "shared/constant/constant"
+import { QUERY_KEYS, STATUS_BOOKING } from "shared/constant/constant"
 import { dayformat, getDataPaginate } from "shared/helpers/helper"
-import colorsProvider from "shared/theme/colors"
 import { RootState } from "store/store"
-import { IBookingDoctor } from "types/Booking"
+import { BookingService as IBookingService } from "types/Booking"
 const statusBookingOptions: Option[] = Object.entries(STATUS_BOOKING).map(
   ([key, value]) => ({
     label: key,
@@ -22,27 +27,54 @@ const statusBookingOptions: Option[] = Object.entries(STATUS_BOOKING).map(
 
 const TableAPMService = () => {
   const role = useSelector((state: RootState) => state.auth.user.role)
-  const router = useRouter()
+  const confirm = useConfirm()
+  const doneBooking = useUpdateStateBookingServiceDoneMutation()
   const [statusFilter, setStatusFilter] = useState(statusBookingOptions[0])
   const [pagination, setPagination] = useState<MRT_PaginationState>({
     pageIndex: 1,
     pageSize: 10
   })
   const { data, isLoading, isError, isRefetching } =
-    useGetAllBookingDoctorForAdQuery(
+    useGetAllBookingServicerForAdQuery(
       pagination.pageIndex + 1,
       pagination.pageSize,
       Number(statusFilter.value)
     )
   //should be memoized or stable
-  const columns = useMemo<MRT_ColumnDef<IBookingDoctor>[]>(
+  const columns = useMemo<MRT_ColumnDef<IBookingService>[]>(
     () => [
       {
-        accessorKey: "userProfile", //access nested data with dot notation
-        header: "Patient name",
+        accessorKey: "service", //access nested data with dot notation
+        header: "Service",
         enableSorting: false,
         Cell: ({ row }) => {
-          const data = row.original.userProfile
+          const data = row.original.service
+          // return <Info data={row.original.userProfile as Author} />
+          return (
+            <div className="flex items-center space-x-3">
+              <div className="relative h-14 md:w-11 w-14 md:h-11">
+                {data && (
+                  <ImageCustom
+                    src={data.image || "/images/sample.png"}
+                    fill
+                    alt="image"
+                    className="object-cover rounded-full"
+                  />
+                )}
+              </div>
+              <div className="flex flex-col text-[#9A9FA5] text-sm md:text-[10px] font-medium">
+                <span className="text-black">{data.servicePackageName}</span>
+              </div>
+            </div>
+          )
+        }
+      },
+      {
+        accessorKey: "profile", //access nested data with dot notation
+        header: "Patient profile",
+        enableSorting: false,
+        Cell: ({ row }) => {
+          const data = row.original.profile
           // return <Info data={row.original.userProfile as Author} />
           return (
             <div className="flex items-center space-x-3">
@@ -58,7 +90,7 @@ const TableAPMService = () => {
               </div>
               <div className="flex flex-col text-[#9A9FA5] text-sm md:text-[10px] font-medium">
                 <span className="text-black">
-                  {data && <>BS. {data.firstName + " " + data.lastName}</>}
+                  {data && <>{data.firstName + " " + data.lastName}</>}
                 </span>
               </div>
             </div>
@@ -66,33 +98,15 @@ const TableAPMService = () => {
         }
       },
       {
-        accessorKey: "slot",
+        accessorKey: "appoinmentTime",
         header: "Appointment Date",
         Cell: ({ row }) => {
           return (
             <div className="flex flex-col gap-y-2">
-              <time dateTime={row.original.bookingTime}>
-                {dayformat(row.original.bookingTime)}
-              </time>
-              <time className="text-gray80">
-                {row.original.slot.startTime} - {row.original.slot.endTime}
+              <time dateTime={row.original.appoinmentTime}>
+                {dayformat(row.original.appoinmentTime)}
               </time>
             </div>
-          )
-        }
-      },
-      {
-        accessorKey: "bookingType",
-        header: "Kind",
-        Cell: ({ row }) => {
-          return (
-            <p>
-              {row.original.bookingType.toString() === "0" ? (
-                <Tag color={colorsProvider.primary}>Online</Tag>
-              ) : (
-                <Tag color={colorsProvider.secondary}>Offline</Tag>
-              )}
-            </p>
           )
         }
       },
@@ -113,7 +127,31 @@ const TableAPMService = () => {
     []
   )
   const paginationData = getDataPaginate(data)
-
+  const handleDone = async (bookingId: string) => {
+    if (confirm) {
+      const choice = await confirm({
+        title: <h3 className="text-2xl text-error">Done Appointment</h3>,
+        content: (
+          <div className="flex flex-col gap-y-2w">
+            <p>Are you sure you want to complete this appoiment?</p>
+          </div>
+        ),
+        btnAgree: "Yes",
+        btnDisagree: "Back"
+      })
+      if (choice) {
+        doneBooking.mutate(bookingId, {
+          onSuccess() {
+            toast.success("Completed appoinment")
+            queryClient.refetchQueries([QUERY_KEYS.BOOKING.SERVICE])
+          },
+          onError() {
+            toast.error("Completed failure")
+          }
+        })
+      }
+    }
+  }
   return (
     <TableCustom
       pagination={pagination}
@@ -125,37 +163,14 @@ const TableAPMService = () => {
       isLoading={isLoading}
       isError={isError}
       isRefetching={isRefetching}
-      enableRowActions={!(role === ROLE.ADMIN || role === ROLE.SUPPORTER)}
+      enableRowActions={true}
       renderRowActions={({ row }) => {
-        if (row.original.bookingType.toString() === "0") {
+        if (row.original.bookingStatus.toString() === "1") {
           return (
             <Box sx={{ display: "flex", gap: "1rem" }}>
-              <Tooltip arrow placement="left" title="Go to chat">
-                <IconButton
-                  onClick={() =>
-                    router.push(
-                      `/admin/accounts/doctor/edit/${row.original.price}`
-                    )
-                  }
-                >
-                  <Tag
-                    color={colorsProvider.primary}
-                    className="cursor-pointer"
-                  >
-                    <svg
-                      xmlns="http://www.w3.org/2000/svg"
-                      fill="none"
-                      viewBox="0 0 24 24"
-                      strokeWidth={1.5}
-                      stroke="currentColor"
-                      className="w-6 h-6"
-                    >
-                      <path
-                        strokeLinecap="round"
-                        d="M15.75 10.5l4.72-4.72a.75.75 0 011.28.53v11.38a.75.75 0 01-1.28.53l-4.72-4.72M4.5 18.75h9a2.25 2.25 0 002.25-2.25v-9a2.25 2.25 0 00-2.25-2.25h-9A2.25 2.25 0 002.25 7.5v9a2.25 2.25 0 002.25 2.25z"
-                      />
-                    </svg>
-                  </Tag>
+              <Tooltip arrow placement="left" title="Click to complete booking">
+                <IconButton onClick={() => handleDone(row.original.bookingID)}>
+                  <AiOutlineFileDone />
                 </IconButton>
               </Tooltip>
             </Box>

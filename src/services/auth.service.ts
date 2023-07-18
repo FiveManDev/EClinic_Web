@@ -35,7 +35,7 @@ class AuthService {
         refreshToken: refreshToken || Token.getToken().refresh_token || ""
       }
       const res = await fetch(
-        `${process.env.NEXT_PUBLIC_API_URL}/api/v${VERSION}/${URL_API.AUTH}/RefreshToken`,
+        `${process.env.NEXT_PUBLIC_API_MAIN_URL}:${process.env.NEXT_PUBLIC_API_URL_PORT_BASE}/api/v${VERSION}/${URL_API.AUTH}/RefreshToken`,
         {
           headers: {
             RefreshToken: token.refreshToken

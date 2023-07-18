@@ -11,8 +11,9 @@ import {
 } from "types/AI"
 import { IServerResponse } from "types/server/IServerResponse"
 
-const http = new HttpClient(process.env.NEXT_PUBLIC_API_AI_URL as string)
-  .instance
+const http = new HttpClient(
+  `${process.env.NEXT_PUBLIC_API_MAIN_URL}:${process.env.NEXT_PUBLIC_API_URL_PORT_AI}`
+).instance
 
 class AiService {
   async getAllMachineLearning() {

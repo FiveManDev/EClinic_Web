@@ -61,6 +61,7 @@ const SiderBar = ({ children }: PropsWithChildren) => {
       },
       {
         key: 5,
+        slug: "/login",
         label: `Logout`,
         onclick: () => logout()
       }

@@ -19,6 +19,7 @@
     "@next/font": "13.1.1",
     "@tanstack/react-query-devtools": "^4.29.12",
     "@types/react-big-calendar": "^1.6.4",
+    "@types/simple-peer": "^9.11.5",
     "@xeger/quill-image-actions": "^0.7.1",
     "@xeger/quill-image-formats": "^0.7.1",
     "draft-js": "^0.11.7",
@@ -36,7 +37,8 @@
     "react-icons": "^4.7.1",
     "react-quill": "^2.0.0",
     "react-redux": "^8.0.5",
-    "recharts": "^2.6.2"
+    "recharts": "^2.6.2",
+    "simple-peer": "^9.11.1"
   },
   "devDependencies": {
     "@emotion/react": "^11.10.5",

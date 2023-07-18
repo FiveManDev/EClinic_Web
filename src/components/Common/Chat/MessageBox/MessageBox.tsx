@@ -1,4 +1,3 @@
-import * as signalR from "@microsoft/signalr"
 import { useInfiniteQuery } from "@tanstack/react-query"
 import Spinner from "components/Common/Loading/LoadingIcon"
 import { AnimatePresence } from "framer-motion"
@@ -10,7 +9,6 @@ import { chatService } from "services/chat.service"
 import { PAGE_SIZE, QUERY_KEYS } from "shared/constant/constant"
 import { getDataPaginate } from "shared/helpers/helper"
 import colorsProvider from "shared/theme/colors"
-import { token } from "shared/utils/token"
 import { roomIdChatSelector } from "store/module/chat/chat-selector"
 import { RootState } from "store/store"
 import { Message } from "types/Chat"
@@ -19,6 +17,8 @@ import { HeaderBox } from "./HeaderBox"
 import InputMessage from "./InputMessage"
 import TextMessage from "./TextMessage"
 import VideoCall from "./VideoCall"
+import { useSignalRMessage } from "context/SignalRMessageContext"
+import { useSignalRCall } from "context/SignalRCallContext"
 
 interface IProps {
   toggleInfo: () => void
@@ -28,6 +28,8 @@ const MessageBox = ({ toggleInfo }: IProps) => {
   const [isBottom, setIsBottom] = useState(false)
   const [textInput, setTextInput] = useState("")
   const [messages, setMessages] = useState<Message[]>([])
+  const { answerCall, call, callAccepted } = useSignalRCall()
+  const { connectionMessage } = useSignalRMessage()
   const auth = useSelector((state: RootState) => state.auth)
   const roomId = useSelector(roomIdChatSelector)
   const createMessage = useCreateChatMessage()
@@ -78,34 +80,24 @@ const MessageBox = ({ toggleInfo }: IProps) => {
     }
   }
   useEffect(() => {
-    const connection = new signalR.HubConnectionBuilder()
-      .withUrl(`https://localhost:8686/message`, {
-        accessTokenFactory: () => token.getToken().access_token || ""
-      })
-      .withAutomaticReconnect()
-      .build()
-    connection
-      .start()
-      .then(function () {
-        connection
-          .invoke("JoinGroup", roomId)
+    connectionMessage
+      .current!.start()
+      .then(() => {
+        connectionMessage
+          .current!.invoke("JoinGroup", roomId)
           .then(() => {})
-          .catch(function (err) {
+          .catch((err) => {
             return console.error(err.toString())
           })
       })
-      .catch(function (err) {
+      .catch((err) => {
         return console.error(err.toString())
       })
-    connection.on("Response", (message: any) => {
-      if (message !== "JoinRoom") {
+    connectionMessage.current!.on("Response", (message: Message) => {
+      if (message) {
         setMessages((prevMes) => [...prevMes, message])
       }
     })
-    // Cleanup the connection on component unmount
-    return () => {
-      connection.stop()
-    }
   }, [roomId])
   useEffect(() => {
     const handleScroll = () => {
@@ -154,8 +146,12 @@ const MessageBox = ({ toggleInfo }: IProps) => {
         isLoading={roomData.isLoading}
         author={roomData.data?.pages[0]?.data.data.otherProfile}
         toggleInfo={toggleInfo}
+        handleCall={() => {
+          console.log("ihihi")
+        }}
       />
       <VideoCall />
+
       <div className="relative flex-1 w-full overflow-y-hidden scroll-custom ">
         <AnimatePresence
           initial={false}

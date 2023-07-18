@@ -12,11 +12,13 @@ interface IProps {
   toggleInfo: () => void
   author?: ProfileChat
   isLoading: boolean
+  handleCall: () => void
 }
 export const HeaderBox = ({
   toggleInfo,
   author,
-  isLoading = false
+  isLoading = false,
+  handleCall
 }: IProps) => {
   const role = useSelector((state: RootState) => state.auth.user.role)
   return (
@@ -59,7 +61,7 @@ export const HeaderBox = ({
       </div>
       <div className="flex items-center gap-x-2">
         {role !== "User" && (
-          <Tooltip title="Call video" placement="top">
+          <Tooltip title="Call video" placement="top" onClick={handleCall}>
             <IconButton>
               <span className="text-3xl text-secondary">
                 <HiOutlineVideoCamera />

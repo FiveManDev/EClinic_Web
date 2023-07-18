@@ -39,15 +39,37 @@ export const useGetAllBookingDoctorForAdQuery = (
       bookingService.getAllBookingDoctorForAd(pageNumber, pageSize, status)
   })
 }
+export const useGetAllBookingServicerForAdQuery = (
+  pageNumber: number,
+  pageSize: number,
+  status: number
+) => {
+  const queryKey = [QUERY_KEYS.BOOKING.SERVICE, pageNumber, pageSize, status]
+  return useQuery({
+    queryKey,
+    queryFn: () =>
+      bookingService.getAllBookingPackageForAD(pageNumber, pageSize, status)
+  })
+}
 export const useUpdateStateBookingServiceMutation = () =>
   useMutation({
     mutationFn: (bookingId: string) =>
       bookingService.updateBookingPackageStatusCancel(bookingId)
   })
+export const useUpdateStateBookingServiceDoneMutation = () =>
+  useMutation({
+    mutationFn: (bookingId: string) =>
+      bookingService.updateBookingPackageStatusDone(bookingId)
+  })
 export const useUpdateStateBookingDoctorMutation = () =>
   useMutation({
     mutationFn: (bookingId: string) =>
       bookingService.updateBookingDoctorStatusCancel(bookingId)
+  })
+export const useUpdateStateBookingDoctorDoneMutation = () =>
+  useMutation({
+    mutationFn: (bookingId: string) =>
+      bookingService.updateBookingDoctorStatusDone(bookingId)
   })
 export const useGetDoctorScheduleForUser = (date: string, doctorId: string) => {
   const queryKey = [QUERY_KEYS.BOOKING.DOCTOR, date, doctorId]

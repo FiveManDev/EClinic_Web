@@ -10,7 +10,7 @@ class HttpServer {
      */
     this.cancelTokenSource = axios.CancelToken.source()
     this.instance = axios.create({
-      baseURL: `${process.env.NEXT_PUBLIC_API_URL}/api/v${VERSION}/`,
+      baseURL: `${process.env.NEXT_PUBLIC_API_MAIN_URL}:${process.env.NEXT_PUBLIC_API_URL_PORT_BASE}/api/v${VERSION}/`,
       timeout: 10000,
       headers: {
         "Content-Type": "application/json"
