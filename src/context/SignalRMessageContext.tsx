@@ -4,13 +4,14 @@ import { token } from "shared/utils/token"
 
 interface ISignalRContext {
   connectionMessage: React.MutableRefObject<signalR.HubConnection | null>
+  isConnected: boolean
 }
 
 const SignalMessageRContext = React.createContext<ISignalRContext | null>(null)
 
 const SignalRMessageContextProvider = ({ children }: PropsWithChildren<{}>) => {
   const connectionMessage = useRef<signalR.HubConnection | null>(null)
-
+  const [isConnected, setIsConnected] = React.useState(false)
   useEffect(() => {
     const connection = new signalR.HubConnectionBuilder()
       .withUrl(`https://muddyworld.xyz:8686/message`, {
@@ -18,7 +19,7 @@ const SignalRMessageContextProvider = ({ children }: PropsWithChildren<{}>) => {
       })
       .withAutomaticReconnect()
       .build()
-
+    setIsConnected(true)
     connectionMessage.current = connection
 
     return () => {
@@ -27,7 +28,7 @@ const SignalRMessageContextProvider = ({ children }: PropsWithChildren<{}>) => {
   }, [])
 
   return (
-    <SignalMessageRContext.Provider value={{ connectionMessage }}>
+    <SignalMessageRContext.Provider value={{ connectionMessage, isConnected }}>
       {children}
     </SignalMessageRContext.Provider>
   )

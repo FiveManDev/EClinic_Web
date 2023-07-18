@@ -50,6 +50,8 @@ export const SelectCustom = ({
         {isLoading ? (
           <div>loading</div>
         ) : (
+          options &&
+          options.length > 0 &&
           options!.map((opt, index) => (
             <MenuItem key={index} value={opt.value}>
               {opt.label}

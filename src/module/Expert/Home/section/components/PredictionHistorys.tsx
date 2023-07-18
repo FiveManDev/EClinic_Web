@@ -73,7 +73,7 @@ const PredictionHistorys = () => {
     ],
     []
   )
-  const paginationData = getDataPaginate(data)
+  const paginationData = getDataPaginate(data, "X-Pagination")
   return (
     <>
       <TableCustom

@@ -66,10 +66,14 @@ export const caculateAge = (date: string) => {
   return currentDate.getFullYear() - dateInput.getFullYear()
 }
 export const getDataPaginate = (
-  response: AxiosResponse | undefined = undefined
+  response: AxiosResponse | undefined = undefined,
+  field?: string
 ) => {
-  return response?.headers["x-pagination"]
-    ? (JSON.parse(response?.headers["x-pagination"]) as IPagination)
+  if (!field) {
+    field = "x-pagination"
+  }
+  return response?.headers[field]
+    ? (JSON.parse(response?.headers[field]!) as IPagination)
     : {
         PageIndex: 1,
         PageSize: 10,
