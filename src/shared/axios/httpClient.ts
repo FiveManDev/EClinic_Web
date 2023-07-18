@@ -60,7 +60,7 @@ export class HttpClient {
   }
 }
 const axiosClient = new HttpClient(
-  `${process.env.NEXT_PUBLIC_API_URL}/api/v${VERSION}/`
+  `${process.env.NEXT_PUBLIC_API_MAIN_URL}:${process.env.NEXT_PUBLIC_API_URL_PORT_BASE}/api/v${VERSION}/`
 ).instance
 
 export default axiosClient

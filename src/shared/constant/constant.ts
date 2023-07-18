@@ -130,3 +130,8 @@ export const BOOKING_TYPE = {
   Online: 0,
   Offline: 1
 }
+export const CALL_STATUS = {
+  CAMERA: 1,
+  MIC: 2,
+  ENDCALL: 3
+}

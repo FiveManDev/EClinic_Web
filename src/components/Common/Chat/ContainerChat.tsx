@@ -5,6 +5,8 @@ import { IRoom } from "types/Chat"
 import ListHistory from "./ListHistory"
 import MessageBox from "./MessageBox/MessageBox"
 import UserProfile from "./UserProfile"
+import { SignalRMessageContextProvider } from "context/SignalRMessageContext"
+import { SignalRCallContextProvider } from "context/SignalRCallContext"
 interface IProps {
   data: IRoom[]
   isLoading: boolean
@@ -20,17 +22,23 @@ const ContainerChat = ({ data, isLoading = true }: IProps) => {
     }
   }, [data, roomId])
   return (
-    <div className="flex h-full p-0 background-primary">
-      <ListHistory isLoading={isLoading} data={data} />
-      {roomId && <MessageBox key={roomId} toggleInfo={() => setShow(!show)} />}
-      {show && (
-        <UserProfile
-          roomId={roomId}
-          userId={userId!}
-          onClose={() => setShow(!show)}
-        />
-      )}
-    </div>
+    <SignalRMessageContextProvider>
+      <SignalRCallContextProvider>
+        <div className="flex h-full p-0 background-primary">
+          <ListHistory isLoading={isLoading} data={data} />
+          {roomId && (
+            <MessageBox key={roomId} toggleInfo={() => setShow(!show)} />
+          )}
+          {show && (
+            <UserProfile
+              roomId={roomId}
+              userId={userId!}
+              onClose={() => setShow(!show)}
+            />
+          )}
+        </div>
+      </SignalRCallContextProvider>
+    </SignalRMessageContextProvider>
   )
 }
 

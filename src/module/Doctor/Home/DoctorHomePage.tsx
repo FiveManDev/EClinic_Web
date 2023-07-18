@@ -32,31 +32,33 @@ const DoctorHomePage = () => {
   if (isLoading) {
     return <p>Loading...</p>
   }
-  const events = data!.data.data.map((item) => {
-    const newDate = dayjs(item.bookingTime).format("YYYY-MM-DD")
-    const startTime = dayjs(`${newDate}T${item.slot.startTime}:00`).format(
-      "ddd MMM DD YYYY HH:mm:ss [GMT]ZZ (Indochina Time)"
-    )
-    const endTime = dayjs(`${newDate}T${item.slot.endTime}:00`).format(
-      "ddd MMM DD YYYY HH:mm:ss [GMT]ZZ (Indochina Time)"
-    )
-    const eventColor =
-      item.bookingType === BOOKING_TYPE.Offline.toString()
-        ? colorsProvider.primary
-        : colorsProvider.success
+  const events = data?.data.data
+    ? data.data.data.map((item) => {
+        const newDate = dayjs(item.bookingTime).format("YYYY-MM-DD")
+        const startTime = dayjs(`${newDate}T${item.slot.startTime}:00`).format(
+          "ddd MMM DD YYYY HH:mm:ss [GMT]ZZ (Indochina Time)"
+        )
+        const endTime = dayjs(`${newDate}T${item.slot.endTime}:00`).format(
+          "ddd MMM DD YYYY HH:mm:ss [GMT]ZZ (Indochina Time)"
+        )
+        const eventColor =
+          item.bookingType === BOOKING_TYPE.Offline.toString()
+            ? colorsProvider.primary
+            : colorsProvider.success
 
-    return {
-      id: item.bookingID,
-      title:
-        item.bookingType === BOOKING_TYPE.Offline.toString()
-          ? "Offline"
-          : "Online",
-      start: new Date(startTime),
-      end: new Date(endTime),
-      color: eventColor,
-      data: item
-    }
-  })
+        return {
+          id: item.bookingID,
+          title:
+            item.bookingType === BOOKING_TYPE.Offline.toString()
+              ? "Offline"
+              : "Online",
+          start: new Date(startTime),
+          end: new Date(endTime),
+          color: eventColor,
+          data: item
+        }
+      })
+    : []
   const handleClickEvent = (data: IBookingDoctor) => {
     setEventSelected(data)
     setShow(true)
