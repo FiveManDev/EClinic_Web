@@ -1,15 +1,42 @@
 import { IconButton, Tooltip } from "@mui/material"
 import classNames from "classnames"
 import { useSignalRCall } from "context/SignalRCallContext"
-import { useState } from "react"
-import { useDispatch } from "react-redux"
+import { useEffect, useState } from "react"
+import { useDispatch, useSelector } from "react-redux"
+import { roomIdChatSelector } from "store/module/chat/chat-selector"
 import { headerSlice } from "store/module/header/header-slice"
 
 const VideoCall = () => {
-  const { stream, myVideo, userVideo, callAccepted, callEnded } =
-    useSignalRCall()
-  const dispatch = useDispatch()
+  const roomId = useSelector(roomIdChatSelector)
+
   const [isFullScreen, setIsFullScreen] = useState(false)
+  const {
+    stream,
+    myVideo,
+    userVideo,
+    callAccepted,
+    callEnded,
+    signalRConnection,
+    isConnected
+  } = useSignalRCall()
+  useEffect(() => {
+    if (roomId && isConnected) {
+      signalRConnection
+        .current!.start()
+        .then(() => {
+          signalRConnection
+            .current!.invoke("JoinCall", roomId)
+            .then(() => {})
+            .catch((err) => {
+              return console.error(err.toString())
+            })
+        })
+        .catch((err) => {
+          return console.error(err.toString())
+        })
+    }
+  }, [roomId, isConnected])
+  const dispatch = useDispatch()
   const handleChangeSizeVideo = () => {
     dispatch(headerSlice.actions.onChangeZIndex(isFullScreen ? 50 : 0))
     setIsFullScreen(!isFullScreen)
@@ -31,7 +58,7 @@ const VideoCall = () => {
             className="absolute top-0 left-0 z-50"
           >
             <IconButton onClick={() => handleChangeSizeVideo()}>
-              <button className="flex items-center justify-center p-2 text-white border-none rounded-full outline-none cursor-pointer bg-gray80">
+              <div className="flex items-center justify-center p-2 text-white transition-opacity border-none rounded-full outline-none cursor-pointer opacity-40 hover:opacity-100 bg-gray80">
                 <svg
                   width={24}
                   height={24}
@@ -44,22 +71,27 @@ const VideoCall = () => {
                     fill="white"
                   />
                 </svg>
-              </button>
+              </div>
             </IconButton>
           </Tooltip>
-          {stream && (
+          <video
+            className="absolute top-0 right-0 z-50 object-cover w-32 h-40 overflow-hidden -translate-x-4 translate-y-4 rounded-xl"
+            ref={myVideo}
+            playsInline
+            autoPlay
+          />
+          {callAccepted && !callEnded && (
             <video
-              className="absolute top-0 right-0 z-50 object-cover w-32 h-40 overflow-hidden -translate-x-4 translate-y-4 rounded-xl"
-              ref={myVideo}
+              className="object-contain w-full h-auto"
+              ref={userVideo}
+              playsInline
+              autoPlay
             />
           )}
-          {callAccepted && !callEnded && (
-            <video className="object-contain w-full h-auto" ref={userVideo} />
-          )}
-          <div className="absolute bottom-0 z-20 flex items-center justify-center w-full p-4 bg-white bg-opacity-20">
+          <div className="absolute bottom-0 z-20 flex items-center justify-center w-full p-4 bg-white bg-opacity-10">
             <Tooltip title="Turn off camera" placement="top">
               <IconButton>
-                <button className="flex items-center justify-center p-2 text-white border-none rounded-full outline-none cursor-pointer bg-gray80">
+                <div className="flex items-center justify-center p-2 text-white border-none rounded-full outline-none cursor-pointer bg-gray80">
                   <svg
                     width={18}
                     height={18}
@@ -75,12 +107,12 @@ const VideoCall = () => {
                       strokeLinejoin="round"
                     />
                   </svg>
-                </button>
+                </div>
               </IconButton>
             </Tooltip>
             <Tooltip title="End session" placement="top">
               <IconButton>
-                <button className="flex items-center justify-center p-3 text-white border-none rounded-md outline-none cursor-pointer bg-error">
+                <div className="flex items-center justify-center p-3 text-white border-none rounded-md outline-none cursor-pointer bg-error">
                   <svg
                     width={18}
                     height={18}
@@ -96,12 +128,12 @@ const VideoCall = () => {
                       strokeLinejoin="round"
                     />
                   </svg>
-                </button>
+                </div>
               </IconButton>
             </Tooltip>
             <Tooltip title={"Turn off microphone"} placement="top">
               <IconButton>
-                <button className="flex items-center justify-center p-2 text-white border-none rounded-full outline-none cursor-pointer bg-gray80">
+                <div className="flex items-center justify-center p-2 text-white border-none rounded-full outline-none cursor-pointer bg-gray80">
                   <svg
                     width={18}
                     height={18}
@@ -117,7 +149,7 @@ const VideoCall = () => {
                       strokeLinejoin="round"
                     />
                   </svg>
-                </button>
+                </div>
               </IconButton>
             </Tooltip>
           </div>
