@@ -13,19 +13,22 @@ interface ICall {
   roomId: string
   name: string
   signal: string
+  userId: string
 }
 
 interface ISignalRContext {
   signalRConnection: React.MutableRefObject<signalR.HubConnection | null>
   callAccepted: boolean
   callEnded: boolean
-  callUser: (roomId: string, userName: string) => void
+  // eslint-disable-next-line no-unused-vars
+  callUser: (roomId: string, userName: string, userId: string) => void
   answerCall: () => void
-  leaveCall: () => void
+  leaveCall: (roomId: string) => void
   myVideo: React.MutableRefObject<HTMLVideoElement | null>
   userVideo: React.MutableRefObject<HTMLVideoElement | null>
   call: ICall
   stream?: MediaStream
+  userStream?: MediaStream
   isConnected: boolean
 }
 
@@ -41,9 +44,13 @@ const SignalRCallContextProvider = ({ children }: PropsWithChildren<{}>) => {
     isReceivingCall: false,
     roomId: "",
     name: "",
-    signal: ""
+    signal: "",
+    userId: ""
   })
   const [stream, setStream] = useState<MediaStream>()
+  const streamRef = useRef<MediaStream>()
+  const userStreamRef = useRef<MediaStream>()
+  const [userStream, setUserStream] = useState<MediaStream>()
   const myVideo = useRef<HTMLVideoElement | null>(null)
   const userVideo = useRef<HTMLVideoElement | null>(null)
   useEffect(() => {
@@ -54,40 +61,53 @@ const SignalRCallContextProvider = ({ children }: PropsWithChildren<{}>) => {
       .withAutomaticReconnect()
       .build()
 
-    signalRConnection.current = connection
     setIsConnected(true)
+    signalRConnection.current = connection
     signalRConnection.current.on("CallUser", (signal, data) => {
       const newData = JSON.parse(data)
-      console.log("signalRConnection.current.on ~ newData:", newData)
       setCall({
         isReceivingCall: true,
         roomId: newData.roomId,
         name: newData.name,
-        signal
+        signal: JSON.parse(signal),
+        userId: newData.userId
       })
+    })
+    signalRConnection.current.on("Disconnect", () => {
+      console.log("hiihihiih")
+      streamRef.current!.getTracks().forEach((track) => track.stop())
+      userStreamRef.current!.getTracks().forEach((track) => track.stop())
+      closeConnection()
     })
     return () => {
       signalRConnection.current?.stop()
     }
   }, [])
-  const callUser = (roomId: string, userName: string) => {
+  const callUser = (roomId: string, userName: string, userId: string) => {
+    setCallEnded(false)
     navigator.mediaDevices
-      .getUserMedia({ video: false, audio: false })
+      .getUserMedia({ video: true, audio: true })
       .then((currentStream) => {
         setStream(currentStream)
+        streamRef.current = currentStream
         const peer = new Peer({
           initiator: true,
           trickle: false,
           stream: currentStream
         })
-        myVideo.current!.srcObject = currentStream
         peer.on("signal", (signal) => {
           const data = {
             roomId,
-            name: userName
+            name: userName,
+            userId
           }
           signalRConnection
-            .current!.invoke("CallUser", signal, JSON.stringify(data), roomId)
+            .current!.invoke(
+              "CallUser",
+              JSON.stringify(signal),
+              JSON.stringify(data),
+              roomId
+            )
             .catch((err) => {
               console.log("peer.on ~ err:", err)
             })
@@ -95,34 +115,61 @@ const SignalRCallContextProvider = ({ children }: PropsWithChildren<{}>) => {
 
         peer.on("stream", (currentStream) => {
           setCallAccepted(true)
-          userVideo.current!.srcObject = currentStream
+          setUserStream(currentStream)
+          userStreamRef.current = currentStream
         })
 
         signalRConnection.current?.on("AnswerCall", (signal) => {
+          const newSignal = JSON.parse(signal)
           setCallAccepted(true)
-          peer.signal(signal)
+          peer.signal(newSignal)
         })
         connectionRef.current! = peer
       })
   }
   const answerCall = () => {
     setCallAccepted(true)
-    const peer = new Peer({ initiator: false, trickle: false, stream })
-    peer.on("signal", (signal) => {
-      signalRConnection.current!.invoke("AnswerCall", signal, call, call.roomId)
-    })
-    peer.on("stream", (currentStream) => {
-      userVideo.current!.srcObject = currentStream
-    })
-    peer.signal(call.signal)
-    connectionRef.current! = peer
+
+    navigator.mediaDevices
+      .getUserMedia({ video: true, audio: true })
+      .then((currentStream) => {
+        setStream(currentStream)
+        const peer = new Peer({
+          initiator: false,
+          trickle: false,
+          stream: currentStream
+        })
+        streamRef.current = currentStream
+        peer.on("signal", (signal) => {
+          signalRConnection.current!.invoke(
+            "AnswerCall",
+            JSON.stringify(signal),
+            JSON.stringify(call),
+            call.roomId
+          )
+        })
+        peer.on("stream", (currentStream) => {
+          setUserStream(currentStream)
+          userStreamRef.current = currentStream
+        })
+        peer.signal(call.signal)
+        connectionRef.current! = peer
+      })
   }
-  const leaveCall = () => {
+  const leaveCall = (roomId: string) => {
+    signalRConnection.current!.invoke("Disconnect", roomId).catch((err) => {
+      console.log("Disconnect error:", err)
+    })
+  }
+  const closeConnection = () => {
+    // End the call
     setCallEnded(true)
 
-    connectionRef.current!.destroy()
-
-    window.location.reload()
+    // Clean up the Peer instance
+    if (connectionRef.current) {
+      connectionRef.current.destroy()
+      connectionRef.current = null
+    }
   }
   return (
     <SignalCallRContext.Provider
@@ -137,6 +184,7 @@ const SignalRCallContextProvider = ({ children }: PropsWithChildren<{}>) => {
         myVideo,
         userVideo,
         stream,
+        userStream,
         isConnected
       }}
     >

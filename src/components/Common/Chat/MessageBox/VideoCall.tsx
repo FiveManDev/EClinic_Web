@@ -5,37 +5,33 @@ import { useEffect, useState } from "react"
 import { useDispatch, useSelector } from "react-redux"
 import { roomIdChatSelector } from "store/module/chat/chat-selector"
 import { headerSlice } from "store/module/header/header-slice"
-
-const VideoCall = () => {
+import { ProfileChat } from "types/Chat"
+interface Props {
+  userProfile?: ProfileChat
+}
+const VideoCall = ({ userProfile }: Props) => {
   const roomId = useSelector(roomIdChatSelector)
 
   const [isFullScreen, setIsFullScreen] = useState(false)
   const {
     stream,
+    userStream,
     myVideo,
     userVideo,
     callAccepted,
     callEnded,
-    signalRConnection,
-    isConnected
+    leaveCall
   } = useSignalRCall()
   useEffect(() => {
-    if (roomId && isConnected) {
-      signalRConnection
-        .current!.start()
-        .then(() => {
-          signalRConnection
-            .current!.invoke("JoinCall", roomId)
-            .then(() => {})
-            .catch((err) => {
-              return console.error(err.toString())
-            })
-        })
-        .catch((err) => {
-          return console.error(err.toString())
-        })
+    if (stream) {
+      myVideo.current!.srcObject = stream
     }
-  }, [roomId, isConnected])
+  }, [myVideo, stream])
+  useEffect(() => {
+    if (userStream && userVideo.current) {
+      userVideo.current!.srcObject = userStream
+    }
+  }, [userStream, callAccepted, callEnded, userVideo])
   const dispatch = useDispatch()
   const handleChangeSizeVideo = () => {
     dispatch(headerSlice.actions.onChangeZIndex(isFullScreen ? 50 : 0))
@@ -80,13 +76,16 @@ const VideoCall = () => {
             playsInline
             autoPlay
           />
-          {callAccepted && !callEnded && (
-            <video
-              className="object-contain w-full h-auto"
-              ref={userVideo}
-              playsInline
-              autoPlay
-            />
+          <video
+            className="object-contain w-full h-auto"
+            ref={userVideo}
+            playsInline
+            autoPlay
+          />
+          {!callAccepted && callEnded && (
+            <div className="absolute inset-0 flex items-center justify-center w-full h-full bg-black bg-opacity-50">
+              Loading....
+            </div>
           )}
           <div className="absolute bottom-0 z-20 flex items-center justify-center w-full p-4 bg-white bg-opacity-10">
             <Tooltip title="Turn off camera" placement="top">
@@ -111,7 +110,7 @@ const VideoCall = () => {
               </IconButton>
             </Tooltip>
             <Tooltip title="End session" placement="top">
-              <IconButton>
+              <IconButton onClick={() => leaveCall(roomId)}>
                 <div className="flex items-center justify-center p-3 text-white border-none rounded-md outline-none cursor-pointer bg-error">
                   <svg
                     width={18}
