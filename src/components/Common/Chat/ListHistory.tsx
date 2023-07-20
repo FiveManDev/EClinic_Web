@@ -12,6 +12,7 @@ import { chatsSlice } from "store/module/chat/chat-slice"
 import { IRoom } from "types/Chat"
 import ImageCustom from "../ImageCustom"
 import InputCustom from "../Input"
+import { useRouter } from "next/router"
 interface IProps {
   data: IRoom[]
   isLoading: boolean
@@ -57,11 +58,16 @@ interface HistoryProps {
   isLoading?: boolean
 }
 export const HistoryItem = ({ room, isLoading = false }: HistoryProps) => {
-  const roomId = useSelector(roomIdChatSelector)
-  const dispatch = useDispatch()
+  const router = useRouter()
+  const roomId = router.query.roomId as string
   const onClickItem = () => {
     if (room) {
-      dispatch(chatsSlice.actions.onShowChatRoom(room.roomID))
+      router.push({
+        pathname: router.pathname,
+        query: {
+          roomId: room.roomID
+        }
+      })
     }
   }
   return (

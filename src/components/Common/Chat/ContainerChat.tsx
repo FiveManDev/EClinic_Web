@@ -1,24 +1,25 @@
+import { SignalRCallContextProvider } from "context/SignalRCallContext"
+import { SignalRMessageContextProvider } from "context/SignalRMessageContext"
+import { useRouter } from "next/router"
 import { useEffect, useState } from "react"
-import { useSelector } from "react-redux"
-import { roomIdChatSelector } from "store/module/chat/chat-selector"
 import { IRoom } from "types/Chat"
+import EmtyData from "../Empty"
 import ListHistory from "./ListHistory"
 import MessageBox from "./MessageBox/MessageBox"
 import UserProfile from "./UserProfile"
-import { SignalRMessageContextProvider } from "context/SignalRMessageContext"
-import { SignalRCallContextProvider } from "context/SignalRCallContext"
 interface IProps {
   data: IRoom[]
   isLoading: boolean
 }
 const ContainerChat = ({ data, isLoading = true }: IProps) => {
+  const { query } = useRouter()
+  const roomId = query.roomId as string
   const [show, setShow] = useState(false)
   const [userId, setUserId] = useState<string | null>(null)
-  const roomId = useSelector(roomIdChatSelector)
   useEffect(() => {
     if (roomId) {
-      const newuUserId = data.find((item) => item.roomID === roomId)
-      setUserId(newuUserId?.roomAuthor.userID!)
+      const author = data.find((item) => item.roomID === roomId)
+      setUserId(author?.roomAuthor.userID!)
     }
   }, [data, roomId])
   return (
@@ -26,10 +27,19 @@ const ContainerChat = ({ data, isLoading = true }: IProps) => {
       <SignalRCallContextProvider>
         <div className="flex h-full p-0 background-primary">
           <ListHistory isLoading={isLoading} data={data} />
-          {roomId && (
-            <MessageBox key={roomId} toggleInfo={() => setShow(!show)} />
+          {roomId && userId ? (
+            <MessageBox
+              key={roomId}
+              userId={userId}
+              toggleInfo={() => setShow(!show)}
+            />
+          ) : (
+            <EmtyData
+              message="Select a chat to conversation"
+              className="flex-1 max-auto"
+            />
           )}
-          {show && (
+          {show && roomId && (
             <UserProfile
               roomId={roomId}
               userId={userId!}

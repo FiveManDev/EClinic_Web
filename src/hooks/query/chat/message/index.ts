@@ -18,3 +18,8 @@ export const useCreateChatMessage = () =>
     mutationFn: ({ roomId, content }: { roomId: string; content: string }) =>
       chatService.createMessage(roomId, content)
   })
+export const useCreateChatMessageFile = () =>
+  useMutation({
+    mutationFn: ({ roomId, file }: { roomId: string; file: File }) =>
+      chatService.createMessageFile(roomId, file)
+  })

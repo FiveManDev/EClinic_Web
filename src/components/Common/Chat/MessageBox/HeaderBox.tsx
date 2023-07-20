@@ -23,7 +23,7 @@ export const HeaderBox = ({
   const role = useSelector((state: RootState) => state.auth.user.role)
   return (
     <div className="flex justify-between px-5 py-3 border border-t-0 border-gray-200 border-solid border-x-0">
-      <div className="flex space-x-2">
+      <div className="flex items-center space-x-2">
         {isLoading && (
           <Skeleton
             variant="circular"
@@ -46,7 +46,7 @@ export const HeaderBox = ({
           {isLoading && (
             <>
               <Skeleton variant="text" width={100} />
-              <Skeleton variant="text" width={30} />
+              {/* <Skeleton variant="text" width={30} /> */}
             </>
           )}
           {author && (
@@ -54,7 +54,7 @@ export const HeaderBox = ({
               <span className="text-base font-medium text-h1">
                 {combineName(author.firstName, author.lastName)}
               </span>
-              <span className="text-sm text-green-500">Online</span>
+              {/* <span className="text-sm text-green-500">Online</span> */}
             </>
           )}
         </div>

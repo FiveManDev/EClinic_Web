@@ -1,15 +1,17 @@
 import { useInfiniteQuery } from "@tanstack/react-query"
-import Spinner from "components/Common/Loading/LoadingIcon"
+import { useSignalRCall } from "context/SignalRCallContext"
+import { useSignalRMessage } from "context/SignalRMessageContext"
 import { AnimatePresence } from "framer-motion"
 import { useCreateChatMessage } from "hooks/query/chat/message"
+import { useSimpleProfile } from "hooks/query/profile/useProfile"
+import { useRouter } from "next/router"
+import { queryClient } from "pages/_app"
 import { useEffect, useRef, useState } from "react"
 import { toast } from "react-hot-toast"
 import { useSelector } from "react-redux"
 import { chatService } from "services/chat.service"
 import { PAGE_SIZE, QUERY_KEYS } from "shared/constant/constant"
 import { combineName, getDataPaginate } from "shared/helpers/helper"
-import colorsProvider from "shared/theme/colors"
-import { roomIdChatSelector } from "store/module/chat/chat-selector"
 import { RootState } from "store/store"
 import { Message } from "types/Chat"
 import ButtonScroll from "./ButtonScroll"
@@ -17,29 +19,24 @@ import { HeaderBox } from "./HeaderBox"
 import InputMessage from "./InputMessage"
 import TextMessage from "./TextMessage"
 import VideoCall from "./VideoCall"
-import { useSignalRMessage } from "context/SignalRMessageContext"
-import { useSignalRCall } from "context/SignalRCallContext"
-import { Button } from "@mui/material"
 
 interface IProps {
   toggleInfo: () => void
+  userId: string
 }
-const MessageBox = ({ toggleInfo }: IProps) => {
+const MessageBox = ({ toggleInfo, userId }: IProps) => {
   const refScroll = useRef<HTMLDivElement | null>(null)
   const [isBottom, setIsBottom] = useState(false)
   const [textInput, setTextInput] = useState("")
   const [messages, setMessages] = useState<Message[]>([])
-  const {
-    answerCall,
-    callUser,
-    call,
-    callAccepted,
-    signalRConnection,
-    callEnded
-  } = useSignalRCall()
+  const authorProfile = useSimpleProfile(userId)
+
+  const { answerCall, callUser, call, callAccepted, signalRConnection } =
+    useSignalRCall()
   const { connectionMessage, isConnected } = useSignalRMessage()
   const auth = useSelector((state: RootState) => state.auth)
-  const roomId = useSelector(roomIdChatSelector)
+  const { query } = useRouter()
+  const roomId = query.roomId as string
   const createMessage = useCreateChatMessage()
   const roomData = useInfiniteQuery(
     [QUERY_KEYS.CHAT.MESSAGE, PAGE_SIZE, roomId],
@@ -71,6 +68,7 @@ const MessageBox = ({ toggleInfo }: IProps) => {
           onSuccess: () => {
             scrollToBottom()
             setTextInput("")
+            queryClient.refetchQueries([QUERY_KEYS.CHAT.ROOM])
           },
           onError: () => {
             toast.error("Create message fail")
@@ -105,6 +103,7 @@ const MessageBox = ({ toggleInfo }: IProps) => {
       connectionMessage.current!.on("Response", (message: Message) => {
         if (message) {
           setMessages((prevMes) => [...prevMes, message])
+          queryClient.refetchQueries([QUERY_KEYS.CHAT.ROOM])
         }
       })
     }
@@ -171,8 +170,8 @@ const MessageBox = ({ toggleInfo }: IProps) => {
   return (
     <div className="flex flex-col w-full h-full border border-gray-200 border-solid border-y-0 ">
       <HeaderBox
-        isLoading={roomData.isLoading}
-        author={roomData.data?.pages[0]?.data.data.otherProfile}
+        author={authorProfile.data?.data}
+        isLoading={authorProfile.isLoading}
         toggleInfo={toggleInfo}
         handleCall={() => {
           callUser(
@@ -185,14 +184,51 @@ const MessageBox = ({ toggleInfo }: IProps) => {
       {call.isReceivingCall &&
         !callAccepted &&
         call.userId !== myProfile?.userID && (
-          <div style={{ display: "flex", justifyContent: "space-around" }}>
-            <h1>{call.name} is calling:</h1>
-            <Button variant="contained" color="primary" onClick={answerCall}>
-              Answer
-            </Button>
+          <div className="flex items-center justify-center w-full">
+            <div className="flex items-center p-3 my-2 rounded-lg shadow-[0_3px_10px_rgb(0,0,0,0.2)] gap-x-2 w-fit mx-atuo ">
+              <div className="flex items-center justify-center p-2 text-black rounded-full animate-bounce opacity-40">
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  fill="#000000"
+                  viewBox="0 0 24 24"
+                  strokeWidth={1.5}
+                  stroke="currentColor"
+                  className="w-6 h-6"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    d="M14.25 9.75v-4.5m0 4.5h4.5m-4.5 0l6-6m-3 18c-8.284 0-15-6.716-15-15V4.5A2.25 2.25 0 014.5 2.25h1.372c.516 0 .966.351 1.091.852l1.106 4.423c.11.44-.054.902-.417 1.173l-1.293.97a1.062 1.062 0 00-.38 1.21 12.035 12.035 0 007.143 7.143c.441.162.928-.004 1.21-.38l.97-1.293a1.125 1.125 0 011.173-.417l4.423 1.106c.5.125.852.575.852 1.091V19.5a2.25 2.25 0 01-2.25 2.25h-2.25z"
+                  />
+                </svg>
+              </div>
+              <div className="flex flex-col mr-9">
+                <h3 className="font-medium text-h1">Incoming call...</h3>
+                <span className="text-sm text-disable">Not answered yet</span>
+              </div>
+              {/* <h1>{call.name} is calling:</h1> */}
+              <div className="flex items-center gap-x-2">
+                <button
+                  className="flex items-center justify-center px-3 py-2 text-sm text-white border-none rounded-md outline-none cursor-pointer bg-error"
+                  onClick={() => answerCall("reject")}
+                >
+                  Reject
+                </button>
+                <button
+                  className="flex items-center justify-center px-3 py-2 text-sm text-white border-none rounded-md outline-none cursor-pointer bg-success"
+                  onClick={() => answerCall("accept")}
+                >
+                  Accept
+                </button>
+              </div>
+            </div>
           </div>
         )}
-      <VideoCall userProfile={roomData.data?.pages[0]?.data.data.myProfile} />
+
+      <VideoCall
+        userProfile={authorProfile.data?.data}
+        otherProfile={roomData.data?.pages[0]?.data.data.otherProfile}
+      />
 
       <div className="relative flex-1 w-full overflow-y-hidden scroll-custom ">
         <AnimatePresence
@@ -232,6 +268,7 @@ const MessageBox = ({ toggleInfo }: IProps) => {
             roomData.data?.pages.map((item) =>
               item?.data.data?.message?.map((mess) => (
                 <TextMessage
+                  isImage={mess.isImage}
                   avatar={
                     mess.userID === auth.user.userId
                       ? item.data.data.myProfile.avatar
@@ -246,9 +283,10 @@ const MessageBox = ({ toggleInfo }: IProps) => {
           {messages.length > 0 &&
             messages.map((mess) => (
               <TextMessage
+                isImage={mess.isImage}
                 avatar={
                   mess.userID === auth.user.userId
-                    ? roomData.data?.pages[0]?.data.data.myProfile.avatar
+                    ? authorProfile.data?.data.avatar
                     : roomData.data?.pages[0]?.data.data.otherProfile.avatar
                 }
                 message={mess}

@@ -84,7 +84,7 @@ export const UpdateCover = ({
             className="object-cover rounded-xl"
           />
         ) : (
-          <div className="flex items-center gap-x-3">
+          <div className="flex flex-col items-center gap-x-3 md:flex-row">
             <div className="relative w-[200px] h-[170px]">
               <Image
                 src={"/images/upload.svg"}

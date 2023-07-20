@@ -8,12 +8,14 @@ interface IProps {
   message?: Message
   isLoading?: boolean
   avatar?: string
+  isImage?: boolean
 }
 const TextMessage = ({
   kind = "other",
   message,
   isLoading = false,
-  avatar
+  avatar,
+  isImage
 }: IProps) => {
   return (
     <div
@@ -60,15 +62,26 @@ const TextMessage = ({
           ) : (
             <div
               className={classNames(
-                "max-w-[266px] rounded-xl py-3 text-sm",
+                "max-w-[266px] rounded-xl py-3 text-sm p-4",
                 kind === "other"
-                  ? "rounded-bl-none pl-[10px] pr-7 bg-gray-100"
-                  : "rounded-br-none pr-[10px] pl-7 bg-primary bg-opacity-80 text-white"
+                  ? "bg-gray-100"
+                  : "bg-primary bg-opacity-80 text-white"
               )}
             >
-              <p className="break-words break-all whitespace-normal">
-                {message?.content}
-              </p>
+              {isImage ? (
+                <div className="relative w-[220px] h-[200px]">
+                  <ImageCustom
+                    src={message?.content as string}
+                    alt="image"
+                    fill
+                    className="rounded-md"
+                  />
+                </div>
+              ) : (
+                <p className="break-words break-all whitespace-normal">
+                  {message?.content}
+                </p>
+              )}
             </div>
           )}
         </div>
