@@ -20,7 +20,7 @@ const ChatPage = () => {
       <Head>
         <title>Chat</title>
       </Head>
-      <MainHeadingLayout heading="Chat with paintent">
+      <MainHeadingLayout heading="Chat with patient">
         <ContainerChat data={data?.data.data || []} isLoading={isLoading} />
       </MainHeadingLayout>
     </>

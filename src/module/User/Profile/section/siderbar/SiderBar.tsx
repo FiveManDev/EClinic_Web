@@ -52,7 +52,8 @@ const SiderBar = ({ children }: PropsWithChildren) => {
       {
         key: 3,
         label: `Chat with doctor`,
-        slug: "/user/chat"
+        slug: "/user/chat",
+        layout: false
       },
       {
         key: 4,

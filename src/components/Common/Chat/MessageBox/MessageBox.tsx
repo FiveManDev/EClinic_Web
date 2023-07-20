@@ -29,7 +29,14 @@ const MessageBox = ({ toggleInfo }: IProps) => {
   const [isBottom, setIsBottom] = useState(false)
   const [textInput, setTextInput] = useState("")
   const [messages, setMessages] = useState<Message[]>([])
-  const { answerCall, callUser, call, callAccepted } = useSignalRCall()
+  const {
+    answerCall,
+    callUser,
+    call,
+    callAccepted,
+    signalRConnection,
+    callEnded
+  } = useSignalRCall()
   const { connectionMessage, isConnected } = useSignalRMessage()
   const auth = useSelector((state: RootState) => state.auth)
   const roomId = useSelector(roomIdChatSelector)
@@ -101,7 +108,7 @@ const MessageBox = ({ toggleInfo }: IProps) => {
         }
       })
     }
-  }, [roomId, isConnected])
+  }, [roomId, isConnected, connectionMessage])
   useEffect(() => {
     const handleScroll = () => {
       if (refScroll.current) {
@@ -143,6 +150,24 @@ const MessageBox = ({ toggleInfo }: IProps) => {
       scrollToBottom()
     }
   }, [roomData.data])
+  useEffect(() => {
+    if (roomId && isConnected) {
+      signalRConnection
+        .current!.start()
+        .then(() => {
+          signalRConnection
+            .current!.invoke("JoinCall", roomId)
+            .then(() => {})
+            .catch((err) => {
+              return console.error(err.toString())
+            })
+        })
+        .catch((err) => {
+          return console.error(err.toString())
+        })
+    }
+  }, [roomId, isConnected, signalRConnection])
+  const myProfile = roomData.data?.pages[0]?.data.data.myProfile
   return (
     <div className="flex flex-col w-full h-full border border-gray-200 border-solid border-y-0 ">
       <HeaderBox
@@ -150,22 +175,24 @@ const MessageBox = ({ toggleInfo }: IProps) => {
         author={roomData.data?.pages[0]?.data.data.otherProfile}
         toggleInfo={toggleInfo}
         handleCall={() => {
-          const myProfile = roomData.data?.pages[0]?.data.data.myProfile
           callUser(
             roomId,
-            combineName(myProfile?.firstName, myProfile?.lastName)
+            combineName(myProfile?.firstName, myProfile?.lastName),
+            myProfile?.userID || ""
           )
         }}
       />
-      {call.isReceivingCall && !callAccepted && (
-        <div style={{ display: "flex", justifyContent: "space-around" }}>
-          <h1>{call.name} is calling:</h1>
-          <Button variant="contained" color="primary" onClick={answerCall}>
-            Answer
-          </Button>
-        </div>
-      )}
-      <VideoCall />
+      {call.isReceivingCall &&
+        !callAccepted &&
+        call.userId !== myProfile?.userID && (
+          <div style={{ display: "flex", justifyContent: "space-around" }}>
+            <h1>{call.name} is calling:</h1>
+            <Button variant="contained" color="primary" onClick={answerCall}>
+              Answer
+            </Button>
+          </div>
+        )}
+      <VideoCall userProfile={roomData.data?.pages[0]?.data.data.myProfile} />
 
       <div className="relative flex-1 w-full overflow-y-hidden scroll-custom ">
         <AnimatePresence
@@ -181,7 +208,13 @@ const MessageBox = ({ toggleInfo }: IProps) => {
         >
           {roomData.isFetchingPreviousPage && (
             <div className="w-6 h-6 pt-2 mx-auto ">
-              <Spinner color={colorsProvider.primary} />
+              {/* <Spinner color={colorsProvider.primary} /> */}
+              <div
+                className="inline-block h-8 w-8 animate-spin rounded-full border-4 border-solid border-black2 border-r-transparent align-[-0.125em] motion-reduce:animate-[spin_1.5s_linear_infinite]"
+                role="status"
+              >
+                <span className="!absolute !-m-px !h-px !w-px !overflow-hidden !whitespace-nowrap !border-0 !p-0 ![clip:rect(0,0,0,0)]"></span>
+              </div>
             </div>
           )}
           {roomData.isLoading &&
