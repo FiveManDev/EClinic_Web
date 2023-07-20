@@ -131,5 +131,15 @@ class ChatService {
     )
     return res.data as AxiosResponse<IServerResponse<string>>
   }
+  async createMessageFile(roomId: string, file: File) {
+    const res = await axiosClient.post(
+      `${URL_API.CHAT.CHATMESSAGE}/CreateMessageFile`,
+      {
+        file,
+        roomId
+      }
+    )
+    return res.data as AxiosResponse<IServerResponse<string>>
+  }
 }
 export const chatService = new ChatService()

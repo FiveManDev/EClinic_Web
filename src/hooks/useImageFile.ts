@@ -1,4 +1,4 @@
-import { ChangeEvent, useState, useEffect } from "react"
+import { ChangeEvent, useState } from "react"
 
 export const useImageFile = (imageUrl: string | null) => {
   const [image, setImage] = useState(imageUrl)
