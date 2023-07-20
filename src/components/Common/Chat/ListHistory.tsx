@@ -1,18 +1,15 @@
 import { Skeleton } from "@mui/material"
 import classNames from "classnames"
+import { useRouter } from "next/router"
 import { OverlayScrollbarsComponent } from "overlayscrollbars-react"
 import { HiMagnifyingGlass } from "react-icons/hi2"
 import { useDispatch, useSelector } from "react-redux"
 import { combineName, dayformat } from "shared/helpers/helper"
-import {
-  roomIdChatSelector,
-  searchChatSelector
-} from "store/module/chat/chat-selector"
+import { searchChatSelector } from "store/module/chat/chat-selector"
 import { chatsSlice } from "store/module/chat/chat-slice"
 import { IRoom } from "types/Chat"
 import ImageCustom from "../ImageCustom"
 import InputCustom from "../Input"
-import { useRouter } from "next/router"
 interface IProps {
   data: IRoom[]
   isLoading: boolean

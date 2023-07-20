@@ -2,6 +2,7 @@ import { CalendarPicker, LocalizationProvider } from "@mui/x-date-pickers"
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs"
 import EmtyData from "components/Common/Empty"
 import InputCustom from "components/Common/Input"
+import dayjs from "dayjs"
 import { useSearchFamlyProfilesQuery } from "hooks/query/profile/useProfile"
 import useDebounce from "hooks/useDebounce"
 import ProfileItem from "module/User/Profile/section/profile/components/ProfileItem"
@@ -40,12 +41,14 @@ export const StepOne = ({ onCancel, onContinue }: PropsStep) => {
             <CalendarPicker
               disablePast
               showDaysOutsideCurrentMonth
-              date={appointmentTime}
-              onChange={(newDate) =>
+              date={dayjs(appointmentTime)}
+              onChange={(newDate) => {
                 dispatch(
-                  bookingServiceSlice.actions.appoinmentTimeChange(newDate)
+                  bookingServiceSlice.actions.appoinmentTimeChange(
+                    newDate?.format("YYYY-MM-DD") as string
+                  )
                 )
-              }
+              }}
             />
           </LocalizationProvider>
         </div>

@@ -6,14 +6,14 @@ interface BookingServiceState {
   method: string
   profile: (IProfile & IRelationShip) | null
   servicePackage: ServicePackage | null
-  appoinmentTime: dayjs.Dayjs
+  appoinmentTime: string
 }
 
 const initialState: BookingServiceState = {
   method: "",
   profile: null,
   servicePackage: null,
-  appoinmentTime: dayjs()
+  appoinmentTime: dayjs().format("YYYY-MM-DD").toString()
 }
 
 export const bookingServiceSlice = createSlice({
