@@ -89,6 +89,7 @@ const VideoCall = ({ userProfile, otherProfile }: Props) => {
             ref={myVideo}
             playsInline
             autoPlay
+            muted
           />
           <video
             className="object-contain w-full h-auto"

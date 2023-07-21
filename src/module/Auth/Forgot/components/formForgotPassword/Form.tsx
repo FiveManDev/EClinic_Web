@@ -116,6 +116,7 @@ const Form = () => {
     <>
       {keyVerify ? (
         <ConfirmCode
+          isLoading={confirmResetPasswordMutation.isLoading}
           countError={countError}
           handleSencode={handleSendcode}
           handleResendCode={handleResetCode}
