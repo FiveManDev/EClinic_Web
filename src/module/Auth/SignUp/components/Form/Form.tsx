@@ -1,6 +1,5 @@
 import { yupResolver } from "@hookform/resolvers/yup"
 import {
-  Divider,
   FormControl,
   FormControlLabel,
   FormLabel,
@@ -8,24 +7,22 @@ import {
   RadioGroup
 } from "@mui/material"
 
+import { useMutation } from "@tanstack/react-query"
 import DatePickerCustom from "components/Common/DatePicker/DatePickerCustom"
-import GoogleIcon from "components/Common/Icon/GoogleIcon"
-import Spinner from "components/Common/Loading/LoadingIcon"
 import CustomButton from "components/User/Button"
 import { CustomInput, CustomInputPassword } from "components/User/Input"
-import useUserGoogle from "hooks/auth/useUserGoogle"
-import ButtonIcon from "module/Auth/components/ButtonIcon"
+import dayjs from "dayjs"
 import Link from "next/link"
 import { useRouter } from "next/router"
 import { useEffect, useState } from "react"
-import { FieldValues, useForm } from "react-hook-form"
+import { useForm } from "react-hook-form"
 import { toast } from "react-hot-toast"
 import { authService } from "services/auth.service"
-import { emailService } from "services/mail.service"
-import { routers } from "shared/constant/routers"
-import { getCurrentDate } from "shared/helpers/helper"
+import { ISignupForm } from "types/Auth"
 import * as yup from "yup"
 import ConfirmCode from "../ConfirmCode"
+import { routers } from "shared/constant/routers"
+import { RESEND_CODE_TYPE } from "shared/constant/constant"
 
 const schema = yup.object({
   userName: yup.string().required("Please enter your user name"),
@@ -54,230 +51,222 @@ const schema = yup.object({
 const SIGN_UP_FAILED = "Sign up failed!!"
 const FormSignup = () => {
   const router = useRouter()
-  const [isVerify, setIsVerify] = useState(false)
-  const [code, setCode] = useState<string | null>(null)
-  const [emailVerify, setEmailVerify] = useState<string | null>(null)
-  const [email, setEmail] = useState("")
-  const [loginMethod, setLoginMethod] = useState<"google" | "normal" | null>(
-    null
-  )
-  const { action, profile, error } = useUserGoogle()
+  const [countError, setCountError] = useState(0)
+
+  const [keyVerify, setKeyVerify] = useState<string | null>(null)
+  const confirmSignUpMutation = useMutation({
+    mutationFn: (data: { code: string; key: string }) =>
+      authService.confirmSignUp(data.code, data.key)
+  })
+  const signUpMutation = useMutation({
+    mutationFn: (data: ISignupForm) => authService.signUp(data)
+  })
+  const resendCodeMutaiton = useMutation({
+    mutationFn: (data: { key: string; type: number }) =>
+      authService.resendCode(data.key, data.type)
+  })
+
   const {
     handleSubmit,
     register,
     control,
     setError,
-    reset,
+    setFocus,
     getValues,
-    formState: { errors, isSubmitting }
-  } = useForm({
+    formState: { errors }
+  } = useForm<ISignupForm>({
     mode: "onSubmit",
     resolver: yupResolver(schema)
   })
 
-  const handleSubmitSignup = async (values: FieldValues) => {
-    setIsVerify(true)
-    setLoginMethod("normal")
-    setEmail(values.email)
-    getCodeFromEmail(values.email)
+  const handleSignup = async (values: ISignupForm) => {
+    signUpMutation.mutate(
+      {
+        ...values,
+        dateOfBirth: dayjs(values.dateOfBirth, "YYYY-MM-DD").toISOString()
+      },
+      {
+        onSuccess: (res) => {
+          console.log("handleSignup ~ res:", res)
+          setKeyVerify(res.data)
+        },
+        onError: (data: any) => {
+          toast.error(data?.response?.data?.message || SIGN_UP_FAILED)
+        }
+      }
+    )
   }
   const handleResetCode = async () => {
-    setIsVerify(true)
-    getCodeFromEmail(email)
-    toast.success("Send code again succesfully")
-  }
-  const getCodeFromEmail = async (email: string) => {
-    toast.loading("Wait a minutes")
-    try {
-      const res = await emailService.confirmEmail(email)
-      if (res.isSuccess) {
-        setCode(res.data)
-        setEmailVerify(email)
-      } else {
-        toast.error(res?.message || "Sign up failed")
-      }
-    } catch (error) {
-      toast.error("Sign up failed")
-    } finally {
-      toast.dismiss()
-    }
-  }
-  const signUp = async () => {
-    if (loginMethod === "normal") {
-      const date = getCurrentDate(getValues("dateOfBirth"))
-      const result = {
-        ...getValues(),
-        gender: getValues("gender") === "true" ? true : false,
-        dateOfBirth: date
-      }
-      try {
-        const data = await authService.signUp(result)
-        if (data.isSuccess) {
-          router.push(routers.signIn)
-          toast.success(data.message || "Sign up successfuly!!")
-        } else {
-          toast.error(data.message || SIGN_UP_FAILED)
+    resendCodeMutaiton.mutate(
+      {
+        key: keyVerify || "",
+        type: RESEND_CODE_TYPE.SIGNUP
+      },
+      {
+        onSuccess: () => {
+          setCountError(0)
+          toast.success("Send code again succesfully")
+        },
+        onError: () => {
+          toast.error("Send code again failed!!")
         }
-      } catch (error) {
-        toast.error("Sign up failed!!")
       }
-    } else if (loginMethod === "google") {
-      try {
-        const data = await authService.signInWithGoogle(profile.access_token)
-        if (data.isSuccess) {
-          toast.success(data.message || "Sign up successfuly!!")
-          router.push(routers.signIn)
-        } else {
-          toast.error(data.message || SIGN_UP_FAILED)
-        }
-      } catch (error) {
-        toast.error(SIGN_UP_FAILED)
-      }
-    }
-    reset()
-    setCode(null)
-    setIsVerify(false)
-    setEmail("")
+    )
   }
+  const handleSendcode = (code: string) => {
+    confirmSignUpMutation.mutate(
+      {
+        code,
+        key: keyVerify || ""
+      },
+      {
+        onSuccess: () => {
+          toast.success("Sign up successfuly!!")
+          router.push(routers.signIn)
+        },
+        onError: (data: any) => {
+          setCountError((prev) => prev + 1)
+          toast.error(data?.response?.data?.message || "Send code failed!!")
+        }
+      }
+    )
+  }
+
   useEffect(() => {
-    /***
-     * sign-up with google
-     */
-    if (profile) {
-      setIsVerify(true)
-      getCodeFromEmail(profile?.data.email)
-      setEmail(profile?.data.email)
-      setLoginMethod("google")
-      toast.dismiss()
+    for (const fieldName of Object.keys(errors)) {
+      if (errors[fieldName as keyof ISignupForm]) {
+        setFocus(fieldName as any)
+        break
+      }
     }
-  }, [profile])
-  useEffect(() => {
-    if (error) {
-      toast.error(SIGN_UP_FAILED)
-    }
-  }, [error])
+  }, [errors, setFocus])
   return (
     <>
-      {isVerify && code && emailVerify ? (
+      {keyVerify ? (
         <ConfirmCode
-          onSubmit={signUp}
-          code={code}
-          handleResetCode={handleResetCode}
-          handleBack={() => setIsVerify(false)}
-          email={emailVerify}
+          countError={countError}
+          handleSencode={handleSendcode}
+          handleResendCode={handleResetCode}
+          handleBack={() => {
+            setKeyVerify(null)
+            countError > 0 && setCountError(0)
+          }}
+          email={getValues("email")}
         />
       ) : (
-        <div className=" w-full  bg-white rounded-md px-4 py-6 mt-7">
-          <ButtonIcon
-            text="Sign up with Google"
-            icon={<GoogleIcon />}
-            onClick={() => action()}
-          />
-          <Divider className="my-[30px]">
-            <span className="text-[10px] text-[#4E5D78] md:text-lg">OR</span>
-          </Divider>
-          <form
-            onSubmit={handleSubmit(handleSubmitSignup)}
-            className="flex flex-col space-y-5"
-          >
-            <div className="flex items-start space-x-3">
+        <div className="flex flex-col items-center justify-center">
+          <div className="flex flex-col space-y-[10px] text-[#4E5D78] font-bold text-center max-w-[280px] md:max-w-[488px] mx-auto mt-[42px]">
+            <h1 className="text-lg md:text-[30px]">Getting Started</h1>
+            <h3 className="text-sm md:text-base">
+              Create an account to continue and connect with the people.
+            </h3>
+          </div>
+
+          <div className="w-full px-4 py-6 bg-white rounded-md mt-7">
+            <form
+              onSubmit={handleSubmit(handleSignup)}
+              className="flex flex-col space-y-5"
+            >
+              <div className="flex items-start space-x-3">
+                <CustomInput
+                  label="First name"
+                  control={control}
+                  name="firstName"
+                  error={!!errors.firstName}
+                  helperText={errors.firstName?.message?.toString()}
+                />
+                <CustomInput
+                  label="Last name"
+                  control={control}
+                  name="lastName"
+                  error={!!errors.lastName}
+                  helperText={errors.lastName?.message?.toString()}
+                />
+              </div>
               <CustomInput
-                label="First name"
+                label="Email"
                 control={control}
-                name="firstName"
-                error={!!errors.firstName}
-                helperText={errors.firstName?.message?.toString()}
+                name="email"
+                error={!!errors.email}
+                helperText={errors.email?.message?.toString()}
               />
               <CustomInput
-                label="Last name"
+                label="User name"
                 control={control}
-                name="lastName"
-                error={!!errors.lastName}
-                helperText={errors.lastName?.message?.toString()}
+                name="userName"
+                error={!!errors.userName}
+                helperText={errors.userName?.message?.toString()}
               />
-            </div>
-            <CustomInput
-              label="Email"
-              control={control}
-              name="email"
-              error={!!errors.email}
-              helperText={errors.email?.message?.toString()}
-            />
-            <CustomInput
-              label="User name"
-              control={control}
-              name="userName"
-              error={!!errors.userName}
-              helperText={errors.userName?.message?.toString()}
-            />
-            <CustomInputPassword
-              label="Password"
-              control={control}
-              name="password"
-              error={!!errors.password}
-              errorMessage={errors.password?.message?.toString()}
-            />
-            <CustomInputPassword
-              label="Confirm password"
-              placeholder="Confirm password"
-              control={control}
-              name="confirmPassword"
-              error={!!errors.confirmPassword}
-              errorMessage={errors.confirmPassword?.message?.toString()}
-            />
-            <DatePickerCustom
-              label="Date of birth"
-              control={control}
-              name="dateOfBirth"
-              onErrorField={(reason) => {
-                const message =
-                  reason === "invalidDate"
-                    ? "Please enter valid date"
-                    : reason === "disableFuture"
-                    ? "The birthday cannot be less than the current date"
-                    : ""
-                setError("dateOfBirth", { type: "focus", message })
-              }}
-              errorMessage={errors.dateOfBirth?.message?.toString()}
-            />
-            <FormControl>
-              <FormLabel id="radio-buttons">Gender</FormLabel>
-              <RadioGroup
-                {...register("gender")}
-                row
-                aria-labelledby="radio-buttons"
-                defaultValue={true}
-                name="radio-buttons-group"
+              <CustomInputPassword
+                label="Password"
+                control={control}
+                name="password"
+                error={!!errors.password}
+                errorMessage={errors.password?.message?.toString()}
+              />
+              <CustomInputPassword
+                label="Confirm password"
+                placeholder="Confirm password"
+                control={control}
+                name="confirmPassword"
+                error={!!errors.confirmPassword}
+                errorMessage={errors.confirmPassword?.message?.toString()}
+              />
+              <DatePickerCustom
+                label="Date of birth"
+                control={control}
+                name="dateOfBirth"
+                onErrorField={(reason) => {
+                  const message =
+                    reason === "invalidDate"
+                      ? "Please enter valid date"
+                      : reason === "disableFuture"
+                      ? "The birthday cannot be less than the current date"
+                      : ""
+                  setError("dateOfBirth", { type: "focus", message })
+                }}
+                errorMessage={errors.dateOfBirth?.message?.toString()}
+              />
+              <FormControl>
+                <FormLabel id="radio-buttons">Gender</FormLabel>
+                <RadioGroup
+                  {...register("gender")}
+                  row
+                  aria-labelledby="radio-buttons"
+                  defaultValue={true}
+                  name="radio-buttons-group"
+                >
+                  <FormControlLabel
+                    value={true}
+                    control={<Radio size="small" />}
+                    label="Female"
+                  />
+                  <FormControlLabel
+                    value={false}
+                    control={<Radio size="small" />}
+                    label="Male"
+                  />
+                </RadioGroup>
+              </FormControl>
+              <CustomButton
+                isLoading={signUpMutation.isLoading}
+                kind="primary"
+                className="rounded-md md:h-[42px]"
+                type="submit"
               >
-                <FormControlLabel
-                  value={true}
-                  control={<Radio size="small" />}
-                  label="Female"
-                />
-                <FormControlLabel
-                  value={false}
-                  control={<Radio size="small" />}
-                  label="Male"
-                />
-              </RadioGroup>
-            </FormControl>
-            <CustomButton
-              kind="primary"
-              className="rounded-md md:h-[42px]"
-              type="submit"
-            >
-              {isSubmitting ? <Spinner /> : "Sign Up"}
-            </CustomButton>
-          </form>
-          <p className="text-center mt-5 text-[#4E5D78">
-            Already have an account?{" "}
-            <Link
-              href={"/sign-in"}
-              className="no-underline hover:underline hover:decoration-primary"
-            >
-              <span className="text-primary">Sign In</span>
-            </Link>
-          </p>
+                Sign Up
+              </CustomButton>
+            </form>
+            <p className="text-center mt-5 text-[#4E5D78">
+              Already have an account?{" "}
+              <Link
+                href={"/sign-in"}
+                className="no-underline hover:underline hover:decoration-primary"
+              >
+                <span className="text-primary">Sign In</span>
+              </Link>
+            </p>
+          </div>
         </div>
       )}
     </>

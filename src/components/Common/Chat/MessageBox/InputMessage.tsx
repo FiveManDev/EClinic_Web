@@ -1,21 +1,15 @@
 import styled from "@emotion/styled"
 import { IconButton, Tooltip } from "@mui/material"
 import Menu from "@mui/material/Menu"
-import MenuItem from "@mui/material/MenuItem"
 import classNames from "classnames"
 import ModalPrimary from "components/Common/Modal/ModalPrimary"
 import { UpdateCover } from "components/Common/UpLoadImage"
 import CustomButton from "components/User/Button"
 import { useCreateChatMessageFile } from "hooks/query/chat/message"
 import { useRouter } from "next/router"
-import React, { useState } from "react"
+import { useState } from "react"
 import { toast } from "react-hot-toast"
-import {
-  HiOutlinePaperAirplane,
-  HiOutlinePaperClip,
-  HiOutlinePhoto,
-  HiPlus
-} from "react-icons/hi2"
+import { HiOutlinePaperAirplane } from "react-icons/hi2"
 const MenuWrapper = styled(Menu)`
   .MuiPaper-elevation {
     box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;

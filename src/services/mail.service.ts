@@ -1,6 +1,4 @@
 import axios, { AxiosResponse } from "axios"
-import axiosClient from "shared/axios/httpClient"
-import { URL_API } from "shared/constant/constant"
 import { IServerResponse } from "types/server/IServerResponse"
 
 class EmailService {

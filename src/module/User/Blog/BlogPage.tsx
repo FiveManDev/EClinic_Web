@@ -13,7 +13,6 @@ import { getDataPaginate } from "shared/helpers/helper"
 import { IBreadcrum } from "types/Base.type"
 import { IHashtag } from "types/Post"
 import BlogPostCard from "./components/BlogPostCard"
-import BlogPostsSort from "./components/BlogPostsSort"
 
 export default function BlogPage() {
   const [pageIndex, setPageIndex] = useState(1)

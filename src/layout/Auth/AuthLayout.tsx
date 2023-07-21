@@ -11,13 +11,14 @@ const AuthLayout = ({ children }: Props) => {
   return (
     <>
       <div className="flex flex-col min-h-screen bg-white">
-        <div className="grid grid-cols-2">
-          <div className="relative w-full h-full min-h-screen">
+        <div className="grid md:grid-cols-2">
+          <div className="relative hidden w-full h-full min-h-screen md:block">
             <ImageCustom
               src={"/images/background-auth.png"}
               fill
               alt="cover"
               priority
+              className="object-cover"
             />
             <Link
               href={"/"}

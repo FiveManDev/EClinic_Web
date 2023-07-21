@@ -1,18 +1,18 @@
 import { yupResolver } from "@hookform/resolvers/yup"
-import { AxiosError } from "axios"
+import { useMutation } from "@tanstack/react-query"
 import Spinner from "components/Common/Loading/LoadingIcon"
 import CustomButton from "components/User/Button"
 import { CustomInput, CustomInputPassword } from "components/User/Input"
-import {
-  IResetPassowrd,
-  useAccountResetPassowordMutation
-} from "hooks/query/account/useAccount"
+import { useAccountResetPassowordMutation } from "hooks/query/account/useAccount"
 import ConfirmCode from "module/Auth/SignUp/components/ConfirmCode"
 import Link from "next/link"
-import { useState } from "react"
-import { FieldValues, useForm } from "react-hook-form"
+import { useRouter } from "next/router"
+import { useEffect, useState } from "react"
+import { useForm } from "react-hook-form"
 import { toast } from "react-hot-toast"
-import { emailService } from "services/mail.service"
+import { authService } from "services/auth.service"
+import { RESEND_CODE_TYPE } from "shared/constant/constant"
+import { routers } from "shared/constant/routers"
 import * as yup from "yup"
 
 const schema = yup.object({
@@ -29,119 +29,153 @@ const schema = yup.object({
     .oneOf([yup.ref("newPassword"), null], "Passwords must match")
 })
 const Form = () => {
-  const [code, setCode] = useState<string | null>(null)
-  const [emailVerify, setEmailVerify] = useState<string | null>(null)
+  const router = useRouter()
+  const [countError, setCountError] = useState(0)
+  const [keyVerify, setKeyVerify] = useState<string | null>(null)
   const accountResetPassowordMutation = useAccountResetPassowordMutation()
+  const resendCodeMutaiton = useMutation({
+    mutationFn: (data: { key: string; type: number }) =>
+      authService.resendCode(data.key, data.type)
+  })
+  const confirmResetPasswordMutation = useMutation({
+    mutationFn: (data: { code: string; key: string }) =>
+      authService.confirmResetPassword(data.code, data.key)
+  })
   const {
     handleSubmit,
     control,
     getValues,
-    reset,
+    setFocus,
     formState: { errors, isSubmitting }
   } = useForm({
     mode: "onSubmit",
     resolver: yupResolver(schema)
   })
-  const handleResetCode = async () => {
-    getCodeFromEmail(emailVerify as string)
-    toast.success("Send code again succesfully")
-  }
-  const getCodeFromEmail = async (email: string) => {
-    toast.loading("Wait a minutes")
-    try {
-      const res = await emailService.verifyEmail(email)
-      if (res.isSuccess) {
-        setCode(res.data)
-        setEmailVerify(email)
-      } else {
-        toast.error(res?.message || "Change passoword failed")
-      }
-    } catch (error) {
-      toast.error("Change passoword failed")
-    } finally {
-      toast.dismiss()
-    }
-  }
-  const handleSubmitForgot = async (values: FieldValues) => {
-    getCodeFromEmail(values.email)
-  }
-  const handleChangePassword = () => {
-    const values = getValues() as IResetPassowrd
-    accountResetPassowordMutation.mutate(values, {
-      onSuccess: () => {
-        toast.success("Change password successfully")
-        reset({
-          email: "",
-          password: "",
-          confirmPassword: ""
-        })
-        setEmailVerify("")
+  const handleSubmitForgot = async (values: any) => {
+    accountResetPassowordMutation.mutate(
+      {
+        ...values
       },
-      onError: (data) => {
-        if (data instanceof AxiosError) {
-          toast.error(data.response?.data.message)
-        } else {
-          toast.error("Update password Failed")
+      {
+        onSuccess: (data) => {
+          setKeyVerify(data?.data)
+          toast.success("Please check your email")
+        },
+        onError: (data: any) => {
+          toast.error(
+            data?.response?.data?.message || "Reset password failed!!"
+          )
         }
       }
-    })
+    )
   }
+  const handleResetCode = async () => {
+    resendCodeMutaiton.mutate(
+      {
+        key: keyVerify || "",
+        type: RESEND_CODE_TYPE.RESET_PASSWORD
+      },
+      {
+        onSuccess: () => {
+          setCountError(0)
+          toast.success("Send code again succesfully")
+        },
+        onError: () => {
+          toast.error("Send code again failed!!")
+        }
+      }
+    )
+  }
+  const handleSendcode = (code: string) => {
+    confirmResetPasswordMutation.mutate(
+      {
+        code,
+        key: keyVerify || ""
+      },
+      {
+        onSuccess: () => {
+          toast.success("Sign up successfuly!!")
+          router.push(routers.signIn)
+        },
+        onError: (data: any) => {
+          setCountError((prev) => prev + 1)
+          toast.error(data?.response?.data?.message || "Send code failed!!")
+        }
+      }
+    )
+  }
+  useEffect(() => {
+    for (const fieldName of Object.keys(errors)) {
+      if (errors[fieldName as any]) {
+        setFocus(fieldName as any)
+        break
+      }
+    }
+  }, [errors, setFocus])
   return (
     <>
-      {code && emailVerify ? (
+      {keyVerify ? (
         <ConfirmCode
-          onSubmit={handleChangePassword}
-          code={code}
-          handleResetCode={handleResetCode}
-          handleBack={() => setEmailVerify(null)}
-          email={emailVerify}
+          countError={countError}
+          handleSencode={handleSendcode}
+          handleResendCode={handleResetCode}
+          handleBack={() => {
+            setKeyVerify(null)
+            countError > 0 && setCountError(0)
+          }}
+          email={getValues("email")}
         />
       ) : (
-        <div className=" w-full  bg-white rounded-md px-4 py-6 mt-7">
-          <form
-            onSubmit={handleSubmit(handleSubmitForgot)}
-            className="flex flex-col space-y-5"
-          >
-            <CustomInput
-              label="Email"
-              control={control}
-              name="email"
-              error={!!errors.email}
-              helperText={errors.email?.message?.toString()}
-            />
-            <CustomInputPassword
-              label="New Password"
-              control={control}
-              name="newPassword"
-              error={!!errors.newPassword}
-              errorMessage={errors.newPassword?.message?.toString()}
-            />
-            <CustomInputPassword
-              label="Confirm password"
-              placeholder="Confirm password"
-              control={control}
-              name="confirmPassword"
-              error={!!errors.confirmPassword}
-              errorMessage={errors.confirmPassword?.message?.toString()}
-            />
-            <CustomButton
-              kind="primary"
-              className="rounded-md md:h-[42px]"
-              type="submit"
+        <>
+          <div className="flex flex-col space-y-[10px] text-[#4E5D78] font-bold text-center max-w-[280px] md:max-w-[488px] mx-auto mt-[42px]">
+            <h1 className="text-lg md:text-[30px]">Reset your password</h1>
+          </div>
+          <div className="w-full px-4 py-6 bg-white rounded-md mt-7">
+            <form
+              onSubmit={handleSubmit(handleSubmitForgot)}
+              className="flex flex-col space-y-5"
             >
-              {isSubmitting ? <Spinner /> : "Reset"}
-            </CustomButton>
-          </form>
-          <p className="text-center mt-5 text-[#4E5D78">
-            Back to{" "}
-            <Link
-              href={"/sign-in"}
-              className="no-underline hover:underline hover:decoration-primary"
-            >
-              <span className="text-primary">Sign In</span>
-            </Link>
-          </p>
-        </div>
+              <CustomInput
+                label="Email"
+                control={control}
+                name="email"
+                error={!!errors.email}
+                helperText={errors.email?.message?.toString()}
+              />
+              <CustomInputPassword
+                label="New Password"
+                control={control}
+                name="newPassword"
+                error={!!errors.newPassword}
+                errorMessage={errors.newPassword?.message?.toString()}
+              />
+              <CustomInputPassword
+                label="Confirm password"
+                placeholder="Confirm password"
+                control={control}
+                name="confirmPassword"
+                error={!!errors.confirmPassword}
+                errorMessage={errors.confirmPassword?.message?.toString()}
+              />
+              <CustomButton
+                kind="primary"
+                className="rounded-md md:h-[42px]"
+                type="submit"
+              >
+                {isSubmitting ? <Spinner /> : "Reset"}
+              </CustomButton>
+            </form>
+            <p className="text-center mt-5 text-[#4E5D78">
+              Back to{" "}
+              <Link
+                href={"/sign-in"}
+                className="no-underline hover:underline hover:decoration-primary"
+              >
+                <span className="text-primary">Sign In</span>
+              </Link>
+            </p>
+          </div>
+        </>
       )}
     </>
   )
