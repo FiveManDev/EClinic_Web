@@ -135,3 +135,7 @@ export const CALL_STATUS = {
   MIC: 2,
   ENDCALL: 3
 }
+export const RESEND_CODE_TYPE = {
+  SIGNUP: 0,
+  RESET_PASSWORD: 1
+}

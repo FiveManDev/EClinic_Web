@@ -96,7 +96,7 @@ const UserAvatar = ({ menu }: Props) => {
               </span>
               {/* profile basic */}
               <div className="flex items-center px-5 py-3 space-x-2">
-                <div className="relative overflow-hidden rounded-full w-9 h-9">
+                <div className="relative flex-shrink-0 overflow-hidden rounded-full w-9 h-9">
                   <Image
                     src={
                       (data?.data?.avatar as string) || "/images/default.jpeg"
@@ -110,10 +110,10 @@ const UserAvatar = ({ menu }: Props) => {
                 </div>
                 {data && (
                   <div className="flex flex-col">
-                    <div className="text-sm">
+                    <div className="text-sm line-clamp-1">
                       {data?.data?.firstName + " " + data?.data?.lastName}
                     </div>
-                    <small className="text-[10px] text-gray-400">
+                    <small className="text-[10px] text-gray-400 line-clamp-1">
                       @{data?.data?.email}
                     </small>
                   </div>

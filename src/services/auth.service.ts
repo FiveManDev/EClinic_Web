@@ -3,6 +3,7 @@ import { IChangePassowrd, IResetPassowrd } from "hooks/query/account/useAccount"
 import axiosClient from "shared/axios/httpClient"
 import { URL_API, VERSION } from "shared/constant/constant"
 import { token as Token } from "shared/utils/token"
+import { ISignupForm } from "types/Auth"
 import { IServerResponse } from "types/server/IServerResponse"
 import { IToken } from "types/Token"
 
@@ -27,7 +28,7 @@ class AuthService {
         confirmPassword: value.confirmPassword
       }
     )
-    return res.data as IServerResponse<null>
+    return res.data as IServerResponse<string>
   }
   async refreshToken(refreshToken?: string) {
     try {
@@ -58,19 +59,51 @@ class AuthService {
     )
     return res.data as IServerResponse<IToken>
   }
-  async signUp(values: any) {
-    const res: AxiosResponse = await axiosClient.post(
-      `${URL_API.ACCOUNT}/SignUp`,
-      {
+  async signUp(values: ISignupForm) {
+    try {
+      const res = await axiosClient.post(`${URL_API.ACCOUNT}/SignUp`, {
         ...values
-      },
-      {
-        validateStatus: function (status) {
-          return status < 500
+      })
+      return res.data as IServerResponse<string>
+    } catch (error) {
+      return Promise.reject(error)
+    }
+  }
+  async confirmSignUp(code: string, key: string) {
+    try {
+      const res = await axiosClient.post(`${URL_API.ACCOUNT}/ConfirmSignUp`, {
+        key,
+        code
+      })
+      return res.data as IServerResponse<string>
+    } catch (error) {
+      return Promise.reject(error)
+    }
+  }
+  async confirmResetPassword(code: string, key: string) {
+    try {
+      const res = await axiosClient.post(
+        `${URL_API.ACCOUNT}/ConfirmResetPassword`,
+        {
+          key,
+          code
         }
-      }
-    )
-    return res.data as IServerResponse<any>
+      )
+      return res.data as IServerResponse<string>
+    } catch (error) {
+      return Promise.reject(error)
+    }
+  }
+  async resendCode(key: string, type: number) {
+    try {
+      const res = await axiosClient.post(`${URL_API.ACCOUNT}/ResendCode`, {
+        key,
+        type
+      })
+      return res.data as IServerResponse<string>
+    } catch (error) {
+      return Promise.reject(error)
+    }
   }
   async signInWithGoogle(access_token: string) {
     const res: AxiosResponse = await axiosClient.post(

@@ -12,9 +12,6 @@ const ForgotPasswordPage = () => {
         <link rel="icon" href="/images/favicon.png" />
       </Head>
       <div className="mx-6">
-        <div className="flex flex-col space-y-[10px] text-[#4E5D78] font-bold text-center max-w-[280px] md:max-w-[488px] mx-auto mt-[42px]">
-          <h1 className="text-lg md:text-[30px]">Reset your password</h1>
-        </div>
         <Form />
       </div>
     </>

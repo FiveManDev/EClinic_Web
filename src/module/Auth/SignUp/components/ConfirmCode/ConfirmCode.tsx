@@ -1,92 +1,99 @@
+import ImageCustom from "components/Common/ImageCustom"
 import CustomButton from "components/User/Button"
 import { useState } from "react"
 import { toast } from "react-hot-toast"
+import { MdKeyboardBackspace } from "react-icons/md"
 import VerificationInput from "react-verification-input"
 
 interface Props {
-  code: string
-  onSubmit: () => void
+  handleSencode: (code: string) => void
   handleBack: () => void
-  handleResetCode: () => void
-  email?: string
+  handleResendCode: () => void
+  email: string
+  countError: number
 }
 
 const ConfirmCode = ({
-  code,
-  onSubmit,
+  handleSencode,
   email,
   handleBack,
-  handleResetCode
+  handleResendCode,
+  countError
 }: Props) => {
   const [otp, setOtp] = useState<string | null>(null)
-  const [countError, setCountError] = useState(0)
-  const handleVerify = () => {
-    if (otp === code) {
-      onSubmit()
-    } else {
-      setCountError(countError + 1)
-      toast.error("Invalid authentication code.")
-    }
+  const handleConfirmCode = () => {
+    if (otp && otp.length === 6) {
+      handleSencode(otp)
+    } else toast.error("Please enter OTP")
   }
   const handleReset = () => {
     setOtp(null)
-    setCountError(0)
-    handleResetCode()
+    handleResendCode()
   }
   return (
     <>
-      <div className="px-3 py-20">
-        <div className="container mx-auto background-primary max-w-[400px]">
-          <div className="max-w-sm mx-auto md:max-w-lg">
-            <div className="w-full">
-              <div className="py-3 text-center bg-white rounded ">
-                <h1 className="text-2xl font-bold text-h1">OTP Verification</h1>
-                <div className="flex flex-col mt-4">
-                  <span>Enter the OTP you received at</span>
-                  <span className="font-bold text-h1">{email || ""}</span>
-                </div>
-                <div
-                  id="otp"
-                  className="flex flex-row justify-center px-2 mt-5 text-center"
-                >
-                  <VerificationInput
-                    onChange={(value) => setOtp(value)}
-                    placeholder=""
-                    classNames={{
-                      character:
-                        "text-3xl bg-white flex items-center justify-center jus border border-gray-300 border-solid rounded"
-                    }}
-                  />
-                </div>
-                {countError === 5 && (
-                  <p className="mt-3 text-red-500">
-                    Please send code again{" "}
-                    <span
-                      className="underline cursor-pointer text-primary"
-                      onClick={handleReset}
-                    >
-                      Send
-                    </span>
-                  </p>
-                )}
-                <div className="flex flex-col items-center justify-center mt-5 gap-y-2">
-                  <CustomButton
-                    disabled={countError === 5}
-                    kind="primary"
-                    className="w-full text-base font-medium"
-                    onClick={handleVerify}
-                  >
-                    Send Code
-                  </CustomButton>
-                  <CustomButton
-                    kind="tertiary"
-                    className="w-full text-base font-medium"
-                    onClick={handleBack}
-                  >
-                    Back
-                  </CustomButton>
-                </div>
-              </div>
+      <div className="relative mx-auto background-primary w-full max-w-[600px] mt-6">
+        <div
+          className="absolute top-0 left-0 flex items-center p-2 transition-all translate-x-3 translate-y-3 rounded-lg cursor-pointer gap-x-2 hover:bg-gray-400 hover:bg-opacity-10"
+          onClick={handleBack}
+        >
+          <MdKeyboardBackspace />
+          <span>Back</span>
+        </div>
+        <div className="mx-auto text-center">
+          <div className="relative mx-auto w-36 h-36">
+            <ImageCustom
+              src={"/images/mail-sent.png"}
+              fill
+              alt="image"
+              priority
+            />
+          </div>
+          <h1 className="text-2xl font-bold text-h1">Email Verification</h1>
+          <div className="flex flex-col mt-4 ">
+            <p className="text-sm font-medium text-gray-400">
+              We have sent a code to your email
+              <br />
+              <strong className="font-semibold text-h1">{email}</strong>
+            </p>
+          </div>
+          <div className="flex flex-row justify-center px-2 mt-5 text-center">
+            <VerificationInput
+              onChange={(value) => setOtp(value)}
+              placeholder=""
+              classNames={{
+                character:
+                  "text-3xl text-gray-600 bg-white flex items-center justify-center jus border border-gray-300 border-solid rounded"
+              }}
+            />
+          </div>
+          {countError === 5 && (
+            <p className="mt-3 text-red-500">
+              Please send code again{" "}
+              <span
+                className="underline cursor-pointer text-primary"
+                onClick={handleReset}
+              >
+                Send
+              </span>
+            </p>
+          )}
+          <div className="flex flex-col items-center justify-center mt-6 gap-y-2">
+            <CustomButton
+              disabled={countError === 5}
+              className="w-full "
+              onClick={handleConfirmCode}
+            >
+              Verify OTP
+            </CustomButton>
+            <div className="flex flex-row items-center justify-center space-x-1 text-sm font-medium text-center text-gray-500">
+              <p>Didn&apos;t recieve code?</p>{" "}
+              <a
+                onClick={handleReset}
+                className="flex flex-row items-center text-blue-600 bg-opacity-0 border-none outline-none cursor-pointer"
+              >
+                Resend
+              </a>
             </div>
           </div>
         </div>
