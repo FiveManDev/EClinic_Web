@@ -144,6 +144,9 @@ const FormSignup = () => {
     <>
       {keyVerify ? (
         <ConfirmCode
+          isLoading={
+            confirmSignUpMutation.isLoading || resendCodeMutaiton.isLoading
+          }
           countError={countError}
           handleSencode={handleSendcode}
           handleResendCode={handleResetCode}

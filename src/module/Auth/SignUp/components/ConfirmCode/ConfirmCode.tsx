@@ -6,6 +6,7 @@ import { MdKeyboardBackspace } from "react-icons/md"
 import VerificationInput from "react-verification-input"
 
 interface Props {
+  isLoading: boolean
   handleSencode: (code: string) => void
   handleBack: () => void
   handleResendCode: () => void
@@ -14,6 +15,7 @@ interface Props {
 }
 
 const ConfirmCode = ({
+  isLoading,
   handleSencode,
   email,
   handleBack,
@@ -80,6 +82,7 @@ const ConfirmCode = ({
           )}
           <div className="flex flex-col items-center justify-center mt-6 gap-y-2">
             <CustomButton
+              isLoading={isLoading}
               disabled={countError === 5}
               className="w-full "
               onClick={handleConfirmCode}
