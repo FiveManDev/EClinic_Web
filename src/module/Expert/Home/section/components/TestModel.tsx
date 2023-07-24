@@ -80,7 +80,7 @@ const TestModel = () => {
               error={errors.ModelID?.message}
               value={modelId!}
               isLoading={model.isLoading}
-              placeholder="Machine Learning"
+              placeholder="Model"
               size="medium"
               options={model.data?.data.data.map((item) => ({
                 label: item.ModelName,

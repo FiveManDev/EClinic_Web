@@ -28,8 +28,8 @@ interface Props {
 const schema = yup.object({
   ModelName: yup.string().required("Please enter model name"),
   Accuracy: yup.string().required("Please enter Accuracy"),
-  MachineID: yup.string().required("Please enter meta description"),
-  DeepID: yup.string().required("Please enter meta keywords")
+  MachineID: yup.string().required("Please enter machine learning"),
+  DeepID: yup.string().required("Please enter deep learning")
 })
 
 const UpdateModel = ({ show, onModalChange, model }: Props) => {
