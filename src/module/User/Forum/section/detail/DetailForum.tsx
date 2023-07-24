@@ -178,12 +178,13 @@ const DetailForum = ({ post }: Props) => {
       )
     }
   }
-  const handleLikePost = () =>
+  const handleLikePost = (isLike: boolean) =>
     likePostForumMutation.mutate(post.id, {
       onSuccess: () => {
         queryClient.invalidateQueries([QUERY_KEYS.FORUM.POST, post.id])
         queryClient.invalidateQueries([QUERY_KEYS.FORUM.POST])
-        toast.success("Like post successfuly!")
+        if (!isLike) toast.success("Like post successfuly!")
+        else toast.success("UnLike post successfuly!")
       },
       onError: () => {
         toast.error("Like post failed!")
@@ -207,7 +208,7 @@ const DetailForum = ({ post }: Props) => {
             <h4 className="text-lg">{t("forum:question")}</h4>
             <Favorite
               isFavorite={post.isLike}
-              onClick={handleLikePost}
+              onClick={() => handleLikePost(post.isLike)}
               content={`${post.likes} Cảm ơn`}
             />
           </div>

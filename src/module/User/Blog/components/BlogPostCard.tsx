@@ -127,7 +127,7 @@ export default function BlogPostCard({ post, index }: IProps) {
           </Typography>
 
           <StyledTitle
-            href={`blog/${post.id}`}
+            href={`/blog/${post.id}`}
             className="hover:underline"
             sx={{
               ...(latestPostLarge && { typography: "h5", height: 60 }),
