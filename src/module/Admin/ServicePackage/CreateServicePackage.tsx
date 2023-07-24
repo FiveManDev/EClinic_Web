@@ -4,6 +4,7 @@ import {
   Chip,
   FormControl,
   FormHelperText,
+  InputAdornment,
   InputLabel,
   MenuItem,
   OutlinedInput,
@@ -75,6 +76,7 @@ const CreateServicePackage = ({
     watch,
     reset,
     setValue,
+    setFocus,
     formState: { errors }
   } = useForm({
     mode: "onSubmit",
@@ -144,8 +146,10 @@ const CreateServicePackage = ({
               toast.error("Create a service package fail")
             }
           },
-          onError: () => {
-            toast.error("Create a service package fail")
+          onError: (data: any) => {
+            toast.error(
+              data?.response?.data?.message || "Create a service package fail!!"
+            )
           }
         }
       )
@@ -209,6 +213,14 @@ const CreateServicePackage = ({
     )
     return selectedService ? selectedService.serviceName : ""
   }
+  useEffect(() => {
+    for (const fieldName of Object.keys(errors)) {
+      if (errors[fieldName as keyof typeof errors]) {
+        setFocus(fieldName as any)
+        break
+      }
+    }
+  }, [errors, setFocus])
   return (
     <form className="grid grid-cols-8 gap-6" onSubmit={handleSubmit(onSubmit)}>
       <div className="col-span-5 background-primary">
@@ -284,6 +296,11 @@ const CreateServicePackage = ({
             </FormHelperText>
           </FormControl>
           <CustomInput
+            InputProps={{
+              endAdornment: (
+                <InputAdornment position="start">VNĐ</InputAdornment>
+              )
+            }}
             size="medium"
             label="Price"
             control={control}
@@ -293,6 +310,9 @@ const CreateServicePackage = ({
             helperText={errors.price?.message?.toString()}
           />
           <CustomInput
+            InputProps={{
+              endAdornment: <InputAdornment position="start">%</InputAdornment>
+            }}
             size="medium"
             label="Discount"
             control={control}
@@ -302,12 +322,22 @@ const CreateServicePackage = ({
             helperText={errors.discount?.message?.toString()}
           />
           <CustomInput
+            InputProps={{
+              endAdornment: (
+                <InputAdornment position="start">VNĐ</InputAdornment>
+              )
+            }}
             disabled
             size="medium"
             label="Discount Price"
             value={watchPrice * (1 - watchDiscount / 100)}
           />
           <CustomInput
+            InputProps={{
+              endAdornment: (
+                <InputAdornment position="start">Minute</InputAdornment>
+              )
+            }}
             size="medium"
             label="EstimatedTime"
             control={control}
