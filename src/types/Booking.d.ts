@@ -16,6 +16,7 @@ export interface IBookingDoctor {
   bookingType: string
   bookingStatus: number
   slot: Slot
+  roomID: string
 }
 export interface ProfileBooking {
   profileID: string

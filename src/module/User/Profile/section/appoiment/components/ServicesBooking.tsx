@@ -29,7 +29,7 @@ const ServicesBooking = () => {
   return (
     <div className="flex flex-col">
       <TabButton setType={setType} type={type} />
-      {bookingData.isLoading && <p>Loaing....</p>}
+      {bookingData.isLoading && <p>loading.......</p>}
       {bookingData.data?.data && bookingData.data?.data.data.length > 0 ? (
         <div className="grid grid-cols-2 gap-4">
           {bookingData.data?.data.data.map((booking, index) => (

@@ -3,6 +3,8 @@
   "inputTitle": "Name of the question...",
   "textareaDesc": "Note the detailed description of what you want to ask the doctor:\n - Gender, age;\n - Symptoms encountered;\n - When did symptoms start;\n - What treatment measures have been taken Not yet?",
   "upload": "Upload image",
+  "textareaChat": "Enter your question text...",
+  "chatTitle": "What support do you need?",
   "desctiptionUpload": {
     "imagetitle": "Add attached image",
     "note": "Up to 4 images, only Doctors can view"

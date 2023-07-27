@@ -13,7 +13,7 @@ const TextAreaCustom = ({ classCustom, className, ...rest }: Props) => {
   return (
     <div
       className={classNames(
-        "w-full px-[6px] py-2 flex items-center space-x-2 input-hover",
+        "w-full px-[6px] py-2 flex items-center space-x-2 input-hover ",
         classCustom
       )}
     >

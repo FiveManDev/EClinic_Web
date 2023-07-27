@@ -24,10 +24,10 @@ export const useGetAllRoomOfSupporterQuery = (
   pageNumber: number,
   pageSize: number
 ) => {
-  const queryKey = [QUERY_KEYS.CHAT.ROOM, pageNumber, pageSize]
+  const queryKey = [QUERY_KEYS.CHAT.ROOM, pageNumber, pageSize, "Supporter"]
   return useQuery({
     queryKey,
-    queryFn: () => chatService.getAllNewRoom(pageNumber, pageSize)
+    queryFn: () => chatService.getAllRoomOfSupporter(pageNumber, pageSize)
   })
 }
 export const useGetAllRoomOfDoctorQuery = (

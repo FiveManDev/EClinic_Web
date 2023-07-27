@@ -4,6 +4,7 @@ import Tag from "components/Common/Tag"
 import CustomButton from "components/User/Button"
 import useConfirm from "context/ComfirmContext"
 import { useUpdateStateBookingDoctorMutation } from "hooks/query/booking"
+import { useRouter } from "next/router"
 import { queryClient } from "pages/_app"
 import { useState } from "react"
 import { toast } from "react-hot-toast"
@@ -17,6 +18,7 @@ interface Props {
 }
 
 const DoctorBookingItem = ({ kind, data }: Props) => {
+  const router = useRouter()
   const [isSuccess, setIsSuccess] = useState(false)
   const confirm = useConfirm()
   const cancelBooking = useUpdateStateBookingDoctorMutation()
@@ -97,8 +99,14 @@ const DoctorBookingItem = ({ kind, data }: Props) => {
             <span>{data.slot.startTime}</span>
           </div>
         </div>
-        {data.bookingType === "0" && (
-          <Tag color={colorsProvider.primary} className="cursor-pointer">
+        {Number(data.bookingType) === 0 && (
+          <Tag
+            color={colorsProvider.primary}
+            className="cursor-pointer"
+            onClick={() => {
+              router.push(`/user/chat?roomId=${data.bookingID}`)
+            }}
+          >
             <svg
               xmlns="http://www.w3.org/2000/svg"
               fill="none"

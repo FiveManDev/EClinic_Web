@@ -48,6 +48,7 @@ const InputMessage = ({
         {
           onSuccess: () => {
             toast.success("Upload image success")
+            setShow(false)
           },
           onError: () => {
             toast.error("Upload image error")
