@@ -25,7 +25,7 @@ const ChatPage = () => {
       <SignalRNotificationContextProvider>
         <MainHeadingLayout heading="List of all messages that need support">
           <div className="flex gap-x-4">
-            <div className="flex flex-col rounded-lg shadow-[rgba(145,_158,_171,_0.2)_0px_0px_2px_0px,_rgba(145,_158,_171,_0.12)_0px_12px_24px_-4px] bg-gray-50">
+            <div className="flex flex-col rounded-lg shadow-[rgba(145,_158,_171,_0.2)_0px_0px_2px_0px,_rgba(145,_158,_171,_0.12)_0px_12px_24px_-4px] bg-gray-50 max-h-[600px] overflow-y-auto">
               <NewChatList />
             </div>
             <div className="flex-1">

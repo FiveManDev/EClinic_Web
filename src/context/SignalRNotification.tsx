@@ -1,4 +1,5 @@
 import * as signalR from "@microsoft/signalr"
+import dayjs from "dayjs"
 import React, { PropsWithChildren, useContext, useEffect, useRef } from "react"
 import { IRoom, Message, ProfileChat } from "types/Chat"
 
@@ -34,7 +35,7 @@ const SignalRNotificationContextProvider = ({
         setNewChat({
           roomID: roomId,
           chatMessage: message,
-          createdAt: "",
+          createdAt: dayjs().toDate().toString(),
           roomAuthor: profile,
           roomType: {
             roomTypeID: "",
