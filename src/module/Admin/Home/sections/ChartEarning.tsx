@@ -1,3 +1,4 @@
+import styled from "@emotion/styled"
 import { Skeleton } from "@mui/material"
 import { Option, SelectCustom } from "components/Common/Select/SelectCustom"
 import dayjs from "dayjs"
@@ -12,16 +13,29 @@ import {
   YAxis
 } from "recharts"
 import { TIME_STYPE_PAYMENT } from "shared/constant/constant"
-import { dayformat } from "shared/helpers/helper"
+import { formatValueToVND } from "shared/helpers/helper"
 import { Statistics } from "types/Payment"
 
 const mapData = (data: Statistics[], dataKey: string) => {
-  return data.map((item) => ({
-    name: dayformat(item.time),
-    [dataKey]: item.totalAmount
-  }))
+  return data.map((item) => {
+    return {
+      name: dayjs(item.time).month() + 1,
+      [dataKey]: item.totalAmount
+    }
+  })
 }
-
+const Wrapper = styled.div`
+  .recharts-text {
+    font-size: 12px;
+    padding-left: 10px;
+  }
+  .recharts-surface {
+    overflow: visible;
+  }
+  .big-chart.recharts-responsive-container {
+    padding-left: 10px;
+  }
+`
 const ChartEarning = () => {
   const [year, setYear] = useState(dayjs().year().toString())
   const currentDate = dayjs()
@@ -78,13 +92,13 @@ const ChartEarning = () => {
     timeType: TIME_STYPE_PAYMENT.Day
   })
   return (
-    <div className="flex flex-col gap-y-6">
+    <Wrapper className="flex flex-col gap-y-6">
       <div className="flex flex-col w-full h-[500px] background-primary">
         <div className="flex items-center justify-between">
           <h3 className="mb-6 text-2xl font-semibold text-h1">Total Incomes</h3>
           <SelectCustom
             size="small"
-            className="min-w-[100px]"
+            className="w-[100px]"
             value={year.toString()}
             options={YEAR_SELECT}
             onSelectOption={(value) => setYear(value.value)}
@@ -94,13 +108,21 @@ const ChartEarning = () => {
           <Skeleton variant="rounded" className="w-full h-full" />
         )}
         {dataYear.isSuccess && (
-          <ResponsiveContainer width="100%" height="100%">
+          <ResponsiveContainer
+            width="100%"
+            height="100%"
+            className={"big-chart"}
+          >
             <AreaChart
               data={mapData(dataYear.data?.data, `${year}`)}
               margin={{ right: 25, top: 10 }}
             >
               <XAxis dataKey="name" interval={"preserveEnd"} />
-              <YAxis interval="preserveEnd" tickLine={false} />
+              <YAxis
+                tickFormatter={formatValueToVND}
+                interval="preserveEnd"
+                tickLine={false}
+              />
               <Area
                 type="monotone"
                 dataKey={year}
@@ -117,10 +139,10 @@ const ChartEarning = () => {
           isLoading={dataMoth.isLoading}
           data={
             (dataMoth.isSuccess &&
-              mapData(
-                dataMoth.data.data,
-                currentDate.get("month").toString()
-              )) ||
+              dataMoth.data.data.map((item) => ({
+                name: dayjs(item.time).format("MMMM DD"),
+                [currentDate.get("month").toString()]: item.totalAmount
+              }))) ||
             []
           }
           heading="Total Incomes in current month"
@@ -135,7 +157,7 @@ const ChartEarning = () => {
           dataKey={"week"}
         />
       </div>
-    </div>
+    </Wrapper>
   )
 }
 interface Props {
@@ -163,7 +185,7 @@ const ChartMini = ({ heading = "", data, isLoading, dataKey }: Props) => {
             >
               {/* <CartesianGrid strokeDasharray="3 3" /> */}
               <XAxis dataKey="name" tickLine={false} />
-              <YAxis tickLine={false} />
+              <YAxis tickLine={false} tickFormatter={formatValueToVND} />
               <Tooltip />
               <Area
                 type="monotone"

@@ -4,7 +4,7 @@ import Tag from "components/Common/Tag"
 import CustomButton from "components/User/Button"
 import Link from "next/link"
 import { useRouter } from "next/router"
-import { combineName } from "shared/helpers/helper"
+import { combineName, formatValueToVND } from "shared/helpers/helper"
 import colorsProvider from "shared/theme/colors"
 import { IProfileDoctor } from "types/Profile.type"
 
@@ -64,7 +64,7 @@ const CardDoctor = ({ doctor }: IProps) => {
           <div className="flex items-center gap-6">
             <InfoItem content={doctor.title} label="Chức vụ" />
 
-            <InfoItem content={`$${doctor.price}`} label="Giá" />
+            <InfoItem content={formatValueToVND(doctor.price)} label="Giá" />
           </div>
           <div className="w-full bg-gray-200 h-[1px]"></div>
           <p className="text-sm text-gray-500 line-clamp-3">{doctor.content}</p>
