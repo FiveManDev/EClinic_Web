@@ -147,7 +147,7 @@
 .input-hover {
   transition: background-color 0.2s ease-in-out 0s,
     border-color 0.2s ease-in-out 0s;
-  @apply w-full border-[2px] border-solid border-[#DFE1E6] rounded-[4px] hover:bg-[#EBECF0];
+  @apply w-full border-[2px] border-solid border-[#DFE1E6] rounded-[8px] hover:bg-[#EBECF0];
   &:focus-within {
     @apply border-primary bg-white;
   }
@@ -218,4 +218,11 @@
   &::-webkit-scrollbar-thumb {
     @apply bg-gray-400;
   }
+}
+.rbc-month-view,
+.rbc-time-view,
+.rbc-agenda-view,
+.rbc-day-view,
+.rbc-week-view {
+  @apply background-primary p-0;
 }

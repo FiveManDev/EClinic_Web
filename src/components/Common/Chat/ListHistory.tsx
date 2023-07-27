@@ -1,42 +1,55 @@
-import { Skeleton } from "@mui/material"
+import { IconButton, Skeleton, Tooltip } from "@mui/material"
 import classNames from "classnames"
 import { useRouter } from "next/router"
 import { OverlayScrollbarsComponent } from "overlayscrollbars-react"
-import { HiMagnifyingGlass } from "react-icons/hi2"
-import { useDispatch, useSelector } from "react-redux"
 import { combineName, dayformat } from "shared/helpers/helper"
-import { searchChatSelector } from "store/module/chat/chat-selector"
-import { chatsSlice } from "store/module/chat/chat-slice"
 import { IRoom } from "types/Chat"
 import ImageCustom from "../ImageCustom"
-import InputCustom from "../Input"
+import { queryClient } from "pages/_app"
+import { QUERY_KEYS } from "shared/constant/constant"
 interface IProps {
   data: IRoom[]
   isLoading: boolean
+  title?: string
 }
-const ListHistory = ({ data, isLoading = false }: IProps) => {
-  const searchKeyword = useSelector(searchChatSelector)
-  const dispatch = useDispatch()
-
+const ListHistory = ({
+  data,
+  isLoading = false,
+  title = "Message"
+}: IProps) => {
+  const onReload = () => {
+    queryClient.refetchQueries([QUERY_KEYS.CHAT.ROOM])
+  }
   return (
     <div className="flex flex-col bg-gray-50 w-full max-w-[320px]">
-      <div className="px-5 pt-10 pb-4">
-        <h1 className="mb-3 text-2xl text-h1">Message</h1>
-        <InputCustom
-          value={searchKeyword}
-          onChange={(e) => {
-            dispatch(chatsSlice.actions.onSearch(e.target.value))
-          }}
-          icon={<HiMagnifyingGlass />}
-          className="w-full md:max-w-[412px]"
-          placeholder="Search for message"
-        />
+      <div className="flex items-center justify-between px-5 pt-6 pb-4 mb-3 ">
+        <h1 className="text-xl text-h1">{title}</h1>
+        <Tooltip title="Reload message list">
+          <IconButton className="w-fit" onClick={onReload}>
+            <div className="p-2 bg-gray-200 rounded-full">
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                fill="none"
+                viewBox="0 0 24 24"
+                strokeWidth={1.5}
+                stroke="currentColor"
+                className="w-4 h-4"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  d="M16.023 9.348h4.992v-.001M2.985 19.644v-4.992m0 0h4.992m-4.993 0l3.181 3.183a8.25 8.25 0 0013.803-3.7M4.031 9.865a8.25 8.25 0 0113.803-3.7l3.181 3.182m0-4.991v4.99"
+                />
+              </svg>
+            </div>
+          </IconButton>
+        </Tooltip>
       </div>
       <OverlayScrollbarsComponent
         defer
         options={{ scrollbars: { autoHide: "scroll" } }}
       >
-        <div className="h-full space-y-4">
+        <div className="flex-1 space-y-4">
           {isLoading &&
             Array(6)
               .fill(0)

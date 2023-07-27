@@ -59,6 +59,15 @@ const TextMessage = ({
 
           {isLoading ? (
             <Skeleton variant="text" width={260} height={40} />
+          ) : isImage ? (
+            <div className="relative w-[220px] h-[200px]">
+              <ImageCustom
+                src={message?.content as string}
+                alt="image"
+                fill
+                className="rounded-md"
+              />
+            </div>
           ) : (
             <div
               className={classNames(
@@ -68,20 +77,9 @@ const TextMessage = ({
                   : "bg-primary bg-opacity-80 text-white"
               )}
             >
-              {isImage ? (
-                <div className="relative w-[220px] h-[200px]">
-                  <ImageCustom
-                    src={message?.content as string}
-                    alt="image"
-                    fill
-                    className="rounded-md"
-                  />
-                </div>
-              ) : (
-                <p className="break-words break-all whitespace-normal">
-                  {message?.content}
-                </p>
-              )}
+              <p className="break-words break-all whitespace-normal">
+                {message?.content}
+              </p>
             </div>
           )}
         </div>

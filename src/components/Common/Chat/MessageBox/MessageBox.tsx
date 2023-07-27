@@ -1,4 +1,4 @@
-import { useInfiniteQuery } from "@tanstack/react-query"
+import { useInfiniteQuery, useMutation } from "@tanstack/react-query"
 import { useSignalRCall } from "context/SignalRCallContext"
 import { useSignalRMessage } from "context/SignalRMessageContext"
 import { AnimatePresence } from "framer-motion"
@@ -19,18 +19,22 @@ import { HeaderBox } from "./HeaderBox"
 import InputMessage from "./InputMessage"
 import TextMessage from "./TextMessage"
 import VideoCall from "./VideoCall"
+import useConfirm from "context/ComfirmContext"
+import Tag from "components/Common/Tag"
+import colorsProvider from "shared/theme/colors"
 
 interface IProps {
   toggleInfo: () => void
   userId: string
+  isClose: boolean
 }
-const MessageBox = ({ toggleInfo, userId }: IProps) => {
+const MessageBox = ({ toggleInfo, userId, isClose }: IProps) => {
   const refScroll = useRef<HTMLDivElement | null>(null)
   const [isBottom, setIsBottom] = useState(false)
   const [textInput, setTextInput] = useState("")
   const [messages, setMessages] = useState<Message[]>([])
   const authorProfile = useSimpleProfile(userId)
-
+  const confirm = useConfirm()
   const { answerCall, callUser, call, callAccepted, signalRConnection } =
     useSignalRCall()
   const { connectionMessage, isConnected } = useSignalRMessage()
@@ -38,6 +42,7 @@ const MessageBox = ({ toggleInfo, userId }: IProps) => {
   const { query } = useRouter()
   const roomId = query.roomId as string
   const createMessage = useCreateChatMessage()
+  const closeRoom = useMutation(chatService.closeRoom)
   const roomData = useInfiniteQuery(
     [QUERY_KEYS.CHAT.MESSAGE, PAGE_SIZE, roomId],
     async ({ pageParam = 1 }) => {
@@ -166,10 +171,30 @@ const MessageBox = ({ toggleInfo, userId }: IProps) => {
         })
     }
   }, [roomId, isConnected, signalRConnection])
+  const handleClose = async () => {
+    if (confirm) {
+      const choice = await confirm({
+        title: "Close Room",
+        content: "Are you sure you want to close this room?"
+      })
+      if (choice) {
+        closeRoom.mutate(roomId, {
+          onSuccess: (data) => {
+            toast.success("Close room successfuly")
+            queryClient.refetchQueries([QUERY_KEYS.CHAT.ROOM])
+          },
+          onError: (data: any) => {
+            toast.error(data?.response?.data?.message || "Close room fail")
+          }
+        })
+      }
+    }
+  }
   const myProfile = roomData.data?.pages[0]?.data.data.myProfile
   return (
-    <div className="flex flex-col w-full h-full border border-gray-200 border-solid border-y-0 ">
+    <div className="flex flex-col w-full border border-gray-200 border-solid border-y-0 ">
       <HeaderBox
+        handleClose={handleClose}
         author={authorProfile.data?.data}
         isLoading={authorProfile.isLoading}
         toggleInfo={toggleInfo}
@@ -296,13 +321,19 @@ const MessageBox = ({ toggleInfo, userId }: IProps) => {
             ))}
         </div>
       </div>
-
-      <InputMessage
-        value={textInput}
-        onChange={(value) => setTextInput(value)}
-        isLoading={createMessage.isLoading}
-        onCreate={handleCreateMessage}
-      />
+      {isClose ? (
+        <Tag color={colorsProvider.success} className="mx-auto my-3">
+          The room has ended or wait for the connection person to reopen the
+          room
+        </Tag>
+      ) : (
+        <InputMessage
+          value={textInput}
+          onChange={(value) => setTextInput(value)}
+          isLoading={createMessage.isLoading}
+          onCreate={handleCreateMessage}
+        />
+      )}
     </div>
   )
 }

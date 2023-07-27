@@ -7,6 +7,7 @@ import { useTranslation } from "react-i18next"
 import { IBreadcrum } from "types/Base.type"
 import DetailForum from "./section/detail"
 import { CreateQuestion } from "./section/create"
+import EmtyData from "components/Common/Empty"
 const DetailPage = () => {
   const router = useRouter()
   const id = router.query.id as string
@@ -28,7 +29,7 @@ const DetailPage = () => {
     return <LoadingArea />
   }
   if (isError) {
-    return <p>Error.....</p>
+    return <EmtyData />
   }
   return (
     <>

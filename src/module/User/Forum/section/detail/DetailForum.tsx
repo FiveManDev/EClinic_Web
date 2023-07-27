@@ -24,6 +24,7 @@ import {
   UpdateActionType
 } from "types/Post"
 import AnswerQuestion from "../answer/AnswerQuestion"
+import EmtyData from "components/Common/Empty"
 
 const Comment = dynamic(
   () => import("../comment").then((module) => module.default),
@@ -55,7 +56,7 @@ const DetailForum = ({ post }: Props) => {
     return <p>Loading....</p>
   }
   if (isError) {
-    return <p>Error...</p>
+    return <EmtyData />
   }
   const handleCreateComment = (value: string) => {
     if (value) {

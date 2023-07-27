@@ -15,6 +15,7 @@ import { PAGE_SIZE } from "shared/constant/constant"
 import { combineName, dayformat } from "shared/helpers/helper"
 import { IBreadcrum } from "types/Base.type"
 import BlogPostCard from "./components/BlogPostCard"
+import EmtyData from "components/Common/Empty"
 
 const actions = [
   {
@@ -70,7 +71,7 @@ const BlogDetailPage = () => {
     )
   }
   if (isError || postRelated.isError) {
-    return <p>Error</p>
+    return <EmtyData />
   }
   const breadrums: IBreadcrum[] = [
     { label: t("base:pages.home"), href: "/" },

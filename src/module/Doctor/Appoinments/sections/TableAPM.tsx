@@ -58,7 +58,7 @@ const TableAPMService = () => {
               </div>
               <div className="flex flex-col text-[#9A9FA5] text-sm md:text-[10px] font-medium">
                 <span className="text-black">
-                  {data && <>BS. {data.firstName + " " + data.lastName}</>}
+                  {data && <>{data.firstName + " " + data.lastName}</>}
                 </span>
               </div>
             </div>

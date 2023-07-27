@@ -51,7 +51,7 @@ const SiderBar = ({ children }: PropsWithChildren) => {
       },
       {
         key: 3,
-        label: `Chat with doctor`,
+        label: `Communication`,
         slug: "/user/chat",
         layout: false
       },
@@ -99,7 +99,11 @@ const SiderBar = ({ children }: PropsWithChildren) => {
           ))}
         </Tabs>
         <div className="flex-1 ml-6">
-          <LayoutItem label={tabTitle}>{children}</LayoutItem>
+          {tabTitle === tabs[3].label ? (
+            children
+          ) : (
+            <LayoutItem label={tabTitle}>{children}</LayoutItem>
+          )}
         </div>
       </TabsWrapper>
     </>

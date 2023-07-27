@@ -3,7 +3,9 @@
   "inputTitle": "Tên của câu hỏi...",
   "textareaDesc": "Lưu ý mô tả chi tiết nội dung muốn hỏi bác sĩ:\n  - Giới tính, tuổi;\n  - Triệu chứng gặp phải;\n  - Bắt đầu có triệu chứng khi nào;\n  - Đã dùng biện pháp xử lý nào chưa?",
   "upload": "Tải hình",
+  "textareaChat": "Nhập nội dung câu hỏi...",
   "btnUpload": "Gửi câu hỏi",
+  "chatTitle": "Bạn cần hổ trợ gì?",
   "desctiptionUpload": {
     "imagetitle": " Thêm hình ảnh đính kèm",
     "note": "Tối đa 4 hình, chỉ Bác sĩ có thể xem"

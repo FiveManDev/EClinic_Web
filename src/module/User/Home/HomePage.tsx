@@ -3,8 +3,12 @@ import Appoiment from "./section/appoiment/Appoiment"
 import Banner from "./section/banner/Banner"
 import Blog from "./section/blog"
 import Services from "./section/services/Services"
+import ChatSection from "./section/chat/ChatSection"
+import { useSelector } from "react-redux"
+import { RootState } from "store/store"
 
 export default function HomePage() {
+  const isLoggedIn = useSelector((state: RootState) => state.auth.isLoggedIn)
   return (
     <>
       <Head>
@@ -15,10 +19,11 @@ export default function HomePage() {
       </Head>
       <main className="mb-20 page-wrapper pt-16 md:pt-[72px] overflow-hidden">
         <Banner />
-        <div className="space-y-10 md:space-y-16 page-container page-container--child">
+        <div className="relative space-y-10 md:space-y-16 page-container page-container--child">
           <Appoiment />
           <Services />
           <Blog />
+          {isLoggedIn && <ChatSection />}
         </div>
       </main>
     </>

@@ -1,5 +1,6 @@
 import { IconButton, Skeleton, Tooltip } from "@mui/material"
 import ImageCustom from "components/Common/ImageCustom"
+import { HiOutlineLockClosed } from "react-icons/hi"
 import {
   HiOutlineInformationCircle,
   HiOutlineVideoCamera
@@ -13,12 +14,14 @@ interface IProps {
   author?: ProfileChat
   isLoading: boolean
   handleCall: () => void
+  handleClose: () => void
 }
 export const HeaderBox = ({
   toggleInfo,
   author,
   isLoading = false,
-  handleCall
+  handleCall,
+  handleClose
 }: IProps) => {
   const role = useSelector((state: RootState) => state.auth.user.role)
   return (
@@ -61,13 +64,26 @@ export const HeaderBox = ({
       </div>
       <div className="flex items-center gap-x-2">
         {role !== "User" && (
-          <Tooltip title="Call video" placement="top" onClick={handleCall}>
-            <IconButton>
-              <span className="text-3xl text-secondary">
-                <HiOutlineVideoCamera />
-              </span>
-            </IconButton>
-          </Tooltip>
+          <>
+            <Tooltip
+              title="Close this room"
+              placement="top"
+              onClick={handleClose}
+            >
+              <IconButton>
+                <span className="text-3xl text-red-500">
+                  <HiOutlineLockClosed />
+                </span>
+              </IconButton>
+            </Tooltip>
+            <Tooltip title="Call video" placement="top" onClick={handleCall}>
+              <IconButton>
+                <span className="text-3xl text-secondary">
+                  <HiOutlineVideoCamera />
+                </span>
+              </IconButton>
+            </Tooltip>
+          </>
         )}
 
         <Tooltip title="View profile" placement="top">

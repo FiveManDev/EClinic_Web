@@ -53,6 +53,16 @@ class ChatService {
       console.log("ChatServices ~ error:", error)
     }
   }
+  async CreateSupporterRoom(message: string) {
+    try {
+      const res: AxiosResponse = await axiosClient.post(
+        `${URL_API.CHAT.ROOM}/CreateSupporterRoom?message=${message}`
+      )
+      return res.data as IServerResponse<string>
+    } catch (error) {
+      console.log("ChatServices ~ error:", error)
+    }
+  }
   async getAllRoomOfDoctor(pageNumber: number, pageSize: number) {
     try {
       const res: AxiosResponse = await axiosClient.get(
@@ -65,6 +75,16 @@ class ChatService {
         }
       )
       return res as AxiosResponse<IServerResponse<IRoom[]>>
+    } catch (error) {
+      console.log("ChatServices ~ error:", error)
+    }
+  }
+  async closeRoom(roomId: string) {
+    try {
+      const res: AxiosResponse = await axiosClient.put(
+        `${URL_API.CHAT.ROOM}/closeRoom?roomId=${roomId}`
+      )
+      return res.data as IServerResponse<string>
     } catch (error) {
       console.log("ChatServices ~ error:", error)
     }
@@ -137,6 +157,9 @@ class ChatService {
       {
         file,
         roomId
+      },
+      {
+        headers: { "content-type": "multipart/form-data" }
       }
     )
     return res.data as AxiosResponse<IServerResponse<string>>

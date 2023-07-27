@@ -1,5 +1,8 @@
 import { Calendar, dayjsLocalizer } from "react-big-calendar"
-import { useGetAllBookingDoctorForAdQuery } from "hooks/query/booking"
+import {
+  useGetAllBookingDoctorForAdQuery,
+  useUpdateStateBookingDoctorDoneMutation
+} from "hooks/query/booking"
 import MainHeadingLayout from "layout/Management/MainHeadingLayout"
 import Head from "next/head"
 import { BOOKING_TYPE, STATUS_BOOKING } from "shared/constant/constant"
@@ -14,17 +17,23 @@ import CustomButton from "components/User/Button"
 import { useState } from "react"
 import { IBookingDoctor } from "types/Booking"
 import ImageCustom from "components/Common/ImageCustom"
-import { combineName, dayformat } from "shared/helpers/helper"
+import { combineName, dayformat, hexToRGBA } from "shared/helpers/helper"
 import Tag from "components/Common/Tag"
+import { toast } from "react-hot-toast"
+import useConfirm from "context/ComfirmContext"
+import { useRouter } from "next/router"
 dayjs.extend(timezone)
 const localizer = dayjsLocalizer(dayjs)
 
 const DoctorHomePage = () => {
+  const router = useRouter()
+  const confirm = useConfirm()
   const [show, setShow] = useState(false)
+  const updateStatus = useUpdateStateBookingDoctorDoneMutation()
   const [eventSelected, setEventSelected] = useState<IBookingDoctor | null>(
     null
   )
-  const { data, isLoading } = useGetAllBookingDoctorForAdQuery(
+  const { data, isLoading, refetch } = useGetAllBookingDoctorForAdQuery(
     1,
     100,
     STATUS_BOOKING.UPCOMING
@@ -42,16 +51,13 @@ const DoctorHomePage = () => {
           "ddd MMM DD YYYY HH:mm:ss [GMT]ZZ (Indochina Time)"
         )
         const eventColor =
-          item.bookingType === BOOKING_TYPE.Offline.toString()
+          Number(item.bookingType) === BOOKING_TYPE.Offline
             ? colorsProvider.primary
             : colorsProvider.success
 
         return {
           id: item.bookingID,
-          title:
-            item.bookingType === BOOKING_TYPE.Offline.toString()
-              ? "Offline"
-              : "Online",
+          title: Number(item.bookingType) === 0 ? "Online" : "Offline",
           start: new Date(startTime),
           end: new Date(endTime),
           color: eventColor,
@@ -62,6 +68,27 @@ const DoctorHomePage = () => {
   const handleClickEvent = (data: IBookingDoctor) => {
     setEventSelected(data)
     setShow(true)
+  }
+  const handleUpdateState = async () => {
+    if (eventSelected) {
+      if (confirm) {
+        const choice = await confirm({
+          title: "Complete appointment",
+          content: "Are you sure want to complete this appointment?"
+        })
+        if (choice) {
+          updateStatus.mutate(eventSelected.bookingID, {
+            onSuccess: () => {
+              toast.success("This appointment has been completed")
+              refetch()
+            },
+            onError: () => {
+              toast.error("Something went wrong")
+            }
+          })
+        }
+      }
+    }
   }
   return (
     <>
@@ -79,7 +106,10 @@ const DoctorHomePage = () => {
           style={{ height: "100vh" }}
           onSelectEvent={(event) => handleClickEvent(event.data)}
           eventPropGetter={(event) => ({
-            style: { backgroundColor: event.color }
+            style: {
+              backgroundColor: hexToRGBA(event.color, 0.25),
+              color: event.color
+            }
           })}
         />
         <ModalPrimary show={show} onClose={() => setShow(false)}>
@@ -108,7 +138,7 @@ const DoctorHomePage = () => {
                     </h4>
                     <div className="flex items-center gap-x-2">
                       <span>
-                        {eventSelected.bookingType.toString() === "0"
+                        {Number(eventSelected.bookingType) === 0
                           ? "Video Call"
                           : "At the clinic"}
                       </span>
@@ -138,8 +168,13 @@ const DoctorHomePage = () => {
                       <span>{eventSelected.slot.startTime}</span>
                     </div>
                   </div>
-                  {eventSelected.bookingType.toString() === "0" && (
+                  {Number(eventSelected.bookingType) === 0 && (
                     <Tag
+                      onClick={() => {
+                        router.push(
+                          `doctor/chats?roomId=${eventSelected.roomID}`
+                        )
+                      }}
                       color={colorsProvider.primary}
                       className="cursor-pointer"
                     >
@@ -165,7 +200,7 @@ const DoctorHomePage = () => {
 
           <div className="footer ">
             <div className="px-6">
-              <CustomButton kind="primary" className="ml-auto ">
+              <CustomButton className="ml-auto" onClick={handleUpdateState}>
                 Complete
               </CustomButton>
             </div>

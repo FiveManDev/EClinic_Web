@@ -25,10 +25,13 @@ const ContainerChat = ({ data, isLoading = true }: IProps) => {
   return (
     <SignalRMessageContextProvider>
       <SignalRCallContextProvider>
-        <div className="flex h-full p-0 background-primary">
+        <div className="flex h-full p-0 background-primary max-h-[600px]">
           <ListHistory isLoading={isLoading} data={data} />
           {roomId && userId ? (
             <MessageBox
+              isClose={
+                data.find((room) => room.roomID === roomId)?.isClosed || false
+              }
               key={roomId}
               userId={userId}
               toggleInfo={() => setShow(!show)}
