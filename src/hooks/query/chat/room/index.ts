@@ -3,7 +3,12 @@ import { chatService } from "services/chat.service"
 import { QUERY_KEYS } from "shared/constant/constant"
 
 export const useGetAllNewRoomQuery = (pageNumber: number, pageSize: number) => {
-  const queryKey = [QUERY_KEYS.CHAT.ROOM, pageNumber, pageSize]
+  const queryKey = [
+    QUERY_KEYS.CHAT.ROOM,
+    pageNumber,
+    pageSize,
+    QUERY_KEYS.CHAT.NEW_ROOM
+  ]
   return useQuery({
     queryKey,
     queryFn: () => chatService.getAllNewRoom(pageNumber, pageSize)
