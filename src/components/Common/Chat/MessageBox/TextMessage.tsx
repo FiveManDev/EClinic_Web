@@ -1,6 +1,7 @@
 import { Skeleton } from "@mui/material"
 import classNames from "classnames"
 import ImageCustom from "components/Common/ImageCustom"
+import dayjs from "dayjs"
 import { dayformat } from "shared/helpers/helper"
 import { Message } from "types/Chat"
 interface IProps {
@@ -53,7 +54,7 @@ const TextMessage = ({
             {isLoading ? (
               <Skeleton variant="text" width={60} />
             ) : (
-              dayformat(message?.createdAt)
+              dayjs(message?.createdAt).format("DD MMM YYYY HH:mm")
             )}
           </time>
 

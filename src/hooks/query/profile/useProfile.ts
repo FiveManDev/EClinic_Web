@@ -57,8 +57,7 @@ export const useSimpleProfile = (userId: string) => {
   const queryKey = ["useSimpleProfile", userId]
   const profileQuery = useQuery({
     queryKey,
-    queryFn: () => profileService.getSimpleProfile(userId),
-    retry: 0
+    queryFn: () => profileService.getSimpleProfile(userId)
   })
   return profileQuery
 }

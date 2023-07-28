@@ -11,18 +11,20 @@ interface IProps {
   data: IRoom[]
   isLoading: boolean
   title?: string
+  onClickHistory?: (roomId: string) => void
 }
 const ListHistory = ({
   data,
   isLoading = false,
-  title = "Message"
+  title = "Message",
+  onClickHistory
 }: IProps) => {
   const onReload = () => {
     queryClient.refetchQueries([QUERY_KEYS.CHAT.ROOM])
   }
   return (
     <div className="flex flex-col bg-gray-50 w-full max-w-[320px]">
-      <div className="flex items-center justify-between px-5 pt-6 pb-4 mb-3 ">
+      <div className="flex items-center justify-between px-5 py-3 ">
         <h1 className="text-xl text-h1">{title}</h1>
         <Tooltip title="Reload message list">
           <IconButton className="w-fit" onClick={onReload}>
@@ -57,7 +59,13 @@ const ListHistory = ({
                 <HistoryItem isLoading={isLoading} key={index} />
               ))}
           {data.length > 0 &&
-            data.map((item, index) => <HistoryItem room={item} key={index} />)}
+            data.map((item, index) => (
+              <HistoryItem
+                onClickHistory={onClickHistory}
+                room={item}
+                key={index}
+              />
+            ))}
         </div>
       </OverlayScrollbarsComponent>
     </div>
@@ -66,18 +74,26 @@ const ListHistory = ({
 interface HistoryProps {
   room?: IRoom
   isLoading?: boolean
+  onClickHistory?: (roomId: string) => void
 }
-export const HistoryItem = ({ room, isLoading = false }: HistoryProps) => {
+export const HistoryItem = ({
+  room,
+  isLoading = false,
+  onClickHistory
+}: HistoryProps) => {
   const router = useRouter()
   const roomId = router.query.roomId as string
   const onClickItem = () => {
     if (room) {
-      router.push({
-        pathname: router.pathname,
-        query: {
-          roomId: room.roomID
-        }
-      })
+      if (onClickHistory) onClickHistory(room.roomID)
+      else {
+        router.push({
+          pathname: router.pathname,
+          query: {
+            roomId: room.roomID
+          }
+        })
+      }
     }
   }
   return (

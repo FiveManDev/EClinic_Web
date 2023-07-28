@@ -13,7 +13,7 @@ import { chatService } from "services/chat.service"
 import { PAGE_SIZE, QUERY_KEYS } from "shared/constant/constant"
 import { combineName, getDataPaginate } from "shared/helpers/helper"
 import { RootState } from "store/store"
-import { Message } from "types/Chat"
+import { Message, ProfileChat } from "types/Chat"
 import ButtonScroll from "./ButtonScroll"
 import { HeaderBox } from "./HeaderBox"
 import InputMessage from "./InputMessage"
@@ -22,13 +22,15 @@ import VideoCall from "./VideoCall"
 import useConfirm from "context/ComfirmContext"
 import Tag from "components/Common/Tag"
 import colorsProvider from "shared/theme/colors"
+import { useSignalRNotification } from "context/SignalRNotification"
 
 interface IProps {
   toggleInfo: () => void
   userId: string
   isClose: boolean
 }
-const MessageBox = ({ toggleInfo, userId, isClose }: IProps) => {
+const MessageBox = ({ toggleInfo, userId: id, isClose }: IProps) => {
+  const [userId, setUserId] = useState(id)
   const refScroll = useRef<HTMLDivElement | null>(null)
   const [isBottom, setIsBottom] = useState(false)
   const [textInput, setTextInput] = useState("")
@@ -91,24 +93,31 @@ const MessageBox = ({ toggleInfo, userId, isClose }: IProps) => {
     }
   }
   useEffect(() => {
-    if (isConnected) {
-      connectionMessage
-        .current!.start()
-        .then(() => {
-          connectionMessage
-            .current!.invoke("JoinGroup", roomId)
-            .then(() => {})
-            .catch((err) => {
-              return console.error(err.toString())
-            })
-        })
+    if (isConnected && connectionMessage.current) {
+      connectionMessage.current
+        .invoke("JoinGroup", roomId)
+        .then(() => {})
         .catch((err) => {
           return console.error(err.toString())
         })
+    }
+  }, [roomId, isConnected, connectionMessage])
+
+  useEffect(() => {
+    if (isConnected) {
+      connectionMessage.current!.start().catch((err) => {
+        return console.error(err.toString())
+      })
       connectionMessage.current!.on("Response", (message: Message) => {
         if (message) {
           setMessages((prevMes) => [...prevMes, message])
           queryClient.refetchQueries([QUERY_KEYS.CHAT.ROOM])
+        }
+      })
+      connectionMessage.current?.on("NewAnswer", (profile: ProfileChat) => {
+        console.log("connectionMessage.current?.on ~ profile:", profile)
+        if (profile) {
+          setUserId(profile.userID)
         }
       })
     }
@@ -170,7 +179,7 @@ const MessageBox = ({ toggleInfo, userId, isClose }: IProps) => {
           return console.error(err.toString())
         })
     }
-  }, [roomId, isConnected, signalRConnection])
+  }, [roomId, isConnected, signalRConnection, userId])
   const handleClose = async () => {
     if (confirm) {
       const choice = await confirm({

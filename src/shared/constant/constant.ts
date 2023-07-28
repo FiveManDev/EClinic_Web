@@ -20,7 +20,8 @@ export const QUERY_KEYS = {
   CHAT: {
     MESSAGE: "CHAT_MESSAGE",
     ROOM: "CHAT_ROOM",
-    ROOM_TYPE: "CHAT_ROOM_TYPE"
+    ROOM_TYPE: "CHAT_ROOM_TYPE",
+    NEW_ROOM: "CHAT_NEW_ROOM"
   },
   PAYMENT: "PAYMENT",
   AI: {

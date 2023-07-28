@@ -130,3 +130,10 @@ export const stripHtmlTags = (htmlString: string) => {
   if (!htmlString) return ""
   return htmlString.replace(/<[^>]*>/g, "")
 }
+export const formatValueToVND = (value: number) => {
+  const formattedValue = new Intl.NumberFormat("vi-VN", {
+    style: "currency",
+    currency: "VND"
+  }).format(value)
+  return formattedValue
+}

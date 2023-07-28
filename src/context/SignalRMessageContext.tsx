@@ -14,9 +14,12 @@ const SignalRMessageContextProvider = ({ children }: PropsWithChildren<{}>) => {
   const [isConnected, setIsConnected] = React.useState(false)
   useEffect(() => {
     const connection = new signalR.HubConnectionBuilder()
-      .withUrl(`https://muddyworld.xyz:8686/message`, {
-        accessTokenFactory: () => token.getToken().access_token || ""
-      })
+      .withUrl(
+        `${process.env.NEXT_PUBLIC_API_MAIN_URL}:${process.env.NEXT_PUBLIC_API_URL_PORT_SIGNALR}/message`,
+        {
+          accessTokenFactory: () => token.getToken().access_token || ""
+        }
+      )
       .withAutomaticReconnect()
       .build()
     setIsConnected(true)

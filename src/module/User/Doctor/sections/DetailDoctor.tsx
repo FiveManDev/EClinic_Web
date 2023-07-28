@@ -6,7 +6,7 @@ import { useGetDoctorProfilesByIdQuery } from "hooks/query/profile/useProfile"
 import { useRouter } from "next/router"
 import { OverlayScrollbarsComponent } from "overlayscrollbars-react"
 import { useEffect, useState } from "react"
-import { combineName } from "shared/helpers/helper"
+import { combineName, formatValueToVND } from "shared/helpers/helper"
 import colorsProvider from "shared/theme/colors"
 import About from "./About"
 import { StepOne } from "./step/StepOne"
@@ -119,7 +119,7 @@ const DetailDoctor = () => {
               color={colorsProvider.pending}
               className="px-4 py-2 font-semibold rounded-lg"
             >
-              {"$ " + data.data.price}
+              {formatValueToVND(data.data.price)}
             </Tag>
             <Tag
               color={colorsProvider.success}

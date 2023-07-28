@@ -5,7 +5,7 @@ const HeaderCard = () => {
     <div className="grid justify-around grid-cols-3 gap-x-6">
       <Card
         icon="/images/calendar.svg"
-        title="Appoinment"
+        title="Appointment"
         dataNumber="2113  "
       />
       <Card icon="/images/people.svg" title="New Patients" dataNumber="104" />

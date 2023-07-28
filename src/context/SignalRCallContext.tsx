@@ -66,9 +66,12 @@ const SignalRCallContextProvider = ({ children }: PropsWithChildren<{}>) => {
   const userVideo = useRef<HTMLVideoElement | null>(null)
   useEffect(() => {
     const connection = new signalR.HubConnectionBuilder()
-      .withUrl(`https://muddyworld.xyz:8686/call`, {
-        accessTokenFactory: () => token.getToken().access_token || ""
-      })
+      .withUrl(
+        `${process.env.NEXT_PUBLIC_API_MAIN_URL}:${process.env.NEXT_PUBLIC_API_URL_PORT_SIGNALR}/call`,
+        {
+          accessTokenFactory: () => token.getToken().access_token || ""
+        }
+      )
       .withAutomaticReconnect()
       .build()
 
