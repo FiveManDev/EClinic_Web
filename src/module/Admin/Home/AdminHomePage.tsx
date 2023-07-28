@@ -11,7 +11,7 @@ const AdminHomePage = () => {
       <Head>
         <title>Overview</title>
       </Head>
-      <MainHeadingLayout heading="Hi, Welcome back">
+      <MainHeadingLayout heading="Overview ">
         <HeaderCard />
         <ChartEarning />
         <TableAPM />

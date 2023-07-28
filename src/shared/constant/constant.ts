@@ -32,6 +32,7 @@ export const QUERY_KEYS = {
     AIPredict: "AIPredict"
   },
   BOOKING: {
+    BOOKING: "BOOKING/BOOKING",
     SERVICE: "BOOKING/SERVICE",
     DOCTOR: "BOOKING/DOCTOR"
   }
@@ -78,6 +79,7 @@ export const URL_API = {
     AIPredict: "AIPredict"
   },
   BOOKING: {
+    BOOKING: "booking/Booking",
     DOCTOR: "booking/BookingDoctor",
     SERVICE: "booking/BookingPackage",
     DOCTOR_SCHEDULE: "booking/DoctorSchedule"
@@ -139,4 +141,9 @@ export const CALL_STATUS = {
 export const RESEND_CODE_TYPE = {
   SIGNUP: 0,
   RESET_PASSWORD: 1
+}
+export const STATISTIC_STATUS = {
+  Increase: 0,
+  Decrease: 1,
+  Equal: 2
 }

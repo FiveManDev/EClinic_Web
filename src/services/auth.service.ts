@@ -4,6 +4,7 @@ import axiosClient from "shared/axios/httpClient"
 import { URL_API, VERSION } from "shared/constant/constant"
 import { token as Token } from "shared/utils/token"
 import { ISignupForm } from "types/Auth"
+import { IStatictis } from "types/Base.type"
 import { IServerResponse } from "types/server/IServerResponse"
 import { IToken } from "types/Token"
 
@@ -18,6 +19,12 @@ class AuthService {
       }
     )
     return res.data as IServerResponse<any>
+  }
+  async getStatisticsOverview() {
+    const res: AxiosResponse = await axiosClient.get(
+      `${URL_API.ACCOUNT}/GetStatisticsOverview`
+    )
+    return res.data as IServerResponse<IStatictis>
   }
   async resetPassword(value: IResetPassowrd) {
     const res: AxiosResponse = await axiosClient.post(

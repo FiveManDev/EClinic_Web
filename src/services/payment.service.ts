@@ -14,6 +14,7 @@ import {
   PaymentBookingService,
   PaymentBookingDoctor
 } from "types/Payment"
+import { IStatictis } from "types/Base.type"
 
 class PaymentService {
   //Payment
@@ -76,6 +77,12 @@ class PaymentService {
       `${URL_API.PAYMENT.TRANSACTION}/GetRefundByID?RefundID=${refundID}`
     )
     return res.data as IServerResponse<Refund>
+  }
+  async getStatisticsOverview() {
+    const res: AxiosResponse = await axiosClient.get(
+      `${URL_API.PAYMENT.TRANSACTION}/GetStatisticsOverview`
+    )
+    return res.data as IServerResponse<IStatictis>
   }
   async getAllRefundTransaction(data: IPaging) {
     const res: AxiosResponse = await axiosClient.get(
