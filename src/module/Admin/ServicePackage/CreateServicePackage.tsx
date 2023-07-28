@@ -77,7 +77,6 @@ const CreateServicePackage = ({
     watch,
     reset,
     setValue,
-    setFocus,
     formState: { errors }
   } = useForm({
     mode: "onSubmit",
@@ -214,14 +213,6 @@ const CreateServicePackage = ({
     )
     return selectedService ? selectedService.serviceName : ""
   }
-  useEffect(() => {
-    for (const fieldName of Object.keys(errors)) {
-      if (errors[fieldName as keyof typeof errors]) {
-        setFocus(fieldName as any)
-        break
-      }
-    }
-  }, [errors, setFocus])
   return (
     <form className="grid grid-cols-8 gap-6" onSubmit={handleSubmit(onSubmit)}>
       <div className="col-span-5 background-primary">
