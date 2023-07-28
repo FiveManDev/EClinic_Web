@@ -151,10 +151,16 @@ const ChartEarning = () => {
         <ChartMini
           isLoading={dataWeek.isLoading}
           data={
-            (dataWeek.isSuccess && mapData(dataWeek.data.data, "week")) || []
+            (dataWeek.isSuccess &&
+              dataWeek.isSuccess &&
+              dataWeek.data.data.map((item) => ({
+                name: dayjs(item.time).format("MMMM DD"),
+                [currentDate.get("date").toString()]: item.totalAmount
+              }))) ||
+            []
           }
           heading="Total Incomes in current week"
-          dataKey={"week"}
+          dataKey={currentDate.get("date").toString()}
         />
       </div>
     </Wrapper>
