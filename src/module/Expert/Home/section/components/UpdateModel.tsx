@@ -1,8 +1,8 @@
 import { yupResolver } from "@hookform/resolvers/yup"
+import { InputAdornment } from "@mui/material"
 import ModalPrimary from "components/Common/Modal/ModalPrimary"
 import { SelectCustom } from "components/Common/Select/SelectCustom"
 import CustomButton from "components/User/Button"
-import { CustomInput } from "components/User/Input"
 import InputField from "components/User/Input/InputField"
 import {
   ModelAction,
@@ -28,9 +28,27 @@ interface Props {
 
 const schema = yup.object({
   ModelName: yup.string().required("Please enter model name"),
-  Accuracy: yup.string().required("Please enter Accuracy"),
+  Accuracy: yup
+    .number()
+    .required("Please enter Accuracy")
+    .typeError("Accuracy must be a number")
+    .min(0, "Accuracy must be at least 0")
+    .max(100, "Accuracy cannot exceed 100")
+    .positive("Accuracy must be a positive number")
+    .lessThan(100, "Accuracy cannot exceed 100")
+    .transform((value) => (isNaN(value) ? undefined : parseFloat(value))),
   MachineID: yup.string().required("Please enter machine learning"),
-  DeepID: yup.string().required("Please enter deep learning")
+  DeepID: yup.string().required("Please enter deep learning"),
+  file: yup
+    .mixed()
+    .test("fileType", "Only .pkl and .h5 files are allowed", (value) => {
+      if (!value) return true // If no file is selected, skip the validation
+
+      const acceptedFormats = [".pkl", ".h5"]
+      const fileName = value[0]?.name || ""
+
+      return acceptedFormats.some((format) => fileName.endsWith(format))
+    })
 })
 
 const UpdateModel = ({ show, onModalChange, model }: Props) => {
@@ -129,6 +147,11 @@ const UpdateModel = ({ show, onModalChange, model }: Props) => {
               name="ModelName"
             />
             <InputField
+              InputProps={{
+                endAdornment: (
+                  <InputAdornment position="start">%</InputAdornment>
+                )
+              }}
               type="number"
               size="medium"
               label="Accuracy"
@@ -165,6 +188,7 @@ const UpdateModel = ({ show, onModalChange, model }: Props) => {
               Choose file
             </label>
             <input
+              accept=".pkl,.h5"
               {...register("file")}
               type="file"
               className="block w-full text-sm border border-gray-200 rounded-md shadow-sm cursor-pointer focus:z-10 focus:border-blue-500 focus:ring-blue-500 file:bg-transparent file:border-0 file:bg-gray-100 file:mr-4 file:py-3 file:px-4 "

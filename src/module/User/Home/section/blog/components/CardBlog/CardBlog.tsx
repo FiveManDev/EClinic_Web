@@ -1,14 +1,15 @@
 import ImageCustom from "components/Common/ImageCustom"
+import Link from "next/link"
 import { dayformat, stripHtmlTags } from "shared/helpers/helper"
 import { IBlog } from "types/Blog"
 interface Props {
   blog: IBlog
 }
 const CardBlog = ({ blog }: Props) => {
-  const contentText = stripHtmlTags(blog?.content);
+  const contentText = stripHtmlTags(blog?.content)
   return (
-    <div className="flex flex-col w-full space-y-4">
-      <div className="relative w-full h-[280px]">
+    <Link href={`/blog/${blog.id}`} className="flex flex-col w-full space-y-4">
+      <div className="relative w-full h-[280px] overflow-hidden">
         <ImageCustom
           src={blog?.coverImage || "/images/sample.png"}
           alt="image"
@@ -25,15 +26,15 @@ const CardBlog = ({ blog }: Props) => {
         </h4>
         <div className="text-[#9A9FA5] text-xs space-x-1.5">
           <span>By</span>
-          <b className="font-bold text-black">{blog?.author.firstName} {blog?.author.lastName}</b>
+          <b className="font-bold text-black">
+            {blog?.author.firstName} {blog?.author.lastName}
+          </b>
           <span>-</span>
           <span>{dayformat(blog.updatedAt)}</span>
         </div>
-        <p className="text-base text-[#657280] line-clamp-3">
-          {contentText}
-        </p>
+        <p className="text-base text-[#657280] line-clamp-3">{contentText}</p>
       </div>
-    </div>
+    </Link>
   )
 }
 

@@ -123,12 +123,14 @@ const PaymentDetail = () => {
               <span className="text-sm font-medium text-black2">
                 Payment Time
               </span>
-              <CustomInput
-                name="time"
-                size="medium"
-                value={getCurrentDate(payment?.paymentTime)}
-                disabled
-              />
+              {payment?.paymentTime && (
+                <CustomInput
+                  name="time"
+                  size="medium"
+                  value={getCurrentDate(payment?.paymentTime)}
+                  disabled
+                />
+              )}
             </div>
           </div>
           <div className="flex flex-col justify-start mb-3">

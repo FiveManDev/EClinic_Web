@@ -52,7 +52,6 @@ const Navbar = ({ show = false, onClose }: Props) => {
         <ChangeLanguage />
         {auth.isLoggedIn ? (
           <>
-            <Notification />
             <UserAvatar menu={MENU} />
           </>
         ) : (
