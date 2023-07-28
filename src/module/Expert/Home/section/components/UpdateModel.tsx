@@ -3,6 +3,7 @@ import ModalPrimary from "components/Common/Modal/ModalPrimary"
 import { SelectCustom } from "components/Common/Select/SelectCustom"
 import CustomButton from "components/User/Button"
 import { CustomInput } from "components/User/Input"
+import InputField from "components/User/Input/InputField"
 import {
   ModelAction,
   useCreateModelMutation,
@@ -121,22 +122,18 @@ const UpdateModel = ({ show, onModalChange, model }: Props) => {
             {model ? "Update Model" : "Create Model"}
           </h1>
           <div className="flex items-start w-full space-x-3">
-            <CustomInput
+            <InputField
               size="medium"
               label="Name Model"
               control={control}
               name="ModelName"
-              error={!!errors.ModelName}
-              helperText={errors.ModelName?.message?.toString()}
             />
-            <CustomInput
+            <InputField
               type="number"
               size="medium"
               label="Accuracy"
               control={control}
               name="Accuracy"
-              error={!!errors.Accuracy}
-              helperText={errors.Accuracy?.message?.toString()}
             />
           </div>
           <SelectCustom

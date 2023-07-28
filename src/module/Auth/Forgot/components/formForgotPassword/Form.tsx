@@ -3,6 +3,7 @@ import { useMutation } from "@tanstack/react-query"
 import Spinner from "components/Common/Loading/LoadingIcon"
 import CustomButton from "components/User/Button"
 import { CustomInput, CustomInputPassword } from "components/User/Input"
+import InputField from "components/User/Input/InputField"
 import { useAccountResetPassowordMutation } from "hooks/query/account/useAccount"
 import ConfirmCode from "module/Auth/SignUp/components/ConfirmCode"
 import Link from "next/link"
@@ -45,7 +46,6 @@ const Form = () => {
     handleSubmit,
     control,
     getValues,
-    setFocus,
     formState: { errors, isSubmitting }
   } = useForm({
     mode: "onSubmit",
@@ -104,14 +104,6 @@ const Form = () => {
       }
     )
   }
-  useEffect(() => {
-    for (const fieldName of Object.keys(errors)) {
-      if (errors[fieldName as any]) {
-        setFocus(fieldName as any)
-        break
-      }
-    }
-  }, [errors, setFocus])
   return (
     <>
       {keyVerify ? (
@@ -136,13 +128,13 @@ const Form = () => {
               onSubmit={handleSubmit(handleSubmitForgot)}
               className="flex flex-col space-y-5"
             >
-              <CustomInput
-                label="Email"
+              <InputField
+                size="medium"
                 control={control}
                 name="email"
-                error={!!errors.email}
-                helperText={errors.email?.message?.toString()}
+                label={"Email"}
               />
+
               <CustomInputPassword
                 label="New Password"
                 control={control}

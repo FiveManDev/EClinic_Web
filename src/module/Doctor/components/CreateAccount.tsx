@@ -12,6 +12,7 @@ import { Option, SelectCustom } from "components/Common/Select/SelectCustom"
 import Tag from "components/Common/Tag"
 import CustomButton from "components/User/Button"
 import { CustomInput } from "components/User/Input"
+import InputField from "components/User/Input/InputField"
 import useConfirm from "context/ComfirmContext"
 import dayjs from "dayjs"
 import {
@@ -224,31 +225,25 @@ const CreateAccount = ({ labelForm, profile, mode = "create" }: Props) => {
         <div className="flex flex-col justify-start">
           <div className="flex flex-col space-y-5">
             <div className="flex items-start space-x-3">
-              <CustomInput
+              <InputField
                 size="medium"
                 label="First name"
                 control={control}
                 name="firstName"
-                error={!!errors.firstName}
-                helperText={errors.firstName?.message?.toString()}
               />
-              <CustomInput
+              <InputField
                 size="medium"
                 label="Last name"
                 control={control}
                 name="lastName"
-                error={!!errors.lastName}
-                helperText={errors.lastName?.message?.toString()}
               />
             </div>
             <div className="flex space-x-3">
-              <CustomInput
+              <InputField
                 size="medium"
                 label="Price for booking"
                 control={control}
                 name="price"
-                error={!!errors.price}
-                helperText={errors.price?.message?.toString()}
               />
               <SelectCustom
                 error={errors.specializationID?.message?.toString()}
@@ -268,21 +263,17 @@ const CreateAccount = ({ labelForm, profile, mode = "create" }: Props) => {
               />
             </div>
             <div className="flex space-x-3">
-              <CustomInput
+              <InputField
                 size="medium"
                 label="Address"
                 control={control}
                 name="address"
-                error={!!errors.address}
-                helperText={errors.address?.message?.toString()}
               />
-              <CustomInput
+              <InputField
                 size="medium"
                 label="Position"
                 control={control}
                 name="title"
-                error={!!errors.title}
-                helperText={errors.title?.message?.toString()}
               />
             </div>
             <div className="flex space-x-3">
@@ -296,19 +287,17 @@ const CreateAccount = ({ labelForm, profile, mode = "create" }: Props) => {
                     reason === "invalidDate"
                       ? "Please enter valid date"
                       : reason === "disableFuture"
-                        ? "The birthday cannot be less than the current date"
-                        : ""
+                      ? "The birthday cannot be less than the current date"
+                      : ""
                   setError("dateOfBirth", { type: "focus", message })
                 }}
                 errorMessage={errors.dateOfBirth?.message?.toString()}
               />
-              <CustomInput
+              <InputField
                 size="medium"
                 label="Email"
                 control={control}
                 name="email"
-                error={!!errors.email}
-                helperText={errors.email?.message?.toString()}
               />
             </div>
             <div className="flex space-x-3">
@@ -322,8 +311,8 @@ const CreateAccount = ({ labelForm, profile, mode = "create" }: Props) => {
                     reason === "invalidDate"
                       ? "Please enter valid date"
                       : reason === "disableFuture"
-                        ? "The birthday cannot be less than the current date"
-                        : ""
+                      ? "The birthday cannot be less than the current date"
+                      : ""
                   setError("workStart", { type: "focus", message })
                 }}
                 errorMessage={errors.workStart?.message?.toString()}
@@ -335,13 +324,11 @@ const CreateAccount = ({ labelForm, profile, mode = "create" }: Props) => {
                 name="workEnd"
               />
             </div>
-            <CustomInput
+            <InputField
               size="medium"
               label="Phone number"
               control={control}
               name="phone"
-              error={!!errors.phone}
-              helperText={errors.phone?.message?.toString()}
             />
             <FormControl>
               <FormLabel>Gender</FormLabel>
@@ -365,15 +352,13 @@ const CreateAccount = ({ labelForm, profile, mode = "create" }: Props) => {
                 />
               </RadioGroup>
             </FormControl>
-            <CustomInput
+            <InputField
               size="medium"
               multiline
               label="Content"
               rows={4}
               control={control}
               name="content"
-              error={!!errors.content}
-              helperText={errors.content?.message?.toString()}
             />
             <Editor
               onChange={(data: string) => {

@@ -150,7 +150,9 @@ const Profile = () => {
         {(mode == "add" || mode === "edit") && (
           <Edit
             isLoading={
-              createProfileMutaiton.isLoading || deleteProfileMutation.isLoading
+              createProfileMutaiton.isLoading ||
+              deleteProfileMutation.isLoading ||
+              updateProfileMutaiton.isLoading
             }
             labelForm={
               mode === "add"
