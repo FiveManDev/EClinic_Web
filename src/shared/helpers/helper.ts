@@ -72,17 +72,25 @@ export const getDataPaginate = (
   if (!field) {
     field = "x-pagination"
   }
-  return response?.headers[field]
-    ? (JSON.parse(response?.headers[field]!) as IPagination)
-    : {
-        PageIndex: 1,
-        PageSize: 10,
-        TotalCount: 0,
-        TotalPages: 0,
-        HasPrevious: false,
-        HasNext: false
-      }
+
+  if (response?.headers && response.headers[field]) {
+    try {
+      return JSON.parse(response.headers[field] as string) as IPagination
+    } catch (error) {
+      console.error("Error parsing pagination data:", error)
+    }
+  }
+
+  return {
+    PageIndex: 1,
+    PageSize: 10,
+    TotalCount: 0,
+    TotalPages: 0,
+    HasPrevious: false,
+    HasNext: false
+  }
 }
+
 export function renderQuarterArray() {
   const intervals = []
 

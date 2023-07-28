@@ -12,7 +12,7 @@ import {
 import { IServerResponse } from "types/server/IServerResponse"
 
 const http = new HttpClient(
-  `${process.env.NEXT_PUBLIC_API_MAIN_URL}:${process.env.NEXT_PUBLIC_API_URL_PORT_AI}`
+  `${process.env.NEXT_PUBLIC_API_MAIN_URL_AI}:${process.env.NEXT_PUBLIC_API_URL_PORT_AI}`
 ).instance
 
 class AiService {

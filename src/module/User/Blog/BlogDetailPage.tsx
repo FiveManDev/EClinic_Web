@@ -16,6 +16,7 @@ import { combineName, dayformat } from "shared/helpers/helper"
 import { IBreadcrum } from "types/Base.type"
 import BlogPostCard from "./components/BlogPostCard"
 import EmtyData from "components/Common/Empty"
+import ImageCustom from "components/Common/ImageCustom"
 
 const actions = [
   {
@@ -75,7 +76,7 @@ const BlogDetailPage = () => {
   }
   const breadrums: IBreadcrum[] = [
     { label: t("base:pages.home"), href: "/" },
-    { label: t("base:pages.forum") }
+    { label: t("base:pages.blog") }
   ]
   return (
     <>
@@ -88,10 +89,11 @@ const BlogDetailPage = () => {
         <div className="flex-1 p-0">
           <div className="flex flex-col w-full h-full p-0 background-primary">
             <div className="w-full h-[648px] relative rounded-tr-2xl rounded-tl-2xl overflow-hidden">
-              <Image
+              <ImageCustom
                 fill
                 src={data.data.coverImage || "/images/covers/cover_1.jpg"}
                 alt="thumbnails"
+                className="object-cover"
               />
               <div className="absolute inset-0 z-10 overflow-hidden backdrop-brightness-50 rounded-tr-2xl rounded-tl-2xl"></div>
 

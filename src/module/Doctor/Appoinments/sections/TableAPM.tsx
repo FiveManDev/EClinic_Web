@@ -25,7 +25,7 @@ const TableAPMService = () => {
   const router = useRouter()
   const [statusFilter, setStatusFilter] = useState(statusBookingOptions[0])
   const [pagination, setPagination] = useState<MRT_PaginationState>({
-    pageIndex: 1,
+    pageIndex: 0,
     pageSize: 10
   })
   const { data, isLoading, isError, isRefetching } =
