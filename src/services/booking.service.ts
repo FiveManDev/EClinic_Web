@@ -1,15 +1,15 @@
 import { AxiosResponse } from "axios"
 import axiosClient from "shared/axios/httpClient"
 import { URL_API } from "shared/constant/constant"
-import { IServerResponse } from "types/server/IServerResponse"
+import { IStatictis } from "types/Base.type"
 import {
   BookingSchedule,
   BookingService as BookingType,
   CreateScheduleDoctor,
   IBookingDoctor,
-  Slot,
   UpdateScheduleDoctor
 } from "types/Booking"
+import { IServerResponse } from "types/server/IServerResponse"
 
 class BookingService {
   async getAllBookingPackageForUser(
@@ -28,6 +28,16 @@ class BookingService {
         }
       )
       return res as AxiosResponse<IServerResponse<BookingType[]>>
+    } catch (error) {
+      console.log("BookingService ~ error:", error)
+    }
+  }
+  async getStatisticsOverview() {
+    try {
+      const res: AxiosResponse = await axiosClient.get(
+        `${URL_API.BOOKING.BOOKING}/getStatisticsOverview`
+      )
+      return res.data as IServerResponse<IStatictis>
     } catch (error) {
       console.log("BookingService ~ error:", error)
     }

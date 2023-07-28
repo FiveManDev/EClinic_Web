@@ -210,7 +210,7 @@ const CreateAccount = ({ labelForm, profile, mode = "create" }: Props) => {
         <div className="flex items-center justify-between w-full max-w-[260px] mt-6">
           <div className="flex flex-col">
             <span className="text-base font-medium text-black2">
-              Block Account
+              Enable Account
             </span>
             <p className="text-xs text-disable">Apply disable account</p>
           </div>

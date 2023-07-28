@@ -86,13 +86,13 @@ const TableAPMService = () => {
         header: "Kind",
         Cell: ({ row }) => {
           return (
-            <p>
+            <div>
               {row.original.bookingType.toString() === "0" ? (
                 <Tag color={colorsProvider.primary}>Online</Tag>
               ) : (
                 <Tag color={colorsProvider.secondary}>Offline</Tag>
               )}
-            </p>
+            </div>
           )
         }
       },

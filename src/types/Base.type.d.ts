@@ -18,3 +18,8 @@ export interface ImageItem {
   file: File
   url: string
 }
+export interface IStatictis {
+  total: number
+  status: number
+  percent: number
+}
