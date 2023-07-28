@@ -6,6 +6,7 @@ import {
   HiOutlineVideoCamera
 } from "react-icons/hi2"
 import { useSelector } from "react-redux"
+import { ROLE } from "shared/constant/constant"
 import { combineName } from "shared/helpers/helper"
 import { RootState } from "store/store"
 import { ProfileChat } from "types/Chat"
@@ -63,7 +64,7 @@ export const HeaderBox = ({
         </div>
       </div>
       <div className="flex items-center gap-x-2">
-        {role !== "User" && (
+        {role === ROLE.DOCTOR && (
           <>
             <Tooltip
               title="Close this room"
