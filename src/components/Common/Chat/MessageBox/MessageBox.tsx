@@ -37,7 +37,6 @@ const MessageBox = ({ toggleInfo, userId: id, isClose }: IProps) => {
   const [messages, setMessages] = useState<Message[]>([])
   const authorProfile = useSimpleProfile(userId)
   const confirm = useConfirm()
-  const signalRNotification = useSignalRNotification()
   const { answerCall, callUser, call, callAccepted, signalRConnection } =
     useSignalRCall()
   const { connectionMessage, isConnected } = useSignalRMessage()
@@ -94,20 +93,21 @@ const MessageBox = ({ toggleInfo, userId: id, isClose }: IProps) => {
     }
   }
   useEffect(() => {
-    if (isConnected) {
-      connectionMessage
-        .current!.start()
-        .then(() => {
-          connectionMessage
-            .current!.invoke("JoinGroup", roomId)
-            .then(() => {})
-            .catch((err) => {
-              return console.error(err.toString())
-            })
-        })
+    if (isConnected && connectionMessage.current) {
+      connectionMessage.current
+        .invoke("JoinGroup", roomId)
+        .then(() => {})
         .catch((err) => {
           return console.error(err.toString())
         })
+    }
+  }, [roomId, isConnected, connectionMessage])
+
+  useEffect(() => {
+    if (isConnected) {
+      connectionMessage.current!.start().catch((err) => {
+        return console.error(err.toString())
+      })
       connectionMessage.current!.on("Response", (message: Message) => {
         if (message) {
           setMessages((prevMes) => [...prevMes, message])
@@ -115,6 +115,7 @@ const MessageBox = ({ toggleInfo, userId: id, isClose }: IProps) => {
         }
       })
       connectionMessage.current?.on("NewAnswer", (profile: ProfileChat) => {
+        console.log("connectionMessage.current?.on ~ profile:", profile)
         if (profile) {
           setUserId(profile.userID)
         }
