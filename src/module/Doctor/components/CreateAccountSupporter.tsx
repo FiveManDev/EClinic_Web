@@ -11,6 +11,7 @@ import SwitchCustom from "components/Common/IOSSwitch"
 import Tag from "components/Common/Tag"
 import CustomButton from "components/User/Button"
 import { CustomInput } from "components/User/Input"
+import InputField from "components/User/Input/InputField"
 import useConfirm from "context/ComfirmContext"
 import dayjs from "dayjs"
 import {
@@ -197,32 +198,26 @@ const CreateAccountSupporter = ({
         <div className="flex flex-col justify-start">
           <div className="flex flex-col space-y-5">
             <div className="flex items-start space-x-3">
-              <CustomInput
+              <InputField
                 size="medium"
                 label="First name"
                 control={control}
                 name="firstName"
-                error={!!errors.firstName}
-                helperText={errors.firstName?.message?.toString()}
               />
-              <CustomInput
+              <InputField
                 size="medium"
                 label="Last name"
                 control={control}
                 name="lastName"
-                error={!!errors.lastName}
-                helperText={errors.lastName?.message?.toString()}
               />
             </div>
 
             <div className="flex space-x-3">
-              <CustomInput
+              <InputField
                 size="medium"
                 label="Address"
                 control={control}
                 name="address"
-                error={!!errors.address}
-                helperText={errors.address?.message?.toString()}
               />
             </div>
             <div className="flex space-x-3">
@@ -242,13 +237,11 @@ const CreateAccountSupporter = ({
                 }}
                 errorMessage={errors.dateOfBirth?.message?.toString()}
               />
-              <CustomInput
+              <InputField
                 size="medium"
                 label="Email"
                 control={control}
                 name="email"
-                error={!!errors.email}
-                helperText={errors.email?.message?.toString()}
               />
             </div>
             <div className="flex space-x-3">
@@ -268,13 +261,11 @@ const CreateAccountSupporter = ({
                 }}
                 errorMessage={errors.workStart?.message?.toString()}
               />
-              <CustomInput
+              <InputField
                 size="medium"
                 label="Phone number"
                 control={control}
                 name="phone"
-                error={!!errors.phone}
-                helperText={errors.phone?.message?.toString()}
               />
             </div>
             <FormControl>
@@ -299,15 +290,13 @@ const CreateAccountSupporter = ({
                 />
               </RadioGroup>
             </FormControl>
-            <CustomInput
-              multiline
-              rows={4}
+            <InputField
               size="medium"
               label="About"
               control={control}
               name="description"
-              error={!!errors.description}
-              helperText={errors.description?.message?.toString()}
+              multiline
+              rows={4}
             />
             <CustomButton
               kind="primary"

@@ -18,6 +18,7 @@ import Spinner from "components/Common/Loading/LoadingIcon"
 import { UpdateCover } from "components/Common/UpLoadImage"
 import CustomButton from "components/User/Button"
 import { CustomInput } from "components/User/Input"
+import InputField from "components/User/Input/InputField"
 import useConfirm from "context/ComfirmContext"
 import {
   CreatePostBlog,
@@ -214,13 +215,11 @@ const CreateBlog = ({ labelForm, post, mode = "create" }: Props) => {
         <h3 className="pb-4 text-lg font-medium">{labelForm}</h3>
         <div className="flex flex-col justify-start">
           <div className="flex flex-col space-y-5">
-            <CustomInput
+            <InputField
               size="medium"
               label="Post title"
               control={control}
               name="title"
-              error={!!errors.title}
-              helperText={errors.title?.message?.toString()}
             />
             <div className="flex flex-col gap-y-2">
               <span className="text-gray-500">Cover</span>
@@ -296,31 +295,25 @@ const CreateBlog = ({ labelForm, post, mode = "create" }: Props) => {
               <FormHelperText error>{errors.hashtags?.message}</FormHelperText>
             </FormControl>
           </div>
-          <CustomInput
+          <InputField
             size="medium"
             label="Meta title"
             control={control}
             name="metaTitle"
-            error={!!errors.metaTitle}
-            helperText={errors.metaTitle?.message?.toString()}
           />
-          <CustomInput
+          <InputField
             size="medium"
             multiline
             rows={3}
             label="Meta description"
             control={control}
             name="metaDescription"
-            error={!!errors.metaDescription}
-            helperText={errors.metaDescription?.message?.toString()}
           />
-          <CustomInput
+          <InputField
             size="medium"
             label="Meta keywords"
             control={control}
             name="metaKeywords"
-            error={!!errors.metaKeywords}
-            helperText={errors.metaKeywords?.message?.toString()}
           />
         </div>
         <div className="flex w-full mt-4 space-x-5">

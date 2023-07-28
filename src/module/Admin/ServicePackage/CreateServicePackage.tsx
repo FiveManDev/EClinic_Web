@@ -17,6 +17,7 @@ import SwitchCustom from "components/Common/IOSSwitch"
 import { UpdateCover } from "components/Common/UpLoadImage"
 import CustomButton from "components/User/Button"
 import { CustomInput } from "components/User/Input"
+import InputField from "components/User/Input/InputField"
 import useConfirm from "context/ComfirmContext"
 import {
   CreateServicePackageItem,
@@ -227,13 +228,11 @@ const CreateServicePackage = ({
         <h3 className="pb-4 text-lg font-medium">{labelForm}</h3>
         <div className="flex flex-col justify-start">
           <div className="flex flex-col space-y-5">
-            <CustomInput
+            <InputField
               size="medium"
-              label="Service Package Title"
               control={control}
               name="servicePackageName"
-              error={!!errors.servicePackageName}
-              helperText={errors.servicePackageName?.message?.toString()}
+              label={"Service Package Title"}
             />
             <div className="flex flex-col gap-y-2">
               <span className="text-gray-500">Image</span>
@@ -295,31 +294,27 @@ const CreateServicePackage = ({
               {errors.serviceItems?.message}
             </FormHelperText>
           </FormControl>
-          <CustomInput
+          <InputField
             InputProps={{
               endAdornment: (
                 <InputAdornment position="start">VNĐ</InputAdornment>
               )
             }}
             size="medium"
-            label="Price"
             control={control}
             name="price"
             type="number"
-            error={!!errors.price}
-            helperText={errors.price?.message?.toString()}
+            label={"Price"}
           />
-          <CustomInput
+          <InputField
             InputProps={{
               endAdornment: <InputAdornment position="start">%</InputAdornment>
             }}
             size="medium"
-            label="Discount"
             control={control}
             name="discount"
             type="number"
-            error={!!errors.discount}
-            helperText={errors.discount?.message?.toString()}
+            label={"Discount"}
           />
           <CustomInput
             InputProps={{
@@ -332,19 +327,17 @@ const CreateServicePackage = ({
             label="Discount Price"
             value={watchPrice * (1 - watchDiscount / 100)}
           />
-          <CustomInput
+          <InputField
             InputProps={{
               endAdornment: (
                 <InputAdornment position="start">Minute</InputAdornment>
               )
             }}
             size="medium"
-            label="EstimatedTime"
             control={control}
             name="estimatedTime"
             type="number"
-            error={!!errors.estimatedTime}
-            helperText={errors.estimatedTime?.message?.toString()}
+            label={"EstimatedTime"}
           />
         </div>
         <div className="flex w-full mt-4 space-x-5">

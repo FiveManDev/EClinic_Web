@@ -3,6 +3,7 @@ import {
   FormControl,
   FormControlLabel,
   FormLabel,
+  InputAdornment,
   InputLabel,
   MenuItem,
   Radio,
@@ -14,6 +15,7 @@ import DatePickerCustom from "components/Common/DatePicker/DatePickerCustom"
 import Spinner from "components/Common/Loading/LoadingIcon"
 import CustomButton from "components/User/Button"
 import { CustomInput } from "components/User/Input"
+import InputField from "components/User/Input/InputField"
 import useConfirm from "context/ComfirmContext"
 import {
   useAllRelationship,
@@ -51,13 +53,14 @@ const schema = yup.object({
     .matches(/^[A-Za-z ]+$/, "Please enter valid name"),
   phone: yup
     .string()
+    .nullable()
     .required("Please enter your phone number")
     .matches(
       /(84|0[3|5|7|8|9])+([0-9]{8})\b/,
       "Please enter valid phone number"
     ),
   dateOfBirth: yup.string().required("Please enter your date of birth"),
-  address: yup.string().required("Please enter your address"),
+  address: yup.string().required("Please enter your address").nullable(),
   bloodType: yup.string().required("Please choose your blood").default("A+"),
   weight: yup
     .number()
@@ -80,6 +83,7 @@ const Edit = ({
   const relationShipQuery = useAllRelationship()
   const getBloodTypes = useGetBloodTypes()
   const {
+    setFocus,
     handleSubmit,
     control,
     setError,
@@ -125,6 +129,14 @@ const Edit = ({
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [profile])
+  useEffect(() => {
+    for (const fieldName of Object.keys(errors)) {
+      if (errors[fieldName as keyof typeof errors]) {
+        setFocus(fieldName as any)
+        break
+      }
+    }
+  }, [errors, setFocus])
   return (
     <>
       <h3 className="pb-4 text-lg font-medium">{labelForm}</h3>
@@ -146,41 +158,33 @@ const Edit = ({
             onFileChange={onFileChange}
           />
           <div className="flex items-start space-x-3">
-            <CustomInput
+            <InputField
               size="medium"
-              label="First name"
               control={control}
               name="firstName"
-              error={!!errors.firstName}
-              helperText={errors.firstName?.message?.toString()}
+              label={"First name"}
             />
-            <CustomInput
+            <InputField
               size="medium"
-              label="Last name"
               control={control}
               name="lastName"
-              error={!!errors.lastName}
-              helperText={errors.lastName?.message?.toString()}
+              label={"Last name"}
             />
           </div>
-          <CustomInput
-            size="medium"
+          <InputField
             disabled={
               profile?.relationshipName === RELATIONSHIPS.ME ? true : false
             }
-            label="Email"
+            size="medium"
             control={control}
             name="email"
-            error={!!errors.email}
-            helperText={errors.email?.message?.toString()}
+            label={"Email"}
           />
-          <CustomInput
+          <InputField
             size="medium"
-            label="Address"
             control={control}
             name="address"
-            error={!!errors.address}
-            helperText={errors.address?.message?.toString()}
+            label={"Address"}
           />
           <div className="flex space-x-3">
             <DatePickerCustom
@@ -217,15 +221,12 @@ const Edit = ({
               </Select>
             </FormControl>
           </div>
-          <CustomInput
+          <InputField
             size="medium"
-            label="Phone number"
             control={control}
             name="phone"
-            error={!!errors.phone}
-            helperText={errors.phone?.message?.toString()}
+            label={"Phone number"}
           />
-
           <FormControl>
             <FormLabel>Gender</FormLabel>
             <RadioGroup
@@ -249,21 +250,27 @@ const Edit = ({
             </RadioGroup>
           </FormControl>
           <div className="flex items-start space-x-3">
-            <CustomInput
+            <InputField
               size="medium"
-              label="Weight"
               control={control}
               name="weight"
-              error={!!errors.weight}
-              helperText={errors.weight?.message?.toString()}
+              label={"Weight"}
+              InputProps={{
+                endAdornment: (
+                  <InputAdornment position="start">Kg</InputAdornment>
+                )
+              }}
             />
-            <CustomInput
+            <InputField
               size="medium"
-              label="Height"
               control={control}
               name="height"
-              error={!!errors.height}
-              helperText={errors.height?.message?.toString()}
+              label={"Height"}
+              InputProps={{
+                endAdornment: (
+                  <InputAdornment position="start">Cm</InputAdornment>
+                )
+              }}
             />
           </div>
           {profile?.relationshipName !== RELATIONSHIPS.ME && (

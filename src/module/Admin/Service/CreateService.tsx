@@ -10,6 +10,7 @@ import {
 import SwitchCustom from "components/Common/IOSSwitch"
 import CustomButton from "components/User/Button"
 import { CustomInput } from "components/User/Input"
+import InputField from "components/User/Input/InputField"
 import useConfirm from "context/ComfirmContext"
 import {
   CreateServiceItem,
@@ -162,39 +163,33 @@ const CreateService = ({ service, mode = "create" }: Props) => {
         </div>
         <div className="flex flex-col justify-start mb-3">
           <div className="flex flex-col space-y-5">
-            <CustomInput
+            <InputField
               size="medium"
-              label="Service name"
               control={control}
               name="serviceName"
-              error={!!errors.serviceName}
-              helperText={errors.serviceName?.message?.toString()}
+              label={"Service name"}
             />
           </div>
         </div>
         <div className="flex flex-col justify-start mb-3">
           <div className="flex flex-col space-y-5">
-            <CustomInput
+            <InputField
               size="medium"
-              label="Price"
               control={control}
               name="price"
               type="number"
-              error={!!errors.price}
-              helperText={errors.price?.message?.toString()}
+              label={"Price"}
             />
           </div>
         </div>
         <div className="flex flex-col justify-start mb-3">
           <div className="flex flex-col space-y-5">
-            <CustomInput
+            <InputField
               size="medium"
-              label="Estimated Time"
               control={control}
               name="estimatedTime"
               type="number"
-              error={!!errors.estimatedTime}
-              helperText={errors.estimatedTime?.message?.toString()}
+              label={"Estimated Time"}
             />
           </div>
         </div>

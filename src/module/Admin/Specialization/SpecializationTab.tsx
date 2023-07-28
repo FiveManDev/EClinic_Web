@@ -3,6 +3,7 @@ import { Box, IconButton, Tooltip } from "@mui/material"
 import TableCustom from "components/Common/Table/TableCustom"
 import CustomButton from "components/User/Button"
 import { CustomInput } from "components/User/Input"
+import InputField from "components/User/Input/InputField"
 import useConfirm from "context/ComfirmContext"
 import {
   CreateSpecialization,
@@ -166,14 +167,13 @@ const SpecializationTab = () => {
         className="flex items-center max-w-2xl gap-x-3 background-primary"
         onSubmit={handleSubmit(onSubmit)}
       >
-        <CustomInput
+        <InputField
           size="medium"
-          label="Specialization name"
           control={control}
           name="specializationName"
-          error={!!errors.specializationName}
-          helperText={errors?.specializationName?.message?.toString()}
+          label={"Specialization name"}
         />
+
         <CustomButton
           kind="primary"
           type="submit"

@@ -10,19 +10,19 @@ import {
 import { useMutation } from "@tanstack/react-query"
 import DatePickerCustom from "components/Common/DatePicker/DatePickerCustom"
 import CustomButton from "components/User/Button"
-import { CustomInput, CustomInputPassword } from "components/User/Input"
+import InputField from "components/User/Input/InputField"
 import dayjs from "dayjs"
 import Link from "next/link"
 import { useRouter } from "next/router"
-import { useEffect, useState } from "react"
+import { useState } from "react"
 import { useForm } from "react-hook-form"
 import { toast } from "react-hot-toast"
 import { authService } from "services/auth.service"
+import { RESEND_CODE_TYPE } from "shared/constant/constant"
+import { routers } from "shared/constant/routers"
 import { ISignupForm } from "types/Auth"
 import * as yup from "yup"
 import ConfirmCode from "../ConfirmCode"
-import { routers } from "shared/constant/routers"
-import { RESEND_CODE_TYPE } from "shared/constant/constant"
 
 const schema = yup.object({
   userName: yup.string().required("Please enter your user name"),
@@ -45,7 +45,10 @@ const schema = yup.object({
     .string()
     .required("Please enter your last name")
     .matches(/^[A-Za-z ]+$/, "Please enter valid name"),
-  dateOfBirth: yup.string().required("Please enter your date of birth"),
+  dateOfBirth: yup
+    .string()
+    .required("Please enter your date of birth")
+    .nullable(),
   gender: yup.bool().required("Please choose your gender")
 })
 const SIGN_UP_FAILED = "Sign up failed!!"
@@ -71,11 +74,9 @@ const FormSignup = () => {
     register,
     control,
     setError,
-    setFocus,
     getValues,
     formState: { errors }
   } = useForm<ISignupForm>({
-    mode: "onSubmit",
     resolver: yupResolver(schema)
   })
 
@@ -87,7 +88,6 @@ const FormSignup = () => {
       },
       {
         onSuccess: (res) => {
-          console.log("handleSignup ~ res:", res)
           setKeyVerify(res.data)
         },
         onError: (data: any) => {
@@ -131,15 +131,6 @@ const FormSignup = () => {
       }
     )
   }
-
-  useEffect(() => {
-    for (const fieldName of Object.keys(errors)) {
-      if (errors[fieldName as keyof ISignupForm]) {
-        setFocus(fieldName as any)
-        break
-      }
-    }
-  }, [errors, setFocus])
   return (
     <>
       {keyVerify ? (
@@ -171,49 +162,32 @@ const FormSignup = () => {
               className="flex flex-col space-y-5"
             >
               <div className="flex items-start space-x-3">
-                <CustomInput
-                  label="First name"
+                <InputField
                   control={control}
                   name="firstName"
-                  error={!!errors.firstName}
-                  helperText={errors.firstName?.message?.toString()}
+                  label={"First name"}
                 />
-                <CustomInput
-                  label="Last name"
+                <InputField
                   control={control}
                   name="lastName"
-                  error={!!errors.lastName}
-                  helperText={errors.lastName?.message?.toString()}
+                  label={"Last name"}
                 />
               </div>
-              <CustomInput
-                label="Email"
-                control={control}
-                name="email"
-                error={!!errors.email}
-                helperText={errors.email?.message?.toString()}
-              />
-              <CustomInput
-                label="User name"
+              <InputField control={control} name="email" label={"Email"} />
+              <InputField
                 control={control}
                 name="userName"
-                error={!!errors.userName}
-                helperText={errors.userName?.message?.toString()}
+                label={"User name"}
               />
-              <CustomInputPassword
-                label="Password"
+              <InputField
                 control={control}
                 name="password"
-                error={!!errors.password}
-                errorMessage={errors.password?.message?.toString()}
+                label={"Password"}
               />
-              <CustomInputPassword
-                label="Confirm password"
-                placeholder="Confirm password"
+              <InputField
                 control={control}
                 name="confirmPassword"
-                error={!!errors.confirmPassword}
-                errorMessage={errors.confirmPassword?.message?.toString()}
+                label={"Confirm password"}
               />
               <DatePickerCustom
                 label="Date of birth"

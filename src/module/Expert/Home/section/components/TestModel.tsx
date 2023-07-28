@@ -15,6 +15,7 @@ import { RootState } from "store/store"
 import { PredictModel } from "types/AI"
 import * as yup from "yup"
 import { yupResolver } from "@hookform/resolvers/yup"
+import InputField from "components/User/Input/InputField"
 
 const TestModel = () => {
   const role = useSelector((auth: RootState) => auth.auth.user.role)
@@ -91,13 +92,13 @@ const TestModel = () => {
           )}
           <div className="flex flex-col gap-y-2">
             <span className="text-gray-500">Note</span>
-            <CustomInput
-              control={control}
+            <InputField
               size="medium"
-              multiline
-              label="Note about a test"
-              rows={4}
+              control={control}
               name="note"
+              multiline
+              rows={4}
+              label={"Note about a test"}
             />
           </div>
 
