@@ -46,7 +46,6 @@ const Form = () => {
     handleSubmit,
     control,
     getValues,
-    setFocus,
     formState: { errors, isSubmitting }
   } = useForm({
     mode: "onSubmit",
@@ -105,14 +104,6 @@ const Form = () => {
       }
     )
   }
-  useEffect(() => {
-    for (const fieldName of Object.keys(errors)) {
-      if (errors[fieldName as any]) {
-        setFocus(fieldName as any)
-        break
-      }
-    }
-  }, [errors, setFocus])
   return (
     <>
       {keyVerify ? (

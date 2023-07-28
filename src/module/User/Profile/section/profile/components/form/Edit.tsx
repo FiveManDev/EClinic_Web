@@ -83,7 +83,6 @@ const Edit = ({
   const relationShipQuery = useAllRelationship()
   const getBloodTypes = useGetBloodTypes()
   const {
-    setFocus,
     handleSubmit,
     control,
     setError,
@@ -129,14 +128,6 @@ const Edit = ({
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [profile])
-  useEffect(() => {
-    for (const fieldName of Object.keys(errors)) {
-      if (errors[fieldName as keyof typeof errors]) {
-        setFocus(fieldName as any)
-        break
-      }
-    }
-  }, [errors, setFocus])
   return (
     <>
       <h3 className="pb-4 text-lg font-medium">{labelForm}</h3>
