@@ -54,6 +54,7 @@ const TableCustom = <T extends Record<string, any>>({
   return (
     <MaterialReactTable
       {...props}
+      enableColumnResizing
       columns={columns}
       enableRowActions
       enableStickyHeader
