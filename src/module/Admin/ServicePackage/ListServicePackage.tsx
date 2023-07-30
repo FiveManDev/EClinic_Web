@@ -78,34 +78,23 @@ const ListServicePackage = () => {
       {
         accessorKey: "price",
         header: "Price",
-        size: 80,
         Cell: ({ row }) => {
-          return (
-            <p className="line-clamp-1 max-w-[80px]">
-              {row.original.price} VND
-            </p>
-          )
+          return <p className="line-clamp-1">{row.original.price} VND</p>
         }
       },
       {
         accessorKey: "discount",
         header: "Discount",
-        size: 80,
         Cell: ({ row }) => {
-          return (
-            <p className="line-clamp-1 max-w-[80px]">
-              {row.original.discount} %
-            </p>
-          )
+          return <p className="line-clamp-1">{row.original.discount} %</p>
         }
       },
       {
         accessorKey: "createdAt",
         header: "Discount Price",
-        size: 80,
         Cell: ({ row }) => {
           return (
-            <p className="line-clamp-1 max-w-[80px]">
+            <p className="line-clamp-1">
               {row.original.price * (1 - row.original.discount / 100)} VND
             </p>
           )
@@ -114,25 +103,15 @@ const ListServicePackage = () => {
       {
         accessorKey: "totalOrder",
         header: "Total Order",
-        size: 80,
         Cell: ({ row }) => {
-          return (
-            <p className="line-clamp-1 max-w-[80px]">
-              {row.original.totalOrder}
-            </p>
-          )
+          return <p className="line-clamp-1">{row.original.totalOrder}</p>
         }
       },
       {
         accessorKey: "estimatedTime",
         header: "Estimate Time",
-        size: 80,
         Cell: ({ row }) => {
-          return (
-            <p className="line-clamp-1 max-w-[80px]">
-              {row.original.estimatedTime}
-            </p>
-          )
+          return <p className="line-clamp-1">{row.original.estimatedTime}</p>
         }
       },
       {
