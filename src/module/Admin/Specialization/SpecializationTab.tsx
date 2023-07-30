@@ -1,5 +1,6 @@
 import { yupResolver } from "@hookform/resolvers/yup"
 import { Box, IconButton, Tooltip } from "@mui/material"
+import classNames from "classnames"
 import TableCustom from "components/Common/Table/TableCustom"
 import CustomButton from "components/User/Button"
 import { CustomInput } from "components/User/Input"
@@ -168,16 +169,20 @@ const SpecializationTab = () => {
         onSubmit={handleSubmit(onSubmit)}
       >
         <InputField
-          size="medium"
+          size="small"
           control={control}
           name="specializationName"
           label={"Specialization name"}
         />
 
         <CustomButton
+          color={mode === "create" ? "primary" : "secondary"}
           kind="primary"
           type="submit"
-          className="w-fit"
+          className={classNames(
+            "w-fit",
+            mode === "create" ? "bg-primary" : "bg-secondary text-white"
+          )}
           isLoading={createSpecialization.isLoading}
         >
           {mode === "create" ? "Create" : "Update"}

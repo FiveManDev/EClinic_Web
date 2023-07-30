@@ -6,10 +6,7 @@ export const CommentAvatar = ({ avatar = "" }) => {
       <ImageCustom
         src={avatar || "/images/sample.png"}
         fill
-        sizes="(max-width: 768px) 50vw,
-      (max-width: 1200px) 30vw,
-      20vw"
-        alt="Michael Gough"
+        alt="user-avatar"
         className="object-cover rounded-full"
       />
     </div>

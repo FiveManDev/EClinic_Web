@@ -62,14 +62,14 @@ class BookingService {
       console.log("BookingService ~ error:", error)
     }
   }
-  async getAllBookingDoctorForAd(
+  async GetAllBookingDoctorForDoctor(
     pageNumber: number,
     pageSize: number,
     status: number
   ) {
     try {
       const res: AxiosResponse = await axiosClient.get(
-        `${URL_API.BOOKING.DOCTOR}/GetAllBookingDoctorForAD?BookingStatus=${status}`,
+        `${URL_API.BOOKING.DOCTOR}/GetAllBookingDoctorForDoctor?BookingStatus=${status}`,
         {
           headers: {
             PageNumber: pageNumber,

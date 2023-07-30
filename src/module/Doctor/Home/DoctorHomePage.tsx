@@ -1,6 +1,6 @@
 import { Calendar, dayjsLocalizer } from "react-big-calendar"
 import {
-  useGetAllBookingDoctorForAdQuery,
+  useGetAllBookingDoctorForDoctorQuery,
   useUpdateStateBookingDoctorDoneMutation
 } from "hooks/query/booking"
 import MainHeadingLayout from "layout/Management/MainHeadingLayout"
@@ -33,7 +33,7 @@ const DoctorHomePage = () => {
   const [eventSelected, setEventSelected] = useState<IBookingDoctor | null>(
     null
   )
-  const { data, isLoading, refetch } = useGetAllBookingDoctorForAdQuery(
+  const { data, isLoading, refetch } = useGetAllBookingDoctorForDoctorQuery(
     1,
     100,
     STATUS_BOOKING.UPCOMING

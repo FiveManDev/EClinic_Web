@@ -6,7 +6,6 @@ import {
   useCreateReplyCommentForumMutation,
   useDeleteCommnetForumMutation,
   useDeleteReplyCommnetForumMutation,
-  useGetAllCommentForumQuery,
   useLikeCommnetForumMutation,
   useLikePostForumMutation,
   useLikeReplyCommnetForumMutation,
@@ -24,7 +23,7 @@ import {
   UpdateActionType
 } from "types/Post"
 import AnswerQuestion from "../answer/AnswerQuestion"
-import EmtyData from "components/Common/Empty"
+import { queryClient } from "pages/_app"
 
 const Comment = dynamic(
   () => import("../comment").then((module) => module.default),
@@ -37,10 +36,9 @@ interface Props {
 }
 const DetailForum = ({ post }: Props) => {
   const { t } = useTranslation(["base", "forum"])
-  const queryClient = useQueryClient()
-  const { data, isLoading, isError, refetch } = useGetAllCommentForumQuery(
-    post.id
-  )
+  // const { data, isLoading, isError, refetch } = useGetAllCommentForumQuery(
+  //   post.id
+  // )
 
   const createCommentForumMutation = useCreateCommentForumMutation()
   const createReplyCommentForumMutation = useCreateReplyCommentForumMutation()
@@ -52,12 +50,6 @@ const DetailForum = ({ post }: Props) => {
   const likeCommnetForumMutation = useLikeCommnetForumMutation()
   const likePostForumMutation = useLikePostForumMutation()
 
-  if (isLoading) {
-    return <p>Loading....</p>
-  }
-  if (isError) {
-    return <EmtyData />
-  }
   const handleCreateComment = (value: string) => {
     if (value) {
       createCommentForumMutation.mutate(
@@ -67,7 +59,7 @@ const DetailForum = ({ post }: Props) => {
         },
         {
           onSuccess: () => {
-            refetch()
+            queryClient.refetchQueries([QUERY_KEYS.FORUM.COMMENT])
             toast.success("Comment sucessfully!")
           },
           onError: () => {
@@ -87,7 +79,7 @@ const DetailForum = ({ post }: Props) => {
       },
       {
         onSuccess: () => {
-          refetch()
+          queryClient.refetchQueries([QUERY_KEYS.FORUM.COMMENT])
           toast.success("Reply Comment sucessfully!")
         },
         onError: () => {
@@ -100,7 +92,7 @@ const DetailForum = ({ post }: Props) => {
     if (data.ParentCommentID) {
       deleteReplyCommnetForumMutation.mutate(data, {
         onSuccess: () => {
-          refetch()
+          queryClient.refetchQueries([QUERY_KEYS.FORUM.COMMENT])
           toast.success("Delete Comment sucessfully!")
         },
         onError: () => {
@@ -110,7 +102,7 @@ const DetailForum = ({ post }: Props) => {
     } else {
       deleteCommnetForumMutation.mutate(data, {
         onSuccess: () => {
-          refetch()
+          queryClient.refetchQueries([QUERY_KEYS.FORUM.COMMENT])
           toast.success("Delete Comment sucessfully!")
         },
         onError: () => {
@@ -127,7 +119,7 @@ const DetailForum = ({ post }: Props) => {
         },
         {
           onSuccess: () => {
-            refetch()
+            queryClient.refetchQueries([QUERY_KEYS.FORUM.COMMENT])
             toast.success("Update Comment sucessfully!")
           },
           onError: () => {
@@ -142,7 +134,7 @@ const DetailForum = ({ post }: Props) => {
         },
         {
           onSuccess: () => {
-            refetch()
+            queryClient.refetchQueries([QUERY_KEYS.FORUM.COMMENT])
             toast.success("Update Comment sucessfully!")
           },
           onError: () => {
@@ -158,7 +150,7 @@ const DetailForum = ({ post }: Props) => {
         { ...data },
         {
           onSuccess: () => {
-            refetch()
+            queryClient.refetchQueries([QUERY_KEYS.FORUM.COMMENT])
           },
           onError: () => {
             toast.error("Like comment failed!")
@@ -170,7 +162,7 @@ const DetailForum = ({ post }: Props) => {
         { ...data },
         {
           onSuccess: () => {
-            refetch()
+            queryClient.refetchQueries([QUERY_KEYS.FORUM.COMMENT])
           },
           onError: () => {
             toast.error("Like comment failed!")
@@ -217,14 +209,16 @@ const DetailForum = ({ post }: Props) => {
         </div>
         <div className="w-full h-[1px] bg-slate-200 my-3"></div>
         <AnswerQuestion postId={post.id} />
-        <Comment
-          comments={data.data}
-          onCreateComment={handleCreateComment}
-          onCreateReply={handleCreateReply}
-          onDeleteComment={handleDeleteComment}
-          updateComment={handleUpdateComment}
-          onLikeComment={handleLikeComment}
-        />
+        {post.id && (
+          <Comment
+            postId={post.id}
+            onCreateComment={handleCreateComment}
+            onCreateReply={handleCreateReply}
+            onDeleteComment={handleDeleteComment}
+            updateComment={handleUpdateComment}
+            onLikeComment={handleLikeComment}
+          />
+        )}
       </div>
       {/* <div className="col-span-3 space-y-4 md:col-span-2 background-primary">
         <ListCardForum title={t("forum:related")} />

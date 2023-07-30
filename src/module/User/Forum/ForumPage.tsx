@@ -38,7 +38,7 @@ const ForumPage = () => {
         <link rel="icon" href="/images/favicon.png" />
       </Head>
       <UserSecondaryLayout breadrums={breadrums}>
-        <div className="grid grid-cols-3 gap-4 mt-10 md:gap-7">
+        <div className="grid grid-cols-3 gap-4 mt-6 md:gap-7">
           <div className="grid grid-cols-3 col-span-3 gap-7">
             <div className="order-last col-span-3 space-y-3 md:order-first md:col-span-2">
               <CreateQuestion

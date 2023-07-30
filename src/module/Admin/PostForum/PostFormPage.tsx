@@ -1,9 +1,9 @@
 import Head from "next/head"
 import React from "react"
-import TableQuestionRequest from "./section/TableQuestionRequest"
 import MainHeadingLayout from "layout/Management/MainHeadingLayout"
+import ListPostForum from "./ListPostForum"
 
-const QuestionRequest = () => {
+const PostFormPage = () => {
   return (
     <>
       <Head>
@@ -13,10 +13,10 @@ const QuestionRequest = () => {
         <link rel="icon" href="/images/favicon.png" />
       </Head>
       <MainHeadingLayout heading="Question Management">
-        <TableQuestionRequest />
+        <ListPostForum />
       </MainHeadingLayout>
     </>
   )
 }
 
-export default QuestionRequest
+export default PostFormPage

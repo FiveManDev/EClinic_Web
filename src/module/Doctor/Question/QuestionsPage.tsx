@@ -8,7 +8,7 @@ const QuestionsPage = () => {
       <Head>
         <title>Question page</title>
       </Head>
-      <MainHeadingLayout heading="Manage Question">
+      <MainHeadingLayout heading="Question Management">
         <TableQuestion />
       </MainHeadingLayout>
     </>

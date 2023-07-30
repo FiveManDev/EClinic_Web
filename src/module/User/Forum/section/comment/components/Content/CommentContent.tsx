@@ -50,12 +50,12 @@ export const CommentContent = ({
     <>
       <div className="flex items-center justify-between mb-2">
         <div className="flex items-center">
-          <p className="inline-flex items-center mr-3 text-sm text-gray-900 ">
+          <div className="inline-flex items-center mr-3 text-sm text-gray-900 ">
             <CommentAvatar avatar={comment.author.avatar} />
             <span>
               {combineName(comment.author.firstName, comment.author.lastName)}
             </span>
-          </p>
+          </div>
           <p className="text-sm text-gray-600 ">
             <time dateTime={dayformat(comment.updatedAt)}>
               {dayformat(comment.updatedAt)}
