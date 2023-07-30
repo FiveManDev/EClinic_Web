@@ -97,6 +97,12 @@ class ForumService {
     )
     return res.data as IServerResponse<null>
   }
+  async deletePostByID(postId: string) {
+    const res: AxiosResponse = await axiosClient.delete(
+      `${URL_API.FORUM_POST}/DeletePostByID?PostID=${postId}`
+    )
+    return res.data as IServerResponse<string>
+  }
   async getPostById(id: string) {
     const res: AxiosResponse = await axiosClient.get(
       `${URL_API.FORUM_POST}/GetPostById?PostID=${id}`
@@ -221,6 +227,18 @@ class ForumService {
   async getPostsNoActive(pageNumber: number, pageSize: number) {
     const res: AxiosResponse = await axiosServer.get(
       `${URL_API.FORUM_POST}/GetPostNotActive`,
+      {
+        headers: {
+          PageNumber: pageNumber,
+          PageSize: pageSize
+        }
+      }
+    )
+    return res as AxiosResponse<IServerResponse<IPost[]>>
+  }
+  async GetPostForAd(pageNumber: number, pageSize: number) {
+    const res: AxiosResponse = await axiosClient.get(
+      `${URL_API.FORUM_POST}/GetPostForAd`,
       {
         headers: {
           PageNumber: pageNumber,

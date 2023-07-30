@@ -1,3 +1,4 @@
+import EmtyData from "components/Common/Empty"
 import PaginationCustom from "components/Common/Pagination"
 import CardForum from "module/User/components/CardForum"
 import CardForumLoading from "module/User/components/CardForum/Loading"
@@ -24,6 +25,7 @@ const ListCardForum = ({
     <>
       <div className="flex flex-col w-full gap-y-4 ">
         <h4 className="text-xl "> {title}</h4>
+        {posts?.length === 0 && <EmtyData />}
         <div className="grid grid-cols-1 gap-8 md:grid-cols-2">
           {isLoading &&
             Array(4)

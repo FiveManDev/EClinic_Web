@@ -51,7 +51,15 @@ const schema = yup.object({
   serviceItems: yup
     .array()
     .min(1, "Please choose at least one service")
-    .required("Please choose service")
+    .required("Please choose service"),
+  image: yup
+    .mixed()
+    .test(
+      "fileType",
+      "Unsupported file type",
+      (value) =>
+        !value || (value && ["image/jpeg", "image/png"].includes(value.type))
+    )
 })
 interface Props {
   labelForm: string
@@ -83,9 +91,11 @@ const CreateServicePackage = ({
     resolver: yupResolver(schema),
     defaultValues: servicePackage
   })
+  console.log("errors:", errors)
   const serviceSelected = watch("serviceItems")
   const watchDesc = watch("description")
   const watchImage = watch("image")
+  console.log("watchImage:", watchImage)
   const watchPrice = watch("price")
   const watchDiscount = watch("discount")
   const watchIsActive = watch(
@@ -117,7 +127,7 @@ const CreateServicePackage = ({
             {
               onSuccess: (data) => {
                 if (data?.isSuccess) {
-                  toast.success("Update a service package successfuly")
+                  toast.success("Update completed")
                   queryClient.invalidateQueries([QUERY_KEYS.SERVICE_PACKAGE])
                 } else {
                   toast.error("Update a service package fail")

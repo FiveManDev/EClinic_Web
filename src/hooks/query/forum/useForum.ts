@@ -40,6 +40,14 @@ export const useGetPostsNoActiveQuery = (
     keepPreviousData: true
   })
 }
+export const useGetPostForAd = (pageNumber: number, pageSize: number) => {
+  const queryKey = [QUERY_KEYS.FORUM.POST, pageNumber, pageSize]
+  return useQuery({
+    queryKey,
+    queryFn: () => forumService.GetPostForAd(pageNumber, pageSize),
+    keepPreviousData: true
+  })
+}
 export const useGetPostNoAnserForumQuery = (
   pageNumber: number,
   pageSize: number

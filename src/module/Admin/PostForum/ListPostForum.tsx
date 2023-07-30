@@ -1,19 +1,17 @@
-import { IconButton } from "@mui/material"
-import { useQueryClient } from "@tanstack/react-query"
+import { IconButton, Tooltip } from "@mui/material"
+import { useMutation, useQueryClient } from "@tanstack/react-query"
 import ImageCustom from "components/Common/ImageCustom"
 import TableCustom from "components/Common/Table/TableCustom"
 import Tag from "components/Common/Tag"
 import { CustomInput } from "components/User/Input"
 import useConfirm from "context/ComfirmContext"
-import {
-  useChangeActivePost,
-  useGetPostsNoActiveQuery
-} from "hooks/query/forum/useForum"
+import { useGetPostForAd } from "hooks/query/forum/useForum"
 import { MRT_ColumnDef, MRT_PaginationState } from "material-react-table"
 import ViewDetailPost from "module/Supporter/components/ViewDetailPost"
 import { useMemo, useState } from "react"
 import { toast } from "react-hot-toast"
-import { AiFillLock, AiFillUnlock } from "react-icons/ai"
+import { MdOutlineDelete } from "react-icons/md"
+import { forumService } from "services/forum.service"
 import { QUERY_KEYS } from "shared/constant/constant"
 import { combineName, dayformat, getDataPaginate } from "shared/helpers/helper"
 import colorsProvider from "shared/theme/colors"
@@ -21,31 +19,31 @@ import { IPost } from "types/Post"
 
 export default function ListPostForum() {
   const queryClient = useQueryClient()
-  const changeActivePost = useChangeActivePost()
+  const deletePostMutation = useMutation(forumService.deletePostByID)
   const confirm = useConfirm()
   const [pagination, setPagination] = useState<MRT_PaginationState>({
-    pageIndex: 1,
+    pageIndex: 0,
     pageSize: 10
   })
-  const { data, isLoading, isError, isRefetching } = useGetPostsNoActiveQuery(
+  const { data, isLoading, isError, isRefetching } = useGetPostForAd(
     pagination.pageIndex + 1,
     pagination.pageSize
   )
 
-  const changeStatusPost = async (postId: string) => {
+  const deletePost = async (postId: string) => {
     if (confirm) {
       const choice = await confirm({
-        title: "Change status of post?",
-        content: "Are you sure you want to change status this question?"
+        title: "Delete of post?",
+        content: "Are you sure you want to delete this post?"
       })
       if (choice) {
-        changeActivePost.mutate(postId, {
+        deletePostMutation.mutate(postId, {
           onSuccess: (data) => {
             queryClient.invalidateQueries([QUERY_KEYS.FORUM.POST])
             toast.success(data.message as string)
           },
           onError: () => {
-            toast.error("Change status of post failed")
+            toast.error("Change of post failed")
           }
         })
       }
@@ -134,9 +132,6 @@ export default function ListPostForum() {
     []
   )
   const paginationData = getDataPaginate(data)
-  if (isError) {
-    return <p> Error</p>
-  }
   return (
     <TableCustom
       pagination={pagination}
@@ -151,9 +146,11 @@ export default function ListPostForum() {
       renderRowActions={({ row }) => (
         <div className="flex items-center flex-shrink-0 w-16">
           <ViewDetailPost post={row.original} />
-          <IconButton onClick={() => changeStatusPost(row.original.id)}>
-            {row.original.isActive ? <AiFillLock /> : <AiFillUnlock />}
-          </IconButton>
+          <Tooltip arrow placement="left" title="Delete this post">
+            <IconButton onClick={() => deletePost(row.original.id)}>
+              <MdOutlineDelete />
+            </IconButton>
+          </Tooltip>
         </div>
       )}
       renderTopToolbarCustomActions={() => (

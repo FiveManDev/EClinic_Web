@@ -14,7 +14,7 @@ const schema = yup.object({
   newPassword: yup.string().required("Please enter your new password"),
   confirmPassword: yup
     .string()
-    .required("Please enter your password")
+    .required("Please enter new confirm password")
     .oneOf([yup.ref("newPassword")], "Passwords do not match")
 })
 const ChangePassword = () => {
@@ -58,7 +58,7 @@ const ChangePassword = () => {
       />
       <CustomInputPassword
         size="medium"
-        label="Enter a new password"
+        label="Enter confirm new password"
         control={control}
         name="confirmPassword"
         error={!!errors.confirmPassword}
