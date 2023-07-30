@@ -163,7 +163,7 @@ const AdminLayout = ({ children }: PropsWithChildren) => {
             </svg>
           </>
         ),
-        title: "Pots",
+        title: "Posts",
         link: "/admin/posts"
       },
       {
