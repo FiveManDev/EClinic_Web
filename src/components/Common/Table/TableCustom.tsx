@@ -31,6 +31,7 @@ const TableCustom = <T extends Record<string, any>>({
   if (pagination) {
     return (
       <MaterialReactTable
+        enableColumnResizing
         {...props}
         columns={columns}
         manualPagination
