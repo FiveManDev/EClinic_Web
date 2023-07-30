@@ -12,6 +12,11 @@ const CommentInput = ({ onSubmit, ...props }: Props) => {
   return (
     <>
       <input
+        onKeyDown={(e) => {
+          if (e.key === "Enter") {
+            onSubmit()
+          }
+        }}
         {...props}
         type="text"
         placeholder="Write your reply comment here"

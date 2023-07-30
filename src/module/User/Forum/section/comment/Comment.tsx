@@ -1,3 +1,4 @@
+import { useInfiniteQuery } from "@tanstack/react-query"
 import CustomButton from "components/User/Button"
 import { ToastNavigate } from "module/User/components/Toast/ToastNavigate"
 import { useRouter } from "next/router"
@@ -5,17 +6,16 @@ import { useRef } from "react"
 import { toast } from "react-hot-toast"
 import { useTranslation } from "react-i18next"
 import { useSelector } from "react-redux"
+import { forumService } from "services/forum.service"
+import { PAGE_SIZE, QUERY_KEYS } from "shared/constant/constant"
 import { routers } from "shared/constant/routers"
+import { getDataPaginate } from "shared/helpers/helper"
 import { RootState } from "store/store"
-import {
-  DeleteActionType,
-  IComment,
-  LikeActionType,
-  UpdateActionType
-} from "types/Post"
+import { DeleteActionType, LikeActionType, UpdateActionType } from "types/Post"
 import CommemtItem from "./CommemtItem"
+import classNames from "classnames"
 interface Props {
-  comments: IComment[]
+  postId: string
   // eslint-disable-next-line no-unused-vars
   onCreateComment: (value: string) => void
   // eslint-disable-next-line no-unused-vars
@@ -28,7 +28,7 @@ interface Props {
   onLikeComment: (data: LikeActionType) => void
 }
 const Comment = ({
-  comments,
+  postId,
   onCreateComment,
   onCreateReply,
   onDeleteComment,
@@ -40,6 +40,19 @@ const Comment = ({
   const { t } = useTranslation(["base", "forum"])
   const auth = useSelector((state: RootState) => state.auth)
 
+  const { data, isLoading, hasNextPage, fetchNextPage } = useInfiniteQuery(
+    [QUERY_KEYS.FORUM.COMMENT],
+    async ({ pageParam = 1 }) => {
+      const res = await forumService.GetAllComment(postId, pageParam, PAGE_SIZE)
+      return res
+    },
+    {
+      getNextPageParam: (lastPage) =>
+        getDataPaginate(lastPage).HasNext
+          ? getDataPaginate(lastPage).PageIndex + 1
+          : undefined
+    }
+  )
   const handleSubmitComtent = () => {
     if (auth.user.userId) {
       if (inputRef.current) {
@@ -58,22 +71,30 @@ const Comment = ({
       ))
     }
   }
+  if (isLoading) {
+    return <div>Loading...</div>
+  }
   return (
     <>
       <section className="py-4 bg-white md:py-6 ">
         <div className="w-full mx-auto">
           <div className="flex items-center justify-between mb-6">
             <h2 className="text-lg font-bold text-gray-900 lg:text-2xl ">
-              {t("forum:discussion")} ({comments.length})
+              {/* {t("forum:discussion")} ({comments.length}) */}
             </h2>
           </div>
           <form className="mb-6">
             <div className="w-full px-4 py-2 mb-4 bg-white border border-gray-200 border-solid rounded-lg rounded-t-lg ">
               <textarea
+                onKeyDown={(e) => {
+                  if (e.key === "Enter") {
+                    handleSubmitComtent()
+                  }
+                }}
                 ref={inputRef}
                 id="comment"
                 rows={6}
-                className="w-full px-0 text-sm text-gray-900 border-0 focus:ring-0 focus:outline-none "
+                className="w-full px-0 text-sm text-gray-900 border-0 focus:ring-0 focus:outline-none"
                 placeholder={t("forum:writeComment")}
                 required
                 defaultValue={""}
@@ -88,17 +109,32 @@ const Comment = ({
               <span className="!text-[12px]">{t("forum:btnComment")}</span>
             </CustomButton>
           </form>
-          {comments.length === 0 && <p>No comment on this post</p>}
-          {comments.map((comment) => (
-            <CommemtItem
-              key={comment.id}
-              comment={comment}
-              onCreateReply={onCreateReply}
-              onDeleteComment={onDeleteComment}
-              updateComment={updateComment}
-              onLikeComment={onLikeComment}
-            />
-          ))}
+          {data?.pages &&
+            data?.pages.map(
+              (page) =>
+                page.data.data?.length > 0 &&
+                page.data.data.map((item) => {
+                  return (
+                    <CommemtItem
+                      key={item.id}
+                      comment={item}
+                      onCreateReply={onCreateReply}
+                      onDeleteComment={onDeleteComment}
+                      updateComment={updateComment}
+                      onLikeComment={onLikeComment}
+                    />
+                  )
+                })
+            )}
+          <CustomButton
+            onClick={() => {
+              hasNextPage && fetchNextPage()
+            }}
+            className={classNames("mx-auto", !hasNextPage && "hidden")}
+          >
+            Load more
+          </CustomButton>
+          {/* {comments.length === 0 && <EmtyData message="No comment yet" />} */}
         </div>
       </section>
     </>

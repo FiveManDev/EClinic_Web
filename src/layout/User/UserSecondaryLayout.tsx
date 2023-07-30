@@ -1,5 +1,11 @@
 import { Container } from "@mui/material"
-import BreadcrumsCustom from "components/Common/Breadcrums"
+import dynamic from "next/dynamic"
+const BreadcrumsCustom = dynamic(
+  () => import("components/Common/Breadcrums").then((module) => module.default),
+  {
+    ssr: false
+  }
+)
 import { PropsWithChildren } from "react"
 import { IBreadcrum } from "types/Base.type"
 

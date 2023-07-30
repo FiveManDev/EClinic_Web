@@ -1,4 +1,5 @@
 import ChipCustom from "components/Common/Chip/Chip"
+import EmtyData from "components/Common/Empty"
 import { useGetAnwerByPostId } from "hooks/query/forum/useForum"
 import HTMLReactParser from "html-react-parser"
 import Info from "module/User/components/Info/Info"
@@ -11,10 +12,20 @@ const AnswerQuestion = ({ postId }: Props) => {
   const { t } = useTranslation(["base", "forum"])
   const { data, isError, isLoading } = useGetAnwerByPostId(postId)
   if (isLoading) {
-    return <p>Loading....</p>
+    return (
+      <EmtyData
+        message="Not answered"
+        urLImage="/images/conversation-img.png"
+      />
+    )
   }
   if (isError) {
-    return <p>Wait for the doctor to answer</p>
+    return (
+      <EmtyData
+        message="Not answered"
+        urLImage="/images/conversation-img.png"
+      />
+    )
   }
   return (
     <>
@@ -23,7 +34,7 @@ const AnswerQuestion = ({ postId }: Props) => {
         <div className="flex flex-col gap-y-2">
           <Info data={data.data.author} />
           <article className="entry-content ">
-            {HTMLReactParser(data.data.content)}
+            {HTMLReactParser(data.data.content || "")}
           </article>
         </div>
       </div>

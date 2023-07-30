@@ -103,11 +103,17 @@ class ForumService {
     )
     return res.data as IServerResponse<IPost>
   }
-  async GetAllComment(postId: string) {
+  async GetAllComment(postId: string, pageNumber: number, pageSize: number) {
     const res: AxiosResponse = await axiosClient.get(
-      `${URL_API.FORUM_POST_COMMENT}/GetAllComment?PostID=${postId}`
+      `${URL_API.FORUM_POST_COMMENT}/GetAllComment?PostID=${postId}`,
+      {
+        headers: {
+          PageNumber: pageNumber,
+          PageSize: pageSize
+        }
+      }
     )
-    return res.data as IServerResponse<IComment[]>
+    return res as AxiosResponse<IServerResponse<IComment[]>>
   }
   async deletePost(postId: string) {
     const res: AxiosResponse = await axiosClient.delete(

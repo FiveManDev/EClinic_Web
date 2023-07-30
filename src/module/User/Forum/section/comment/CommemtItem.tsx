@@ -1,7 +1,6 @@
 import useConfirm from "context/ComfirmContext"
 import { useState } from "react"
 import { toast } from "react-hot-toast"
-import { useTranslation } from "react-i18next"
 import {
   DeleteActionType,
   IComment,
@@ -30,7 +29,6 @@ const CommemtItem = ({
   updateComment,
   onLikeComment
 }: Props) => {
-  const { t } = useTranslation(["base", "forum"])
   const confirm = useConfirm()
 
   const [openRep, setOpenRep] = useState(false)

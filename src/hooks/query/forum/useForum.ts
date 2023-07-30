@@ -95,13 +95,13 @@ export const useGetPostByUserId = (pageNumber: number, pageSize: number) => {
     queryFn: () => forumService.getPossByUserId(pageNumber, pageSize)
   })
 }
-export const useGetAllCommentForumQuery = (postId: string) => {
-  const queryKey = [QUERY_KEYS.FORUM.COMMENT, postId]
-  return useQuery({
-    queryKey,
-    queryFn: () => forumService.GetAllComment(postId)
-  })
-}
+// export const useGetAllCommentForumQuery = (postId: string) => {
+//   const queryKey = [QUERY_KEYS.FORUM.COMMENT, postId]
+//   return useQuery({
+//     queryKey,
+//     queryFn: () => forumService.GetAllComment(postId)
+//   })
+// }
 export const useCreateCommentForumMutation = () =>
   useMutation({
     mutationFn: (body: ICreateCommentForum) => forumService.createComment(body)

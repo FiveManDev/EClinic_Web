@@ -1,6 +1,5 @@
 import { Skeleton } from "@mui/material"
-import Image from "next/image"
-import React from "react"
+import ImageCustom from "components/Common/ImageCustom"
 import { useTranslation } from "react-i18next"
 import { Author } from "types/Post"
 type Props = {
@@ -14,7 +13,7 @@ const Info = ({ data, loading = false }: Props) => {
     <div className="flex items-center space-x-3">
       <div className="relative h-14 md:w-11 w-14 md:h-11">
         {data && (
-          <Image
+          <ImageCustom
             src={data.avatar || "/images/sample.png"}
             fill
             alt="image"
