@@ -51,15 +51,7 @@ const schema = yup.object({
   serviceItems: yup
     .array()
     .min(1, "Please choose at least one service")
-    .required("Please choose service"),
-  image: yup
-    .mixed()
-    .test(
-      "fileType",
-      "Unsupported file type",
-      (value) =>
-        !value || (value && ["image/jpeg", "image/png"].includes(value.type))
-    )
+    .required("Please choose service")
 })
 interface Props {
   labelForm: string
@@ -91,11 +83,9 @@ const CreateServicePackage = ({
     resolver: yupResolver(schema),
     defaultValues: servicePackage
   })
-  console.log("errors:", errors)
   const serviceSelected = watch("serviceItems")
   const watchDesc = watch("description")
   const watchImage = watch("image")
-  console.log("watchImage:", watchImage)
   const watchPrice = watch("price")
   const watchDiscount = watch("discount")
   const watchIsActive = watch(
@@ -106,6 +96,10 @@ const CreateServicePackage = ({
     setValue("image", file)
   }
   const onSubmit = async (value: FieldValues) => {
+    if (!value.image) {
+      toast.error("Please upload image")
+      return
+    }
     const newServices =
       value.serviceItems.length > 0
         ? value.serviceItems.map((item: Service) => item.serviceID)
@@ -238,6 +232,7 @@ const CreateServicePackage = ({
             <div className="flex flex-col gap-y-2">
               <span className="text-gray-500">Image</span>
               <UpdateCover
+                isError={!!errors.image}
                 onFileChange={onFileChange}
                 imageUrl={watchImage || null}
               />

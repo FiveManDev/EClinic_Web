@@ -5,9 +5,9 @@ import {
   ChangeEvent,
   DetailedHTMLProps,
   InputHTMLAttributes,
-  useEffect
+  useEffect,
+  useState
 } from "react"
-import { toast } from "react-hot-toast"
 import { isImage } from "shared/helpers/helper"
 import ImageCustom from "../ImageCustom"
 
@@ -21,6 +21,7 @@ interface UpdateCoverProps
   onFileChange: (file: File | null) => void
   isError?: boolean
 }
+
 export const UpdateCover = ({
   imageUrl = null,
   onFileChange,
@@ -29,27 +30,47 @@ export const UpdateCover = ({
 }: UpdateCoverProps) => {
   const { image, handleImageChange, setImage, handleRemoveImage } =
     useImageFile(imageUrl)
+
+  const [error, setError] = useState<string | null>(null)
+
   const onImageChange = (e: ChangeEvent<HTMLInputElement>) => {
-    const file = handleImageChange(e)
-    if (isImage(file!)) {
-      onFileChange(file!)
+    setError(null)
+    const files = e.target.files
+    if (!files || files.length === 0) {
+      // No files selected
+      return
+    }
+
+    const fileCheck = files[0]
+    if (isImage(fileCheck!)) {
+      const file = handleImageChange(e)
+      if (isImage(file!)) {
+        onFileChange(file!)
+      } else {
+        setError("File is not an image type")
+      }
     } else {
-      toast.error("File is not image type")
+      setError("File is not an image type")
     }
   }
+
   useEffect(() => {
     if (typeof imageUrl === "string" || !imageUrl) {
       setImage(imageUrl)
     }
   }, [imageUrl])
+  const clearImage = () => {
+    setError(null)
+    handleRemoveImage()
+  }
   return (
-    <div className="relative flex justify-center w-full ">
+    <div className="relative flex flex-col justify-center w-full gap-y-2">
       {image && (
         <div
           className="absolute top-0 right-0 z-20 flex items-center justify-center w-6 h-6 text-white transition-all bg-black rounded-full cursor-pointer -translate-x-2/4 translate-y-2/4 bg-opacity-40 hover:bg-opacity-30 hover:scale-105"
           onClick={(e) => {
             e.stopPropagation()
-            handleRemoveImage()
+            clearImage()
             onFileChange(null)
           }}
         >
@@ -72,7 +93,7 @@ export const UpdateCover = ({
       <label
         className={classNames(
           "relative flex flex-col items-center justify-center w-full h-72 p-3 transition-all border border-gray-400 border-dashed cursor-pointer bg-gray-50 rounded-xl hover:bg-gray-100 hover:border-gray-300",
-          isError && "border-red-500"
+          (isError || error) && "border-red-500 hover:border-red-500" // Add border color when there is an error
         )}
       >
         {image ? (
@@ -81,7 +102,7 @@ export const UpdateCover = ({
             priority
             fill
             alt="avatar"
-            className="object-cover rounded-xl"
+            className="object-contain rounded-xl"
           />
         ) : (
           <div className="flex flex-col items-center gap-x-3 md:flex-row">
@@ -111,6 +132,10 @@ export const UpdateCover = ({
           onChange={(e) => onImageChange(e)}
         />
       </label>
+      {isError && (
+        <span className="text-xs text-red-500">Image is required.</span>
+      )}
+      {error && <span className="text-xs text-red-500 ">{error}</span>}
     </div>
   )
 }

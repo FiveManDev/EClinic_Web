@@ -94,7 +94,7 @@ const Form = () => {
       },
       {
         onSuccess: () => {
-          toast.success("Sign up successfuly!!")
+          toast.success("Reset password successfuly!!")
           router.push(routers.signIn)
         },
         onError: (data: any) => {
@@ -128,12 +128,7 @@ const Form = () => {
               onSubmit={handleSubmit(handleSubmitForgot)}
               className="flex flex-col space-y-5"
             >
-              <InputField
-                size="medium"
-                control={control}
-                name="email"
-                label={"Email"}
-              />
+              <InputField control={control} name="email" label={"Email"} />
 
               <CustomInputPassword
                 label="New Password"
