@@ -1,4 +1,6 @@
 import { useInfiniteQuery, useMutation } from "@tanstack/react-query"
+import Tag from "components/Common/Tag"
+import useConfirm from "context/ComfirmContext"
 import { useSignalRCall } from "context/SignalRCallContext"
 import { useSignalRMessage } from "context/SignalRMessageContext"
 import { AnimatePresence } from "framer-motion"
@@ -12,6 +14,7 @@ import { useSelector } from "react-redux"
 import { chatService } from "services/chat.service"
 import { PAGE_SIZE, QUERY_KEYS } from "shared/constant/constant"
 import { combineName, getDataPaginate } from "shared/helpers/helper"
+import colorsProvider from "shared/theme/colors"
 import { RootState } from "store/store"
 import { Message, ProfileChat } from "types/Chat"
 import ButtonScroll from "./ButtonScroll"
@@ -19,10 +22,6 @@ import { HeaderBox } from "./HeaderBox"
 import InputMessage from "./InputMessage"
 import TextMessage from "./TextMessage"
 import VideoCall from "./VideoCall"
-import useConfirm from "context/ComfirmContext"
-import Tag from "components/Common/Tag"
-import colorsProvider from "shared/theme/colors"
-import { useSignalRNotification } from "context/SignalRNotification"
 
 interface IProps {
   toggleInfo: () => void
@@ -92,34 +91,37 @@ const MessageBox = ({ toggleInfo, userId: id, isClose }: IProps) => {
       })
     }
   }
-  useEffect(() => {
-    if (isConnected && connectionMessage.current) {
-      connectionMessage.current
-        .invoke("JoinGroup", roomId)
-        .then(() => {})
-        .catch((err) => {
-          return console.error(err.toString())
-        })
-    }
-  }, [roomId, isConnected, connectionMessage])
 
   useEffect(() => {
     if (isConnected) {
-      connectionMessage.current!.start().catch((err) => {
-        return console.error(err.toString())
-      })
-      connectionMessage.current!.on("Response", (message: Message) => {
-        if (message) {
-          setMessages((prevMes) => [...prevMes, message])
-          queryClient.refetchQueries([QUERY_KEYS.CHAT.ROOM])
-        }
-      })
-      connectionMessage.current?.on("NewAnswer", (profile: ProfileChat) => {
-        console.log("connectionMessage.current?.on ~ profile:", profile)
-        if (profile) {
-          setUserId(profile.userID)
-        }
-      })
+      connectionMessage
+        .current!.start()
+        .then(() => {
+          connectionMessage
+            .current!.invoke("JoinGroup", roomId)
+            .then(() => {
+              connectionMessage.current!.on("Response", (message: Message) => {
+                if (message) {
+                  setMessages((prevMes) => [...prevMes, message])
+                  queryClient.refetchQueries([QUERY_KEYS.CHAT.ROOM])
+                }
+              })
+              connectionMessage.current?.on(
+                "NewAnswer",
+                (profile: ProfileChat) => {
+                  if (profile) {
+                    setUserId(profile.userID)
+                  }
+                }
+              )
+            })
+            .catch((err) => {
+              return console.error(err.toString())
+            })
+        })
+        .catch((err) => {
+          return console.error(err.toString())
+        })
     }
   }, [roomId, isConnected, connectionMessage])
   useEffect(() => {
@@ -170,7 +172,9 @@ const MessageBox = ({ toggleInfo, userId: id, isClose }: IProps) => {
         .then(() => {
           signalRConnection
             .current!.invoke("JoinCall", roomId)
-            .then(() => {})
+            .then(() => {
+              console.log("join call success", roomId)
+            })
             .catch((err) => {
               return console.error(err.toString())
             })
@@ -179,7 +183,7 @@ const MessageBox = ({ toggleInfo, userId: id, isClose }: IProps) => {
           return console.error(err.toString())
         })
     }
-  }, [roomId, isConnected, signalRConnection, userId])
+  }, [roomId, isConnected, userId])
   const handleClose = async () => {
     if (confirm) {
       const choice = await confirm({
@@ -188,7 +192,7 @@ const MessageBox = ({ toggleInfo, userId: id, isClose }: IProps) => {
       })
       if (choice) {
         closeRoom.mutate(roomId, {
-          onSuccess: (data) => {
+          onSuccess: () => {
             toast.success("Close room successfuly")
             queryClient.refetchQueries([QUERY_KEYS.CHAT.ROOM])
           },
@@ -273,7 +277,7 @@ const MessageBox = ({ toggleInfo, userId: id, isClose }: IProps) => {
           {!isBottom && <ButtonScroll onClick={scrollToBottom} />}
         </AnimatePresence>
         <div
-          className="flex flex-col h-full px-5 py-6 space-y-4 overflow-y-auto scroll-custom scroll-smooth md:h-[500px]"
+          className="flex flex-col h-full px-5 py-6 space-y-4 overflow-y-auto scroll-custom scroll-smooth "
           ref={refScroll}
         >
           {roomData.isFetchingPreviousPage && (
@@ -331,10 +335,11 @@ const MessageBox = ({ toggleInfo, userId: id, isClose }: IProps) => {
         </div>
       </div>
       {isClose ? (
-        <Tag color={colorsProvider.success} className="mx-auto my-3">
-          The room has ended or wait for the connection person to reopen the
-          room
-        </Tag>
+        <div className="flex items-center justify-center w-full py-2 bg-gray-50">
+          <Tag color={colorsProvider.success} className="mx-auto my-3">
+            The room has ended
+          </Tag>
+        </div>
       ) : (
         <InputMessage
           value={textInput}
