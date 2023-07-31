@@ -79,6 +79,7 @@ const SignalRCallContextProvider = ({ children }: PropsWithChildren<{}>) => {
     signalRConnection.current = connection
     signalRConnection.current.on("CallUser", (signal, data) => {
       const newData = JSON.parse(data)
+      console.log("signalRConnection.current.on ~ newData:", newData)
       setCall({
         isReceivingCall: true,
         roomId: newData.roomId,

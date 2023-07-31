@@ -1,6 +1,13 @@
 import { OverlayScrollbarsComponent } from "overlayscrollbars-react"
-import SideBar, { ItemSidebar } from "./components/SideBar"
-import TopBar from "./components/TopBar"
+import { ItemSidebar } from "./components/SideBar"
+import dynamic from "next/dynamic"
+
+const SideBar = dynamic(
+  () => import("./components/SideBar").then((module) => module.default),
+  {
+    ssr: false
+  }
+)
 export interface IManagmentLayout
   extends React.ComponentPropsWithoutRef<"div"> {
   justify?: "items-center" | "items-start"

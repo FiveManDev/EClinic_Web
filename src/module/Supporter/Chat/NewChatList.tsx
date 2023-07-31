@@ -34,6 +34,7 @@ const NewChatList = () => {
                 roomId
               }
             })
+            setNewChat(newChat.filter((item) => item.roomID !== roomId))
           },
           onError: () => {
             toast.error("Create message fail")
@@ -47,6 +48,7 @@ const NewChatList = () => {
       setNewChat([notification.newChat, ...newChat])
     }
   }, [notification?.newChat])
+
   const newChatHistory = newRoom.data?.data.data || []
   return (
     <>

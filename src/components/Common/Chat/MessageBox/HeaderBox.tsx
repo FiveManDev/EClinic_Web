@@ -64,27 +64,30 @@ export const HeaderBox = ({
         </div>
       </div>
       <div className="flex items-center gap-x-2">
+        {role === ROLE.DOCTOR ||
+          (role === ROLE.SUPPORTER && (
+            <>
+              <Tooltip
+                title="Close this room"
+                placement="top"
+                onClick={handleClose}
+              >
+                <IconButton>
+                  <span className="text-3xl text-red-500">
+                    <HiOutlineLockClosed />
+                  </span>
+                </IconButton>
+              </Tooltip>
+            </>
+          ))}
         {role === ROLE.DOCTOR && (
-          <>
-            <Tooltip
-              title="Close this room"
-              placement="top"
-              onClick={handleClose}
-            >
-              <IconButton>
-                <span className="text-3xl text-red-500">
-                  <HiOutlineLockClosed />
-                </span>
-              </IconButton>
-            </Tooltip>
-            <Tooltip title="Call video" placement="top" onClick={handleCall}>
-              <IconButton>
-                <span className="text-3xl text-secondary">
-                  <HiOutlineVideoCamera />
-                </span>
-              </IconButton>
-            </Tooltip>
-          </>
+          <Tooltip title="Call video" placement="top" onClick={handleCall}>
+            <IconButton>
+              <span className="text-3xl text-secondary">
+                <HiOutlineVideoCamera />
+              </span>
+            </IconButton>
+          </Tooltip>
         )}
 
         <Tooltip title="View profile" placement="top">
