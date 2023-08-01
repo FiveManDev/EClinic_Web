@@ -94,7 +94,6 @@ const SignalRCallContextProvider = ({ children }: PropsWithChildren<{}>) => {
     connection.onreconnecting(handleStop)
     connection.onreconnected(handleStart)
     signalRConnection.current = connection
-    setIsConnected(true)
     signalRConnection.current.on("CallUser", (signal, data) => {
       const newData = JSON.parse(data)
       setCall({

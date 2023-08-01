@@ -34,7 +34,7 @@ const MessageBox = ({ toggleInfo, userId: id, isClose }: IProps) => {
   const [isBottom, setIsBottom] = useState(false)
   const [textInput, setTextInput] = useState("")
   const [messages, setMessages] = useState<Message[]>([])
-  const authorProfile = useSimpleProfile(userId)
+  const authorProfile = useSimpleProfile(id)
   const confirm = useConfirm()
   const {
     answerCall,
@@ -111,6 +111,7 @@ const MessageBox = ({ toggleInfo, userId: id, isClose }: IProps) => {
           })
           connectionMessage.current?.on("NewAnswer", (profile: ProfileChat) => {
             if (profile) {
+              console.log("connectionMessage.current?.on ~ profile:", profile)
               setUserId(profile.userID)
             }
           })
@@ -282,7 +283,6 @@ const MessageBox = ({ toggleInfo, userId: id, isClose }: IProps) => {
         >
           {roomData.isFetchingPreviousPage && (
             <div className="w-6 h-6 pt-2 mx-auto ">
-              {/* <Spinner color={colorsProvider.primary} /> */}
               <div
                 className="inline-block h-8 w-8 animate-spin rounded-full border-4 border-solid border-black2 border-r-transparent align-[-0.125em] motion-reduce:animate-[spin_1.5s_linear_infinite]"
                 role="status"
@@ -294,8 +294,9 @@ const MessageBox = ({ toggleInfo, userId: id, isClose }: IProps) => {
           {roomData.isLoading &&
             Array(6)
               .fill(0)
-              .map((item, index) => (
+              .map((_, index) => (
                 <TextMessage
+                  avatar=""
                   key={index}
                   kind={index % 2 === 1 ? "owner" : "other"}
                   isLoading={roomData.isLoading}
@@ -323,9 +324,9 @@ const MessageBox = ({ toggleInfo, userId: id, isClose }: IProps) => {
               <TextMessage
                 isImage={mess.isImage}
                 avatar={
-                  mess.userID === auth.user.userId
+                  mess.userID === id
                     ? authorProfile.data?.data.avatar
-                    : roomData.data?.pages[0]?.data.data.otherProfile.avatar
+                    : roomData.data?.pages[0]?.data.data.myProfile.avatar
                 }
                 message={mess}
                 key={mess.chatMessageID}

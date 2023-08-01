@@ -2,13 +2,12 @@ import { Skeleton } from "@mui/material"
 import classNames from "classnames"
 import ImageCustom from "components/Common/ImageCustom"
 import dayjs from "dayjs"
-import { dayformat } from "shared/helpers/helper"
 import { Message } from "types/Chat"
 interface IProps {
   kind?: "owner" | "other"
   message?: Message
   isLoading?: boolean
-  avatar?: string
+  avatar: string
   isImage?: boolean
 }
 const TextMessage = ({
@@ -35,7 +34,7 @@ const TextMessage = ({
       ) : (
         <div className="relative w-10 h-10 overflow-hidden rounded-full">
           <ImageCustom
-            src={avatar || "/images/avatars/avatar_2.jpg"}
+            src={avatar}
             fill
             alt="user-avatar"
             className="object-cover"

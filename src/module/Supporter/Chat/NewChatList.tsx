@@ -54,7 +54,7 @@ const NewChatList = () => {
     <>
       <ListHistory
         onClickHistory={onClickHistory}
-        title="Unanswered list"
+        title="New messages"
         isLoading={newRoom.isLoading}
         data={[...newChat, ...newChatHistory] || []}
       />
