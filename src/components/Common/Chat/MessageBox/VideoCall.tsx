@@ -38,6 +38,7 @@ const VideoCall = ({ userProfile, otherProfile }: Props) => {
   }, [myVideo, stream])
   useEffect(() => {
     if (userStream && userVideo.current) {
+      console.log("useEffect ~ userStream:", userStream)
       userVideo.current!.srcObject = userStream
     }
   }, [userStream, callAccepted, callEnded, userVideo])
