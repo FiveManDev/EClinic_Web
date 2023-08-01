@@ -138,6 +138,7 @@ const SignalRCallContextProvider = ({ children }: PropsWithChildren<{}>) => {
           (signal, type: TypeAnswerCall) => {
             if (type === "accept") {
               const newSignal = JSON.parse(signal)
+              console.log(".then ~ newSignal:", newSignal)
               peer.signal(newSignal)
               setCallAccepted(true)
               setIsWatting(false)
