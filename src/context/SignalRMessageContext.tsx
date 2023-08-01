@@ -22,9 +22,27 @@ const SignalRMessageContextProvider = ({ children }: PropsWithChildren<{}>) => {
       )
       .withAutomaticReconnect()
       .build()
+    const handleStart = () => {
+      setIsConnected(true)
+    }
+
+    const handleStop = () => {
+      setIsConnected(false)
+    }
+
+    connection.onclose(handleStop)
+    connection.onreconnecting(handleStop)
+    connection.onreconnected(handleStart)
+
+    connection
+      .start()
+      .then(handleStart)
+      .catch((err) => {
+        console.error(err.toString())
+        setIsConnected(false)
+      })
+
     connectionMessage.current = connection
-    console.log("useEffect ~ connection:", connection)
-    setIsConnected(true)
 
     return () => {
       connectionMessage.current?.stop()

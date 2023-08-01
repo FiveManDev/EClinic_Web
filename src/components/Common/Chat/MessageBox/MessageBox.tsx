@@ -36,8 +36,14 @@ const MessageBox = ({ toggleInfo, userId: id, isClose }: IProps) => {
   const [messages, setMessages] = useState<Message[]>([])
   const authorProfile = useSimpleProfile(userId)
   const confirm = useConfirm()
-  const { answerCall, callUser, call, callAccepted, signalRConnection } =
-    useSignalRCall()
+  const {
+    answerCall,
+    callUser,
+    call,
+    callAccepted,
+    signalRConnection,
+    isConnected: isConnectedCall
+  } = useSignalRCall()
   const { connectionMessage, isConnected } = useSignalRMessage()
   const auth = useSelector((state: RootState) => state.auth)
   const { query } = useRouter()
@@ -93,37 +99,49 @@ const MessageBox = ({ toggleInfo, userId: id, isClose }: IProps) => {
   }
 
   useEffect(() => {
-    if (isConnected) {
+    if (isConnected && roomId) {
       connectionMessage
-        .current!.start()
+        .current!.invoke("JoinGroup", roomId)
         .then(() => {
-          connectionMessage
-            .current!.invoke("JoinGroup", roomId)
-            .then(() => {
-              connectionMessage.current!.on("Response", (message: Message) => {
-                if (message) {
-                  setMessages((prevMes) => [...prevMes, message])
-                  queryClient.refetchQueries([QUERY_KEYS.CHAT.ROOM])
-                }
-              })
-              connectionMessage.current?.on(
-                "NewAnswer",
-                (profile: ProfileChat) => {
-                  if (profile) {
-                    setUserId(profile.userID)
-                  }
-                }
-              )
-            })
-            .catch((err) => {
-              return console.error(err.toString())
-            })
+          connectionMessage.current!.on("Response", (message: Message) => {
+            if (message) {
+              setMessages((prevMes) => [...prevMes, message])
+              queryClient.refetchQueries([QUERY_KEYS.CHAT.ROOM])
+            }
+          })
+          connectionMessage.current?.on("NewAnswer", (profile: ProfileChat) => {
+            if (profile) {
+              setUserId(profile.userID)
+            }
+          })
+        })
+        .catch((err) => {
+          return console.error("message join group error", err.toString())
+        })
+      return () => {
+        connectionMessage.current!.invoke("LeaveGroup", roomId).catch((err) => {
+          console.error(err.toString())
+        })
+      }
+    }
+  }, [roomId, isConnected, connectionMessage])
+  useEffect(() => {
+    if (roomId && isConnectedCall) {
+      signalRConnection
+        .current!.invoke("JoinCall", roomId)
+        .then(() => {
+          console.log("join call success", roomId)
         })
         .catch((err) => {
           return console.error(err.toString())
         })
+      return () => {
+        signalRConnection.current?.invoke("LeaveGroup", roomId).catch((err) => {
+          console.error(err.toString())
+        })
+      }
     }
-  }, [roomId, isConnected, connectionMessage])
+  }, [roomId, isConnectedCall, userId])
   useEffect(() => {
     const handleScroll = () => {
       if (refScroll.current) {
@@ -165,25 +183,7 @@ const MessageBox = ({ toggleInfo, userId: id, isClose }: IProps) => {
       scrollToBottom()
     }
   }, [roomData.data])
-  useEffect(() => {
-    if (roomId && isConnected) {
-      signalRConnection
-        .current!.start()
-        .then(() => {
-          signalRConnection
-            .current!.invoke("JoinCall", roomId)
-            .then(() => {
-              console.log("join call success", roomId)
-            })
-            .catch((err) => {
-              return console.error(err.toString())
-            })
-        })
-        .catch((err) => {
-          return console.error(err.toString())
-        })
-    }
-  }, [roomId, isConnected, userId])
+
   const handleClose = async () => {
     if (confirm) {
       const choice = await confirm({
