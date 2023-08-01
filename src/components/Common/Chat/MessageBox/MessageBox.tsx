@@ -33,7 +33,7 @@ const MessageBox = ({ toggleInfo, userId: id, isClose }: IProps) => {
   const refScroll = useRef<HTMLDivElement | null>(null)
   const [isBottom, setIsBottom] = useState(false)
   const [messages, setMessages] = useState<Message[]>([])
-  const authorProfile = useSimpleProfile(id)
+  const authorProfile = useSimpleProfile(userId)
   const confirm = useConfirm()
   const {
     answerCall,
@@ -127,20 +127,20 @@ const MessageBox = ({ toggleInfo, userId: id, isClose }: IProps) => {
   useEffect(() => {
     if (roomId && isConnectedCall) {
       signalRConnection
-        .current!.invoke("JoinCall", roomId)
+        .current!.start()
         .then(() => {
-          console.log("join call success", roomId)
+          signalRConnection
+            .current!.invoke("JoinCall", roomId)
+            .then(() => {})
+            .catch((err) => {
+              return console.error(err.toString())
+            })
         })
         .catch((err) => {
           return console.error(err.toString())
         })
-      return () => {
-        signalRConnection.current?.invoke("LeaveGroup", roomId).catch((err) => {
-          console.error(err.toString())
-        })
-      }
     }
-  }, [roomId, isConnectedCall])
+  }, [roomId, isConnectedCall, signalRConnection, userId])
   useEffect(() => {
     const handleScroll = () => {
       if (refScroll.current) {
@@ -307,13 +307,13 @@ const MessageBox = ({ toggleInfo, userId: id, isClose }: IProps) => {
                 <TextMessage
                   isImage={mess.isImage}
                   avatar={
-                    mess.userID === auth.user.userId
+                    mess.userID === userId
                       ? item.data.data.myProfile.avatar
                       : item.data.data.otherProfile.avatar
                   }
                   message={mess}
                   key={mess.chatMessageID}
-                  kind={mess.userID === auth.user.userId ? "owner" : "other"}
+                  kind={mess.userID === userId ? "owner" : "other"}
                 />
               ))
             )}
