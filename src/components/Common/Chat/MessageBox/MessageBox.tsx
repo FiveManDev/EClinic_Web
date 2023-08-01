@@ -32,7 +32,6 @@ const MessageBox = ({ toggleInfo, userId: id, isClose }: IProps) => {
   const [userId, setUserId] = useState(id)
   const refScroll = useRef<HTMLDivElement | null>(null)
   const [isBottom, setIsBottom] = useState(false)
-  const [textInput, setTextInput] = useState("")
   const [messages, setMessages] = useState<Message[]>([])
   const authorProfile = useSimpleProfile(id)
   const confirm = useConfirm()
@@ -79,7 +78,6 @@ const MessageBox = ({ toggleInfo, userId: id, isClose }: IProps) => {
         {
           onSuccess: () => {
             scrollToBottom()
-            setTextInput("")
             queryClient.refetchQueries([QUERY_KEYS.CHAT.ROOM])
           },
           onError: () => {
@@ -142,7 +140,7 @@ const MessageBox = ({ toggleInfo, userId: id, isClose }: IProps) => {
         })
       }
     }
-  }, [roomId, isConnectedCall, userId])
+  }, [roomId, isConnectedCall])
   useEffect(() => {
     const handleScroll = () => {
       if (refScroll.current) {
@@ -343,8 +341,6 @@ const MessageBox = ({ toggleInfo, userId: id, isClose }: IProps) => {
         </div>
       ) : (
         <InputMessage
-          value={textInput}
-          onChange={(value) => setTextInput(value)}
           isLoading={createMessage.isLoading}
           onCreate={handleCreateMessage}
         />

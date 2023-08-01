@@ -1,6 +1,4 @@
-import styled from "@emotion/styled"
 import { IconButton, Tooltip } from "@mui/material"
-import Menu from "@mui/material/Menu"
 import classNames from "classnames"
 import ModalPrimary from "components/Common/Modal/ModalPrimary"
 import { UpdateCover } from "components/Common/UpLoadImage"
@@ -10,25 +8,14 @@ import { useRouter } from "next/router"
 import { useState } from "react"
 import { toast } from "react-hot-toast"
 import { HiOutlinePaperAirplane } from "react-icons/hi2"
-const MenuWrapper = styled(Menu)`
-  .MuiPaper-elevation {
-    box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
-  }
-`
 interface Props {
   // eslint-disable-next-line no-unused-vars
   onCreate: (value: string) => void
-  // eslint-disable-next-line no-unused-vars
-  onChange: (value: string) => void
   isLoading: boolean
-  value: string
 }
-const InputMessage = ({
-  value,
-  onChange,
-  onCreate,
-  isLoading = false
-}: Props) => {
+const InputMessage = ({ onCreate, isLoading = false }: Props) => {
+  const [textInput, setTextInput] = useState("")
+
   const { query } = useRouter()
   const createImageMutation = useCreateChatMessageFile()
   const [show, setShow] = useState(false)
@@ -56,6 +43,10 @@ const InputMessage = ({
         }
       )
     }
+  }
+  const handleSendMessage = () => {
+    onCreate(textInput)
+    setTextInput("")
   }
   return (
     <div className="flex items-end w-full px-5 py-4 bg-white gap-x-2 ">
@@ -98,11 +89,11 @@ const InputMessage = ({
       <input
         onKeyDown={(e) => {
           if (e.key === "Enter") {
-            onCreate(value)
+            handleSendMessage()
           }
         }}
-        value={value}
-        onChange={(e) => onChange(e.target.value)}
+        value={textInput}
+        onChange={(e) => setTextInput(e.target.value)}
         type="text"
         className="w-full px-3 py-2 my-auto transition-all bg-transparent bg-gray-100 border-none rounded-md outline-none placeholder:text-disable text-grayPrimary focus:ring-2 focus:ring-primary focus:ring-opacity-70"
         placeholder="Type a message"
@@ -110,15 +101,15 @@ const InputMessage = ({
       <div
         className={classNames(
           "flex-shrink-0 flex items-center justify-center w-10 h-10 rounded-full bg-primary transition-all",
-          (!value || isLoading) &&
+          (!textInput || isLoading) &&
             "bg-carbon bg-opacity-50 cursor-none pointer-events-none"
         )}
       >
         <IconButton
           size="small"
           className="text-white"
-          disabled={!value || isLoading}
-          onClick={() => onCreate(value)}
+          disabled={!textInput || isLoading}
+          onClick={() => handleSendMessage()}
         >
           <HiOutlinePaperAirplane />
         </IconButton>

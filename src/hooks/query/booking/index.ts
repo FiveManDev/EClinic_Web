@@ -39,6 +39,18 @@ export const useGetAllBookingDoctorForDoctorQuery = (
       bookingService.GetAllBookingDoctorForDoctor(pageNumber, pageSize, status)
   })
 }
+export const useGetAllBookingDoctorForAdQuery = (
+  pageNumber: number,
+  pageSize: number,
+  status: number
+) => {
+  const queryKey = [QUERY_KEYS.BOOKING.DOCTOR, pageNumber, pageSize, status]
+  return useQuery({
+    queryKey,
+    queryFn: () =>
+      bookingService.GetAllBookingDoctorForAd(pageNumber, pageSize, status)
+  })
+}
 export const useGetAllBookingServicerForAdQuery = (
   pageNumber: number,
   pageSize: number,

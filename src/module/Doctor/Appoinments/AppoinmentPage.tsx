@@ -1,6 +1,6 @@
 import MainHeadingLayout from "layout/Management/MainHeadingLayout"
 import Head from "next/head"
-import TableAPM from "./sections/TableAPM"
+import TableAPMForDoctor from "./sections/TableAPMForDoctor"
 
 const AppoinmentPage = () => {
   return (
@@ -9,7 +9,7 @@ const AppoinmentPage = () => {
         <title>Appointment page</title>
       </Head>
       <MainHeadingLayout heading="Appointment List">
-        <TableAPM />
+        <TableAPMForDoctor />
       </MainHeadingLayout>
     </>
   )

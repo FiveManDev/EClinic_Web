@@ -74,25 +74,28 @@ const SignalRCallContextProvider = ({ children }: PropsWithChildren<{}>) => {
       )
       .withAutomaticReconnect()
       .build()
-    connection
-      .start()
-      .then(() => {
-        console.log("SignalR call started.")
-      })
-      .catch((err) => {
-        return console.error(err.toString())
-      })
+
     const handleStart = () => {
       setIsConnected(true)
+      console.log("started connection")
     }
 
     const handleStop = () => {
       setIsConnected(false)
+      console.log("started connection")
     }
 
     connection.onclose(handleStop)
     connection.onreconnecting(handleStop)
     connection.onreconnected(handleStart)
+
+    connection
+      .start()
+      .then(handleStart)
+      .catch((err) => {
+        console.error(err.toString())
+        setIsConnected(false)
+      })
     signalRConnection.current = connection
     signalRConnection.current.on("CallUser", (signal, data) => {
       const newData = JSON.parse(data)

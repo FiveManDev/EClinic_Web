@@ -4,7 +4,7 @@ import Tag from "components/Common/Tag"
 import CustomButton from "components/User/Button"
 import { useDispatch, useSelector } from "react-redux"
 import { BOOKING_TYPE } from "shared/constant/constant"
-import { combineName, dayformat } from "shared/helpers/helper"
+import { combineName, dayformat, formatValueToVND } from "shared/helpers/helper"
 import colorsProvider from "shared/theme/colors"
 import { selectBookingDoctor } from "store/module/booking/doctor/booking-doctor-selector"
 import { bookingDoctorSlice } from "store/module/booking/doctor/booking-doctor-slice"
@@ -72,7 +72,7 @@ const StepThree = ({ onBack }: Props) => {
         </button>
         <span>Quay lại</span>
       </div>
-      <div className="flex flex-col my-8  p-[30px]">
+      <div className="flex flex-col my-8  px-[30px] py-4">
         <h3 className="text-xl font-semibold text-black1">Booking Summary</h3>
         <Divider></Divider>
         <div className="flex flex-col gap-y-2">
@@ -191,27 +191,17 @@ const StepThree = ({ onBack }: Props) => {
                 </Tag>
               </div>
             </div>
-            <div className="ml-auto text-base text-black1">{price} VND</div>
+            <div className="ml-auto text-base text-black1">
+              {formatValueToVND(price || 0)}
+            </div>
           </div>
         </div>
         <Divider></Divider>
-        {/* <div className="flex justify-between mt-3">
-          <h3 className="text-base font-medium text-black1">Subtotal</h3>
-          <span className="text-base text-black1">{dataBooking.bookingType ===BOOKING_TYPE.Offline.toString()}</span>
-        </div>
-        <Divider></Divider> */}
-        {/* <div className="flex mb-3 gap-x-2">
-          <InputCustom
-            className="w-full md:max-w-[300px]"
-            placeholder="Enter your voucher code"
-          />
-          <CustomButton className="!rounded-[5px]">
-            Apply
-          </CustomButton>
-        </div> */}
         <div className="flex justify-between mt-3">
           <h3 className="text-base font-medium text-black1">Total</h3>
-          <span className="text-base text-black1">{price} VND</span>
+          <span className="text-base text-black1">
+            {formatValueToVND(price || 0)}
+          </span>
         </div>
         <Divider></Divider>
         <div className="flex flex-col gap-y-2">

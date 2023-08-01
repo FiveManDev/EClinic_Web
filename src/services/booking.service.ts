@@ -82,6 +82,26 @@ class BookingService {
       console.log("BookingService ~ error:", error)
     }
   }
+  async GetAllBookingDoctorForAd(
+    pageNumber: number,
+    pageSize: number,
+    status: number
+  ) {
+    try {
+      const res: AxiosResponse = await axiosClient.get(
+        `${URL_API.BOOKING.DOCTOR}/GetAllBookingDoctorForAd?BookingStatus=${status}`,
+        {
+          headers: {
+            PageNumber: pageNumber,
+            PageSize: pageSize
+          }
+        }
+      )
+      return res as AxiosResponse<IServerResponse<IBookingDoctor[]>>
+    } catch (error) {
+      console.log("BookingService ~ error:", error)
+    }
+  }
   async getAllBookingPackageForAD(
     pageNumber: number,
     pageSize: number,

@@ -3,7 +3,7 @@ import ImageCustom from "components/Common/ImageCustom"
 import { Option, SelectCustom } from "components/Common/Select/SelectCustom"
 import TableCustom from "components/Common/Table/TableCustom"
 import Tag from "components/Common/Tag"
-import { useGetAllBookingDoctorForAdQuery } from "hooks/query/booking"
+import { useGetAllBookingDoctorForDoctorQuery } from "hooks/query/booking"
 import { MRT_PaginationState, type MRT_ColumnDef } from "material-react-table"
 import { useRouter } from "next/router"
 import { useMemo, useState } from "react"
@@ -20,7 +20,7 @@ const statusBookingOptions: Option[] = Object.entries(STATUS_BOOKING).map(
   })
 )
 
-const TableAPMService = () => {
+const TableAPMForDoctor = () => {
   const role = useSelector((state: RootState) => state.auth.user.role)
   const router = useRouter()
   const [statusFilter, setStatusFilter] = useState(statusBookingOptions[0])
@@ -29,7 +29,7 @@ const TableAPMService = () => {
     pageSize: 10
   })
   const { data, isLoading, isError, isRefetching } =
-    useGetAllBookingDoctorForAdQuery(
+    useGetAllBookingDoctorForDoctorQuery(
       pagination.pageIndex + 1,
       pagination.pageSize,
       Number(statusFilter.value)
@@ -174,4 +174,4 @@ const TableAPMService = () => {
     />
   )
 }
-export default TableAPMService
+export default TableAPMForDoctor
