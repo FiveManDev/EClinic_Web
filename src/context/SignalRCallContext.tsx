@@ -74,8 +74,25 @@ const SignalRCallContextProvider = ({ children }: PropsWithChildren<{}>) => {
       )
       .withAutomaticReconnect()
       .build()
+    connection
+      .start()
+      .then(() => {
+        console.log("SignalR call started.")
+      })
+      .catch((err) => {
+        return console.error(err.toString())
+      })
+    const handleStart = () => {
+      setIsConnected(true)
+    }
 
-    setIsConnected(true)
+    const handleStop = () => {
+      setIsConnected(false)
+    }
+
+    connection.onclose(handleStop)
+    connection.onreconnecting(handleStop)
+    connection.onreconnected(handleStart)
     signalRConnection.current = connection
     signalRConnection.current.on("CallUser", (signal, data) => {
       const newData = JSON.parse(data)
@@ -103,6 +120,7 @@ const SignalRCallContextProvider = ({ children }: PropsWithChildren<{}>) => {
     navigator.mediaDevices
       .getUserMedia({ video: true, audio: true })
       .then((currentStream) => {
+        console.log(".then ~ currentStream:", currentStream)
         setStream(currentStream)
         streamRef.current = currentStream
         const peer = new Peer({
@@ -130,6 +148,7 @@ const SignalRCallContextProvider = ({ children }: PropsWithChildren<{}>) => {
 
         peer.on("stream", (currentStream) => {
           setUserStream(currentStream)
+          console.log("get Stream ", currentStream)
           userStreamRef.current = currentStream
         })
 
@@ -138,7 +157,6 @@ const SignalRCallContextProvider = ({ children }: PropsWithChildren<{}>) => {
           (signal, type: TypeAnswerCall) => {
             if (type === "accept") {
               const newSignal = JSON.parse(signal)
-              console.log(".then ~ newSignal:", newSignal)
               peer.signal(newSignal)
               setCallAccepted(true)
               setIsWatting(false)
@@ -196,6 +214,7 @@ const SignalRCallContextProvider = ({ children }: PropsWithChildren<{}>) => {
   }
   const leaveCall = (roomId: string) => {
     setIsWatting(false)
+    closeConnection()
     if (streamRef.current) {
       streamRef.current!.getTracks().forEach((track) => track.stop())
     }

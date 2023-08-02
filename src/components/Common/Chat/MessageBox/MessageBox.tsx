@@ -33,7 +33,7 @@ const MessageBox = ({ toggleInfo, userId: id, isClose }: IProps) => {
   const refScroll = useRef<HTMLDivElement | null>(null)
   const [isBottom, setIsBottom] = useState(false)
   const [messages, setMessages] = useState<Message[]>([])
-  const authorProfile = useSimpleProfile(userId)
+  const authorProfile = useSimpleProfile(id)
   const confirm = useConfirm()
   const {
     answerCall,
@@ -109,7 +109,6 @@ const MessageBox = ({ toggleInfo, userId: id, isClose }: IProps) => {
           })
           connectionMessage.current?.on("NewAnswer", (profile: ProfileChat) => {
             if (profile) {
-              console.log("connectionMessage.current?.on ~ profile:", profile)
               setUserId(profile.userID)
             }
           })
@@ -127,15 +126,8 @@ const MessageBox = ({ toggleInfo, userId: id, isClose }: IProps) => {
   useEffect(() => {
     if (roomId && isConnectedCall) {
       signalRConnection
-        .current!.start()
-        .then(() => {
-          signalRConnection
-            .current!.invoke("JoinCall", roomId)
-            .then(() => {})
-            .catch((err) => {
-              return console.error(err.toString())
-            })
-        })
+        .current!.invoke("JoinCall", roomId)
+        .then(() => {})
         .catch((err) => {
           return console.error(err.toString())
         })
@@ -182,7 +174,11 @@ const MessageBox = ({ toggleInfo, userId: id, isClose }: IProps) => {
       scrollToBottom()
     }
   }, [roomData.data])
-
+  useEffect(() => {
+    if (messages.length > 0) {
+      scrollToBottom()
+    }
+  }, [messages.length])
   const handleClose = async () => {
     if (confirm) {
       const choice = await confirm({
@@ -307,13 +303,13 @@ const MessageBox = ({ toggleInfo, userId: id, isClose }: IProps) => {
                 <TextMessage
                   isImage={mess.isImage}
                   avatar={
-                    mess.userID === userId
+                    mess.userID === id
                       ? item.data.data.myProfile.avatar
                       : item.data.data.otherProfile.avatar
                   }
                   message={mess}
                   key={mess.chatMessageID}
-                  kind={mess.userID === userId ? "owner" : "other"}
+                  kind={mess.userID === id ? "owner" : "other"}
                 />
               ))
             )}
@@ -322,7 +318,7 @@ const MessageBox = ({ toggleInfo, userId: id, isClose }: IProps) => {
               <TextMessage
                 isImage={mess.isImage}
                 avatar={
-                  mess.userID === id
+                  mess.userID === userId
                     ? authorProfile.data?.data.avatar
                     : roomData.data?.pages[0]?.data.data.myProfile.avatar
                 }

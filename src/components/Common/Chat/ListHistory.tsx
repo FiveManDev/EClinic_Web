@@ -23,7 +23,7 @@ const ListHistory = ({
     queryClient.refetchQueries([QUERY_KEYS.CHAT.ROOM])
   }
   return (
-    <div className="flex flex-col bg-gray-50 w-full max-w-[320px]">
+    <div className="relative flex flex-col bg-gray-50 w-full max-w-[320px]">
       <div className="flex items-center justify-between px-5 py-3 ">
         <h1 className="text-xl text-h1">{title}</h1>
         <Tooltip title="Reload message list">
