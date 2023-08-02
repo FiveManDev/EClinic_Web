@@ -127,12 +127,14 @@ const MessageBox = ({ toggleInfo, userId: id, isClose }: IProps) => {
     if (roomId && isConnectedCall) {
       signalRConnection
         .current!.invoke("JoinCall", roomId)
-        .then(() => {})
+        .then(() => {
+          console.log("join call")
+        })
         .catch((err) => {
           return console.error(err.toString())
         })
     }
-  }, [roomId, isConnectedCall, signalRConnection, userId])
+  }, [roomId, isConnectedCall])
   useEffect(() => {
     const handleScroll = () => {
       if (refScroll.current) {

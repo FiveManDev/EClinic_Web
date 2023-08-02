@@ -77,6 +77,7 @@ const SignalRCallContextProvider = ({ children }: PropsWithChildren<{}>) => {
     connection
       .start()
       .then(() => {
+        handleStart()
         console.log("SignalR call started.")
       })
       .catch((err) => {
