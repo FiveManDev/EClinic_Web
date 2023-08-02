@@ -13,7 +13,7 @@ import { ServicePackage } from "types/Service"
 const ListServicePackage = () => {
   const router = useRouter()
   const [pagination, setPagination] = useState<MRT_PaginationState>({
-    pageIndex: 1,
+    pageIndex: 0,
     pageSize: 10
   })
   const [searchData, setSearchData] = useState("")

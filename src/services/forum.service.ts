@@ -224,9 +224,13 @@ class ForumService {
     )
     return res.data as IServerResponse<null>
   }
-  async getPostsNoActive(pageNumber: number, pageSize: number) {
+  async getPostsNoActive(
+    pageNumber: number,
+    pageSize: number,
+    searchText: string
+  ) {
     const res: AxiosResponse = await axiosServer.get(
-      `${URL_API.FORUM_POST}/GetPostNotActive`,
+      `${URL_API.FORUM_POST}/GetPostNotActive?SearchText=${searchText}`,
       {
         headers: {
           PageNumber: pageNumber,

@@ -18,7 +18,7 @@ const DoctorEdit = () => {
         <title>Update Account</title>
       </Head>
       <CreateAccountSupporter
-        labelForm="Update account doctor"
+        labelForm="Update account supporter"
         profile={data?.data}
         mode="update"
       />

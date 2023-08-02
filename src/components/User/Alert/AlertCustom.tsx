@@ -53,7 +53,7 @@ const AlertCustom = ({
           <CustomButton
             kind="tertiary"
             onClick={handleClose}
-            className="text-gray-600"
+            className="text-gray-600 focus:ring-0"
             autoFocus
           >
             {btnDisagree}

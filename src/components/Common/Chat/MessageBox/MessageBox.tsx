@@ -77,7 +77,6 @@ const MessageBox = ({ toggleInfo, userId: id, isClose }: IProps) => {
         },
         {
           onSuccess: () => {
-            scrollToBottom()
             queryClient.refetchQueries([QUERY_KEYS.CHAT.ROOM])
           },
           onError: () => {
@@ -88,14 +87,11 @@ const MessageBox = ({ toggleInfo, userId: id, isClose }: IProps) => {
     }
   }
   const scrollToBottom = () => {
-    if (refScroll.current) {
-      refScroll.current.lastElementChild?.scrollIntoView({
-        behavior: "smooth",
-        block: "end"
-      })
+    const scrollContainer = refScroll.current
+    if (scrollContainer) {
+      scrollContainer.scrollTop = scrollContainer.scrollHeight
     }
   }
-
   useEffect(() => {
     if (isConnected && roomId) {
       connectionMessage

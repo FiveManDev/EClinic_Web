@@ -29,21 +29,6 @@ const ListPatient = () => {
       pageNumber: pagination.pageIndex + 1,
       pageSize: pagination.pageSize
     })
-  // const handleUpdateProfile = () => {
-  //   updateProfile.mutate(data?.data.data, {
-  //     onSuccess: (data) => {
-  //       if (data.isSuccess) {
-  //         toast.success("Update successfully!")
-  //         refetch()
-  //       } else {
-  //         toast.error("Update error")
-  //       }
-  //     },
-  //     onError: () => {
-  //       toast.error("Update error")
-  //     }
-  //   })
-  // }
   const columns = useMemo<MRT_ColumnDef<Profile>[]>(
     () => [
       {

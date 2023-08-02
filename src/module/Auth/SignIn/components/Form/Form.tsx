@@ -4,8 +4,10 @@ import { useQueryClient } from "@tanstack/react-query"
 
 import GoogleIcon from "components/Common/Icon/GoogleIcon"
 import Spinner from "components/Common/Loading/LoadingIcon"
+import Tag from "components/Common/Tag"
 import CustomButton from "components/User/Button"
 import { CustomInput, CustomInputPassword } from "components/User/Input"
+import InputField from "components/User/Input/InputField"
 import useUserGoogle from "hooks/auth/useUserGoogle"
 import jwt_decode from "jwt-decode"
 import ButtonIcon from "module/Auth/components/ButtonIcon"
@@ -18,6 +20,7 @@ import { AiOutlineExclamationCircle } from "react-icons/ai"
 import { authService } from "services/auth.service"
 import { QUERY_KEYS } from "shared/constant/constant"
 import { routerByRole } from "shared/helpers/helper"
+import colorsProvider from "shared/theme/colors"
 import { token } from "shared/utils/token"
 import { loginUser } from "store/module/auth/action-creators"
 import { useAppDispatch } from "store/store"
@@ -94,7 +97,7 @@ const FormLogin = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [profile])
   return (
-    <div className="w-full px-4 py-6 rounded-md  mt-7">
+    <div className="w-full px-4 py-6 rounded-md mt-7">
       <ButtonIcon
         text="Log in with Google"
         icon={<GoogleIcon />}
@@ -107,20 +110,8 @@ const FormLogin = () => {
         onSubmit={handleSubmit(handleSignIn)}
         className="flex flex-col mt-3 space-y-5 md:mt-5"
       >
-        <CustomInput
-          label="User name"
-          control={control}
-          name="username"
-          error={!!errors.username}
-          helperText={errors.username?.message?.toString()}
-        />
-        <CustomInputPassword
-          label="Password"
-          control={control}
-          name="password"
-          error={!!errors.password}
-          errorMessage={errors.password?.message?.toString()}
-        />
+        <InputField label="User name" control={control} name="username" />
+        <InputField label="Password" control={control} name="password" />
         <Link
           href={"/reset-password"}
           className="!mt-2 text-right no-underline hover:underline hover:decoration-primary"
@@ -128,9 +119,27 @@ const FormLogin = () => {
           <span className="text-primary">Forgot password!</span>
         </Link>
         {isError && (
-          <Alert icon={<AiOutlineExclamationCircle />} severity="error">
-            User Name or password incorrect
-          </Alert>
+          <Tag color={colorsProvider.error} className="w-full">
+            <div className="flex items-center w-full py-1 gap-x-2">
+              <span>
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  strokeWidth={1.5}
+                  stroke="currentColor"
+                  className="w-5 h-5"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    d="M12 9v3.75m-9.303 3.376c-.866 1.5.217 3.374 1.948 3.374h14.71c1.73 0 2.813-1.874 1.948-3.374L13.949 3.378c-.866-1.5-3.032-1.5-3.898 0L2.697 16.126zM12 15.75h.007v.008H12v-.008z"
+                  />
+                </svg>
+              </span>
+              <span>User Name or password incorrect</span>
+            </div>
+          </Tag>
         )}
         <CustomButton
           kind="primary"

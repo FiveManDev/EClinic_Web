@@ -10,7 +10,6 @@ import DatePickerCustom from "components/Common/DatePicker/DatePickerCustom"
 import SwitchCustom from "components/Common/IOSSwitch"
 import Tag from "components/Common/Tag"
 import CustomButton from "components/User/Button"
-import { CustomInput } from "components/User/Input"
 import InputField from "components/User/Input/InputField"
 import useConfirm from "context/ComfirmContext"
 import dayjs from "dayjs"
@@ -48,7 +47,26 @@ const schema = yup.object({
       /(84|0[3|5|7|8|9])+([0-9]{8})\b/,
       "Please enter valid phone number"
     ),
-  workStart: yup.string().required("Please enter date of working start"),
+  workStart: yup
+    .string()
+    .required("Please enter date of working start")
+    .test(
+      "valid-date",
+      "Date cannot be greater than current date",
+      function (value) {
+        if (!value) return true // Allow empty values to pass (yup already checks for 'required' above)
+
+        // Parse the date using dayjs (or any other date library you prefer)
+        const currentDate = dayjs()
+        const selectedDate = dayjs(value)
+
+        // Compare the selected date with the current date
+        return (
+          selectedDate.isBefore(currentDate) || selectedDate.isSame(currentDate)
+        )
+      }
+    )
+    .nullable(),
   address: yup.string().required("Please enter address"),
   description: yup.string().required("Please enter description")
 })
@@ -78,6 +96,7 @@ const CreateAccountSupporter = ({
     resolver: yupResolver(schema),
     defaultValues: profile
   })
+  console.log("errors:", errors)
   watch("avatar", null)
   const watchGender = watch("gender", profile ? profile?.gender : true)
   const watchEndable = watch(
@@ -160,7 +179,6 @@ const CreateAccountSupporter = ({
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [profile])
-
   return (
     <form
       className="flex flex-col w-full gap-y-6 md:gap-y-0 md:flex-row gap-x-5"
@@ -250,15 +268,6 @@ const CreateAccountSupporter = ({
                 label="Date start work"
                 control={control}
                 name="workStart"
-                onErrorField={(reason) => {
-                  const message =
-                    reason === "invalidDate"
-                      ? "Please enter valid date"
-                      : reason === "disableFuture"
-                      ? "The birthday cannot be less than the current date"
-                      : ""
-                  setError("workStart", { type: "focus", message })
-                }}
                 errorMessage={errors.workStart?.message?.toString()}
               />
               <InputField

@@ -9,7 +9,7 @@ const DoctorDetailPage = () => {
 
   const breadrums: IBreadcrum[] = [
     { label: t("base:pages.home"), href: "/" },
-    { label: t("base:pages.doctors"), href: "/services" },
+    { label: t("base:pages.doctors"), href: "/doctors" },
     { label: t("base:pages.detail") }
   ]
   return (

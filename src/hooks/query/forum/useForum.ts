@@ -31,12 +31,14 @@ export const useGetAllPostForumQuery = (
 }
 export const useGetPostsNoActiveQuery = (
   pageNumber: number,
-  pageSize: number
+  pageSize: number,
+  searchText: string
 ) => {
-  const queryKey = [QUERY_KEYS.FORUM.POST, pageNumber, pageSize]
+  const queryKey = [QUERY_KEYS.FORUM.POST, pageNumber, pageSize, searchText]
   return useQuery({
     queryKey,
-    queryFn: () => forumService.getPostsNoActive(pageNumber, pageSize),
+    queryFn: () =>
+      forumService.getPostsNoActive(pageNumber, pageSize, searchText),
     keepPreviousData: true
   })
 }

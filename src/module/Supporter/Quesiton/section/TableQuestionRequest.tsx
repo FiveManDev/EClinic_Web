@@ -1,5 +1,4 @@
 import { IconButton } from "@mui/material"
-import { useQueryClient } from "@tanstack/react-query"
 import ImageCustom from "components/Common/ImageCustom"
 import TableCustom from "components/Common/Table/TableCustom"
 import Tag from "components/Common/Tag"
@@ -9,8 +8,10 @@ import {
   useChangeActivePost,
   useGetPostsNoActiveQuery
 } from "hooks/query/forum/useForum"
+import useDebounce from "hooks/useDebounce"
 import { MRT_ColumnDef, MRT_PaginationState } from "material-react-table"
 import ViewDetailPost from "module/Supporter/components/ViewDetailPost"
+import { queryClient } from "pages/_app"
 import { useMemo, useState } from "react"
 import { toast } from "react-hot-toast"
 import { AiFillLock, AiFillUnlock } from "react-icons/ai"
@@ -20,16 +21,19 @@ import colorsProvider from "shared/theme/colors"
 import { IPost } from "types/Post"
 
 export default function TableQuestionRequest() {
-  const queryClient = useQueryClient()
   const changeActivePost = useChangeActivePost()
   const confirm = useConfirm()
+  const [searchData, setSearchData] = useState("")
+  const searchTextDebounce = useDebounce(searchData, 1500)
+  console.log("TableQuestionRequest ~ searchTextDebounce:", searchTextDebounce)
   const [pagination, setPagination] = useState<MRT_PaginationState>({
-    pageIndex: 1,
+    pageIndex: 0,
     pageSize: 10
   })
   const { data, isLoading, isError, isRefetching } = useGetPostsNoActiveQuery(
     pagination.pageIndex + 1,
-    pagination.pageSize
+    pagination.pageSize,
+    searchTextDebounce
   )
 
   const changeStatusPost = async (postId: string) => {
@@ -80,7 +84,7 @@ export default function TableQuestionRequest() {
         Cell: ({ row }) => {
           return (
             <div className="flex items-center gap-x-2">
-              <div className="relative w-8 h-8 rounded-full">
+              <div className="relative flex-shrink-0 w-8 h-8 rounded-full">
                 <ImageCustom
                   src={row.original.author.avatar}
                   alt={row.original.author.firstName}
@@ -134,9 +138,6 @@ export default function TableQuestionRequest() {
     []
   )
   const paginationData = getDataPaginate(data)
-  if (isError) {
-    return <p> Error</p>
-  }
   return (
     <TableCustom
       pagination={pagination}
@@ -158,6 +159,8 @@ export default function TableQuestionRequest() {
       )}
       renderTopToolbarCustomActions={() => (
         <CustomInput
+          value={searchData}
+          onChange={(e) => setSearchData(e.target.value)}
           placeholder="Search data here"
           className="max-w-[300px] w-full"
         />

@@ -23,7 +23,8 @@ const StyleLink = styled(Link)`
     height: 16px;
     width: 4px;
     left: 0px;
-    top: 12px;
+    top: 50%;
+    transform: translateY(-50%);
     background-color: ${colorsProvider.primary};
     border-radius: 0px 1.998px 1.998px 0px;
   }

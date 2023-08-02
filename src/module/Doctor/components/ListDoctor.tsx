@@ -188,6 +188,7 @@ const ListDoctor = () => {
       )}
       renderTopToolbarCustomActions={() => (
         <CustomInput
+          value={searchData}
           placeholder="Search data here"
           className="max-w-[300px] w-full"
           onChange={(e) => setSearchData(e.target.value)}

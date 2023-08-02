@@ -38,6 +38,7 @@ const TabsCustom = ({ tabs, defaultTabIndex = 0 }: Props) => {
         if (tab.key === tabIndex) {
           return <div key={index}>{tab.children}</div>
         }
+        return null
       })}
     </>
   )

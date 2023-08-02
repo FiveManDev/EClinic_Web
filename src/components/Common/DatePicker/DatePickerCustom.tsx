@@ -11,6 +11,7 @@ interface Props extends FormControlProps {
   onErrorField?: (value: string) => void
   errorMessage?: string | undefined
   inputFormat?: string
+  disableFuture?: boolean
 }
 const DatePickerCustom = ({
   name,
@@ -19,6 +20,7 @@ const DatePickerCustom = ({
   size = "small",
   control,
   onErrorField,
+  disableFuture = true,
   inputFormat = "MM/DD/YYYY"
 }: Props) => {
   const { field } = useController({
@@ -30,7 +32,7 @@ const DatePickerCustom = ({
   return (
     <LocalizationProvider dateAdapter={AdapterDayjs}>
       <DatePicker
-        disableFuture
+        disableFuture={disableFuture}
         label={label || "Date of birth"}
         inputFormat={inputFormat}
         onError={(reason) =>

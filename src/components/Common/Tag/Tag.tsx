@@ -20,7 +20,7 @@ const TagWrapper = styled.div`
 const Tag = ({ color = "235EE8", children, ...props }: Props) => {
   return (
     <TagWrapper color={color} {...props}>
-      <span>{children}</span>
+      <>{children}</>
     </TagWrapper>
   )
 }

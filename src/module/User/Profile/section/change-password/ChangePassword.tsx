@@ -10,8 +10,14 @@ import { FieldValues, useForm } from "react-hook-form"
 import * as yup from "yup"
 
 const schema = yup.object({
-  oldPassword: yup.string().required("Please enter your old password"),
-  newPassword: yup.string().required("Please enter your new password"),
+  oldPassword: yup
+    .string()
+    .required("Please enter your old password")
+    .min(8, "Password must be greater than or equal to 8 characters"),
+  newPassword: yup
+    .string()
+    .required("Please enter your new password")
+    .min(8, "New Password must be greater than or equal to 8 characters"),
   confirmPassword: yup
     .string()
     .required("Please enter new confirm password")
