@@ -1,5 +1,5 @@
 # Use an official Node runtime as a parent image
-FROM node:18-alpine
+FROM node:18
 
 RUN npm install -g nodemon
 # Set the working directory to /app
@@ -9,7 +9,7 @@ WORKDIR /app
 COPY package.json yarn.lock ./
 
 # Install dependencies
-RUN yarn install
+RUN yarn
 
 # Copy the remaining application files to the container
 COPY . .

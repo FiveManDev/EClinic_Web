@@ -9,4 +9,4 @@ services:
       - .:/app
     environment:
       NODE_ENV: development
-    command: yarn run dev
+    command: yarn dev
