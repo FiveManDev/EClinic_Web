@@ -5,7 +5,8 @@ import TableCustom from "components/Common/Table/TableCustom"
 import Tag from "components/Common/Tag"
 import { CustomInput } from "components/User/Input"
 import useConfirm from "context/ComfirmContext"
-import { useGetPostForAd } from "hooks/query/forum/useForum"
+import { useGetAllPostForumQuery } from "hooks/query/forum/useForum"
+import useDebounce from "hooks/useDebounce"
 import { MRT_ColumnDef, MRT_PaginationState } from "material-react-table"
 import ViewDetailPost from "module/Supporter/components/ViewDetailPost"
 import { useMemo, useState } from "react"
@@ -21,13 +22,16 @@ export default function ListPostForum() {
   const queryClient = useQueryClient()
   const deletePostMutation = useMutation(forumService.deletePostByID)
   const confirm = useConfirm()
+  const [searchData, setSearchData] = useState("")
+  const searchTextDebounce = useDebounce(searchData, 1500)
   const [pagination, setPagination] = useState<MRT_PaginationState>({
     pageIndex: 0,
     pageSize: 10
   })
-  const { data, isLoading, isError, isRefetching } = useGetPostForAd(
+  const { data, isLoading, isError, isRefetching } = useGetAllPostForumQuery(
     pagination.pageIndex + 1,
-    pagination.pageSize
+    pagination.pageSize,
+    searchTextDebounce
   )
 
   const deletePost = async (postId: string) => {
@@ -155,6 +159,8 @@ export default function ListPostForum() {
       )}
       renderTopToolbarCustomActions={() => (
         <CustomInput
+          value={searchData}
+          onChange={(e) => setSearchData(e.target.value)}
           placeholder="Search data here"
           className="max-w-[300px] w-full"
         />

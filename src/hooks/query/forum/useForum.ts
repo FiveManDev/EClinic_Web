@@ -21,12 +21,13 @@ export const useCreatePostMutation = () => {
 }
 export const useGetAllPostForumQuery = (
   pageNumber: number,
-  pageSize: number
+  pageSize: number,
+  searchText: string
 ) => {
-  const queryKey = [QUERY_KEYS.FORUM.POST, pageNumber, pageSize]
+  const queryKey = [QUERY_KEYS.FORUM.POST, pageNumber, pageSize, searchText]
   return useQuery({
     queryKey,
-    queryFn: () => forumService.getAllPost(pageNumber, pageSize)
+    queryFn: () => forumService.getAllPost(pageNumber, pageSize, searchText)
   })
 }
 export const useGetPostsNoActiveQuery = (
