@@ -53,8 +53,16 @@ const DoctorBookingItem = ({ kind, data }: Props) => {
   }
   return (
     <div className="flex flex-col p-4 bg-white rounded-lg shadow">
+      <div className="relative w-48 h-48 mx-auto mb-3 md:hidden">
+        <ImageCustom
+          src={data.doctorProfile.avatar}
+          fill
+          alt="image doctor"
+          className="object-cover rounded-lg"
+        />
+      </div>
       <div className="flex items-center top gap-x-4">
-        <div className="relative w-32 h-28">
+        <div className="relative hidden w-32 md:block h-28">
           <ImageCustom
             src={data.doctorProfile.avatar}
             fill
@@ -147,34 +155,6 @@ const DoctorBookingItem = ({ kind, data }: Props) => {
           </div>
         </>
       )}
-      {/* {kind === STATUS_BOOKING.UPCOMING && (
-        <ModalPrimary show={showModal} onClose={() => setShowModal(false)}>
-          <OverlayScrollbarsComponent
-            defer
-            options={{ scrollbars: { autoHide: "scroll" } }}
-          >
-            <Reschedule />
-          </OverlayScrollbarsComponent>
-
-          <div className="footer">
-            <div className="flex justify-between px-6">
-              <CustomButton kind="tertiary" onClick={() => setShowModal(false)}>
-                Cancel
-              </CustomButton>
-              <CustomButton
-                kind="primary"
-                onClick={() => {
-                  setShowModal(false)
-                  setIsSuccess(true)
-                }}
-              >
-                Reschedule
-              </CustomButton>
-            </div>
-          </div>
-        </ModalPrimary>
-      )} */}
-
       <ModalSuccess setIsSuccess={setIsSuccess} isSuccess={isSuccess}>
         <h1 className="text-4xl font-bold text-center text-black1">
           Rescheduling Success

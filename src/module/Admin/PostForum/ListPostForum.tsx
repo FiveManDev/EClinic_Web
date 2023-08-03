@@ -11,6 +11,7 @@ import { MRT_ColumnDef, MRT_PaginationState } from "material-react-table"
 import ViewDetailPost from "module/Supporter/components/ViewDetailPost"
 import { useMemo, useState } from "react"
 import { toast } from "react-hot-toast"
+import { AiOutlineEye } from "react-icons/ai"
 import { MdOutlineDelete } from "react-icons/md"
 import { forumService } from "services/forum.service"
 import { QUERY_KEYS } from "shared/constant/constant"
@@ -19,6 +20,8 @@ import colorsProvider from "shared/theme/colors"
 import { IPost } from "types/Post"
 
 export default function ListPostForum() {
+  const [open, setOpen] = useState(false)
+  const [postSelected, setPostSelected] = useState<IPost | null>(null)
   const queryClient = useQueryClient()
   const deletePostMutation = useMutation(forumService.deletePostByID)
   const confirm = useConfirm()
@@ -65,31 +68,17 @@ export default function ListPostForum() {
         }
       },
       {
-        accessorKey: "content",
-        header: "Description",
-        size: 400,
-        Cell: ({ row }) => {
-          return (
-            <p className="flex items-center space-x-2 line-clamp-2">
-              {row.original.content}
-            </p>
-          )
-        }
-      },
-      {
         accessorKey: "author",
         header: "Author",
         Cell: ({ row }) => {
           return (
             <div className="flex items-center gap-x-2">
-              <div className="relative w-8 h-8 rounded-full">
+              <div className="relative flex-shrink-0 w-8 h-8 rounded-full">
                 <ImageCustom
                   src={row.original.author.avatar}
                   alt={row.original.author.firstName}
                   fill
-                  sizes="(max-width: 768px) 50vw,
-              (max-width: 1200px) 30vw,
-              22vw"
+                  className="rounded-full"
                 />
               </div>
               <span>
@@ -137,34 +126,52 @@ export default function ListPostForum() {
   )
   const paginationData = getDataPaginate(data)
   return (
-    <TableCustom
-      pagination={pagination}
-      onPaginationChange={setPagination}
-      columns={columns}
-      data={data?.data?.data ?? []}
-      rowCount={paginationData.TotalCount ?? 0}
-      pageCount={paginationData.TotalPages ?? 0}
-      isLoading={isLoading}
-      isError={isError}
-      isRefetching={isRefetching}
-      renderRowActions={({ row }) => (
-        <div className="flex items-center flex-shrink-0 w-16">
-          <ViewDetailPost post={row.original} />
-          <Tooltip arrow placement="left" title="Delete this post">
-            <IconButton onClick={() => deletePost(row.original.id)}>
-              <MdOutlineDelete />
-            </IconButton>
-          </Tooltip>
-        </div>
-      )}
-      renderTopToolbarCustomActions={() => (
-        <CustomInput
-          value={searchData}
-          onChange={(e) => setSearchData(e.target.value)}
-          placeholder="Search data here"
-          className="max-w-[300px] w-full"
+    <>
+      <TableCustom
+        pagination={pagination}
+        onPaginationChange={setPagination}
+        columns={columns}
+        data={data?.data?.data ?? []}
+        rowCount={paginationData.TotalCount ?? 0}
+        pageCount={paginationData.TotalPages ?? 0}
+        isLoading={isLoading}
+        isError={isError}
+        isRefetching={isRefetching}
+        renderRowActions={({ row }) => (
+          <div className="flex items-center flex-shrink-0 ">
+            <Tooltip title="View detail question">
+              <IconButton
+                onClick={() => {
+                  setPostSelected(row.original)
+                  setOpen(true)
+                }}
+              >
+                <AiOutlineEye />
+              </IconButton>
+            </Tooltip>
+            <Tooltip arrow placement="left" title="Delete this post">
+              <IconButton onClick={() => deletePost(row.original.id)}>
+                <MdOutlineDelete />
+              </IconButton>
+            </Tooltip>
+          </div>
+        )}
+        renderTopToolbarCustomActions={() => (
+          <CustomInput
+            value={searchData}
+            onChange={(e) => setSearchData(e.target.value)}
+            placeholder="Search data here"
+            className="max-w-[300px] w-full"
+          />
+        )}
+      />
+      {postSelected && (
+        <ViewDetailPost
+          post={postSelected}
+          open={open}
+          onClose={() => setOpen(!open)}
         />
       )}
-    />
+    </>
   )
 }

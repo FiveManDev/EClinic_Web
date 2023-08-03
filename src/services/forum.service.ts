@@ -56,7 +56,7 @@ class ForumService {
     return res.data as IServerResponse<string>
   }
   async getAllPost(pageNumber: number, pageSize: number, searchText: string) {
-    const res: AxiosResponse = await axiosServer.get(
+    const res: AxiosResponse = await axiosClient.get(
       `${URL_API.FORUM_POST}/GetAllPost`,
       {
         params: {

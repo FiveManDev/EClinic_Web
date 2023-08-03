@@ -13,7 +13,9 @@ import { useAppDispatch } from "store/store"
 import LayoutItem from "../../components/layout"
 import { TabsWrapper } from "./Tabs.style"
 import Head from "next/head"
+import classNames from "classnames"
 const SiderBar = ({ children }: PropsWithChildren) => {
+  const [open, setOpen] = useState(false)
   const [tabIndex, setTabIndex] = useState(0)
   const [tabTitle, setTabTitle] = useState("")
   const dispatch = useAppDispatch()
@@ -82,12 +84,34 @@ const SiderBar = ({ children }: PropsWithChildren) => {
       <Head>
         <title>{tabTitle}</title>
       </Head>
+      <div
+        className="fixed left-0 z-50 p-2 bg-gray-100 rounded-md cursor-pointer opacity-40 top-16 md:hidden"
+        onClick={() => setOpen(!open)}
+      >
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          fill="none"
+          viewBox="0 0 24 24"
+          strokeWidth={1.5}
+          stroke="currentColor"
+          className="w-6 h-6"
+        >
+          <path
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            d="M3.75 6.75h16.5M3.75 12H12m-8.25 5.25h16.5"
+          />
+        </svg>
+      </div>
       <TabsWrapper>
         <Tabs
           orientation="vertical"
           value={tabIndex}
           onChange={handleTabChange}
-          className="h-fit tab-wrapper"
+          className={classNames(
+            open && "-translate-x-full",
+            "h-fit tab-wrapper "
+          )}
         >
           {tabs.map((tab) => (
             <Tab
@@ -98,7 +122,7 @@ const SiderBar = ({ children }: PropsWithChildren) => {
             />
           ))}
         </Tabs>
-        <div className="flex-1 ml-6">
+        <div className="flex-1 md:ml-6">
           {tabTitle === tabs[3].label ? (
             children
           ) : (

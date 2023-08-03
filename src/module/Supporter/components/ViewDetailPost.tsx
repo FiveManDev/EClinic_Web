@@ -4,10 +4,7 @@ import {
   Dialog,
   DialogActions,
   DialogContent,
-  DialogTitle,
-  IconButton,
-  Link,
-  Tooltip
+  DialogTitle
 } from "@mui/material"
 import Field from "components/Common/Field/Field"
 import ImageCustom from "components/Common/ImageCustom"
@@ -16,26 +13,17 @@ import CustomButton from "components/User/Button"
 import { useGetAnwerByPostId } from "hooks/query/forum/useForum"
 import HTMLReactParser from "html-react-parser"
 import { OverlayScrollbarsComponent } from "overlayscrollbars-react"
-import { useState } from "react"
-import { AiOutlineEye } from "react-icons/ai"
 import { IPost } from "types/Post"
 type Props = {
   post: IPost
+  open: boolean
+  onClose: () => void
 }
-const ViewDetailPost = ({ post }: Props) => {
-  const [open, setOpen] = useState(false)
+const ViewDetailPost = ({ post, onClose, open }: Props) => {
   const { data } = useGetAnwerByPostId(post.id)
-  const handleClose = () => {
-    setOpen(!open)
-  }
   return (
     <>
-      <Tooltip title="View detail question">
-        <IconButton variant="contained" onClick={() => setOpen(true)}>
-          <AiOutlineEye />
-        </IconButton>
-      </Tooltip>
-      <Dialog open={open} onClose={handleClose} fullWidth scroll="paper">
+      <Dialog open={open} onClose={onClose} fullWidth scroll="paper">
         <DialogTitle className="border border-t-0 border-gray-200 border-solid border-x-0">
           {"Anwers the question here"}
         </DialogTitle>
@@ -114,7 +102,7 @@ const ViewDetailPost = ({ post }: Props) => {
         </OverlayScrollbarsComponent>
 
         <DialogActions className="border border-b-0 border-gray-200 border-solid border-x-0">
-          <CustomButton kind="primary" onClick={handleClose}>
+          <CustomButton kind="primary" onClick={onClose}>
             Close
           </CustomButton>
         </DialogActions>

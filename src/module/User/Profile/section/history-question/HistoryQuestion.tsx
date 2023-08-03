@@ -1,6 +1,7 @@
 import { Chip, Skeleton } from "@mui/material"
 import { useQueryClient } from "@tanstack/react-query"
 import PaginationCustom from "components/Common/Pagination"
+import Tag from "components/Common/Tag"
 import Popover from "components/User/Popover"
 import {
   useDeletePostbyIdMutaiton,
@@ -14,6 +15,7 @@ import { toast } from "react-hot-toast"
 import { HiOutlineDotsHorizontal } from "react-icons/hi"
 import { QUERY_KEYS } from "shared/constant/constant"
 import { dayformat } from "shared/helpers/helper"
+import colorsProvider from "shared/theme/colors"
 import { IPagination } from "types/Pagination"
 import { IPost } from "types/Post"
 
@@ -33,7 +35,7 @@ const HistoryQuestion = () => {
       }
   return (
     <div className="flex flex-col justify-start">
-      <div className="grid w-full grid-cols-2 gap-6">
+      <div className="grid w-full gap-6 md:grid-cols-2">
         {isLoading &&
           Array(2)
             .fill(0)
@@ -74,19 +76,9 @@ const QuestionItem = ({ ques }: { ques: IPost }) => {
           {isLoading ? (
             <Skeleton variant="rounded" width={52} height={32} />
           ) : data?.data.id ? (
-            <Chip
-              color="success"
-              label="Anwerd"
-              variant="outlined"
-              className="bg-green-100 border-none rounded-md"
-            />
+            <Tag color={colorsProvider.success}>Answer</Tag>
           ) : (
-            <Chip
-              color="warning"
-              label="Watting"
-              variant="outlined"
-              className="bg-yellow-100 border-none rounded-md"
-            />
+            <Tag color={colorsProvider.pending}>Watting</Tag>
           )}
 
           <span className="text-sm text-gray-400">

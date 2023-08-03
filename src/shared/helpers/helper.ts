@@ -1,5 +1,6 @@
 import { AxiosResponse } from "axios"
 import dayjs from "dayjs"
+import { DEFAULT_ROUTER } from "shared/constant/constant"
 import { IPagination } from "types/Pagination"
 import { ITokenDecode } from "types/Token"
 
@@ -28,16 +29,16 @@ export const routerByRole = (role: ITokenDecode["role"]) => {
       url = "/"
       break
     case "Admin":
-      url = "/admin"
+      url = DEFAULT_ROUTER.ADMIN
       break
     case "Supporter":
-      url = "/sup"
+      url = DEFAULT_ROUTER.SUPPORTER
       break
     case "Doctor":
-      url = "/doctor"
+      url = DEFAULT_ROUTER.DOCTOR
       break
     case "Expert":
-      url = "/expert"
+      url = DEFAULT_ROUTER.EXPERT
       break
     default:
       break

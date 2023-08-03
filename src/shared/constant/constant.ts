@@ -89,7 +89,7 @@ export const DEFAULT_ROUTER = {
   USER: "/user/",
   ADMIN: "/admin/",
   DOCTOR: "/doctor/",
-  SUPPORTER: "/sup/",
+  SUPPORTER: "/sup/chat",
   EXPERT: "/expert/"
 }
 export const LANGUAGE = {

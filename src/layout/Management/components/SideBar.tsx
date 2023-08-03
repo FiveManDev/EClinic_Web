@@ -75,7 +75,7 @@ const SideBar = ({ items }: Props) => {
                   <span
                     className={classNames(
                       "w-5 h-5 transition-all",
-                      index === expandITem && "rotate-90"
+                      index === expandITem && "rotate-90 "
                     )}
                   >
                     <svg

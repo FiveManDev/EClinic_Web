@@ -44,7 +44,7 @@ const ChangePassword = () => {
   return (
     <form
       onSubmit={handleSubmit(handleChangePassowrd)}
-      className="grid grid-cols-2 gap-6"
+      className="grid grid-cols-1 gap-6 md:grid-cols-2"
     >
       <CustomInputPassword
         size="medium"
@@ -70,7 +70,7 @@ const ChangePassword = () => {
         error={!!errors.confirmPassword}
         errorMessage={errors.confirmPassword?.message?.toString()}
       />
-      <div className=""></div>
+      <div className="hidden md:inline-block"></div>
       <CustomButton type="submit" isLoading={isLoading}>
         Update password
       </CustomButton>

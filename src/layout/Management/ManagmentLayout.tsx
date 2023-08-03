@@ -26,7 +26,7 @@ const ManagmentLayout: React.FC<IManagmentLayout> = ({
     >
       <div {...divProps} className="flex w-screen min-h-screen">
         <SideBar items={sidebars} />
-        <div className="flex flex-col flex-1 overflow-hidden">{children}</div>
+        <div className="flex flex-col flex-1">{children}</div>
       </div>
     </OverlayScrollbarsComponent>
   )

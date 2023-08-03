@@ -35,5 +35,15 @@ export const TabsWrapper = styled.div`
       margin: 0 auto;
       right: 30px;
     }
+    @media screen and (max-width: 767.98px) {
+      position: fixed;
+      left: 0;
+      transition: all 0.2s linear;
+      z-index: 10;
+      box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
+      .MuiTabs-flexContainer {
+        padding: 24px 42px 24px 24px;
+      }
+    }
   }
 `

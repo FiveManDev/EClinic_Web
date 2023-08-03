@@ -31,7 +31,7 @@ const ServicesBooking = () => {
       <TabButton setType={setType} type={type} />
       {bookingData.isLoading && <p>loading.......</p>}
       {bookingData.data?.data && bookingData.data?.data.data.length > 0 ? (
-        <div className="grid grid-cols-2 gap-4">
+        <div className="grid gap-4 md:grid-cols-2">
           {bookingData.data?.data.data.map((booking, index) => (
             <ServiceBookingCard kind={type} data={booking} key={index} />
           ))}

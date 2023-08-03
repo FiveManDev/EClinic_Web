@@ -115,7 +115,7 @@ const Profile = () => {
   }
 
   return (
-    <div className="flex w-full bg-white">
+    <div className="flex flex-col w-full bg-white gap-y-3 md:flex-row">
       <div className="w-[340px] flex flex-col space-y-4">
         <InputCustom
           onChange={(e) => setSearchText(e.target.value)}
@@ -146,7 +146,7 @@ const Profile = () => {
           <span className="text-base">Add Profile</span>
         </CustomButton>
       </div>
-      <div className="flex-1 px-6 ml-4 border border-r-0 border-gray-200 border-dashed border-y-0">
+      <div className="flex-1 px-3 md:px-6 md:ml-4 md:border-r-0 md:border-gray-200 md:border-dashed md:border border-y-0">
         {(mode == "add" || mode === "edit") && (
           <Edit
             isLoading={
