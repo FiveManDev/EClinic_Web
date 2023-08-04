@@ -6,7 +6,7 @@ import useConfirm from "context/ComfirmContext"
 import { usePaymentBookingServiceMutation } from "hooks/query/payment/usePayment"
 import { useDispatch, useSelector } from "react-redux"
 import { PAYMENT } from "shared/constant/constant"
-import { combineName, dayformat } from "shared/helpers/helper"
+import { combineName, dayformat, formatValueToVND } from "shared/helpers/helper"
 import colorsProvider from "shared/theme/colors"
 import {
   selectAppointmentTime,
@@ -148,7 +148,7 @@ const StepTwo = ({ onBack }: Props) => {
               </div>
             </div>
             <div className="ml-auto text-base text-black1">
-              ${servicePackage?.price}
+              {formatValueToVND(servicePackage?.price || 0)}
             </div>
           </div>
         </div>
@@ -156,7 +156,7 @@ const StepTwo = ({ onBack }: Props) => {
         <div className="flex justify-between mt-2">
           <h3 className="text-base font-medium text-black1">Total</h3>
           <span className="text-base text-black1">
-            ${servicePackage?.price}
+            {formatValueToVND(servicePackage?.price || 0)}
           </span>
         </div>
         <Divider></Divider>

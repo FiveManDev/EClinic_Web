@@ -7,7 +7,7 @@ import { MRT_ColumnDef, MRT_PaginationState } from "material-react-table"
 import { useRouter } from "next/router"
 import { useMemo, useState } from "react"
 import { HiOutlinePencilSquare } from "react-icons/hi2"
-import { getDataPaginate } from "shared/helpers/helper"
+import { formatValueToVND, getDataPaginate } from "shared/helpers/helper"
 import { Service } from "types/Service"
 const ListService = () => {
   const router = useRouter()
@@ -60,7 +60,7 @@ const ListService = () => {
         Cell: ({ row }) => {
           return (
             <p className="line-clamp-1 max-w-[110px]">
-              {row.original.price} VND
+              {formatValueToVND(row.original.price)}
             </p>
           )
         }

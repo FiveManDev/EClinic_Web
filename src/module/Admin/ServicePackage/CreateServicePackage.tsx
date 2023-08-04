@@ -45,9 +45,22 @@ const MenuProps = {
 const schema = yup.object({
   servicePackageName: yup.string().required("Please enter title"),
   description: yup.string().required("Please enter description"),
-  price: yup.string().required("Please enter price"),
-  discount: yup.string().required("Please enter discount"),
-  estimatedTime: yup.string().required("Please enter estimate time"),
+  price: yup
+    .number()
+    .typeError("Please enter a valid price")
+    .positive("Price must be a positive number")
+    .required("Please enter price"),
+  discount: yup
+    .number()
+    .typeError("Please enter a valid discount")
+    .min(0, "Discount cannot be negative")
+    .max(100, "Discount cannot be greater than 100")
+    .required("Please enter discount"),
+  estimatedTime: yup
+    .number()
+    .typeError("Please enter a valid estimated time")
+    .positive("Estimated time must be a positive number")
+    .required("Please enter estimate time"),
   serviceItems: yup
     .array()
     .min(1, "Please choose at least one service")
