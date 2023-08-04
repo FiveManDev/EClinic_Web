@@ -25,17 +25,17 @@ import VideoCall from "./VideoCall"
 
 interface IProps {
   toggleInfo: () => void
-  userId: string
+  otherUserId: string
   isClose: boolean
 }
-const MessageBox = ({ toggleInfo, userId: id, isClose }: IProps) => {
-  const [userId, setUserId] = useState(id)
+const MessageBox = ({ toggleInfo, otherUserId: userId, isClose }: IProps) => {
+  const [isCloseRoom, setIsCloseRoom] = useState(isClose)
+  const [otherUserId, setOtherUserId] = useState(userId)
   const refScroll = useRef<HTMLDivElement | null>(null)
   const [isOverflowing, setIsOverflowing] = useState(false)
-
   const [isBottom, setIsBottom] = useState(false)
   const [messages, setMessages] = useState<Message[]>([])
-  const authorProfile = useSimpleProfile(id)
+  const otherProfile = useSimpleProfile(otherUserId)
   const confirm = useConfirm()
   const {
     answerCall,
@@ -107,8 +107,11 @@ const MessageBox = ({ toggleInfo, userId: id, isClose }: IProps) => {
           })
           connectionMessage.current?.on("NewAnswer", (profile: ProfileChat) => {
             if (profile) {
-              setUserId(profile.userID)
+              setOtherUserId(profile.userID)
             }
+          })
+          connectionMessage.current!.on("EndRoom", () => {
+            setIsCloseRoom(true)
           })
         })
         .catch((err) => {
@@ -226,9 +229,10 @@ const MessageBox = ({ toggleInfo, userId: id, isClose }: IProps) => {
   return (
     <div className="flex flex-col w-full border border-gray-200 border-solid border-y-0 ">
       <HeaderBox
+        isLoseRoom={isCloseRoom}
         handleClose={handleClose}
-        author={authorProfile.data?.data}
-        isLoading={authorProfile.isLoading}
+        author={otherProfile.data?.data}
+        isLoading={otherProfile.isLoading}
         toggleInfo={toggleInfo}
         handleCall={() => {
           callUser(
@@ -283,7 +287,7 @@ const MessageBox = ({ toggleInfo, userId: id, isClose }: IProps) => {
         )}
 
       <VideoCall
-        userProfile={authorProfile.data?.data}
+        userProfile={otherProfile.data?.data}
         otherProfile={roomData.data?.pages[0]?.data.data.otherProfile}
       />
 
@@ -329,13 +333,13 @@ const MessageBox = ({ toggleInfo, userId: id, isClose }: IProps) => {
                 <TextMessage
                   isImage={mess.isImage}
                   avatar={
-                    mess.userID === id
-                      ? item.data.data.myProfile.avatar
-                      : item.data.data.otherProfile.avatar
+                    mess.userID === otherUserId
+                      ? item.data.data.otherProfile.avatar
+                      : item.data.data.myProfile.avatar
                   }
                   message={mess}
                   key={mess.chatMessageID}
-                  kind={mess.userID === id ? "owner" : "other"}
+                  kind={mess.userID === otherUserId ? "other" : "owner"}
                 />
               ))
             )}
@@ -344,18 +348,18 @@ const MessageBox = ({ toggleInfo, userId: id, isClose }: IProps) => {
               <TextMessage
                 isImage={mess.isImage}
                 avatar={
-                  mess.userID === userId
-                    ? authorProfile.data?.data.avatar
+                  mess.userID === otherUserId
+                    ? otherProfile.data?.data.avatar
                     : roomData.data?.pages[0]?.data.data.myProfile.avatar
                 }
                 message={mess}
                 key={mess.chatMessageID}
-                kind={mess.userID === auth.user.userId ? "owner" : "other"}
+                kind={mess.userID === otherUserId ? "other" : "owner"}
               />
             ))}
         </div>
       </div>
-      {isClose ? (
+      {isCloseRoom ? (
         <div className="flex items-center justify-center w-full py-2 bg-gray-50">
           <Tag color={colorsProvider.success} className="mx-auto my-3">
             The room has ended

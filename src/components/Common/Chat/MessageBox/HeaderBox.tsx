@@ -14,12 +14,14 @@ interface IProps {
   toggleInfo: () => void
   author?: ProfileChat
   isLoading: boolean
+  isLoseRoom: boolean
   handleCall: () => void
   handleClose: () => void
 }
 export const HeaderBox = ({
   toggleInfo,
   author,
+  isLoseRoom,
   isLoading = false,
   handleCall,
   handleClose
@@ -65,7 +67,7 @@ export const HeaderBox = ({
       </div>
       <div className="flex items-center gap-x-2">
         {role === ROLE.SUPPORTER ||
-          (role === ROLE.DOCTOR && (
+          (role === ROLE.DOCTOR && !isLoseRoom && (
             <>
               <Tooltip
                 title="Close this room"
