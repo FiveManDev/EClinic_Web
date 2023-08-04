@@ -15,11 +15,12 @@ const ContainerChat = ({ data, isLoading = true }: IProps) => {
   const { query } = useRouter()
   const roomId = query.roomId as string
   const [show, setShow] = useState(false)
-  const [userId, setUserId] = useState<string | null>(null)
+  const [otherUserId, setOtherUserId] = useState<string | null>(null)
   useEffect(() => {
     if (roomId) {
       const author = data.find((item) => item.roomID === roomId)
-      setUserId(author?.roomAuthor.userID!)
+      console.log("useEffect ~ author:", author)
+      setOtherUserId(author?.roomAuthor.userID!)
     }
   }, [data, roomId])
   return (
@@ -27,13 +28,13 @@ const ContainerChat = ({ data, isLoading = true }: IProps) => {
       <SignalRCallContextProvider>
         <div className="flex p-0 background-primary h-[400px] md:h-[600px]">
           <ListHistory isLoading={isLoading} data={data} />
-          {roomId && userId ? (
+          {roomId && otherUserId ? (
             <MessageBox
               isClose={
                 data.find((room) => room.roomID === roomId)?.isClosed || false
               }
               key={roomId}
-              userId={userId}
+              otherUserId={otherUserId}
               toggleInfo={() => setShow(!show)}
             />
           ) : (
@@ -42,10 +43,10 @@ const ContainerChat = ({ data, isLoading = true }: IProps) => {
               className="flex-1 max-auto"
             />
           )}
-          {show && roomId && (
+          {show && roomId && otherUserId && (
             <UserProfile
               roomId={roomId}
-              userId={userId!}
+              userId={otherUserId!}
               onClose={() => setShow(!show)}
             />
           )}
