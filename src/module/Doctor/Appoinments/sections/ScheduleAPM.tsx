@@ -16,6 +16,7 @@ import colorsProvider from "shared/theme/colors"
 import { IProfileDoctor } from "types/Profile.type"
 import ModelSchedule from "../components/ModelSchedule"
 import ProfileDoctorItem from "../components/ProfileDoctorItem"
+import { OverlayScrollbarsComponent } from "overlayscrollbars-react"
 
 const ScheduleAPM = () => {
   const [doctorSelected, setdoctorSelected] = useState<IProfileDoctor | null>(
@@ -25,7 +26,7 @@ const ScheduleAPM = () => {
 
   const [pagination, setPagination] = useState({
     pageIndex: 1,
-    pageSize: 10
+    pageSize: 100
   })
   const [searchData, setSearchData] = useState("")
   const searchTextDebounce = useDebounce(searchData, 1500)
@@ -35,7 +36,7 @@ const ScheduleAPM = () => {
   )
   const { data, isLoading } = useGetDoctorProfilesQuery({
     searchText: searchTextDebounce,
-    pageNumber: pagination.pageIndex + 1,
+    pageNumber: pagination.pageIndex,
     pageSize: pagination.pageSize
   })
   const [showModal, setShowModal] = useState(false)
@@ -52,43 +53,6 @@ const ScheduleAPM = () => {
   }
   return (
     <section className="flex flex-col background-primary ">
-      {/* <div className="flex flex-col gap-y-2">
-        <span className="text-base ">How long should booked events be?</span>
-        <div className="flex items-center gap-3 overflow-hidden ">
-          {durationTime.map((item, index) => (
-            <button
-              key={index}
-              onClick={() => setIsDuration(false)}
-              className={classNames(
-                "flex items-center justify-center rounded-md px-3 py-2 text-gray-400 bg-transparent border-2 border-gray-400 border-solid hover:border-primary  hover:text-primary cursor-pointer"
-              )}
-            >
-              {item} min
-            </button>
-          ))}
-          <button
-            onClick={() => setIsDuration(true)}
-            className={classNames(
-              "flex items-center rounded-md justify-center px-3 py-2 text-gray-400 bg-transparent  border-gray-400 border-solid hover:border-primary border-2 hover:text-primary cursor-pointer"
-            )}
-          >
-            Custom
-          </button>
-        </div>
-        {isDuration && (
-          <div className="flex flex-col">
-            <span className="text-sm text-disable">Custom duration</span>
-            <div className="flex items-center">
-              <input
-                type="text"
-                className="rounded-md w-[140px] px-3 py-2 border-2 border-gray-400 border-solid "
-                defaultValue={"60"}
-              />
-              <span className="px-2">min</span>
-            </div>
-          </div>
-        )}
-      </div> */}
       <div className="grid grid-cols-5">
         <div className="col-span-2 mr-4">
           <h4 className="mb-2 text-sm font-semibold">Choose profile doctor</h4>
@@ -100,29 +64,39 @@ const ScheduleAPM = () => {
               placeholder="Find a profile by keyword"
             />
           </div>
-          <ul className="flex flex-col gap-2 p-1 overflow-auto">
-            {data?.data.data?.map((item, index) => (
-              <ProfileDoctorItem
-                className={
-                  doctorSelected?.profileID === item.profileID
-                    ? "ring-2 bg-primary bg-opacity-5"
-                    : ""
-                }
-                data={item}
-                key={index}
-                loading={false}
-                onClick={() => {
-                  setdoctorSelected(item)
-                }}
-              />
-            ))}
-            {isLoading &&
-              Array(2)
-                .fill(0)
-                .map((_, index) => (
-                  <ProfileItem onClick={() => {}} key={index} loading={true} />
-                ))}
-          </ul>
+          <OverlayScrollbarsComponent
+            defer
+            options={{ scrollbars: { autoHide: "scroll" } }}
+          >
+            <ul className="flex flex-col gap-2 p-1 max-h-[600px]">
+              {data?.data.data?.map((item, index) => (
+                <ProfileDoctorItem
+                  className={
+                    doctorSelected?.profileID === item.profileID
+                      ? "ring-2 bg-primary bg-opacity-5"
+                      : ""
+                  }
+                  data={item}
+                  key={index}
+                  loading={false}
+                  onClick={() => {
+                    setdoctorSelected(item)
+                  }}
+                />
+              ))}
+              {isLoading &&
+                Array(2)
+                  .fill(0)
+                  .map((_, index) => (
+                    <ProfileItem
+                      onClick={() => {}}
+                      key={index}
+                      loading={true}
+                    />
+                  ))}
+            </ul>
+          </OverlayScrollbarsComponent>
+
           {data?.data.data && !isLoading && data?.data.data?.length < 1 && (
             <EmtyData />
           )}

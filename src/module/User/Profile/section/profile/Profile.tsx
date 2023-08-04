@@ -18,9 +18,12 @@ import { IProfile, IRelationShip } from "types/Profile.type"
 import ProfileDisplay from "./components/ProfileDisplay/ProfileDisplay"
 import ProfileItem from "./components/ProfileItem"
 import Edit from "./components/form/Edit"
+import { useTranslation } from "react-i18next"
 
 type Action = "add" | "edit" | "view"
 const Profile = () => {
+  const { t } = useTranslation(["base"])
+
   const [profiles, setProfiles] = useState<(IProfile & IRelationShip)[]>([])
   const [ownerProfile, setOwnerProfile] = useState<
     (IProfile & IRelationShip) | undefined
@@ -121,7 +124,7 @@ const Profile = () => {
           onChange={(e) => setSearchText(e.target.value)}
           icon={<HiMagnifyingGlass />}
           className="w-full md:max-w-[412px]"
-          placeholder="Tìm nhanh hồ sơ"
+          placeholder={t("base:pages.profileUser.find")}
         />
         <ul className="max-h-[600px] overflow-auto space-y-2">
           {profiles?.map((item, index) => (
@@ -143,10 +146,12 @@ const Profile = () => {
           kind="primary"
           onClick={() => handleChangeForm(null, "add")}
         >
-          <span className="text-base">Add Profile</span>
+          <span className="text-base">
+            {t("base:pages.profileUser.add-profile")}
+          </span>
         </CustomButton>
       </div>
-      <div className="flex-1 px-3 md:px-6 md:ml-4 md:border-r-0 md:border-gray-200 md:border-dashed md:border border-y-0">
+      <div className="flex-1 px-3 border md:px-6 md:ml-4 md:border-r-0 md:border-gray-200 md:border-dashed border-y-0">
         {(mode == "add" || mode === "edit") && (
           <Edit
             isLoading={
@@ -156,8 +161,8 @@ const Profile = () => {
             }
             labelForm={
               mode === "add"
-                ? "Add new profile of your family"
-                : "Edit profile of your family"
+                ? t("base:pages.profileUser.add")
+                : t("base:pages.profileUser.edit")
             }
             onSubmit={handleSubmitForm}
             profile={ownerProfile}

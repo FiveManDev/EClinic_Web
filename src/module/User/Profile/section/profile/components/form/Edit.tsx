@@ -14,7 +14,6 @@ import {
 import DatePickerCustom from "components/Common/DatePicker/DatePickerCustom"
 import Spinner from "components/Common/Loading/LoadingIcon"
 import CustomButton from "components/User/Button"
-import { CustomInput } from "components/User/Input"
 import InputField from "components/User/Input/InputField"
 import useConfirm from "context/ComfirmContext"
 import {
@@ -23,8 +22,9 @@ import {
 } from "hooks/query/profile/useProfile"
 import { useImageFile } from "hooks/useImageFile"
 import Image from "next/image"
-import { ChangeEvent, useEffect, useState } from "react"
+import { ChangeEvent, useEffect } from "react"
 import { FieldValues, useForm } from "react-hook-form"
+import { useTranslation } from "react-i18next"
 import { RELATIONSHIPS } from "shared/constant/constant"
 import { IProfile, IRelationShip } from "types/Profile.type"
 import * as yup from "yup"
@@ -79,6 +79,7 @@ const Edit = ({
   isLoading = false
 }: Props) => {
   const confirm = useConfirm()
+  const { t } = useTranslation(["base"])
 
   const relationShipQuery = useAllRelationship()
   const getBloodTypes = useGetBloodTypes()
@@ -153,13 +154,13 @@ const Edit = ({
               size="medium"
               control={control}
               name="firstName"
-              label={"First name"}
+              label={t("base:pages.profileUser.form.first_name")}
             />
             <InputField
               size="medium"
               control={control}
               name="lastName"
-              label={"Last name"}
+              label={t("base:pages.profileUser.form.last_name")}
             />
           </div>
           <InputField
@@ -169,18 +170,18 @@ const Edit = ({
             size="medium"
             control={control}
             name="email"
-            label={"Email"}
+            label={t("base:pages.profileUser.form.email")}
           />
           <InputField
             size="medium"
             control={control}
             name="address"
-            label={"Address"}
+            label={t("base:pages.profileUser.form.address")}
           />
           <div className="flex space-x-3">
             <DatePickerCustom
               size="medium"
-              label="Date of birth"
+              label={t("base:pages.profileUser.form.date_of_birth")}
               control={control}
               name="dateOfBirth"
               onErrorField={(reason) => {
@@ -195,11 +196,13 @@ const Edit = ({
               errorMessage={errors.dateOfBirth?.message?.toString()}
             />
             <FormControl fullWidth size="small">
-              <InputLabel>Blood group</InputLabel>
+              <InputLabel>
+                {t("base:pages.profileUser.form.blood_type")}
+              </InputLabel>
               <Select
                 size="medium"
                 value={watchBlood}
-                label="blood group"
+                label={t("base:pages.profileUser.form.blood_type")}
                 onChange={(value) => {
                   setValue("bloodType", value.target.value)
                 }}
@@ -216,10 +219,10 @@ const Edit = ({
             size="medium"
             control={control}
             name="phone"
-            label={"Phone number"}
+            label={t("base:pages.profileUser.form.phone_number")}
           />
           <FormControl>
-            <FormLabel>Gender</FormLabel>
+            <FormLabel>{t("base:pages.profileUser.form.gender")}</FormLabel>
             <RadioGroup
               row
               value={watchGender}
@@ -231,12 +234,12 @@ const Edit = ({
               <FormControlLabel
                 value={true}
                 control={<Radio size="small" />}
-                label="Female"
+                label={t("base:pages.profileUser.form.feMale")}
               />
               <FormControlLabel
                 value={false}
                 control={<Radio size="small" />}
-                label="Male"
+                label={t("base:pages.profileUser.form.male")}
               />
             </RadioGroup>
           </FormControl>
@@ -245,7 +248,7 @@ const Edit = ({
               size="medium"
               control={control}
               name="weight"
-              label={"Weight"}
+              label={t("base:pages.profileUser.form.weight")}
               InputProps={{
                 endAdornment: (
                   <InputAdornment position="start">Kg</InputAdornment>
@@ -256,7 +259,7 @@ const Edit = ({
               size="medium"
               control={control}
               name="height"
-              label={"Height"}
+              label={t("base:pages.profileUser.form.height")}
               InputProps={{
                 endAdornment: (
                   <InputAdornment position="start">Cm</InputAdornment>
@@ -266,7 +269,9 @@ const Edit = ({
           </div>
           {profile?.relationshipName !== RELATIONSHIPS.ME && (
             <FormControl>
-              <FormLabel>Relationship</FormLabel>
+              <FormLabel>
+                {t("base:pages.profileUser.form.relationship")}
+              </FormLabel>
               <RadioGroup
                 row
                 value={watchRelationship}
@@ -321,7 +326,9 @@ const Edit = ({
               kind="primary"
               type="submit"
             >
-              {profile ? "Update profile" : "Add new profile"}
+              {profile
+                ? t("base:pages.profileUser.update")
+                : t("base:pages.profileUser.add")}
             </CustomButton>
           </div>
         </form>

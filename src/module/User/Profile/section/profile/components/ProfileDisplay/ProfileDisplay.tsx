@@ -1,6 +1,6 @@
 import CustomButton from "components/User/Button"
-import dayjs from "dayjs"
 import Image from "next/image"
+import { useTranslation } from "react-i18next"
 import { dayformat } from "shared/helpers/helper"
 import { IProfile, IRelationShip } from "types/Profile.type"
 interface Props {
@@ -10,6 +10,8 @@ interface Props {
   isLoading: boolean
 }
 const ProfileDisplay = ({ profile, onEdit, isLoading = false }: Props) => {
+  const { t } = useTranslation("base")
+
   if (!profile) {
     return null
   } else {
@@ -28,27 +30,51 @@ const ProfileDisplay = ({ profile, onEdit, isLoading = false }: Props) => {
             />
           </div>
           <div className="self-start w-full space-y-4 ">
-            <h3 className="text-lg font-bold text-h1">Thông tin </h3>
+            <h3 className="text-lg font-bold text-h1">
+              {t("pages.information")}
+            </h3>
             <ProfileItem
-              label="Full name"
+              label={t("pages.profileUser.form.full_name")}
               content={profile?.firstName + " " + profile?.lastName}
             />
-            <ProfileItem label="Email" content={profile?.email} />
-            <ProfileItem label="Phone number" content={profile?.phone} />
             <ProfileItem
-              label="Gender"
-              content={profile?.gender ? "Female" : "Male"}
+              label={t("pages.profileUser.form.email")}
+              content={profile?.email}
             />
-            <ProfileItem label="Address" content={profile?.address} />
             <ProfileItem
-              label="Date of birth"
+              label={t("pages.profileUser.form.phone_number")}
+              content={profile?.phone}
+            />
+            <ProfileItem
+              label={t("pages.profileUser.form.gender")}
+              content={
+                profile?.gender
+                  ? t("pages.profileUser.form.feMale")
+                  : t("pages.profileUser.form.male")
+              }
+            />
+            <ProfileItem
+              label={t("pages.profileUser.form.address")}
+              content={profile?.address}
+            />
+            <ProfileItem
+              label={t("pages.profileUser.form.date_of_birth")}
               content={dayformat(profile?.dateOfBirth)}
             />
-            <ProfileItem label="Blood Type" content={profile?.bloodType} />
-            <ProfileItem label="Height" content={profile?.height.toString()} />
-            <ProfileItem label="Weight" content={profile?.weight.toString()} />
             <ProfileItem
-              label="Relationship"
+              label={t("pages.profileUser.form.blood_type")}
+              content={profile?.bloodType}
+            />
+            <ProfileItem
+              label={t("pages.profileUser.form.height")}
+              content={profile?.height.toString()}
+            />
+            <ProfileItem
+              label={t("pages.profileUser.form.weight")}
+              content={profile?.weight.toString()}
+            />
+            <ProfileItem
+              label={t("pages.profileUser.form.relationship")}
               content={profile?.relationshipName}
             />
           </div>
@@ -60,7 +86,7 @@ const ProfileDisplay = ({ profile, onEdit, isLoading = false }: Props) => {
               onEdit(profile?.profileID)
             }}
           >
-            Change the infomation
+            {t("pages.profileUser.change")}
           </CustomButton>
         </div>
       </>

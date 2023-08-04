@@ -4,9 +4,44 @@
     "forum": "Cổng thông tin",
     "servies": "Dịch vụ",
     "detail": "Chi tiết",
-    "profile": "Trang cá nhân",
+    "profile": "Hồ sơ",
     "search": "Tra cứu",
     "doctors": "Danh sách bác sĩ",
-    "blog": "Blog"
+    "blog": "Blog",
+    "changePassword": "Thay đổi mật khẩu",
+    "historyQuestion": "Lịch sử câu hỏi",
+    "comunication": "Giao tiếp",
+    "scheduleApp": "Lịch hẹn",
+    "logout": "Đăng xuất",
+    "information": "Thông tin",
+    "search_page": {
+      "title": "Tra cứu nhanh thông tin sức khỏe",
+      "search": "Từ khóa được tìm kiếm nhiều nhất:"
+    },
+    "profileUser": {
+      "add": "Thêm hồ sơ mới của gia đình bạn",
+      "edit": "Chỉnh sửa hồ sơ của gia đình bạn",
+      "add-profile": "Thêm hồ sơ",
+      "find": "Tìm kiếm hồ sơ",
+      "update": "Cập nhật hồ sơ",
+      "delete": "Xóa hồ sơ",
+      "change": "Thay đổi thông tin",
+      "form": {
+        "first_name": "Họ",
+        "last_name": "Tên",
+        "full_name": "Họ và Tên",
+        "email": "Email",
+        "phone_number": "Số Điện Thoại",
+        "gender": "Giới Tính",
+        "address": "Địa Chỉ",
+        "date_of_birth": "Ngày Sinh",
+        "blood_type": "Nhóm Máu",
+        "height": "Chiều Cao",
+        "weight": "Cân Nặng",
+        "relationship": "Tình Trạng Hôn Nhân",
+        "male": "Nam",
+        "feMale": "Nữ"
+      }
+    }
   }
 }

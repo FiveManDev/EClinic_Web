@@ -64,18 +64,6 @@ const ListServicePackage = () => {
         }
       },
       {
-        accessorKey: "description",
-        header: "Description",
-        size: 250,
-        Cell: ({ row }) => {
-          return (
-            <p className="line-clamp-1 max-w-[250px]">
-              {row.original.description}
-            </p>
-          )
-        }
-      },
-      {
         accessorKey: "price",
         header: "Price",
         Cell: ({ row }) => {

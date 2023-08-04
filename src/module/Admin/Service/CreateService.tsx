@@ -9,7 +9,6 @@ import {
 } from "@mui/material"
 import SwitchCustom from "components/Common/IOSSwitch"
 import CustomButton from "components/User/Button"
-import { CustomInput } from "components/User/Input"
 import InputField from "components/User/Input/InputField"
 import useConfirm from "context/ComfirmContext"
 import {
@@ -36,7 +35,7 @@ const MenuProps = {
 }
 const schema = yup.object({
   serviceName: yup.string().required("Please enter title"),
-  price: yup.string().required("Please enter price"),
+  price: yup.number().required("Please enter price"),
   estimatedTime: yup.string().required("Please enter estimate time"),
   specialization: yup.object({
     specializationID: yup.string().required("Please choose a specialization")
@@ -128,8 +127,8 @@ const CreateService = ({ service, mode = "create" }: Props) => {
   const resetForm = () => {
     reset({
       serviceName: "",
-      price: undefined,
-      estimatedTime: undefined,
+      price: 0,
+      estimatedTime: 0,
       isActive: false,
       specialization: {}
     })

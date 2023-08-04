@@ -14,7 +14,10 @@ import LayoutItem from "../../components/layout"
 import { TabsWrapper } from "./Tabs.style"
 import Head from "next/head"
 import classNames from "classnames"
+import { useTranslation } from "react-i18next"
 const SiderBar = ({ children }: PropsWithChildren) => {
+  const { t, i18n } = useTranslation(["base"])
+
   const [open, setOpen] = useState(false)
   const [tabIndex, setTabIndex] = useState(0)
   const [tabTitle, setTabTitle] = useState("")
@@ -38,38 +41,38 @@ const SiderBar = ({ children }: PropsWithChildren) => {
     () => [
       {
         key: 0,
-        label: `Profile`,
+        label: t("base:pages.profile"),
         slug: "/user/my-profile"
       },
       {
         key: 1,
-        label: `Change password`,
+        label: t("base:pages.changePassword"),
         slug: "/user/change-password"
       },
       {
         key: 2,
-        label: `History of question`,
+        label: t("base:pages.historyQuestion"),
         slug: "/user/history-question"
       },
       {
         key: 3,
-        label: `Communication`,
+        label: t("base:pages.comunication"),
         slug: "/user/chat",
         layout: false
       },
       {
         key: 4,
-        slug: "/user/app-schedule",
-        label: `Appointment schedule`
+        label: t("base:pages.scheduleApp"),
+        slug: "/user/app-schedule"
       },
       {
         key: 5,
         slug: "/login",
-        label: `Logout`,
+        label: t("base:pages.logout"),
         onclick: () => logout()
       }
     ],
-    []
+    [i18n.language]
   )
   useEffect(() => {
     if (router.pathname) {

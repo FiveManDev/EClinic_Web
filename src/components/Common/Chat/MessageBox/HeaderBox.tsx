@@ -64,8 +64,8 @@ export const HeaderBox = ({
         </div>
       </div>
       <div className="flex items-center gap-x-2">
-        {role === ROLE.DOCTOR ||
-          (role === ROLE.SUPPORTER && (
+        {role === ROLE.SUPPORTER ||
+          (role === ROLE.DOCTOR && (
             <>
               <Tooltip
                 title="Close this room"

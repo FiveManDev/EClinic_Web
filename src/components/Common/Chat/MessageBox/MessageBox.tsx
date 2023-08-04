@@ -31,6 +31,8 @@ interface IProps {
 const MessageBox = ({ toggleInfo, userId: id, isClose }: IProps) => {
   const [userId, setUserId] = useState(id)
   const refScroll = useRef<HTMLDivElement | null>(null)
+  const [isOverflowing, setIsOverflowing] = useState(false)
+
   const [isBottom, setIsBottom] = useState(false)
   const [messages, setMessages] = useState<Message[]>([])
   const authorProfile = useSimpleProfile(id)
@@ -196,6 +198,30 @@ const MessageBox = ({ toggleInfo, userId: id, isClose }: IProps) => {
       }
     }
   }
+  useEffect(() => {
+    const handleOverflow = () => {
+      if (refScroll.current) {
+        const scrollContainer = refScroll.current
+        const isOverflow =
+          scrollContainer.scrollTop + scrollContainer.clientHeight <
+          scrollContainer.scrollHeight
+        setIsOverflowing(isOverflow)
+      }
+    }
+
+    handleOverflow()
+
+    const scrollContainer = refScroll.current
+    if (scrollContainer) {
+      scrollContainer.addEventListener("scroll", handleOverflow)
+    }
+
+    return () => {
+      if (scrollContainer) {
+        scrollContainer.removeEventListener("scroll", handleOverflow)
+      }
+    }
+  }, [])
   const myProfile = roomData.data?.pages[0]?.data.data.myProfile
   return (
     <div className="flex flex-col w-full border border-gray-200 border-solid border-y-0 ">
@@ -267,7 +293,9 @@ const MessageBox = ({ toggleInfo, userId: id, isClose }: IProps) => {
           onExitComplete={() => null}
           mode="wait"
         >
-          {!isBottom && <ButtonScroll onClick={scrollToBottom} />}
+          {isOverflowing && !isBottom && (
+            <ButtonScroll onClick={scrollToBottom} />
+          )}
         </AnimatePresence>
         <div
           className="flex flex-col h-full px-5 py-6 space-y-4 overflow-y-auto scroll-custom scroll-smooth "

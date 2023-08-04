@@ -133,9 +133,7 @@ const TableAPMForDoctor = () => {
               <Tooltip arrow placement="left" title="Go to chat">
                 <IconButton
                   onClick={() =>
-                    router.push(
-                      `/admin/accounts/doctor/edit/${row.original.price}`
-                    )
+                    router.push(`/doctor/chats?roomId=${row.original.roomID}`)
                   }
                 >
                   <Tag

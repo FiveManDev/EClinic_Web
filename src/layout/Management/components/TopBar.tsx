@@ -1,15 +1,18 @@
 import Notification from "components/Common/Notification"
 import UserAvatar from "layout/User/Components/UserAvatar/UserAvatar"
 import React from "react"
+import { useTranslation } from "react-i18next"
 import { useSelector } from "react-redux"
 import { RootState } from "store/store"
-const MENU = [
-  {
-    title: "Hồ sơ ",
-    href: "/user/my-profile"
-  }
-]
 const TopBar = () => {
+  const { t } = useTranslation(["base"])
+
+  const MENU = [
+    {
+      title: t("base:pages.profile"),
+      href: "/user/my-profile"
+    }
+  ]
   const auth = useSelector((state: RootState) => state.auth)
 
   return (

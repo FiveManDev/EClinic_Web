@@ -133,6 +133,7 @@ const ModelSchedule = ({ show, onChangeModel, doctorID }: Props) => {
             <div className="mx-auto">
               <LocalizationProvider dateAdapter={AdapterDayjs}>
                 <CalendarPicker
+                  disablePast
                   showDaysOutsideCurrentMonth
                   date={dayjs(date)}
                   onChange={(newDate) => {

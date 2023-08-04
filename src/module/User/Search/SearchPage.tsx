@@ -13,8 +13,8 @@ import { useSearchServicePackageQuery } from "hooks/query/service/useService"
 import useDebounce from "hooks/useDebounce"
 import { useSearchPostsForum } from "hooks/query/forum/useForum"
 import { useSearchPostsBlog } from "hooks/query/blog/useBlog"
-import { useGetBlogTagSortByCountQuery } from "hooks/query/blog/useBlog";
-import { useGetHashtagBySortQuery } from "hooks/query/forum/useForum";
+import { useGetBlogTagSortByCountQuery } from "hooks/query/blog/useBlog"
+import { useGetHashtagBySortQuery } from "hooks/query/forum/useForum"
 const SearchPage = () => {
   const { t } = useTranslation(["home", "base"])
   const router = useRouter()
@@ -31,18 +31,18 @@ const SearchPage = () => {
   const ServicePackagesResult = useSearchServicePackageQuery({
     searchText: searchTextDebounce,
     pageNumber: 1,
-    pageSize: 10
+    pageSize: 4
   })
   const PostsForumResult = useSearchPostsForum(
     searchTextDebounce,
     1,
-    10,
+    4,
     searchTag ? [searchTag] : []
   )
   const PostsBlogResult = useSearchPostsBlog(
     searchTextDebounce,
     1,
-    10,
+    4,
     searchTag ? [searchTag] : []
   )
   useEffect(() => {
@@ -62,7 +62,7 @@ const SearchPage = () => {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <UserSecondaryLayout breadrums={breadrums}>
-        <div className="flex flex-col items-center mx-auto bg-white w-full pb-3">
+        <div className="flex flex-col items-center w-full pb-3 mx-auto bg-white">
           <div className="relative w-[560px] h-[250px]">
             <ImageCustom
               src={"/images/search-image.webp"}
@@ -75,7 +75,7 @@ const SearchPage = () => {
             />
           </div>
           <h1 className="py-3 text-2xl font-semibold text-h1">
-            Tra cứu nhanh thông tin sức khỏe
+            {t("base:pages.search_page.title")}
           </h1>
           <div className="flex items-center justify-between h-11 md:h-[64px] w-full max-w-[652px]">
             <OutlinedInput
@@ -98,28 +98,45 @@ const SearchPage = () => {
             </IconButton>
           </div>
           <div className="flex flex-col items-center mt-4 space-y-3 max-w-[500px]">
-            <h3>Từ khóa được tìm kiếm nhiều nhất:</h3>
+            <h3> {t("base:pages.search_page.search")}</h3>
             <ul className="flex flex-wrap items-center justify-center w-full gap-4 list-none">
               {getBlogTagSortByCount.data?.data.data.map((item) => (
                 <li key={item.id}>
-                  <ChipCustom label={item.hashtagName}
+                  <ChipCustom
+                    label={item.hashtagName}
                     isActive={searchTag === item.id}
-                    onClick={() => setSearchTag(searchTag === item.id ? '' : item.id)} />
+                    onClick={() =>
+                      setSearchTag(searchTag === item.id ? "" : item.id)
+                    }
+                  />
                 </li>
               ))}
               {getTagSortByCount.data?.data.data.map((item) => (
                 <li key={item.hashtagID}>
-                  <ChipCustom isActive={searchTag === item.hashtagID}
+                  <ChipCustom
+                    isActive={searchTag === item.hashtagID}
                     label={item.hashtagName}
-                    onClick={() => setSearchTag(searchTag === item.hashtagID ? '' : item.hashtagID)} />
+                    onClick={() =>
+                      setSearchTag(
+                        searchTag === item.hashtagID ? "" : item.hashtagID
+                      )
+                    }
+                  />
                 </li>
               ))}
             </ul>
           </div>
         </div>
         <div className="flex flex-col gap-y-4">
-          {ServicePackagesResult.isLoading ? "Loading" :
-            <ResultsSearch servicePackages={ServicePackagesResult.data?.data?.data} blogs={PostsBlogResult.data?.data?.data} posts={PostsForumResult.data?.data?.data} />}
+          {ServicePackagesResult.isLoading ? (
+            "Loading"
+          ) : (
+            <ResultsSearch
+              servicePackages={ServicePackagesResult.data?.data?.data}
+              blogs={PostsBlogResult.data?.data?.data}
+              posts={PostsForumResult.data?.data?.data}
+            />
+          )}
         </div>
       </UserSecondaryLayout>
     </>

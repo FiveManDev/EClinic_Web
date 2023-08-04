@@ -25,7 +25,7 @@ const ContainerChat = ({ data, isLoading = true }: IProps) => {
   return (
     <SignalRMessageContextProvider>
       <SignalRCallContextProvider>
-        <div className="flex h-full p-0 background-primary max-h-[600px]">
+        <div className="flex p-0 background-primary h-[400px] md:h-[600px]">
           <ListHistory isLoading={isLoading} data={data} />
           {roomId && userId ? (
             <MessageBox

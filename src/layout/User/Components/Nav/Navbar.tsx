@@ -1,5 +1,4 @@
 import ChangeLanguage from "components/Common/ChangeLanguage"
-import Notification from "components/Common/Notification"
 import CustomButton from "components/User/Button"
 import DrawerCustom from "components/User/Drawer"
 import Image from "next/image"
@@ -9,19 +8,21 @@ import { useSelector } from "react-redux"
 import { RootState } from "store/store"
 import { MenuItem } from "../Menu"
 import UserAvatar from "../UserAvatar/UserAvatar"
+import ImageCustom from "components/Common/ImageCustom"
 interface Props {
   show: boolean
   onClose: () => void
 }
-const MENU = [
-  {
-    title: "Hồ sơ ",
-    href: "/user/my-profile"
-  }
-]
 const Navbar = ({ show = false, onClose }: Props) => {
+  const { t } = useTranslation(["home", "base"])
+
+  const MENU = [
+    {
+      title: t("base:pages.profile"),
+      href: "/user/my-profile"
+    }
+  ]
   const auth = useSelector((state: RootState) => state.auth)
-  const { t } = useTranslation("home")
   return (
     <DrawerCustom
       show={show}
@@ -30,12 +31,9 @@ const Navbar = ({ show = false, onClose }: Props) => {
     >
       <div className="flex flex-col items-center justify-between w-full space-y-5 md:space-x-8 md:space-y-0 md:flex-row md:justify-start">
         <Link href="/" className="relative scale-90 md:scale-100 w-[130px] h-9">
-          <Image
+          <ImageCustom
             src={"/images/logo.png"}
             fill
-            sizes="(max-width: 768px) 100vw,
-              (max-width: 1200px) 50vw,
-              33vw"
             alt="elinic"
             className="cursor-pointer"
             priority
