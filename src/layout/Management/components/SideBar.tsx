@@ -49,9 +49,6 @@ const SideBar = ({ items }: Props) => {
           priority
           src={"/images/logo.png"}
           fill
-          sizes="(max-width: 768px) 100vw,
-              (max-width: 1200px) 50vw,
-              33vw"
           alt="elinic"
           className="object-contain cursor-pointer"
         />

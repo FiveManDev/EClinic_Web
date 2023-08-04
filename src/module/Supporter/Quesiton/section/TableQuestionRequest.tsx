@@ -1,4 +1,4 @@
-import { IconButton } from "@mui/material"
+import { IconButton, Tooltip } from "@mui/material"
 import ImageCustom from "components/Common/ImageCustom"
 import TableCustom from "components/Common/Table/TableCustom"
 import Tag from "components/Common/Tag"
@@ -14,13 +14,15 @@ import ViewDetailPost from "module/Supporter/components/ViewDetailPost"
 import { queryClient } from "pages/_app"
 import { useMemo, useState } from "react"
 import { toast } from "react-hot-toast"
-import { AiFillLock, AiFillUnlock } from "react-icons/ai"
+import { AiFillLock, AiFillUnlock, AiOutlineEye } from "react-icons/ai"
 import { QUERY_KEYS } from "shared/constant/constant"
 import { combineName, dayformat, getDataPaginate } from "shared/helpers/helper"
 import colorsProvider from "shared/theme/colors"
 import { IPost } from "types/Post"
 
 export default function TableQuestionRequest() {
+  const [open, setOpen] = useState(false)
+  const [postSelected, setPostSelected] = useState<IPost | null>(null)
   const changeActivePost = useChangeActivePost()
   const confirm = useConfirm()
   const [searchData, setSearchData] = useState("")
@@ -139,32 +141,50 @@ export default function TableQuestionRequest() {
   )
   const paginationData = getDataPaginate(data)
   return (
-    <TableCustom
-      pagination={pagination}
-      onPaginationChange={setPagination}
-      columns={columns}
-      data={data?.data?.data ?? []}
-      rowCount={paginationData.TotalCount ?? 0}
-      pageCount={paginationData.TotalPages ?? 0}
-      isLoading={isLoading}
-      isError={isError}
-      isRefetching={isRefetching}
-      renderRowActions={({ row }) => (
-        <div className="flex items-center flex-shrink-0 w-16">
-          <ViewDetailPost post={row.original} />
-          <IconButton onClick={() => changeStatusPost(row.original.id)}>
-            {row.original.isActive ? <AiFillLock /> : <AiFillUnlock />}
-          </IconButton>
-        </div>
-      )}
-      renderTopToolbarCustomActions={() => (
-        <CustomInput
-          value={searchData}
-          onChange={(e) => setSearchData(e.target.value)}
-          placeholder="Search data here"
-          className="max-w-[300px] w-full"
+    <>
+      <TableCustom
+        pagination={pagination}
+        onPaginationChange={setPagination}
+        columns={columns}
+        data={data?.data?.data ?? []}
+        rowCount={paginationData.TotalCount ?? 0}
+        pageCount={paginationData.TotalPages ?? 0}
+        isLoading={isLoading}
+        isError={isError}
+        isRefetching={isRefetching}
+        renderRowActions={({ row }) => (
+          <div className="flex items-center flex-shrink-0 w-16">
+            <Tooltip title="View detail question">
+              <IconButton
+                onClick={() => {
+                  setPostSelected(row.original)
+                  setOpen(true)
+                }}
+              >
+                <AiOutlineEye />
+              </IconButton>
+            </Tooltip>
+            <IconButton onClick={() => changeStatusPost(row.original.id)}>
+              {row.original.isActive ? <AiFillLock /> : <AiFillUnlock />}
+            </IconButton>
+          </div>
+        )}
+        renderTopToolbarCustomActions={() => (
+          <CustomInput
+            value={searchData}
+            onChange={(e) => setSearchData(e.target.value)}
+            placeholder="Search data here"
+            className="max-w-[300px] w-full"
+          />
+        )}
+      />
+      {postSelected && (
+        <ViewDetailPost
+          post={postSelected}
+          open={open}
+          onClose={() => setOpen(!open)}
         />
       )}
-    />
+    </>
   )
 }
