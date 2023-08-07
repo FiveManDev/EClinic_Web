@@ -1,27 +1,36 @@
-import { useSearchFamlyProfilesQuery } from "hooks/query/profile/useProfile"
-import ProfileItem from "module/User/Profile/section/profile/components/ProfileItem"
-import { BOOKING_TYPE, PAGE_SIZE } from "shared/constant/constant"
-import { PropsStep } from "./StepOne"
+import { Tooltip } from "@mui/material"
+import EmtyData from "components/Common/Empty"
 import InputCustom from "components/Common/Input"
-import { useState } from "react"
+import { Option, SelectCustom } from "components/Common/Select/SelectCustom"
+import { useSearchFamlyProfilesQuery } from "hooks/query/profile/useProfile"
 import useDebounce from "hooks/useDebounce"
+import ProfileItem from "module/User/Profile/section/profile/components/ProfileItem"
+import { useEffect, useState } from "react"
 import { useDispatch, useSelector } from "react-redux"
+import { BOOKING_TYPE, PAGE_SIZE } from "shared/constant/constant"
 import {
   selectBookingType,
   selectProfileWithDoctor
 } from "store/module/booking/doctor/booking-doctor-selector"
 import { bookingDoctorSlice } from "store/module/booking/doctor/booking-doctor-slice"
-import EmtyData from "components/Common/Empty"
-import { Option, SelectCustom } from "components/Common/Select/SelectCustom"
-import { IconButton, Tooltip } from "@mui/material"
+import { PropsStep } from "./StepOne"
+import { useTranslation } from "react-i18next"
 
 export const StepTwo = ({ onBack }: PropsStep) => {
+  const { t } = useTranslation(["base"])
   const dispatch = useDispatch()
   const [searchData, setSearchData] = useState("")
   const profile = useSelector(selectProfileWithDoctor)
   const bookingType = useSelector(selectBookingType)
   const searchTextDebounce = useDebounce(searchData, 1000)
   const profiles = useSearchFamlyProfilesQuery(1, PAGE_SIZE, searchTextDebounce)
+  useEffect(() => {
+    if (profiles.isSuccess) {
+      dispatch(
+        bookingDoctorSlice.actions.profileChange(profiles.data?.data.data[0])
+      )
+    }
+  }, [profiles.isSuccess])
   return (
     <>
       <div className="flex items-center gap-x-3">
@@ -44,16 +53,16 @@ export const StepTwo = ({ onBack }: PropsStep) => {
             />
           </svg>
         </button>
-        <span>Quay lại</span>
+        <span>{t("base:booking.btn_black")}</span>
       </div>
       <div className="flex justify-between my-8 ">
         <div className="flex flex-col gap-y-2">
-          <h3 className="text-2xl text-h1">Thông tin bổ sung</h3>
+          <h3 className="text-2xl text-h1">{t("base:booking.add")}</h3>
         </div>
       </div>
       <div className="mb-4 modal-filed">
         <div className="flex items-center gap-x-1">
-          <span className="label">Chọn phương thức giao tiếp</span>
+          <span className="label">{t("base:booking.select_payment")}</span>
           <Tooltip
             title={
               <ul className="flex flex-col list-disc">
@@ -95,13 +104,13 @@ export const StepTwo = ({ onBack }: PropsStep) => {
         />
       </div>
       <div className="modal-filed ">
-        <span className="label">Chọn hồ sơ bạn muốn đặt khám</span>
+        <span className="label">{t("base:booking.select_pro")}</span>
         <div className="flex mb-3 gap-x-2">
           <InputCustom
             onChange={(e) => setSearchData(e.target.value)}
             value={searchData}
             className="w-full md:max-w-[300px]"
-            placeholder="Find a profile by keyword"
+            placeholder={t("base:booking.input_search")}
           />
         </div>
         <ul className="max-h-[600px] overflow-auto gap-2 grid grid-cols-2">

@@ -43,5 +43,30 @@
         "feMale": "Nữ"
       }
     }
+  },
+  "booking": {
+    "btn": "Đặt lịch",
+    "note_schedule": "Không có lịch trình của bác sĩ",
+    "btn_cancel": "Hủy",
+    "btn_ct": "Tiếp tục",
+    "btn_black": "Quay lại",
+    "btn_pay": "Xác nhận thanh toán",
+    "title": "Đặt lịch cuộc hẹn",
+    "desc": "Lựa chọn lịch hẹn và hình thức kết nối",
+    "note": "Lưu ý:",
+    "gray": "Ô xám",
+    "free": "là rảnh",
+    "selected": "là đã có người chọn",
+    "you_selected": "là bạn đã chọn",
+    "red": "Ô đỏ",
+    "blue": "Ô xanh dương",
+    "select_date": "Chọn ngày",
+    "select_time": "Chọn giờ",
+    "add": "Thông tin bổ sung",
+    "select_payment": "Chọn phương thức giao tiếp",
+    "select_pro": "Chọn hồ sơ bạn muốn đặt khám",
+    "input_search": "Tìm kiếm hồ sợ bởi từ khóa",
+    "summary": "Tóm tắt thông tin",
+    "total": "Tổng cộng"
   }
 }

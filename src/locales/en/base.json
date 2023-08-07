@@ -43,5 +43,31 @@
         "feMale": "Female"
       }
     }
+  },
+  "booking": {
+    "btn": "Booking",
+
+    "note_schedule": "No doctor's schedule",
+    "btn_cancel": "Cancel",
+    "btn_ct": "Continue",
+    "btn_black": "Back",
+    "btn_pay": "Confirm payment",
+    "title": "Schedule an appointment",
+    "desc": "Choose appointment date and connection method",
+    "note": "Note",
+    "gray": "Gray box",
+    "free": "is available",
+    "selected": "is already selected",
+    "you_selected": "you have selected",
+    "red": "Red box",
+    "blue": "Blue box",
+    "select_date": "Select date",
+    "select_time": "Select time",
+    "add": "Additional information",
+    "select_payment": "Select communication method",
+    "select_pro": "Select the profile you want to book an appointment for",
+    "input_search": "Search for profiles by keyword",
+    "summary": "Summary of information",
+    "total": "Total"
   }
 }

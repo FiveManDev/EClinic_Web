@@ -6,6 +6,7 @@ import Tag from "components/Common/Tag"
 import dayjs from "dayjs"
 import { useGetDoctorScheduleForUser } from "hooks/query/booking"
 import { useRouter } from "next/router"
+import { useTranslation } from "react-i18next"
 import { useDispatch, useSelector } from "react-redux"
 import colorsProvider from "shared/theme/colors"
 import {
@@ -19,6 +20,8 @@ export type PropsStep = {
   onBack?: () => void
 }
 export const StepOne = ({ onCancel, onContinue }: PropsStep) => {
+  const { t } = useTranslation(["base"])
+
   const router = useRouter()
   const dispatch = useDispatch()
   const date = useSelector(selectBookingTime)
@@ -31,30 +34,30 @@ export const StepOne = ({ onCancel, onContinue }: PropsStep) => {
     <>
       <div className="flex justify-between my-8 ">
         <div className="flex flex-col gap-y-2">
-          <h3 className="text-2xl text-h1">Đặt lịch cuộc hẹn</h3>
-          <p className="font-light text-gray-500">
-            Lựa chọn lịch hẹn và hình thức kết nối
-          </p>
+          <h3 className="text-2xl text-h1">{t("base:booking.title")}</h3>
+          <p className="font-light text-gray-500">{t("base:booking.desc")}</p>
         </div>
         <div className="flex gap-x-2">
-          <span>Lưu ý : </span>
+          <span>{t("base:booking.note")}</span>
           <ul className="space-y-2 font-light">
             <li>
-              <span className="text-gray-500">Màu xám</span> là rảnh
+              <span className="text-gray-500">{t("base:booking.gray")}</span>{" "}
+              {t("base:booking.free")}
             </li>
             <li>
-              <span className="text-red-500">Màu đỏ</span> là đã có người chọn
+              <span className="text-red-500">{t("base:booking.red")}</span>{" "}
+              {t("base:booking.selected")}
             </li>
             <li>
-              <span className="text-primary">Màu xanh dương</span> là bạn đã
-              chọn
+              <span className="text-primary">{t("base:booking.blue")}</span>{" "}
+              {t("base:booking.you_selected")}
             </li>
           </ul>
         </div>
       </div>
       <div className="flex gap-8">
         <div className="modal-filed">
-          <span className="label">Chọn ngày</span>
+          <span className="label">{t("base:booking.select_date")}</span>
           <LocalizationProvider dateAdapter={AdapterDayjs}>
             <CalendarPicker
               disablePast
@@ -71,7 +74,7 @@ export const StepOne = ({ onCancel, onContinue }: PropsStep) => {
           </LocalizationProvider>
         </div>
         <div className="flex-1 modal-filed">
-          <span className="label">Chọn giờ</span>
+          <span className="label">{t("base:booking.select_time")}</span>
           {getDoctorSchedule.isLoading && (
             <div className="grid h-full grid-cols-3 gap-3 overflow-y-auto">
               {Array(20)
@@ -112,7 +115,10 @@ export const StepOne = ({ onCancel, onContinue }: PropsStep) => {
               ))}
             </div>
           ) : (
-            <EmtyData message={"No doctor's schedule"} className="flex-1" />
+            <EmtyData
+              message={t("base:booking.note_schedule")}
+              className="flex-1"
+            />
           )}
         </div>
       </div>

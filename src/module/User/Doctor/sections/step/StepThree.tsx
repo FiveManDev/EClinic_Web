@@ -3,7 +3,7 @@ import Payment from "components/Common/Payment"
 import Tag from "components/Common/Tag"
 import CustomButton from "components/User/Button"
 import { useDispatch, useSelector } from "react-redux"
-import { BOOKING_TYPE } from "shared/constant/constant"
+import { BOOKING_TYPE, PAYMENT } from "shared/constant/constant"
 import { combineName, dayformat, formatValueToVND } from "shared/helpers/helper"
 import colorsProvider from "shared/theme/colors"
 import { selectBookingDoctor } from "store/module/booking/doctor/booking-doctor-selector"
@@ -13,8 +13,11 @@ import { usePaymentBookingDoctorMutation } from "hooks/query/payment/usePayment"
 import { RootState } from "store/store"
 import { useRouter } from "next/router"
 import { toast } from "react-hot-toast"
+import { useTranslation } from "react-i18next"
 interface Props extends PropsStep {}
 const StepThree = ({ onBack }: Props) => {
+  const { t } = useTranslation(["base"])
+
   const router = useRouter()
   const userId = useSelector((state: RootState) => state.auth.user.userId)
   const paymentMutation = usePaymentBookingDoctorMutation()
@@ -48,6 +51,7 @@ const StepThree = ({ onBack }: Props) => {
       }
     )
   }
+  dispatch(bookingDoctorSlice.actions.methodChange(PAYMENT.VNPAY.name))
   return (
     <>
       <div className="flex items-center gap-x-3">
@@ -70,10 +74,12 @@ const StepThree = ({ onBack }: Props) => {
             />
           </svg>
         </button>
-        <span>Quay lại</span>
+        <span>{t("base:booking.btn_black")}</span>
       </div>
       <div className="flex flex-col my-8  px-[30px] py-4">
-        <h3 className="text-xl font-semibold text-black1">Booking Summary</h3>
+        <h3 className="text-xl font-semibold text-black1">
+          {t("base:booking.summary")}
+        </h3>
         <Divider></Divider>
         <div className="flex flex-col gap-y-2">
           <div className="flex items-center gap-x-4">
@@ -198,7 +204,9 @@ const StepThree = ({ onBack }: Props) => {
         </div>
         <Divider></Divider>
         <div className="flex justify-between mt-3">
-          <h3 className="text-base font-medium text-black1">Total</h3>
+          <h3 className="text-base font-medium text-black1">
+            {t("base:booking.total")}
+          </h3>
           <span className="text-base text-black1">
             {formatValueToVND(price || 0)}
           </span>
@@ -217,7 +225,7 @@ const StepThree = ({ onBack }: Props) => {
           onClick={onSubmit}
           isLoading={paymentMutation.isLoading}
         >
-          Confirm and Pay
+          {t("base:booking.btn_pay")}
         </CustomButton>
       </div>
     </>

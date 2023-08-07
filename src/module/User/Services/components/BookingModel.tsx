@@ -2,9 +2,9 @@ import ModalPrimary from "components/Common/Modal/ModalPrimary"
 import CustomButton from "components/User/Button"
 import { DetailDoctorModalWrapper } from "module/User/Doctor/sections/styles"
 import { OverlayScrollbarsComponent } from "overlayscrollbars-react"
-import React, { useState } from "react"
+import { useState } from "react"
+import { useTranslation } from "react-i18next"
 import { StepOne } from "./StepOne"
-import classNames from "classnames"
 import StepTwo from "./StepTwo"
 interface Props {
   show: boolean
@@ -12,6 +12,8 @@ interface Props {
 }
 
 const BookingModel = ({ onClose, show }: Props) => {
+  const { t } = useTranslation(["base"])
+
   const [currentStep, setCurrentStep] = useState<number>(1)
   const onChangeStep = (step: typeof currentStep) => {
     setCurrentStep(step)
@@ -23,16 +25,13 @@ const BookingModel = ({ onClose, show }: Props) => {
           defer
           options={{ scrollbars: { autoHide: "scroll" } }}
         >
-          <DetailDoctorModalWrapper
-            className={classNames(
-              currentStep && "!w-fit",
-              currentStep === 2 && "max-w-[500px]"
-            )}
-          >
+          <DetailDoctorModalWrapper>
             {currentStep === 1 ? (
               <StepOne
                 onCancel={() => onClose()}
-                onContinue={() => onChangeStep(2)}
+                onContinue={() => {
+                  onChangeStep(2)
+                }}
               />
             ) : (
               <StepTwo onBack={() => onChangeStep(1)} />
@@ -44,13 +43,13 @@ const BookingModel = ({ onClose, show }: Props) => {
           <div className="footer ">
             <div className="flex justify-between px-6">
               <CustomButton kind="tertiary" onClick={() => onClose()}>
-                Hủy
+                {t("base:booking.btn_cancel")}
               </CustomButton>
               <CustomButton
                 kind="primary"
                 onClick={() => onChangeStep(currentStep + 1)}
               >
-                Tiếp tục
+                {t("base:booking.btn_ct")}
               </CustomButton>
             </div>
           </div>

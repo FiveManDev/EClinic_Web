@@ -19,8 +19,11 @@ import { RootState } from "store/store"
 import { PropsStep } from "./StepOne"
 import { useRouter } from "next/router"
 import { toast } from "react-hot-toast"
+import { useTranslation } from "react-i18next"
 interface Props extends PropsStep {}
 const StepTwo = ({ onBack }: Props) => {
+  const { t } = useTranslation(["base"])
+
   const router = useRouter()
   const confirm = useConfirm()
   const paymentMutation = usePaymentBookingServiceMutation()
@@ -64,6 +67,8 @@ const StepTwo = ({ onBack }: Props) => {
       }
     }
   }
+  dispatch(bookingServiceSlice.actions.methodChange(PAYMENT.VNPAY.name))
+
   return (
     <>
       <div className="flex items-center gap-x-2">
@@ -86,10 +91,12 @@ const StepTwo = ({ onBack }: Props) => {
             />
           </svg>
         </button>
-        <span>Quay lại</span>
+        <span>{t("base:booking.btn_black")}</span>
       </div>
       <div className="flex flex-col my-4 px-[24px]">
-        <h3 className="text-xl font-semibold text-black1">Booking Summary</h3>
+        <h3 className="text-xl font-semibold text-black1">
+          {t("base:booking.summary")}
+        </h3>
         <Divider></Divider>
         <div className="flex flex-col gap-y-2">
           <div className="flex items-center gap-x-4">
@@ -154,7 +161,10 @@ const StepTwo = ({ onBack }: Props) => {
         </div>
         <Divider></Divider>
         <div className="flex justify-between mt-2">
-          <h3 className="text-base font-medium text-black1">Total</h3>
+          <h3 className="text-base font-medium text-black1">
+            {" "}
+            {t("base:booking.total")}
+          </h3>
           <span className="text-base text-black1">
             {formatValueToVND(servicePackage?.price || 0)}
           </span>

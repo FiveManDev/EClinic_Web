@@ -2,16 +2,19 @@ import React from "react"
 import ImageCustom from "../ImageCustom"
 import { PAYMENT } from "shared/constant/constant"
 import classNames from "classnames"
+import { useTranslation } from "react-i18next"
 interface Props {
   methodSelected?: string
   onChangeMethod: (method: string) => void
 }
 
 const Payment = ({ methodSelected, onChangeMethod }: Props) => {
+  const { t } = useTranslation(["base"])
+
   return (
     <>
       <div className="flex flex-col gap-y-2">
-        <h3 className="text-lg text-black1">Payment Method</h3>
+        <h3 className="text-lg text-black1">{t("base:booking.total")}</h3>
         <ul className="flex items-center gap-4">
           {Object.values(PAYMENT).map((method, index) => (
             <li

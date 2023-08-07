@@ -1,26 +1,31 @@
 import ImageCustom from "components/Common/ImageCustom"
 import ModalPrimary from "components/Common/Modal/ModalPrimary"
+import ModalSuccess from "components/Common/Modal/ModalSuccess"
 import Tag from "components/Common/Tag"
 import CustomButton from "components/User/Button"
 import { useGetDoctorProfilesByIdQuery } from "hooks/query/profile/useProfile"
 import { useRouter } from "next/router"
 import { OverlayScrollbarsComponent } from "overlayscrollbars-react"
 import { useEffect, useState } from "react"
+import { toast } from "react-hot-toast"
+import { useTranslation } from "react-i18next"
+import { useSelector } from "react-redux"
 import { combineName, formatValueToVND } from "shared/helpers/helper"
 import colorsProvider from "shared/theme/colors"
+import { selectSlotBooking } from "store/module/booking/doctor/booking-doctor-selector"
+import { bookingDoctorSlice } from "store/module/booking/doctor/booking-doctor-slice"
+import { RootState, useAppDispatch } from "store/store"
 import About from "./About"
 import { StepOne } from "./step/StepOne"
 import StepThree from "./step/StepThree"
 import { StepTwo } from "./step/StepTwo"
 import { DetailDoctorModalWrapper } from "./styles"
-import { RootState, useAppDispatch } from "store/store"
-import { bookingDoctorSlice } from "store/module/booking/doctor/booking-doctor-slice"
-import ModalSuccess from "components/Common/Modal/ModalSuccess"
-import { useSelector } from "react-redux"
-import { toast } from "react-hot-toast"
 const DetailDoctor = () => {
+  const { t } = useTranslation(["base"])
+
   const [isActive, setIsActive] = useState(false)
   const isLogin = useSelector((state: RootState) => state.auth.isLoggedIn)
+  const slot = useSelector(selectSlotBooking)
   const dispatch = useAppDispatch()
   const router = useRouter()
   const { data, isLoading } = useGetDoctorProfilesByIdQuery(
@@ -69,16 +74,9 @@ const DetailDoctor = () => {
         >
           <DetailDoctorModalWrapper>
             {currentStep === 1 ? (
-              <StepOne
-                onCancel={() => setShowModal(false)}
-                onContinue={() => onChangeStep(2)}
-              />
+              <StepOne />
             ) : currentStep === 2 ? (
-              <StepTwo
-                onCancel={() => setShowModal(false)}
-                onBack={() => onChangeStep(1)}
-                onContinue={() => onChangeStep(currentStep)}
-              />
+              <StepTwo onBack={() => onChangeStep(1)} />
             ) : (
               <StepThree onBack={() => onChangeStep(2)} />
             )}
@@ -88,14 +86,18 @@ const DetailDoctor = () => {
         <div className="footer ">
           <div className="flex justify-between px-6">
             <CustomButton kind="tertiary" onClick={() => setShowModal(false)}>
-              Hủy
+              {t("base:booking.btn_cancel")}
             </CustomButton>
             {currentStep !== 3 && (
               <CustomButton
                 kind="primary"
-                onClick={() => onChangeStep(currentStep + 1)}
+                onClick={() => {
+                  slot
+                    ? onChangeStep(currentStep + 1)
+                    : toast.error("Please choose a slot")
+                }}
               >
-                Tiếp tục
+                {t("base:booking.btn_ct")}
               </CustomButton>
             )}
           </div>
@@ -166,7 +168,7 @@ const DetailDoctor = () => {
               }
             }}
           >
-            Booking
+            {t("base:booking.btn")}
           </CustomButton>
         </div>
         <div className="col-span-2 background-primary">

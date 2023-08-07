@@ -59,7 +59,7 @@ const UserAvatar = ({ menu }: Props) => {
           <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
             <div className="relative overflow-hidden rounded-full w-9 h-9">
               <ImageCustom
-                src={(data?.data.avatar as string) || "/images/default.jpeg"}
+                src={(data?.data?.avatar as string) || "/images/default.jpeg"}
                 fill
                 sizes="(max-width: 768px) 100vw,
               (max-width: 1200px) 50vw,
