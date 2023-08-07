@@ -163,20 +163,16 @@ class BookingService {
     }
   }
   async getDoctorScheduleForUser(date: string, doctorId: string) {
-    try {
-      const res: AxiosResponse = await axiosClient.get(
-        `${URL_API.BOOKING.DOCTOR_SCHEDULE}/getDoctorScheduleForUser`,
-        {
-          params: {
-            date,
-            doctorId
-          }
+    const res: AxiosResponse = await axiosClient.get(
+      `${URL_API.BOOKING.DOCTOR_SCHEDULE}/getDoctorScheduleForUser`,
+      {
+        params: {
+          date,
+          doctorId
         }
-      )
-      return res.data as IServerResponse<BookingSchedule>
-    } catch (error) {
-      console.log("BookingService ~ getDoctorScheduleForUser ~ error:", error)
-    }
+      }
+    )
+    return res.data as IServerResponse<BookingSchedule>
   }
   async createDoctorSchedule(data: CreateScheduleDoctor) {
     try {

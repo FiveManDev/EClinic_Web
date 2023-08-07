@@ -46,11 +46,14 @@ const ModelSchedule = ({ show, onChangeModel, doctorID }: Props) => {
       setType("create")
       setSlots([])
     }
-    if (doctorSchedule.status === "success") {
+    if (
+      doctorSchedule?.data?.data?.slots &&
+      doctorSchedule?.data?.data?.slots.length > 0
+    ) {
       setType("update")
       setSlots(doctorSchedule.data?.data.slots || [])
     }
-  }, [doctorSchedule.data?.data.slots, doctorSchedule.status])
+  }, [doctorSchedule.status, show])
   const handleSchedule = (
     kind: "startTime" | "endTime",
     time: string,
@@ -90,8 +93,9 @@ const ModelSchedule = ({ show, onChangeModel, doctorID }: Props) => {
         },
         {
           onSuccess() {
-            queryClient.refetchQueries([QUERY_KEYS.BOOKING.DOCTOR, date])
+            queryClient.invalidateQueries([QUERY_KEYS.BOOKING.DOCTOR])
             toast.success("Create successfuly")
+            doctorSchedule.refetch()
           },
           onError() {
             toast.success("Create failed")
@@ -106,8 +110,9 @@ const ModelSchedule = ({ show, onChangeModel, doctorID }: Props) => {
         },
         {
           onSuccess() {
-            queryClient.refetchQueries([QUERY_KEYS.BOOKING.DOCTOR, date])
+            queryClient.invalidateQueries([QUERY_KEYS.BOOKING.DOCTOR])
             toast.success("Update successfuly")
+            doctorSchedule.refetch()
           },
           onError() {
             toast.success("Update failed")
