@@ -42,10 +42,10 @@ const DetailDoctor = () => {
     }
   }, [showModal])
   useEffect(() => {
-    if (data?.isSuccess && data.data) {
+    if (data?.isSuccess) {
       dispatch(bookingDoctorSlice.actions.doctorChange(data.data))
     }
-  }, [data?.data])
+  }, [data?.isSuccess, showModal])
   useEffect(() => {
     if (router.query.bookingId) {
       setTimeout(() => {

@@ -14,6 +14,7 @@ import { RootState } from "store/store"
 import { useRouter } from "next/router"
 import { toast } from "react-hot-toast"
 import { useTranslation } from "react-i18next"
+import { useEffect } from "react"
 interface Props extends PropsStep {}
 const StepThree = ({ onBack }: Props) => {
   const { t } = useTranslation(["base"])
@@ -51,7 +52,9 @@ const StepThree = ({ onBack }: Props) => {
       }
     )
   }
-  dispatch(bookingDoctorSlice.actions.methodChange(PAYMENT.VNPAY.name))
+  useEffect(() => {
+    dispatch(bookingDoctorSlice.actions.methodChange(PAYMENT.VNPAY.name))
+  }, [])
   return (
     <>
       <div className="flex items-center gap-x-3">

@@ -26,6 +26,7 @@ export const StepTwo = ({ onBack }: PropsStep) => {
   const profiles = useSearchFamlyProfilesQuery(1, PAGE_SIZE, searchTextDebounce)
   useEffect(() => {
     if (profiles.isSuccess) {
+      console.log("useEffect ~ profiles.isSuccess:", profiles.isSuccess)
       dispatch(
         bookingDoctorSlice.actions.profileChange(profiles.data?.data.data[0])
       )

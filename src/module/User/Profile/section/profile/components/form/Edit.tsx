@@ -275,6 +275,7 @@ const Edit = ({
               <RadioGroup
                 row
                 value={watchRelationship}
+                defaultValue={relationShipQuery.data?.data[0].relationshipID}
                 onChange={(e) => setValue("relationshipID", e.target.value)}
                 name="radio-buttons-group"
                 className="gap-3 mt-2 ml-3"

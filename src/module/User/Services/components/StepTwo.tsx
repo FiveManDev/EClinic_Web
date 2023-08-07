@@ -20,6 +20,7 @@ import { PropsStep } from "./StepOne"
 import { useRouter } from "next/router"
 import { toast } from "react-hot-toast"
 import { useTranslation } from "react-i18next"
+import { useEffect } from "react"
 interface Props extends PropsStep {}
 const StepTwo = ({ onBack }: Props) => {
   const { t } = useTranslation(["base"])
@@ -67,7 +68,9 @@ const StepTwo = ({ onBack }: Props) => {
       }
     }
   }
-  dispatch(bookingServiceSlice.actions.methodChange(PAYMENT.VNPAY.name))
+  useEffect(() => {
+    dispatch(bookingServiceSlice.actions.methodChange(PAYMENT.VNPAY.name))
+  }, [])
 
   return (
     <>
