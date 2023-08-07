@@ -49,7 +49,7 @@ const SideBar = ({ items }: Props) => {
           priority
           src={"/images/logo.png"}
           fill
-          alt="elinic"
+          alt="Eclinic"
           className="object-contain cursor-pointer"
         />
       </Link>

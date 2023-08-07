@@ -34,7 +34,7 @@ const Navbar = ({ show = false, onClose }: Props) => {
           <ImageCustom
             src={"/images/logo.png"}
             fill
-            alt="elinic"
+            alt="Eclinic"
             className="cursor-pointer"
             priority
           />

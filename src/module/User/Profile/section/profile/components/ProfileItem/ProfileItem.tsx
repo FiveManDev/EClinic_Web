@@ -63,7 +63,7 @@ const ProfileItem = ({ data, onClick, loading = false, className }: Props) => {
           )}
           {data && (
             <>
-              <span className="text-base font-medium">
+              <span className="text-base font-medium max-w-[200px] line-clamp-1">
                 {data.firstName + " " + data.lastName}
               </span>
               <time className="text-xs text-gray-400">

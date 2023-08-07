@@ -60,7 +60,13 @@ const schema = yup.object({
       "Please enter valid phone number"
     ),
   dateOfBirth: yup.string().required("Please enter your date of birth"),
-  address: yup.string().required("Please enter your address").nullable(),
+  address: yup
+    .string()
+    .required("Please enter your address")
+    .matches(
+      /^\S.*\S$/,
+      "Please enter a valid name (must not be empty and cannot contain only spaces)"
+    ),
   bloodType: yup.string().required("Please choose your blood").default("A+"),
   weight: yup
     .number()
@@ -274,8 +280,10 @@ const Edit = ({
               </FormLabel>
               <RadioGroup
                 row
-                value={watchRelationship}
-                defaultValue={relationShipQuery.data?.data[0].relationshipID}
+                value={
+                  watchRelationship ||
+                  relationShipQuery.data?.data[0].relationshipID
+                }
                 onChange={(e) => setValue("relationshipID", e.target.value)}
                 name="radio-buttons-group"
                 className="gap-3 mt-2 ml-3"

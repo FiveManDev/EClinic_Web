@@ -6,6 +6,7 @@ import GoogleIcon from "components/Common/Icon/GoogleIcon"
 import Spinner from "components/Common/Loading/LoadingIcon"
 import Tag from "components/Common/Tag"
 import CustomButton from "components/User/Button"
+import { CustomInputPassword } from "components/User/Input"
 import InputField from "components/User/Input/InputField"
 import useUserGoogle from "hooks/auth/useUserGoogle"
 import jwt_decode from "jwt-decode"
@@ -109,7 +110,13 @@ const FormLogin = () => {
         className="flex flex-col mt-3 space-y-5 md:mt-5"
       >
         <InputField label="User name" control={control} name="username" />
-        <InputField label="Password" control={control} name="password" />
+        <CustomInputPassword
+          label="Password"
+          control={control}
+          name="password"
+          error={!!errors.password}
+          errorMessage={errors.password?.message?.toString()}
+        />
         <Link
           href={"/reset-password"}
           className="!mt-2 text-right no-underline hover:underline hover:decoration-primary"

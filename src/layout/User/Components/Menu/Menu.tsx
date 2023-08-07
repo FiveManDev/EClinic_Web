@@ -22,7 +22,7 @@ const Menu = () => {
               (max-width: 1200px) 50vw,
               33vw"
             priority
-            alt="elinic"
+            alt="Eclinic"
             className="object-contain cursor-pointer"
           />
         </Link>

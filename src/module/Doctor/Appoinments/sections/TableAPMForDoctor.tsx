@@ -101,7 +101,7 @@ const TableAPMForDoctor = () => {
         header: "Status",
         Cell: ({ cell }) => {
           return cell.getValue() === 1 ? (
-            <Tag color="#FEAF02">Up comming</Tag>
+            <Tag color="#FEAF02">Upcoming</Tag>
           ) : cell.getValue() === 2 ? (
             <Tag color="#4FD8DE">Done</Tag>
           ) : (

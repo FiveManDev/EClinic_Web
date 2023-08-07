@@ -14,7 +14,7 @@ const Footer = () => {
                     src={"/images/logo.png"}
                     fill
                     priority
-                    alt="elinic"
+                    alt="Eclinic"
                     className="cursor-pointer"
                   />
                 </Link>
@@ -144,7 +144,7 @@ const Footer = () => {
           className="font-semibold text-gray-600"
           href="https://tailwind-elements.com/"
         >
-          Elinic
+          Eclinic
         </a>
       </div>
     </footer>

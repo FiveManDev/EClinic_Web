@@ -23,6 +23,7 @@ import { routers } from "shared/constant/routers"
 import { ISignupForm } from "types/Auth"
 import * as yup from "yup"
 import ConfirmCode from "../ConfirmCode"
+import { CustomInputPassword } from "components/User/Input"
 
 const schema = yup.object({
   userName: yup.string().required("Please enter your user name"),
@@ -179,16 +180,21 @@ const FormSignup = () => {
                 name="userName"
                 label={"User name"}
               />
-              <InputField
+              <CustomInputPassword
+                label="Password"
                 control={control}
                 name="password"
-                label={"Password"}
+                error={!!errors.password}
+                errorMessage={errors.password?.message?.toString()}
               />
-              <InputField
+              <CustomInputPassword
+                label="Confirm password"
                 control={control}
                 name="confirmPassword"
-                label={"Confirm password"}
+                error={!!errors.confirmPassword}
+                errorMessage={errors.confirmPassword?.message?.toString()}
               />
+
               <DatePickerCustom
                 label="Date of birth"
                 control={control}

@@ -23,7 +23,7 @@ const ServiceBookingCard = ({ kind, data }: Props) => {
   const handleCancel = async () => {
     if (confirm) {
       const choice = await confirm({
-        title: <h3 className="text-2xl text-error">Cancel Appoitment</h3>,
+        title: <h3 className="text-2xl text-error">Cancel Appointment</h3>,
         content: (
           <div className="flex flex-col gap-y-2w">
             <p>Are you sure you want to cancel your appoiment?</p>

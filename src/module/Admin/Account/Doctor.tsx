@@ -26,7 +26,7 @@ const Doctor = () => {
       <Head>
         <title>Doctor account</title>
       </Head>
-      <MainHeadingLayout heading="Account doctor">
+      <MainHeadingLayout heading="Account Doctor">
         <TabsCustom tabs={tabs} />
       </MainHeadingLayout>
     </>

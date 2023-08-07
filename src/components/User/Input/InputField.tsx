@@ -5,7 +5,7 @@ type Props = BaseTextFieldProps &
   TextFieldProps & {
     name: string
     label: string
-    control: Control<any> // Make control prop optional
+    control: Control<any>
   }
 
 const InputField = ({

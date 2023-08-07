@@ -23,7 +23,7 @@ const CardService = ({ className, servicePackage }: Props) => {
       <div>
         <div className="w-full h-[152px] relative">
           <Image
-            alt="image-appoitment"
+            alt="image-Appointment"
             src={servicePackage?.image || "/images/sample.png"}
             fill
             sizes="(max-width: 768px) 100vw,

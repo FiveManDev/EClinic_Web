@@ -26,7 +26,7 @@ const Expert = () => {
       <Head>
         <title>Export account</title>
       </Head>
-      <MainHeadingLayout heading="Account Supporters">
+      <MainHeadingLayout heading="Account Experts">
         <TabsCustom tabs={tabs} />
       </MainHeadingLayout>
     </>
