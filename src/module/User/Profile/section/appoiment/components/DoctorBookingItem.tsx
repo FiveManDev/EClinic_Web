@@ -112,7 +112,7 @@ const DoctorBookingItem = ({ kind, data }: Props) => {
             color={colorsProvider.primary}
             className="cursor-pointer"
             onClick={() => {
-              router.push(`/user/chat?roomId=${data.bookingID}`)
+              router.push(`/user/chat?roomId=${data.roomID}`)
             }}
           >
             <svg
