@@ -20,5 +20,6 @@
   "inforDetail": "Details",
   "specialService": "Outstanding Service Package",
   "position": "Position",
-  "input_search": "Search for doctors"
+  "input_search": "Search for doctors",
+  "loadMore": "Load more"
 }

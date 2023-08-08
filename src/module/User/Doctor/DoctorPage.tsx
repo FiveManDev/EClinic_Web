@@ -59,9 +59,8 @@ const DoctorPage = () => {
   const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
     setSearchData((pveState) => ({
       ...pveState,
-      specializationID: event.target.name
+      specializationID: event.target.checked ? event.target.name : ""
     }))
-    console.log("setSearchData ~ event.target.value:", event.target.name)
   }
 
   return (
@@ -141,10 +140,10 @@ const DoctorPage = () => {
                 {specializations.data?.data.data.length &&
                   loadIndex < specializations.data?.data.data.length && (
                     <button
-                      className="border-none outline-none"
+                      className="border border-gray-400 border-solid shadow-sm outline-none cursor-pointer"
                       onClick={() => setLoadIndex(loadIndex + 5)}
                     >
-                      Load more
+                      {t("ser:loadMore")}
                     </button>
                   )}
               </div>
