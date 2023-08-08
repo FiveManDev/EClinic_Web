@@ -7,6 +7,8 @@ import { IRoom } from "types/Chat"
 import ImageCustom from "../ImageCustom"
 import { queryClient } from "pages/_app"
 import { QUERY_KEYS } from "shared/constant/constant"
+import { useSelector } from "react-redux"
+import { RootState } from "store/store"
 interface IProps {
   data: IRoom[]
   isLoading: boolean
@@ -81,6 +83,8 @@ export const HistoryItem = ({
   isLoading = false,
   onClickHistory
 }: HistoryProps) => {
+  const userId = useSelector((state: RootState) => state.auth.user.userId)
+
   const router = useRouter()
   const roomId = router.query.roomId as string
   const onClickItem = () => {
@@ -144,7 +148,11 @@ export const HistoryItem = ({
         </div>
         <span className="text-xs text-disable line-clamp-1">
           {isLoading && <Skeleton variant="text" width={100} />}
-          {room?.chatMessage && room?.chatMessage.content}
+          {room?.chatMessage.isImage
+            ? userId === room.chatMessage.userID
+              ? "You sent a photo"
+              : `${room?.roomAuthor.firstName} sent a photo`
+            : room?.chatMessage && room?.chatMessage.content}
         </span>
       </div>
     </div>

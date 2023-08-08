@@ -102,7 +102,7 @@ const DoctorBookingItem = ({ kind, data }: Props) => {
             </Tag>
           </div>
           <div className="flex items-center gap-2 text-disable">
-            <span>{dayformat(data.bookingTime)}</span>
+            <span>{dayformat(data.bookingCalendar)}</span>
             <span>-</span>
             <span>{data.slot.startTime}</span>
           </div>

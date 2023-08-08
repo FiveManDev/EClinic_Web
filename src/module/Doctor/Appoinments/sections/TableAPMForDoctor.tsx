@@ -71,8 +71,8 @@ const TableAPMForDoctor = () => {
         Cell: ({ row }) => {
           return (
             <div className="flex flex-col gap-y-2">
-              <time dateTime={row.original.bookingTime}>
-                {dayformat(row.original.bookingTime)}
+              <time dateTime={row.original.bookingCalendar}>
+                {dayformat(row.original.bookingCalendar)}
               </time>
               <time className="text-gray80">
                 {row.original.slot.startTime} - {row.original.slot.endTime}

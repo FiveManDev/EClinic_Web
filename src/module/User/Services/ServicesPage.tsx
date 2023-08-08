@@ -1,45 +1,46 @@
-import { useState, useEffect } from "react";
-import { useTranslation } from "react-i18next";
-import Head from "next/head";
-import CustomButton from "components/User/Button";
-import UserSecondaryLayout from "layout/User/UserSecondaryLayout";
-import FilterBar from "../components/filterBar/FilterBar";
-import ListServices from "./section/ListServices/ListServices";
-import InputCustom from "components/Common/Input";
-import { HiMagnifyingGlass } from "react-icons/hi2";
-import CheckBoxCustom from "components/Common/Checkbox";
-import { useGetAllSpecializationQuery } from "hooks/query/service/useService";
-import { Specialization } from "types/Service";
-import useDebounce from "hooks/useDebounce";
-import { IBreadcrum } from "types/Base.type";
-import { t } from "i18next";
+import { useState, useEffect } from "react"
+import { useTranslation } from "react-i18next"
+import Head from "next/head"
+import CustomButton from "components/User/Button"
+import UserSecondaryLayout from "layout/User/UserSecondaryLayout"
+import FilterBar from "../components/filterBar/FilterBar"
+import ListServices from "./section/ListServices/ListServices"
+import InputCustom from "components/Common/Input"
+import { HiMagnifyingGlass } from "react-icons/hi2"
+import CheckBoxCustom from "components/Common/Checkbox"
+import { useGetAllSpecializationQuery } from "hooks/query/service/useService"
+import { Specialization } from "types/Service"
+import useDebounce from "hooks/useDebounce"
+import { IBreadcrum } from "types/Base.type"
+import { t } from "i18next"
 
 interface SpecializationWithChecked extends Specialization {
-  checked: boolean;
+  checked: boolean
 }
 
 const breadrums: IBreadcrum[] = [
   { label: t("base:pages.home"), href: "/" },
-  { label: t("base:pages.servies") },
-];
+  { label: t("base:pages.servies") }
+]
 
 const ServicesPage = () => {
-  const { t } = useTranslation(["base", "ser"]);
+  const { t } = useTranslation(["base", "ser"])
   const { data } = useGetAllSpecializationQuery({
     pageNumber: 1,
-    pageSize: 100,
-  });
-  const specializations: Specialization[] = data?.data?.data as Specialization[];
+    pageSize: 100
+  })
+  const specializations: Specialization[] = data?.data?.data as Specialization[]
 
-  const [specializationsState, setSpecializationsState] = useState<SpecializationWithChecked[]>(
-    []
-  );
-  const [initialSpecializationsState, setInitialSpecializationsState] = useState<SpecializationWithChecked[]>([]);
+  const [specializationsState, setSpecializationsState] = useState<
+    SpecializationWithChecked[]
+  >([])
+  const [initialSpecializationsState, setInitialSpecializationsState] =
+    useState<SpecializationWithChecked[]>([])
 
   const [specializationIds, setSpecializationIds] = useState([])
 
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const { name, checked } = event.target;
+    const { name, checked } = event.target
 
     setSpecializationsState((prevState) =>
       prevState.map((specialization) =>
@@ -47,49 +48,49 @@ const ServicesPage = () => {
           ? { ...specialization, checked }
           : specialization
       )
-    );
+    )
     setSpecializationIds((prevState) => {
-      let updatedIds = [...prevState]; // Create a new array with the values from prevState
+      let updatedIds = [...prevState] // Create a new array with the values from prevState
 
-      const index = updatedIds.indexOf(name as never);
+      const index = updatedIds.indexOf(name as never)
       if (index !== -1) {
         // If name exists in prevState, remove it
-        updatedIds.splice(index, 1);
+        updatedIds.splice(index, 1)
       } else {
         // If name doesn't exist in prevState, add it
-        updatedIds.push(name as never);
+        updatedIds.push(name as never)
       }
-      return updatedIds;
-    });
+      return updatedIds
+    })
+  }
 
-  };
-
-
-  const [searchValue, setSearchValue] = useState("");
-  const searchTextDebounce = useDebounce(searchValue, 1000);
-  const [showFilter, setShowFilter] = useState(false);
+  const [searchValue, setSearchValue] = useState("")
+  const searchTextDebounce = useDebounce(searchValue, 1000)
+  const [showFilter, setShowFilter] = useState(false)
   const handleReset = () => {
-    setSearchValue("");
-    setSpecializationsState(initialSpecializationsState);
-    setSpecializationIds([]);
-  };
+    setSearchValue("")
+    setSpecializationsState(initialSpecializationsState)
+    setSpecializationIds([])
+  }
   useEffect(() => {
     if (typeof window !== "undefined" && window.innerWidth > 768) {
-      setShowFilter(true);
+      setShowFilter(true)
     }
     if (specializations) {
-      setSpecializationsState(specializations.map((specialization) => ({
-        ...specialization,
-        checked: false,
-      })));
+      setSpecializationsState(
+        specializations.map((specialization) => ({
+          ...specialization,
+          checked: false
+        }))
+      )
       setInitialSpecializationsState(
         specializations.map((specialization) => ({
           ...specialization,
-          checked: false,
+          checked: false
         }))
-      );
+      )
     }
-  }, [specializations]);
+  }, [specializations])
 
   return (
     <>
@@ -131,7 +132,10 @@ const ServicesPage = () => {
           </div>
         </div>
         <div className="flex mt-6 md:mt-10 ">
-          <FilterBar show={showFilter} onClose={() => setShowFilter((prevShowFilter) => !prevShowFilter)}>
+          <FilterBar
+            show={showFilter}
+            onClose={() => setShowFilter((prevShowFilter) => !prevShowFilter)}
+          >
             <div className="space-y-2">
               <h3>{t("ser:search.label")}</h3>
               <InputCustom
@@ -160,7 +164,12 @@ const ServicesPage = () => {
                 )}
               </div>
             </div>
-            <CustomButton kind="primary" size="small" className="h-10 rounded-[3px]" onClick={handleReset}>
+            <CustomButton
+              kind="primary"
+              size="small"
+              className="h-10 rounded-[3px]"
+              onClick={handleReset}
+            >
               <div className="flex items-center gap-2">
                 <span>{t("ser:btn")}</span>
               </div>
@@ -175,7 +184,7 @@ const ServicesPage = () => {
         </div>
       </UserSecondaryLayout>
     </>
-  );
-};
+  )
+}
 
-export default ServicesPage;
+export default ServicesPage
