@@ -3,6 +3,7 @@ import {
   FormControl,
   FormControlLabel,
   FormLabel,
+  InputAdornment,
   Radio,
   RadioGroup
 } from "@mui/material"
@@ -121,7 +122,6 @@ const CreateAccount = ({ labelForm, profile, mode = "create" }: Props) => {
     setValue("avatar", file)
   }
   const onSubmit = async (value: FieldValues) => {
-    console.log("onSubmit ~ value:", value)
     if (mode === "update") {
       if (confirm) {
         const choice = await confirm({
@@ -240,6 +240,11 @@ const CreateAccount = ({ labelForm, profile, mode = "create" }: Props) => {
             </div>
             <div className="flex space-x-3">
               <InputField
+                InputProps={{
+                  endAdornment: (
+                    <InputAdornment position="start">VNĐ</InputAdornment>
+                  )
+                }}
                 size="medium"
                 label="Price for booking"
                 control={control}
