@@ -17,6 +17,7 @@ import { IBreadcrum } from "types/Base.type"
 import BlogPostCard from "./components/BlogPostCard"
 import EmtyData from "components/Common/Empty"
 import ImageCustom from "components/Common/ImageCustom"
+import colorsProvider from "shared/theme/colors"
 
 const actions = [
   {
@@ -61,7 +62,7 @@ const BlogDetailPage = () => {
   const postRelated = useSearchPostsBlog(
     "",
     1,
-    PAGE_SIZE,
+    4,
     data?.data.hashtags.map((has) => has.id) || []
   )
   if (router.isFallback || isLoading || postRelated.isLoading) {
@@ -123,7 +124,7 @@ const BlogDetailPage = () => {
                       gutterBottom
                       variant="caption"
                       sx={{
-                        color: "text.disabled",
+                        color: colorsProvider.background,
                         display: "block",
                         cursor: "pointer"
                       }}

@@ -19,7 +19,6 @@ const ContainerChat = ({ data, isLoading = true }: IProps) => {
   useEffect(() => {
     if (roomId) {
       const author = data.find((item) => item.roomID === roomId)
-      console.log("useEffect ~ author:", author)
       setOtherUserId(author?.roomAuthor.userID!)
     }
   }, [data, roomId])

@@ -18,5 +18,7 @@
   "price": "Price",
   "totalSell": "Total number of buyers",
   "inforDetail": "Details",
-  "specialService": "Outstanding Service Package"
+  "specialService": "Outstanding Service Package",
+  "position": "Position",
+  "input_search": "Search for doctors"
 }

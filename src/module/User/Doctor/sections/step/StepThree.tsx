@@ -25,7 +25,7 @@ const StepThree = ({ onBack }: Props) => {
   const dispatch = useDispatch()
   const dataBooking = useSelector(selectBookingDoctor)
   const price =
-    dataBooking.bookingType === BOOKING_TYPE.Offline.toString()
+    dataBooking.bookingType !== BOOKING_TYPE.Offline.toString()
       ? dataBooking.doctor?.price
       : Math.floor(dataBooking.doctor?.price! * 0.2)
   const onSubmit = () => {

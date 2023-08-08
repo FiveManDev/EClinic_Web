@@ -4,6 +4,7 @@ import Tag from "components/Common/Tag"
 import CustomButton from "components/User/Button"
 import { CustomInput } from "components/User/Input"
 import useConfirm from "context/ComfirmContext"
+import dayjs from "dayjs"
 import {
   useGetPaymentByIDQuery,
   useRefundTransactionMutation
@@ -95,19 +96,6 @@ const PaymentDetail = () => {
           <div className="flex flex-col justify-start mb-3">
             <div className="flex flex-col space-y-1">
               <span className="text-sm font-medium text-black2">
-                Payment ID
-              </span>
-              <CustomInput
-                size="medium"
-                name="id"
-                value={payment?.paymentID}
-                disabled
-              />
-            </div>
-          </div>
-          <div className="flex flex-col justify-start mb-3">
-            <div className="flex flex-col space-y-1">
-              <span className="text-sm font-medium text-black2">
                 Payment Amount
               </span>
               <CustomInput
@@ -127,7 +115,9 @@ const PaymentDetail = () => {
                 <CustomInput
                   name="time"
                   size="medium"
-                  value={getCurrentDate(payment?.paymentTime)}
+                  value={dayjs(payment?.paymentTime).format(
+                    "DD/MM/YYYY HH:mm:ss"
+                  )}
                   disabled
                 />
               )}
@@ -151,7 +141,7 @@ const PaymentDetail = () => {
               <div className="flex flex-col justify-start mb-3">
                 <div className="flex flex-col space-y-1">
                   <span className="text-sm font-medium text-black2">
-                    Refund Type
+                    Refund Reason
                   </span>
                   <InputCustom
                     className="!rounded-xl h-[56px] border-0 "

@@ -1,18 +1,17 @@
 import { Skeleton } from "@mui/material"
 import ImageCustom from "components/Common/ImageCustom"
-import Tag from "components/Common/Tag"
 import CustomButton from "components/User/Button"
 import Link from "next/link"
-import { useRouter } from "next/router"
+import { useTranslation } from "react-i18next"
 import { combineName, formatValueToVND } from "shared/helpers/helper"
-import colorsProvider from "shared/theme/colors"
 import { IProfileDoctor } from "types/Profile.type"
 
 interface IProps {
   doctor: IProfileDoctor
 }
 const CardDoctor = ({ doctor }: IProps) => {
-  const router = useRouter()
+  const { t } = useTranslation(["base", "ser"])
+
   return (
     <div className="bg-white rounded-[10px] p-5 w-full border border-solid border-[#EAEAEA]">
       <div className="flex gap-4">
@@ -62,9 +61,12 @@ const CardDoctor = ({ doctor }: IProps) => {
             </Link>
           </div>
           <div className="flex items-center gap-6">
-            <InfoItem content={doctor.title} label="Chức vụ" />
+            <InfoItem content={doctor.title} label={t("ser:position")} />
 
-            <InfoItem content={formatValueToVND(doctor.price)} label="Giá" />
+            <InfoItem
+              content={formatValueToVND(doctor.price)}
+              label={t("ser:price")}
+            />
           </div>
           <div className="w-full bg-gray-200 h-[1px]"></div>
           <p className="text-sm text-gray-500 line-clamp-3">{doctor.content}</p>

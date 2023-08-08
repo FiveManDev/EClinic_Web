@@ -43,7 +43,7 @@ const DoctorHomePage = () => {
   }
   const events = data?.data.data
     ? data.data.data.map((item) => {
-        const newDate = dayjs(item.bookingTime).format("YYYY-MM-DD")
+        const newDate = dayjs(item.bookingCalendar).format("YYYY-MM-DD")
         const startTime = dayjs(`${newDate}T${item.slot.startTime}:00`).format(
           "ddd MMM DD YYYY HH:mm:ss [GMT]ZZ (Indochina Time)"
         )
@@ -163,7 +163,7 @@ const DoctorHomePage = () => {
                       </Tag>
                     </div>
                     <div className="flex items-center gap-2 text-disable">
-                      <span>{dayformat(eventSelected.bookingTime)}</span>
+                      <span>{dayformat(eventSelected.bookingCalendar)}</span>
                       <span>-</span>
                       <span>{eventSelected.slot.startTime}</span>
                     </div>

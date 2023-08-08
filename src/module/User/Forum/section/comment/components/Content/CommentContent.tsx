@@ -1,6 +1,6 @@
 import Popover from "components/User/Popover"
 import { ToastNavigate } from "module/User/components/Toast/ToastNavigate"
-import { NextRouter, useRouter } from "next/router"
+import { useRouter } from "next/router"
 import { useState } from "react"
 import { toast } from "react-hot-toast"
 import { AiOutlineLike, AiTwotoneLike } from "react-icons/ai"
@@ -109,18 +109,21 @@ export const CommentContent = ({
         </p>
       )}
       <div className="flex items-center mt-4 space-x-4">
-        <button
-          onClick={handleLike}
-          className="flex items-center space-x-1 text-sm text-gray-500 bg-transparent border-none outline-none cursor-pointer hover:underline"
-          type="button"
-        >
-          {comment.isLike ? (
-            <AiTwotoneLike className="text-primary " />
-          ) : (
-            <AiOutlineLike />
-          )}
-          <span>{comment.likes} Likes</span>
-        </button>
+        {comment.author.userID !== auth.user.userId && (
+          <button
+            onClick={handleLike}
+            className="flex items-center space-x-1 text-sm text-gray-500 bg-transparent border-none outline-none cursor-pointer hover:underline"
+            type="button"
+          >
+            {comment.isLike ? (
+              <AiTwotoneLike className="text-primary " />
+            ) : (
+              <AiOutlineLike />
+            )}
+            <span>{comment.likes} Likes</span>
+          </button>
+        )}
+
         {onReply && auth.user.userId && (
           <button
             onClick={onReply}

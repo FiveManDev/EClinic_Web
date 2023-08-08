@@ -106,7 +106,7 @@ const DoctorPage = () => {
             onClose={() => setShowFilter(!showFilter)}
           >
             <div className="space-y-2">
-              <h3>Tìm kiếm bác sĩ</h3>
+              <h3>{t("ser:input_search")}</h3>
               <InputCustom
                 value={searchData.searchText}
                 onChange={(e) =>

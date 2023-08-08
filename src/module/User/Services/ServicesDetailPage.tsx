@@ -7,18 +7,22 @@ import Image from "next/image"
 import { useRouter } from "next/router"
 import { useEffect, useState } from "react"
 import { useTranslation } from "react-i18next"
-import { useDispatch } from "react-redux"
+import { useDispatch, useSelector } from "react-redux"
 import { bookingServiceSlice } from "store/module/booking/service/booking-service-slice"
 import { IBreadcrum } from "types/Base.type"
 import { ServicePackage } from "types/Service"
 import CardService from "../Home/section/services/components/card/CardService"
 import BookingModel from "./components/BookingModel"
 import ModalSuccess from "components/Common/Modal/ModalSuccess"
+import { RootState } from "store/store"
+import { toast } from "react-hot-toast"
 
 interface Props {
   servicePackages?: ServicePackage[]
 }
 const ServicesDetailPage = ({ servicePackages }: Props) => {
+  const isLogin = useSelector((state: RootState) => state.auth.isLoggedIn)
+
   const { t } = useTranslation(["base", "ser"])
   const dispatch = useDispatch()
   const [show, setShow] = useState(false)
@@ -44,8 +48,12 @@ const ServicesDetailPage = ({ servicePackages }: Props) => {
     { label: t("base:pages.detail") }
   ]
   const handleBooking = () => {
-    setShow(true)
-    dispatch(bookingServiceSlice.actions.servicePackageChange(data?.data))
+    if (isLogin) {
+      setShow(true)
+      dispatch(bookingServiceSlice.actions.servicePackageChange(data?.data))
+    } else {
+      toast.error("You need to login to booking")
+    }
   }
 
   return (

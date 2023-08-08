@@ -13,6 +13,7 @@ export interface IBookingDoctor {
   userProfile: ProfileBooking
   price: string
   bookingTime: string
+  bookingCalendar: string
   bookingType: string
   bookingStatus: number
   slot: Slot

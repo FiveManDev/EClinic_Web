@@ -182,6 +182,9 @@ const MessageBox = ({ toggleInfo, otherUserId: userId, isClose }: IProps) => {
       scrollToBottom()
     }
   }, [messages.length])
+  useEffect(() => {
+    setOtherUserId(userId)
+  }, [userId])
   const handleClose = async () => {
     if (confirm) {
       const choice = await confirm({
