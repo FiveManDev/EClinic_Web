@@ -78,6 +78,7 @@ const CreateAccount = ({ labelForm, profile, mode = "create" }: Props) => {
     watch,
     reset,
     setValue,
+    getValues,
     formState: { errors }
   } = useForm({
     mode: "onSubmit",
@@ -149,6 +150,10 @@ const CreateAccount = ({ labelForm, profile, mode = "create" }: Props) => {
         }
       }
     } else {
+      if (getValues("avatar") === null) {
+        toast.error("Please choose avatar")
+        return
+      }
       createProfileDoctorMutation.mutate(
         {
           ...value
@@ -162,8 +167,8 @@ const CreateAccount = ({ labelForm, profile, mode = "create" }: Props) => {
               toast.error("Add error")
             }
           },
-          onError: () => {
-            toast.error("Add error")
+          onError: (data: any) => {
+            toast.error(data?.response?.data?.message || "Add error")
           }
         }
       )
