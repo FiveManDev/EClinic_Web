@@ -116,7 +116,7 @@ const CreateQuestion = ({ className = "" }: Props) => {
         classCustom="max-w-full h-[185px] "
         className="resize-none"
         placeholder={t("textareaDesc")}
-        onChange={(e) => handleChangePost("content", e.target.value)}
+        onChange={(e) => handleChangePost("content", e.target.value.trim())}
       />
       <UploadImage
         images={images}

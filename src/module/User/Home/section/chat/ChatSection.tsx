@@ -86,7 +86,7 @@ const ChatSection = () => {
               <TextAreaCustom
                 value={value}
                 onChange={(e) => {
-                  setValue(e.target.value)
+                  setValue(e.target.value.trim())
                 }}
                 classCustom="max-w-full h-[120px]"
                 className="resize-none"
