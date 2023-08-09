@@ -87,7 +87,8 @@ export const useGetDoctorScheduleForUser = (date: string, doctorId: string) => {
   const queryKey = [QUERY_KEYS.BOOKING.DOCTOR, date, doctorId]
   return useQuery({
     queryKey,
-    queryFn: () => bookingService.getDoctorScheduleForUser(date, doctorId)
+    queryFn: () => bookingService.getDoctorScheduleForUser(date, doctorId),
+    retry: 1
   })
 }
 export const useCreateDoctorScheduleMutation = () =>

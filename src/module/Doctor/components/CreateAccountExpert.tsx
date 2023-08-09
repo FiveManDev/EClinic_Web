@@ -127,6 +127,10 @@ const CreateAccountExpert = ({
         }
       }
     } else {
+      if (value.avatar === null) {
+        toast.error("Please upload avatar")
+        return
+      }
       createExpertMutation.mutate(
         {
           ...value,
@@ -141,8 +145,8 @@ const CreateAccountExpert = ({
               toast.error("Add error")
             }
           },
-          onError: () => {
-            toast.error("Add error")
+          onError: (data: any) => {
+            toast.error(data?.response?.data?.message || "Create fail")
           }
         }
       )
@@ -173,7 +177,7 @@ const CreateAccountExpert = ({
           onFileChange={onFileChange}
         />
         <p className="text-xs text-disable max-w-[200px] text-center leading-relaxed mt-3">
-          Allowed *.jpeg, *.jpg, *.png, *.gif max size of 3.1 MB
+          Allowed *.jpeg, *.jpg, *.png, *.gif
         </p>
         <div className="flex items-center justify-between w-full max-w-[260px] mt-6">
           <div className="flex flex-col">

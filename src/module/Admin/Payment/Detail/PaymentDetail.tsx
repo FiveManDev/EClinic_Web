@@ -13,7 +13,7 @@ import Head from "next/head"
 import { useRouter } from "next/router"
 import { useState } from "react"
 import toast from "react-hot-toast"
-import { combineName, getCurrentDate } from "shared/helpers/helper"
+import { combineName } from "shared/helpers/helper"
 import { Payment, RefundTransaction } from "types/Payment"
 
 const PaymentDetail = () => {
@@ -29,6 +29,10 @@ const PaymentDetail = () => {
         title: "Refund for patient",
         content: "Are you sure you want to refund for this payment?"
       })
+      if (!reasonValue.trim()) {
+        toast.error("Please enter refund reason!")
+        return
+      }
       if (choice) {
         refundTransactionMutation.mutate(
           {
@@ -80,6 +84,14 @@ const PaymentDetail = () => {
                     alt="user-avatar"
                     className="object-cover"
                   />
+                </div>
+                <div className="flex flex-col">
+                  <span className="text-sm font-medium text-h1">
+                    {combineName(
+                      payment?.author.firstName,
+                      payment?.author.lastName
+                    )}
+                  </span>
                 </div>
               </div>
             </div>

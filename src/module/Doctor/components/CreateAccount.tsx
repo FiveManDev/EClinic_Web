@@ -2,6 +2,7 @@ import { yupResolver } from "@hookform/resolvers/yup"
 import {
   FormControl,
   FormControlLabel,
+  FormHelperText,
   FormLabel,
   InputAdornment,
   Radio,
@@ -51,7 +52,10 @@ const schema = yup.object({
       "Please enter valid phone number"
     ),
   workStart: yup.string().trim().required("Please enter date of working start"),
-  price: yup.number().required("Please enter price of booking"),
+  price: yup
+    .number()
+    .required("Please enter price of booking")
+    .min(1, "Please enter price of booking"),
   address: yup.string().trim().required("Please enter address"),
   title: yup.string().trim().required("Please enter position"),
   description: yup.string().trim().required("Please enter description"),
@@ -192,7 +196,7 @@ const CreateAccount = ({ labelForm, profile, mode = "create" }: Props) => {
           onFileChange={onFileChange}
         />
         <p className="text-xs text-disable max-w-[200px] text-center leading-relaxed mt-3">
-          Allowed *.jpeg, *.jpg, *.png, *.gif max size of 3.1 MB
+          Allowed *.jpeg, *.jpg, *.png, *.gif
         </p>
         <div className="flex items-center justify-between w-full max-w-[260px] mt-6">
           <div className="flex flex-col">
@@ -340,6 +344,7 @@ const CreateAccount = ({ labelForm, profile, mode = "create" }: Props) => {
               <FormLabel>Gender</FormLabel>
               <RadioGroup
                 row
+                defaultValue={true}
                 value={watchGender}
                 onChange={(e) =>
                   setValue("gender", e.target.value === "true" ? true : false)
@@ -366,12 +371,18 @@ const CreateAccount = ({ labelForm, profile, mode = "create" }: Props) => {
               control={control}
               name="content"
             />
-            <Editor
-              onChange={(data: string) => {
-                setValue("description", data)
-              }}
-              value={watchDesc}
-            />
+            <div className="flex flex-col gap-y-[6px]">
+              <Editor
+                isError={!!errors.description?.message?.toString()}
+                onChange={(data: string) => {
+                  setValue("description", data)
+                }}
+                value={watchDesc}
+              />
+              <FormHelperText error>
+                {errors.description?.message?.toString()}
+              </FormHelperText>
+            </div>
 
             <CustomButton
               kind="primary"

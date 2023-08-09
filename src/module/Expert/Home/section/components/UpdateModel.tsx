@@ -1,5 +1,5 @@
 import { yupResolver } from "@hookform/resolvers/yup"
-import { InputAdornment } from "@mui/material"
+import { FormHelperText, InputAdornment } from "@mui/material"
 import ModalPrimary from "components/Common/Modal/ModalPrimary"
 import { SelectCustom } from "components/Common/Select/SelectCustom"
 import CustomButton from "components/User/Button"
@@ -183,7 +183,11 @@ const UpdateModel = ({ show, onModalChange, model }: Props) => {
             }))}
             onSelectOption={(value) => setValue("DeepID", value.value)}
           />
-          <div className="border border-solid rounded-md border-carbon">
+          <div
+            className={`border border-solid rounded-md border-carbon ${
+              errors.file?.message && "border-red-500"
+            }`}
+          >
             <label htmlFor="file-input" className="sr-only">
               Choose file
             </label>
@@ -191,9 +195,12 @@ const UpdateModel = ({ show, onModalChange, model }: Props) => {
               accept=".pkl,.h5"
               {...register("file")}
               type="file"
-              className="block w-full text-sm border border-gray-200 rounded-md shadow-sm cursor-pointer focus:z-10 focus:border-blue-500 focus:ring-blue-500 file:bg-transparent file:border-0 file:bg-gray-100 file:mr-4 file:py-3 file:px-4 "
+              className={`block w-full text-sm border border-gray-200 rounded-md shadow-sm cursor-pointer focus:z-10 focus:border-blue-500 focus:ring-blue-500 file:bg-transparent file:border-0 file:bg-gray-100 file:mr-4 file:py-3 file:px-4 `}
             />
           </div>
+          <FormHelperText error>
+            {errors.file?.message?.toString()}
+          </FormHelperText>
 
           <div className="footer">
             <div className="flex justify-between px-6">

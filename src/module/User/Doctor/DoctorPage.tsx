@@ -11,12 +11,31 @@ import Head from "next/head"
 import { ChangeEvent, useEffect, useState } from "react"
 import { useTranslation } from "react-i18next"
 import { HiMagnifyingGlass } from "react-icons/hi2"
-import { getDataPaginate } from "shared/helpers/helper"
+import { formatValueToVND, getDataPaginate } from "shared/helpers/helper"
 import { IBreadcrum } from "types/Base.type"
 import FilterBar from "../components/filterBar/FilterBar"
 import DoctorList from "./sections/DoctorList"
 
 const DoctorPage = () => {
+  const marks = [
+    {
+      value: 0,
+      label: "0"
+    },
+    {
+      value: 2500000,
+      label: "2.500K"
+    },
+    {
+      value: 5000000,
+      label: "5.000k"
+    },
+    {
+      value: 10000000,
+      label: "10.000k"
+    }
+  ]
+
   const [loadIndex, setLoadIndex] = useState(6)
   const { t } = useTranslation(["base", "ser"])
   const [searchData, setSearchData] = useState({
@@ -62,7 +81,6 @@ const DoctorPage = () => {
       specializationID: event.target.checked ? event.target.name : ""
     }))
   }
-
   return (
     <>
       <Head>
@@ -152,7 +170,10 @@ const DoctorPage = () => {
               <h3>{t("ser:range.label")}</h3>
               <div className="w-[95%]">
                 <Slider
-                  max={10000}
+                  getAriaValueText={formatValueToVND}
+                  max={10000000}
+                  marks={marks}
+                  step={10000}
                   size="medium"
                   value={searchData.price}
                   onChange={(e, value) =>
