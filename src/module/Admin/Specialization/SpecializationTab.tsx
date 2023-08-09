@@ -66,6 +66,10 @@ const SpecializationTab = () => {
     setSpec(spec)
     setValue("specializationName", spec.specializationName)
   }
+  // Intentionally throwing an error to test error boundaries
+  if (Math.random() < 0.5) {
+    throw new Error("This is a test error")
+  }
   const onSubmit = async (value: FieldValues) => {
     if (mode === "update") {
       if (confirm) {

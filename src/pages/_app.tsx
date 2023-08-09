@@ -25,6 +25,7 @@ import { NextPageWithLayout } from "./page"
 import "overlayscrollbars/overlayscrollbars.css"
 import "react-quill/dist/quill.snow.css"
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools"
+import ErrorBoundary from "./ErrorBoundary"
 
 interface AppPropsWithLayout extends AppProps {
   Component: NextPageWithLayout
@@ -69,9 +70,11 @@ export default function App({ Component, pageProps }: AppPropsWithLayout) {
               <StyledEngineProvider injectFirst>
                 <CacheProvider value={cache}>
                   <ThemeProvider theme={theme}>
-                    <LayoutBase>
-                      {getLayout(<Component {...pageProps} />)}
-                    </LayoutBase>
+                    <ErrorBoundary>
+                      <LayoutBase>
+                        {getLayout(<Component {...pageProps} />)}
+                      </LayoutBase>
+                    </ErrorBoundary>
                   </ThemeProvider>
                 </CacheProvider>
               </StyledEngineProvider>
