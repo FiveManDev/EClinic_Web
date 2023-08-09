@@ -51,7 +51,7 @@ const ListPatient = () => {
         Cell: ({ row }) => {
           return (
             <div className="flex items-center space-x-2">
-              <div className="relative w-10 h-10 overflow-hidden rounded-full">
+              <div className="relative flex-shrink-0 w-10 h-10 overflow-hidden rounded-full">
                 <ImageCustom
                   src={row.original.avatar || "/images/avatars/avatar_1.jpg"}
                   fill
