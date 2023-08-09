@@ -66,11 +66,6 @@ const SpecializationTab = () => {
     setSpec(spec)
     setValue("specializationName", spec.specializationName)
   }
-  // Intentionally throwing an error to test error boundaries
-  const [error, setError] = useState("")
-  if (error === "a") {
-    throw new Error("This is a test error")
-  }
   const onSubmit = async (value: FieldValues) => {
     if (mode === "update") {
       if (confirm) {
@@ -169,11 +164,6 @@ const SpecializationTab = () => {
   )
   return (
     <div className="flex flex-col gap-y-4">
-      <input
-        type="text"
-        value={error}
-        onChange={(e) => setError(e.target.value)}
-      />
       <form
         className="flex items-center max-w-2xl gap-x-3 background-primary"
         onSubmit={handleSubmit(onSubmit)}
