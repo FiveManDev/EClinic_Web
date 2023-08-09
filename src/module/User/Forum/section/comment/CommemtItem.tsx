@@ -34,7 +34,7 @@ const CommemtItem = ({
   const [openRep, setOpenRep] = useState(false)
   const [valueInput, setValueInput] = useState("")
   const createReply = () => {
-    if (valueInput) {
+    if (valueInput.trim()) {
       onCreateReply(comment.id, valueInput)
       setValueInput("")
       setOpenRep(false)
@@ -72,14 +72,18 @@ const CommemtItem = ({
               kind: "reply"
             })
           }
-          onEditComment={(value) =>
-            updateComment({
-              content: value,
-              CommentID: comment.id,
-              kind: "comment",
-              ParentCommentID: null
-            })
-          }
+          onEditComment={(value) => {
+            if (value.trim()) {
+              updateComment({
+                content: value,
+                CommentID: comment.id,
+                kind: "comment",
+                ParentCommentID: null
+              })
+            } else {
+              toast.error("Please enter your comment content")
+            }
+          }}
         />
 
         <div className="flex flex-col ml-6">

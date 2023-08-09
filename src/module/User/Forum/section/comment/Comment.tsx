@@ -56,8 +56,12 @@ const Comment = ({
   const handleSubmitComtent = () => {
     if (auth.user.userId) {
       if (inputRef.current) {
-        onCreateComment(inputRef.current?.value || "")
-        inputRef.current!.value = ""
+        if (inputRef.current?.value.trim()) {
+          onCreateComment(inputRef.current?.value || "")
+          inputRef.current!.value = ""
+        } else {
+          toast.error("Please enter your comment content")
+        }
       }
     } else {
       toast((t) => (

@@ -71,7 +71,7 @@ const CreateQuestion = ({ className = "" }: Props) => {
   }
   const handleSubmit = () => {
     if (post && auth.user.userId) {
-      if (post.title && post.content) {
+      if (post.title.trim() && post.content.trim()) {
         createPostMutation.mutate(post, {
           onError: () => {
             toast.error("Add error")
@@ -116,7 +116,7 @@ const CreateQuestion = ({ className = "" }: Props) => {
         classCustom="max-w-full h-[185px] "
         className="resize-none"
         placeholder={t("textareaDesc")}
-        onChange={(e) => handleChangePost("content", e.target.value.trim())}
+        onChange={(e) => handleChangePost("content", e.target.value)}
       />
       <UploadImage
         images={images}

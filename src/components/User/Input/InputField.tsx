@@ -25,7 +25,7 @@ const InputField = ({
         <TextField
           helperText={error ? error.message : null}
           error={!!error}
-          onChange={(value)=>onChange(value.target.value.trim())}
+          onChange={(value) => onChange(value.target.value)}
           value={value}
           className={className}
           label={label}

@@ -27,7 +27,7 @@ interface Props {
 }
 
 const schema = yup.object({
-  ModelName: yup.string().required("Please enter model name"),
+  ModelName: yup.string().trim().required("Please enter model name"),
   Accuracy: yup
     .number()
     .required("Please enter Accuracy")
@@ -37,8 +37,8 @@ const schema = yup.object({
     .positive("Accuracy must be a positive number")
     .lessThan(100, "Accuracy cannot exceed 100")
     .transform((value) => (isNaN(value) ? undefined : parseFloat(value))),
-  MachineID: yup.string().required("Please enter machine learning"),
-  DeepID: yup.string().required("Please enter deep learning"),
+  MachineID: yup.string().trim().required("Please enter machine learning"),
+  DeepID: yup.string().trim().required("Please enter deep learning"),
   file: yup
     .mixed()
     .test("fileType", "Only .pkl and .h5 files are allowed", (value) => {

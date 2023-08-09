@@ -25,7 +25,7 @@ import { toast } from "react-hot-toast"
 import { AiOutlineQuestionCircle } from "react-icons/ai"
 import { HiPencilSquare } from "react-icons/hi2"
 import { QUERY_KEYS } from "shared/constant/constant"
-import { combineName, dayformat } from "shared/helpers/helper"
+import { combineName, dayformat, isQuillEmpty } from "shared/helpers/helper"
 import { IPost } from "types/Post"
 import ImageReview from "../components/ImageReview"
 import MultipleSelectChip from "../components/SelectMutitple"
@@ -53,12 +53,9 @@ const UpdateQuestion = ({ post }: Props) => {
       [key]: value
     }))
   }
+
   const handleSubmit = () => {
-    if (
-      anwerData.content &&
-      anwerData.content !== "<p><br></p>" &&
-      anwerData.tags.length > 0
-    ) {
+    if (!isQuillEmpty(anwerData.content) && anwerData.tags.length > 0) {
       createAwnserPostForumMutation.mutate(anwerData, {
         onSuccess: () => {
           queryClient.invalidateQueries([QUERY_KEYS.FORUM.POST])

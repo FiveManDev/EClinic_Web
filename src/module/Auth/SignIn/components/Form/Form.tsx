@@ -27,8 +27,8 @@ import { ITokenDecode } from "types/Token"
 import * as yup from "yup"
 
 const schema = yup.object({
-  username: yup.string().required("Please enter your user name"),
-  password: yup.string().required("Please enter your password")
+  username: yup.string().trim().required("Please enter your user name"),
+  password: yup.string().trim().required("Please enter your password")
 })
 const FormLogin = () => {
   const queryClient = useQueryClient()

@@ -16,10 +16,12 @@ Quill.register("modules/imageFormats", ImageFormats)
 const Editor = memo(
   ({
     value,
-    onChange
+    onChange,
+    isError = false
   }: {
     value: string
     onChange: (value: string) => void
+    isError?: boolean
   }) => {
     const editorRef: any = useRef()
 
@@ -124,6 +126,7 @@ const Editor = memo(
       <ReactQuill
         modules={Editor.modules}
         formats={Editor.formats}
+        className={isError ? "!border-red-500" : ""}
         theme="snow"
         value={value}
         onChange={onChangeValue}

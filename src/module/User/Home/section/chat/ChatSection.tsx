@@ -24,7 +24,7 @@ const ChatSection = () => {
     setAnchorEl(null)
   }
   const handleCreateRoom = () => {
-    if (value) {
+    if (value.trim()) {
       createRoom.mutate(value, {
         onSuccess: (data) => {
           router.push(`/user/chat?roomId=${data?.data}`)
@@ -86,7 +86,7 @@ const ChatSection = () => {
               <TextAreaCustom
                 value={value}
                 onChange={(e) => {
-                  setValue(e.target.value.trim())
+                  setValue(e.target.value)
                 }}
                 classCustom="max-w-full h-[120px]"
                 className="resize-none"

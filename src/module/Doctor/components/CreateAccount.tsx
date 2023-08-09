@@ -37,30 +37,26 @@ const Editor = dynamic(() => import("components/Common/Editor/Editor"), {
 const schema = yup.object({
   email: yup
     .string()
+    .trim()
     .required("Please enter email")
     .email("Please enter a valid email address"),
-  firstName: yup
-    .string()
-    .required("Please enter first name")
-    .matches(/^[A-Za-z ]+$/, "Please enter valid name"),
-  lastName: yup
-    .string()
-    .required("Please enter last name")
-    .matches(/^[A-Za-z ]+$/, "Please enter valid name"),
+  firstName: yup.string().trim().required("Please enter first name"),
+  lastName: yup.string().trim().required("Please enter last name"),
   phone: yup
     .string()
+    .trim()
     .required("Please enter phone number")
     .matches(
       /(84|0[3|5|7|8|9])+([0-9]{8})\b/,
       "Please enter valid phone number"
     ),
-  workStart: yup.string().required("Please enter date of working start"),
+  workStart: yup.string().trim().required("Please enter date of working start"),
   price: yup.number().required("Please enter price of booking"),
-  address: yup.string().required("Please enter address"),
-  title: yup.string().required("Please enter position"),
-  description: yup.string().required("Please enter description"),
-  content: yup.string().required("Please enter content"),
-  specializationID: yup.string().required("Please choose specialization")
+  address: yup.string().trim().required("Please enter address"),
+  title: yup.string().trim().required("Please enter position"),
+  description: yup.string().trim().required("Please enter description"),
+  content: yup.string().trim().required("Please enter content"),
+  specializationID: yup.string().trim().required("Please choose specialization")
 })
 interface Props {
   labelForm: string

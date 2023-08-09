@@ -23,7 +23,10 @@ import { Specialization } from "types/Service"
 import * as yup from "yup"
 
 const schema = yup.object({
-  specializationName: yup.string().required("Please enter specialization name")
+  specializationName: yup
+    .string()
+    .trim()
+    .required("Please enter specialization name")
 })
 const SpecializationTab = () => {
   const [mode, setMode] = useState("create")

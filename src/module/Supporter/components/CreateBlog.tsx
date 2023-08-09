@@ -17,7 +17,6 @@ import SwitchCustom from "components/Common/IOSSwitch"
 import Spinner from "components/Common/Loading/LoadingIcon"
 import { UpdateCover } from "components/Common/UpLoadImage"
 import CustomButton from "components/User/Button"
-import { CustomInput } from "components/User/Input"
 import InputField from "components/User/Input/InputField"
 import useConfirm from "context/ComfirmContext"
 import {
@@ -50,11 +49,14 @@ const MenuProps = {
   }
 }
 const schema = yup.object({
-  title: yup.string().required("Please enter title"),
-  content: yup.string().required("Please enter content"),
-  metaTitle: yup.string().required("Please enter meta title"),
-  metaDescription: yup.string().required("Please enter meta description"),
-  metaKeywords: yup.string().required("Please enter meta keywords"),
+  title: yup.string().trim().required("Please enter title"),
+  content: yup.string().trim().required("Please enter content"),
+  metaTitle: yup.string().trim().required("Please enter meta title"),
+  metaDescription: yup
+    .string()
+    .trim()
+    .required("Please enter meta description"),
+  metaKeywords: yup.string().trim().required("Please enter meta keywords"),
   hashtags: yup
     .array()
     .min(1, "Please choose at least one hashtag")
@@ -88,6 +90,7 @@ const CreateBlog = ({ labelForm, post, mode = "create" }: Props) => {
   const hashTagSelected = watch("hashtags")
   const watchDesc = watch("content")
   const watchCoverImage = watch("coverImage")
+  console.log("CreateBlog ~ watchCoverImage:", watchCoverImage)
   const watchIsActive = watch("isActive", post?.isActive ? true : false)
   const onFileChange = (file: File | null) => {
     setValue("coverImage", file)
@@ -126,6 +129,10 @@ const CreateBlog = ({ labelForm, post, mode = "create" }: Props) => {
         }
       }
     } else {
+      if (!watchCoverImage) {
+        toast.error("Please upload cover image")
+        return
+      }
       createPost.mutate(
         {
           ...value,
@@ -224,6 +231,7 @@ const CreateBlog = ({ labelForm, post, mode = "create" }: Props) => {
             <div className="flex flex-col gap-y-2">
               <span className="text-gray-500">Cover</span>
               <UpdateCover
+                isDelete={false}
                 onFileChange={onFileChange}
                 imageUrl={watchCoverImage || null}
               />

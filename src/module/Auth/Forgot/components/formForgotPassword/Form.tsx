@@ -19,14 +19,17 @@ import * as yup from "yup"
 const schema = yup.object({
   email: yup
     .string()
+    .trim()
     .required("Please enter your email")
     .email("Please enter a valid email address"),
   newPassword: yup
     .string()
+    .trim()
     .min(8, "Your password must be at least 8 characters or greater")
     .required("Please enter your password"),
   confirmPassword: yup
     .string()
+    .trim()
     .oneOf([yup.ref("newPassword"), null], "Passwords must match")
 })
 const Form = () => {

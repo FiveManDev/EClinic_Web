@@ -26,28 +26,27 @@ import ConfirmCode from "../ConfirmCode"
 import { CustomInputPassword } from "components/User/Input"
 
 const schema = yup.object({
-  userName: yup.string().required("Please enter your user name"),
+  userName: yup.string().trim().required("Please enter your user name"),
   password: yup
     .string()
+    .trim()
     .min(8, "Your password must be at least 8 characters or greater")
     .required("Please enter your password"),
   confirmPassword: yup
     .string()
+    .trim()
     .oneOf([yup.ref("password"), null], "Passwords must match"),
   email: yup
     .string()
+    .trim()
     .required("Please enter your email")
     .email("Please enter a valid email address"),
-  firstName: yup
-    .string()
-    .required("Please enter your first name")
-    .matches(/^[A-Za-z ]+$/, "Please enter valid name"),
-  lastName: yup
-    .string()
-    .required("Please enter your last name")
-    .matches(/^[A-Za-z ]+$/, "Please enter valid name"),
+  firstName: yup.string().trim().required("Please enter your first name"),
+
+  lastName: yup.string().trim().required("Please enter your last name"),
   dateOfBirth: yup
     .string()
+    .trim()
     .required("Please enter your date of birth")
     .nullable(),
   gender: yup.bool().required("Please choose your gender")

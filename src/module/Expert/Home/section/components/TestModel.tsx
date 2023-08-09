@@ -22,8 +22,8 @@ const TestModel = () => {
   const schema = yup.object({
     ModelID:
       role === ROLE.EXPERT
-        ? yup.string().required("Please select model")
-        : yup.string()
+        ? yup.string().trim().required("Please select model")
+        : yup.string().trim()
   })
 
   const [show, setShow] = useState(false)

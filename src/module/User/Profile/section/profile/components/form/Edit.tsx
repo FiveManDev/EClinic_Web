@@ -41,39 +41,42 @@ interface Props {
 const schema = yup.object({
   email: yup
     .string()
+    .trim()
     .required("Please enter your email")
     .email("Please enter a valid email address"),
-  firstName: yup
-    .string()
-    .required("Please enter your first name")
-    .matches(/^[A-Za-z ]+$/, "Please enter valid name"),
-  lastName: yup
-    .string()
-    .required("Please enter your last name")
-    .matches(/^[A-Za-z ]+$/, "Please enter valid name"),
+  firstName: yup.string().trim().required("Please enter your first name"),
+  lastName: yup.string().trim().required("Please enter your last name"),
   phone: yup
     .string()
+    .trim()
     .nullable()
     .required("Please enter your phone number")
     .matches(
       /(84|0[3|5|7|8|9])+([0-9]{8})\b/,
       "Please enter valid phone number"
     ),
-  dateOfBirth: yup.string().required("Please enter your date of birth"),
+  dateOfBirth: yup.string().trim().required("Please enter your date of birth"),
   address: yup
     .string()
+    .trim()
     .required("Please enter your address")
     .matches(
       /^\S.*\S$/,
       "Please enter a valid name (must not be empty and cannot contain only spaces)"
     ),
-  bloodType: yup.string().required("Please choose your blood").default("A+"),
+  bloodType: yup
+    .string()
+    .trim()
+    .required("Please choose your blood")
+    .default("A+"),
   weight: yup
     .number()
+    .min(1, "Weight must be greater than 0")
     .typeError("Weight must be numbers")
     .required("Please enter your weight"),
   height: yup
     .number()
+    .min(1, "Height must be greater than 0")
     .typeError("Height must be numbers")
     .required("Please enter your weight")
 })
@@ -152,7 +155,7 @@ const Edit = ({
           className="flex flex-col space-y-5"
         >
           <Uploadfile
-            imageUrl={profile?.avatar as string | null}
+            imageUrl={profile?.avatar as string | "/images/default.jpeg"}
             onFileChange={onFileChange}
           />
           <div className="flex items-start space-x-3">
@@ -273,49 +276,51 @@ const Edit = ({
               }}
             />
           </div>
-          {profile?.relationshipName !== RELATIONSHIPS.ME && (
-            <FormControl>
-              <FormLabel>
-                {t("base:pages.profileUser.form.relationship")}
-              </FormLabel>
-              <RadioGroup
-                row
-                value={
-                  watchRelationship ||
-                  relationShipQuery.data?.data[0].relationshipID
-                }
-                onChange={(e) => setValue("relationshipID", e.target.value)}
-                name="radio-buttons-group"
-                className="gap-3 mt-2 ml-3"
-              >
-                {relationShipQuery.isLoading &&
-                  Array(6)
-                    .fill(0)
-                    .map((_, index) => (
-                      <Skeleton
-                        key={index}
-                        variant="rounded"
-                        width={70}
-                        height={30}
-                      />
-                    ))}
-                {relationShipQuery.isSuccess &&
-                  relationShipQuery.data.data.map((item, index) => {
-                    if (item.relationshipName !== RELATIONSHIPS.ME) {
-                      return (
-                        <FormControlLabel
-                          className="px-3 border border-gray-200 border-solid rounded-md shadow-sm"
+          {relationShipQuery.data?.data &&
+            relationShipQuery.data?.data.length > 0 &&
+            profile?.relationshipName !== RELATIONSHIPS.ME && (
+              <FormControl>
+                <FormLabel>
+                  {t("base:pages.profileUser.form.relationship")}
+                </FormLabel>
+                <RadioGroup
+                  row
+                  value={
+                    watchRelationship ||
+                    relationShipQuery.data?.data[0].relationshipID
+                  }
+                  onChange={(e) => setValue("relationshipID", e.target.value)}
+                  name="radio-buttons-group"
+                  className="gap-3 mt-2 ml-3"
+                >
+                  {relationShipQuery.isLoading &&
+                    Array(6)
+                      .fill(0)
+                      .map((_, index) => (
+                        <Skeleton
                           key={index}
-                          value={item.relationshipID}
-                          control={<Radio size="small" />}
-                          label={item.relationshipName}
+                          variant="rounded"
+                          width={70}
+                          height={30}
                         />
-                      )
-                    }
-                  })}
-              </RadioGroup>
-            </FormControl>
-          )}
+                      ))}
+                  {relationShipQuery.isSuccess &&
+                    relationShipQuery.data.data.map((item, index) => {
+                      if (item.relationshipName !== RELATIONSHIPS.ME) {
+                        return (
+                          <FormControlLabel
+                            className="px-3 border border-gray-200 border-solid rounded-md shadow-sm"
+                            key={index}
+                            value={item.relationshipID}
+                            control={<Radio size="small" />}
+                            label={item.relationshipName}
+                          />
+                        )
+                      }
+                    })}
+                </RadioGroup>
+              </FormControl>
+            )}
 
           <div className="flex justify-end space-x-4">
             {profile !== undefined &&

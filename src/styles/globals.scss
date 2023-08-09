@@ -120,6 +120,7 @@
   }
 }
 .quill {
+  @apply transition-all;
   .ql-container {
     @apply min-h-[200px] md:min-h-[250px];
   }

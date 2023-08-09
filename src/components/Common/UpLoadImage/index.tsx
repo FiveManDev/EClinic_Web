@@ -20,12 +20,14 @@ interface UpdateCoverProps
   // eslint-disable-next-line no-unused-vars
   onFileChange: (file: File | null) => void
   isError?: boolean
+  isDelete?: boolean
 }
 
 export const UpdateCover = ({
   imageUrl = null,
   onFileChange,
   isError = false,
+  isDelete = true,
   ...props
 }: UpdateCoverProps) => {
   const { image, handleImageChange, setImage, handleRemoveImage } =
@@ -65,7 +67,7 @@ export const UpdateCover = ({
   }
   return (
     <div className="relative flex flex-col justify-center w-full gap-y-2">
-      {image && (
+      {image && isDelete && (
         <div
           className="absolute top-0 right-0 z-20 flex items-center justify-center w-6 h-6 text-white transition-all bg-black rounded-full cursor-pointer -translate-x-2/4 translate-y-2/4 bg-opacity-40 hover:bg-opacity-30 hover:scale-105"
           onClick={(e) => {

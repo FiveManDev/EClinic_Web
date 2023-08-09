@@ -30,6 +30,7 @@ import { useEffect } from "react"
 import { FieldValues, useForm } from "react-hook-form"
 import { toast } from "react-hot-toast"
 import { QUERY_KEYS } from "shared/constant/constant"
+import { isQuillEmpty } from "shared/helpers/helper"
 import { Service, ServicePackage } from "types/Service"
 import * as yup from "yup"
 const ITEM_HEIGHT = 48
@@ -43,8 +44,14 @@ const MenuProps = {
   }
 }
 const schema = yup.object({
-  servicePackageName: yup.string().required("Please enter title"),
-  description: yup.string().required("Please enter description"),
+  servicePackageName: yup.string().trim().required("Please enter title"),
+  description: yup
+    .string()
+    .trim()
+    .required("Please enter description")
+    .test("is-quill-empty", "Please enter description", (value) => {
+      return !isQuillEmpty(value || "")
+    }),
   price: yup
     .number()
     .typeError("Please enter a valid price")
@@ -148,6 +155,10 @@ const CreateServicePackage = ({
         }
       }
     } else {
+      if (!watchImage) {
+        toast.error("Please upload image")
+        return
+      }
       createServicePackage.mutate(
         {
           ...value,
@@ -245,6 +256,7 @@ const CreateServicePackage = ({
             <div className="flex flex-col gap-y-2">
               <span className="text-gray-500">Image</span>
               <UpdateCover
+                isDelete={false}
                 isError={!!errors.image}
                 onFileChange={onFileChange}
                 imageUrl={watchImage || null}
@@ -254,6 +266,7 @@ const CreateServicePackage = ({
             <div className="flex flex-col gap-y-2">
               <span className="text-gray-500">Description</span>
               <Editor
+                isError={!!errors.description?.message}
                 onChange={(data: string) => {
                   setValue("description", data)
                 }}

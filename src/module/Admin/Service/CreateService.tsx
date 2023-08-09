@@ -2,6 +2,7 @@ import { yupResolver } from "@hookform/resolvers/yup"
 import {
   FormControl,
   FormHelperText,
+  InputAdornment,
   InputLabel,
   MenuItem,
   Select,
@@ -34,11 +35,21 @@ const MenuProps = {
   }
 }
 const schema = yup.object({
-  serviceName: yup.string().required("Please enter title"),
-  price: yup.number().required("Please enter price"),
-  estimatedTime: yup.string().required("Please enter estimate time"),
+  serviceName: yup.string().trim().required("Please enter title"),
+  price: yup
+    .number()
+    .required("Please enter price")
+    .min(1, "Price must be greater than 0"),
+  estimatedTime: yup
+    .string()
+    .trim()
+    .required("Please enter estimate time")
+    .min(1, "Estimate must be greater than 0"),
   specialization: yup.object({
-    specializationID: yup.string().required("Please choose a specialization")
+    specializationID: yup
+      .string()
+      .trim()
+      .required("Please choose a specialization")
   })
 })
 interface Props {
@@ -178,6 +189,11 @@ const CreateService = ({ service, mode = "create" }: Props) => {
               name="price"
               type="number"
               label={"Price"}
+              InputProps={{
+                endAdornment: (
+                  <InputAdornment position="start">VNĐ</InputAdornment>
+                )
+              }}
             />
           </div>
         </div>
@@ -189,6 +205,11 @@ const CreateService = ({ service, mode = "create" }: Props) => {
               name="estimatedTime"
               type="number"
               label={"Estimated Time"}
+              InputProps={{
+                endAdornment: (
+                  <InputAdornment position="start">Minutes</InputAdornment>
+                )
+              }}
             />
           </div>
         </div>
