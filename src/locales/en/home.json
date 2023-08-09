@@ -2,7 +2,7 @@
   "banner": {
     "menu": {
       "Portal": "Forum",
-      "Services": "Services Package",
+      "Services": "Service Package",
       "Booking": "Booking",
       "Contact": "Contact",
       "Blog": "Blogs",
@@ -38,5 +38,20 @@
     "title": "Doctor Q&A",
     "btn1": "Ask a Question",
     "btn2": "View All"
+  },
+  "footer": {
+    "desc": "A technology company providing healthcare solutions in Vietnam",
+    "ser": "Services",
+    "Contact": "Contact",
+    "serList": [
+      {
+        "title": "Service Packages",
+        "link": "/services"
+      },
+      {
+        "title": "Book a Doctor",
+        "link": "/doctors"
+      }
+    ]
   }
 }

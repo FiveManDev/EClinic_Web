@@ -1,12 +1,15 @@
 import ImageCustom from "components/Common/ImageCustom"
 import Link from "next/link"
+import { useTranslation } from "react-i18next"
 
 const Footer = () => {
+  const { t, i18n } = useTranslation(["home"])
+
   return (
     <footer className="w-full text-center text-gray-600 bg-gray-100 lg:text-left">
       <div className=" max-w-[1440px]  w-full mx-auto">
         <div className="py-10 mx-6 text-center md:text-left">
-          <div className="grid gap-8 grid-1 md:grid-cols-2 lg:grid-cols-4">
+          <div className="grid justify-between gap-8 grid-1 md:grid-cols-2 lg:grid-cols-3">
             <div>
               <h6 className="flex items-center justify-center mb-4 font-semibold uppercase md:justify-start">
                 <Link href="/" className="relative w-[130px] h-9">
@@ -19,44 +22,23 @@ const Footer = () => {
                   />
                 </Link>
               </h6>
-              <p className="leading-7">
-                Công ty công nghệ cung cấp giải pháp y tế, duy nhất tại Việt Nam
-              </p>
+              <p className="leading-7">{t("home:footer.desc")}</p>
             </div>
             <div>
               <h6 className="flex justify-center mb-4 font-semibold uppercase md:justify-start">
-                Dịch vụ
+                {t("home:footer.ser")}
               </h6>
-              <p>
-                <a href="#!" className="text-gray-600">
-                  Đặt khám bác sĩ
-                </a>
-              </p>
-            </div>
-            <div>
-              <h6 className="flex justify-center mb-4 font-semibold uppercase md:justify-start">
-                Hổ trợ
-              </h6>
-              <p className="mb-4">
-                <a href="#!" className="text-gray-600">
-                  Pricing
-                </a>
-              </p>
-              <p className="mb-4">
-                <a href="#!" className="text-gray-600">
-                  Settings
-                </a>
-              </p>
-              <p className="mb-4">
-                <a href="#!" className="text-gray-600">
-                  Orders
-                </a>
-              </p>
-              <p>
-                <a href="#!" className="text-gray-600">
-                  Help
-                </a>
-              </p>
+              <div className="flex flex-col space-y-3">
+                {i18n
+                  .t("home:footer.serList", { returnObjects: true })
+                  .map((item, index) => (
+                    <p key={index}>
+                      <Link href={item.link} className="text-gray-600">
+                        {item.title}
+                      </Link>
+                    </p>
+                  ))}
+              </div>
             </div>
             <div>
               <h6 className="flex justify-center mb-4 font-semibold uppercase md:justify-start">
@@ -115,24 +97,6 @@ const Footer = () => {
                   />
                 </svg>
                 + 01 234 567 88
-              </p>
-              <p className="flex items-center justify-center md:justify-start">
-                <svg
-                  aria-hidden="true"
-                  focusable="false"
-                  data-prefix="fas"
-                  data-icon="print"
-                  className="w-4 mr-4"
-                  role="img"
-                  xmlns="http://www.w3.org/2000/svg"
-                  viewBox="0 0 512 512"
-                >
-                  <path
-                    fill="currentColor"
-                    d="M448 192V77.25c0-8.49-3.37-16.62-9.37-22.63L393.37 9.37c-6-6-14.14-9.37-22.63-9.37H96C78.33 0 64 14.33 64 32v160c-35.35 0-64 28.65-64 64v112c0 8.84 7.16 16 16 16h48v96c0 17.67 14.33 32 32 32h320c17.67 0 32-14.33 32-32v-96h48c8.84 0 16-7.16 16-16V256c0-35.35-28.65-64-64-64zm-64 256H128v-96h256v96zm0-224H128V64h192v48c0 8.84 7.16 16 16 16h48v96zm48 72c-13.25 0-24-10.75-24-24 0-13.26 10.75-24 24-24s24 10.74 24 24c0 13.25-10.75 24-24 24z"
-                  />
-                </svg>
-                + 01 234 567 89
               </p>
             </div>
           </div>

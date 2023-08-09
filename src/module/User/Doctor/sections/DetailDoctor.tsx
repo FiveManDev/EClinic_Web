@@ -119,12 +119,6 @@ const DetailDoctor = () => {
                 "." +
                 combineName(data?.data.firstName, data?.data.lastName)}
             </h1>
-            {/* <Tag
-              color={colorsProvider.pending}
-              className="px-4 py-2 font-semibold rounded-lg"
-            >
-
-            </Tag> */}
             <div className="flex items-center gap-x-2">
               <span>Price:</span>
               <span>{formatValueToVND(data.data.price)}</span>

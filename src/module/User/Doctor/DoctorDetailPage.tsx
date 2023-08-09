@@ -15,7 +15,7 @@ const DoctorDetailPage = () => {
   return (
     <>
       <Head>
-        <title>Forum page</title>
+        <title>Doctor page</title>
       </Head>
       <UserSecondaryLayout breadrums={breadrums}>
         <section className="flex flex-col mt-6 gap-x-10">

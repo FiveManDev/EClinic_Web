@@ -81,15 +81,6 @@ const PaymentDetail = () => {
                     className="object-cover"
                   />
                 </div>
-                <div className="flex flex-col">
-                  <span className="text-sm font-medium text-h1">
-                    {combineName(
-                      payment?.author.firstName,
-                      payment?.author.lastName
-                    )}
-                  </span>
-                  <span>{payment?.author.userID}</span>
-                </div>
               </div>
             </div>
           </div>

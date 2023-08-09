@@ -89,7 +89,7 @@ export const StepOne = ({ onCancel, onContinue }: PropsStep) => {
                 ))}
             </div>
           )}
-          {getDoctorSchedule.data ? (
+          {getDoctorSchedule.data && (
             <div className="grid h-full grid-cols-3 gap-3 overflow-y-auto">
               {getDoctorSchedule.data.data.slots.map((item, index) => (
                 <Tag
@@ -114,12 +114,14 @@ export const StepOne = ({ onCancel, onContinue }: PropsStep) => {
                 </Tag>
               ))}
             </div>
-          ) : (
-            <EmtyData
-              message={t("base:booking.note_schedule")}
-              className="flex-1"
-            />
           )}
+          {getDoctorSchedule.data?.data.slots.length === 0 ||
+            (getDoctorSchedule.isError && (
+              <EmtyData
+                message={t("base:booking.note_schedule")}
+                className="flex-1"
+              />
+            ))}
         </div>
       </div>
     </>
