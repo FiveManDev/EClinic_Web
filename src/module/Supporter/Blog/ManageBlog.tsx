@@ -17,7 +17,7 @@ const ManageBlog = () => {
         key: 1,
         label: `Create a new post
         `,
-        children: <CreateBlog labelForm="Create a new post" />
+        children: <CreateBlog labelForm="Create a new blog" />
       }
     ],
     []

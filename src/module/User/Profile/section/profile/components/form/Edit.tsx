@@ -24,6 +24,7 @@ import { useImageFile } from "hooks/useImageFile"
 import Image from "next/image"
 import { ChangeEvent, useEffect } from "react"
 import { FieldValues, useForm } from "react-hook-form"
+import { toast } from "react-hot-toast"
 import { useTranslation } from "react-i18next"
 import { RELATIONSHIPS } from "shared/constant/constant"
 import { IProfile, IRelationShip } from "types/Profile.type"
@@ -56,19 +57,8 @@ const schema = yup.object({
       "Please enter valid phone number"
     ),
   dateOfBirth: yup.string().trim().required("Please enter your date of birth"),
-  address: yup
-    .string()
-    .trim()
-    .required("Please enter your address")
-    .matches(
-      /^\S.*\S$/,
-      "Please enter a valid name (must not be empty and cannot contain only spaces)"
-    ),
-  bloodType: yup
-    .string()
-    .trim()
-    .required("Please choose your blood")
-    .default("A+"),
+  address: yup.string().trim().required("Please enter your address").nullable(),
+  bloodType: yup.string().trim().required("Please choose your blood"),
   weight: yup
     .number()
     .min(1, "Weight must be greater than 0")
@@ -96,6 +86,7 @@ const Edit = ({
     handleSubmit,
     control,
     setError,
+    getValues,
     watch,
     reset,
     setValue,
@@ -121,6 +112,13 @@ const Edit = ({
       if (choice) {
         onDelete(profileId)
       }
+    }
+  }
+  const handleOnSubmit = (value: FieldValues) => {
+    if (getValues("avatar") === undefined) {
+      toast.error("Please choose your avatar")
+    } else {
+      onSubmit(value)
     }
   }
   useEffect(() => {
@@ -151,7 +149,7 @@ const Edit = ({
         ))}
       <div className="flex flex-col justify-start">
         <form
-          onSubmit={handleSubmit(onSubmit)}
+          onSubmit={handleSubmit(handleOnSubmit)}
           className="flex flex-col space-y-5"
         >
           <Uploadfile
@@ -210,7 +208,7 @@ const Edit = ({
               </InputLabel>
               <Select
                 size="medium"
-                value={watchBlood}
+                value={watchBlood || getBloodTypes.data?.data[0]}
                 label={t("base:pages.profileUser.form.blood_type")}
                 onChange={(value) => {
                   setValue("bloodType", value.target.value)

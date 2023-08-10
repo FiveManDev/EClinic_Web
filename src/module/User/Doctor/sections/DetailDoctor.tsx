@@ -20,10 +20,12 @@ import { StepOne } from "./step/StepOne"
 import StepThree from "./step/StepThree"
 import { StepTwo } from "./step/StepTwo"
 import { DetailDoctorModalWrapper } from "./styles"
+import classNames from "classnames"
 const DetailDoctor = () => {
   const { t } = useTranslation(["base"])
 
   const [isActive, setIsActive] = useState(false)
+  const [status, setStatus] = useState("")
   const isLogin = useSelector((state: RootState) => state.auth.isLoggedIn)
   const slot = useSelector(selectSlotBooking)
   const dispatch = useAppDispatch()
@@ -47,12 +49,14 @@ const DetailDoctor = () => {
     }
   }, [data?.isSuccess, showModal])
   useEffect(() => {
-    if (router.query.bookingId) {
+    if (router.query.bookingId && router.query.status) {
       setTimeout(() => {
         setIsActive(true)
+        console.log("setTimeout ~ router.query.status:", router.query.status)
+        setStatus(router.query.status as string)
       }, 1500)
     }
-  }, [router.query.bookingId])
+  }, [router.query.bookingId, router.query.status])
   if (isLoading) {
     return <p>Loading</p>
   }
@@ -172,21 +176,46 @@ const DetailDoctor = () => {
       <ModalSuccess
         isSuccess={isActive}
         setIsSuccess={() => setIsActive(false)}
+        imageUrl={
+          status === "success"
+            ? "/images/success-image.png"
+            : "/images/fail.png"
+        }
       >
-        <h1 className="text-4xl font-bold text-center text-black1">
-          Congratulations
+        <h1
+          className={classNames(
+            "text-4xl font-bold text-center ",
+            status === "success" ? "text-black1" : " text-error"
+          )}
+        >
+          {status === "success" ? "Congratulations" : "Payment failed"}
         </h1>
         <p className="mt-5 text-sm font-light text-center text-black2">
-          Your Appointment Request is Successfully!
+          {status === "success"
+            ? "Your appointment request is Successfully!"
+            : "Your appointment request has failed!"}
         </p>
-        <CustomButton
-          className="mt-3"
-          onClick={() =>
-            router.push(process.env.NEXT_PUBLIC_APP_URL + "/doctors")
-          }
-        >
-          Make a New Appointment
-        </CustomButton>
+        {status === "success" ? (
+          <CustomButton
+            className="mt-3"
+            onClick={() => router.push("/doctors")}
+          >
+            Make a New Appointment
+          </CustomButton>
+        ) : (
+          <CustomButton
+            className="mt-3"
+            onClick={() => {
+              router.replace(`/doctors/${router.query.id}`, undefined, {
+                shallow: true
+              })
+              setIsActive(false)
+              setStatus("")
+            }}
+          >
+            Booking again
+          </CustomButton>
+        )}
       </ModalSuccess>
     </div>
   )

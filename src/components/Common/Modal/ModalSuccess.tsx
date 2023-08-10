@@ -1,19 +1,20 @@
-import CustomButton from "components/User/Button"
 import { OverlayScrollbarsComponent } from "overlayscrollbars-react"
 import React from "react"
-import ModalPrimary from "./ModalPrimary"
 import ImageCustom from "../ImageCustom"
+import ModalPrimary from "./ModalPrimary"
 
 interface ModalSuccessProps {
   isSuccess: boolean
   setIsSuccess: (value: boolean) => void
   children: React.ReactNode
+  imageUrl?: string
 }
 
 const ModalSuccess: React.FC<ModalSuccessProps> = ({
   isSuccess,
   setIsSuccess,
-  children
+  children,
+  imageUrl = "/images/success-image.png"
 }) => {
   return (
     <ModalPrimary
@@ -29,7 +30,7 @@ const ModalSuccess: React.FC<ModalSuccessProps> = ({
           <div className="relative w-full h-[260px]">
             <ImageCustom
               priority
-              src={"/images/success-image.png"}
+              src={imageUrl}
               alt="img-success"
               fill
               className="object-cover"

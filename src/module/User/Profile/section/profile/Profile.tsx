@@ -82,8 +82,8 @@ const Profile = () => {
               toast.error("Add error")
             }
           },
-          onError: () => {
-            toast.error("Add error")
+          onError: (data: any) => {
+            toast.error(data?.response?.data?.message || "Add error")
           }
         }
       )
