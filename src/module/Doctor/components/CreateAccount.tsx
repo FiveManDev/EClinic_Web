@@ -11,9 +11,7 @@ import {
 import DatePickerCustom from "components/Common/DatePicker/DatePickerCustom"
 import SwitchCustom from "components/Common/IOSSwitch"
 import { Option, SelectCustom } from "components/Common/Select/SelectCustom"
-import Tag from "components/Common/Tag"
 import CustomButton from "components/User/Button"
-import { CustomInput } from "components/User/Input"
 import InputField from "components/User/Input/InputField"
 import useConfirm from "context/ComfirmContext"
 import dayjs from "dayjs"
@@ -327,12 +325,14 @@ const CreateAccount = ({ labelForm, profile, mode = "create" }: Props) => {
                 }}
                 errorMessage={errors.workStart?.message?.toString()}
               />
-              <DatePickerCustom
-                size="medium"
-                label="Date end work"
-                control={control}
-                name="workEnd"
-              />
+              {mode === "update" && (
+                <DatePickerCustom
+                  size="medium"
+                  label="Date end work"
+                  control={control}
+                  name="workEnd"
+                />
+              )}
             </div>
             <InputField
               size="medium"
