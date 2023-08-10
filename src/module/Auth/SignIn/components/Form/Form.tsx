@@ -82,7 +82,7 @@ const FormLogin = () => {
         try {
           if (res.isSuccess) {
             handleNavigate(res.data.accessToken, res.data.refreshToken)
-            toast.success("Sign in successfuly")
+            toast.success("Sign in successfully")
           } else {
             toast.error(res.message || "Login failed, please try again!!!")
           }

@@ -102,7 +102,7 @@ const ModelSchedule = ({ show, onChangeModel, doctorID }: Props) => {
         {
           onSuccess() {
             queryClient.invalidateQueries([QUERY_KEYS.BOOKING.DOCTOR])
-            toast.success("Create successfuly")
+            toast.success("Create successfully")
             doctorSchedule.refetch()
           },
           onError() {
@@ -119,7 +119,7 @@ const ModelSchedule = ({ show, onChangeModel, doctorID }: Props) => {
         {
           onSuccess() {
             queryClient.invalidateQueries([QUERY_KEYS.BOOKING.DOCTOR])
-            toast.success("Update successfuly")
+            toast.success("Update successfully")
             doctorSchedule.refetch()
           },
           onError() {

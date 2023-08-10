@@ -17,11 +17,13 @@ const Editor = memo(
   ({
     value,
     onChange,
-    isError = false
+    isError = false,
+    placeholder
   }: {
     value: string
     onChange: (value: string) => void
     isError?: boolean
+    placeholder?: string
   }) => {
     const editorRef: any = useRef()
 
@@ -124,6 +126,7 @@ const Editor = memo(
 
     return (
       <ReactQuill
+        placeholder={placeholder}
         modules={Editor.modules}
         formats={Editor.formats}
         className={isError ? "!border-red-500" : ""}

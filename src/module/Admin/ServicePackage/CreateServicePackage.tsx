@@ -167,7 +167,7 @@ const CreateServicePackage = ({
         {
           onSuccess: (data) => {
             if (data?.isSuccess) {
-              toast.success("Create a service package successfuly")
+              toast.success("Create a service package successfully")
               resetForm()
               queryClient.invalidateQueries([QUERY_KEYS.SERVICE_PACKAGE])
             } else {

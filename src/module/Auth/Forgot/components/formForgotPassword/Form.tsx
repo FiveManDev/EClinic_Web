@@ -97,7 +97,7 @@ const Form = () => {
       },
       {
         onSuccess: () => {
-          toast.success("Reset password successfuly!!")
+          toast.success("Reset password successfully!!")
           router.push(routers.signIn)
         },
         onError: (data: any) => {

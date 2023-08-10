@@ -115,7 +115,7 @@ const CreateBlog = ({ labelForm, post, mode = "create" }: Props) => {
             {
               onSuccess: (data) => {
                 if (data?.isSuccess) {
-                  toast.success("Update successfuly")
+                  toast.success("Update successfully")
                   queryClient.invalidateQueries([QUERY_KEYS.BLOG.POST])
                 } else {
                   toast.error("Update error")
@@ -141,7 +141,7 @@ const CreateBlog = ({ labelForm, post, mode = "create" }: Props) => {
         {
           onSuccess: (data) => {
             if (data?.isSuccess) {
-              toast.success("Create a post successfuly")
+              toast.success("Create a post successfully")
               resetForm()
               queryClient.invalidateQueries([QUERY_KEYS.BLOG.POST])
             } else {

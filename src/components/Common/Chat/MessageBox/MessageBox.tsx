@@ -194,7 +194,7 @@ const MessageBox = ({ toggleInfo, otherUserId: userId, isClose }: IProps) => {
       if (choice) {
         closeRoom.mutate(roomId, {
           onSuccess: () => {
-            toast.success("Close room successfuly")
+            toast.success("Close room successfully")
             queryClient.refetchQueries([QUERY_KEYS.CHAT.ROOM])
           },
           onError: (data: any) => {

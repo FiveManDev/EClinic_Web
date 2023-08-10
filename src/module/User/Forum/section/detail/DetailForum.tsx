@@ -176,8 +176,8 @@ const DetailForum = ({ post }: Props) => {
       onSuccess: () => {
         queryClient.invalidateQueries([QUERY_KEYS.FORUM.POST, post.id])
         queryClient.invalidateQueries([QUERY_KEYS.FORUM.POST])
-        if (!isLike) toast.success("Like post successfuly!")
-        else toast.success("UnLike post successfuly!")
+        if (!isLike) toast.success("Like post successfully!")
+        else toast.success("UnLike post successfully!")
       },
       onError: () => {
         toast.error("Like post failed!")

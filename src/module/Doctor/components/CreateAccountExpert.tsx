@@ -114,7 +114,7 @@ const CreateAccountExpert = ({
             {
               onSuccess: (data) => {
                 if (data.isSuccess) {
-                  toast.success("Update successfuly")
+                  toast.success("Update successfully")
                 } else {
                   toast.error("Update error")
                 }
@@ -139,7 +139,7 @@ const CreateAccountExpert = ({
         {
           onSuccess: (data) => {
             if (data.isSuccess) {
-              toast.success("Add successfuly")
+              toast.success("Add successfully")
               resetForm()
             } else {
               toast.error("Add error")

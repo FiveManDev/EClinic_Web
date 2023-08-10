@@ -79,7 +79,7 @@ const CreateQuestion = ({ className = "" }: Props) => {
           onSuccess: () => {
             setImages([])
             setPost({ content: "", images: [], title: "" })
-            toast.success("Create post successfuly!")
+            toast.success("Create post successfully!")
           }
         })
       } else {

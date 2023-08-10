@@ -42,7 +42,7 @@ const PaymentDetail = () => {
           {
             onSuccess: (data) => {
               if (data.isSuccess) {
-                toast.success("Refund successfuly!")
+                toast.success("Refund successfully!")
               } else {
                 toast.error("Refund fail!")
               }

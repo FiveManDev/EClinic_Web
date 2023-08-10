@@ -76,7 +76,7 @@ const Profile = () => {
         {
           onSuccess: (data) => {
             if (data.isSuccess) {
-              toast.success("Add successfuly")
+              toast.success("Add successfully")
               refetch()
             } else {
               toast.error("Add error")
@@ -104,7 +104,7 @@ const Profile = () => {
     deleteProfileMutation.mutate(profileId, {
       onSuccess: (data) => {
         if (data.isSuccess) {
-          toast.success("Delete successfuly")
+          toast.success("Delete successfully")
           refetch()
           setMode("view")
         } else {

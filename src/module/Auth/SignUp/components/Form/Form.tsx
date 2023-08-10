@@ -121,7 +121,7 @@ const FormSignup = () => {
       },
       {
         onSuccess: () => {
-          toast.success("Sign up successfuly!!")
+          toast.success("Sign up successfully!!")
           router.push(routers.signIn)
         },
         onError: (data: any) => {

@@ -101,7 +101,7 @@ const CreateService = ({ service, mode = "create" }: Props) => {
                       "Please update service package that use this service!"
                     )
                   }
-                  toast.success("Update a service successfuly!")
+                  toast.success("Update a service successfully!")
                 } else {
                   toast.error("Update a service fail!")
                 }
@@ -122,7 +122,7 @@ const CreateService = ({ service, mode = "create" }: Props) => {
         {
           onSuccess: (data) => {
             if (data?.isSuccess) {
-              toast.success("Create a service successfuly")
+              toast.success("Create a service successfully")
               resetForm()
             } else {
               toast.error("Create a service fail")

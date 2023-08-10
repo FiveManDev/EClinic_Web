@@ -86,7 +86,7 @@ const SpecializationTab = () => {
               onSuccess: (data) => {
                 refetch()
                 if (data.isSuccess) {
-                  toast.success("Update a Specialization successfuly")
+                  toast.success("Update a Specialization successfully")
                   resetForm()
                   setMode("create")
                 } else {
@@ -115,7 +115,7 @@ const SpecializationTab = () => {
               onSuccess: (data) => {
                 refetch()
                 if (data?.isSuccess) {
-                  toast.success("Create a Specialization successfuly")
+                  toast.success("Create a Specialization successfully")
                   resetForm()
                 } else {
                   toast.error("Create a Specialization fail")

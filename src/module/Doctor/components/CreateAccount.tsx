@@ -137,7 +137,7 @@ const CreateAccount = ({ labelForm, profile, mode = "create" }: Props) => {
             {
               onSuccess: (data) => {
                 if (data.isSuccess) {
-                  toast.success("Update successfuly")
+                  toast.success("Update successfully")
                 } else {
                   toast.error("Update error")
                 }
@@ -161,7 +161,7 @@ const CreateAccount = ({ labelForm, profile, mode = "create" }: Props) => {
         {
           onSuccess: (data) => {
             if (data.isSuccess) {
-              toast.success("Add successfuly")
+              toast.success("Add successfully")
               resetForm()
             } else {
               toast.error("Add error")
@@ -373,6 +373,7 @@ const CreateAccount = ({ labelForm, profile, mode = "create" }: Props) => {
             />
             <div className="flex flex-col gap-y-[6px]">
               <Editor
+                placeholder="Detailed description of the doctor's information..."
                 isError={!!errors.description?.message?.toString()}
                 onChange={(data: string) => {
                   setValue("description", data)
