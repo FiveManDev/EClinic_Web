@@ -133,16 +133,16 @@ const ModelSchedule = ({ show, onChangeModel, doctorID }: Props) => {
     return dayjs(date, "HH:mm")
   }
   const handleValidate = () => {
-    if (slots.length > 1) {
+    if (slots.length > 0) {
       const newErrors: number[] = []
-      for (let i = 1; i < slots.length; i++) {
+      for (let i = 0; i < slots.length; i++) {
         const prevEndTime = formatDate(slots[i - 1]?.endTime)
         const endTime = formatDate(slots[i].endTime)
         const startTime = formatDate(slots[i].startTime)
         if (
-          endTime.isBefore(startTime) ||
+          startTime.isAfter(endTime) ||
           startTime.isSame(endTime) ||
-          startTime.isBefore(prevEndTime)
+          (prevEndTime.isValid() && startTime.isBefore(prevEndTime))
         ) {
           newErrors.push(i)
         }
