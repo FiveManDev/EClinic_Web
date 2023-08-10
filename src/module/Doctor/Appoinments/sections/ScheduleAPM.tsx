@@ -143,7 +143,7 @@ const ScheduleAPM = () => {
               </div>
               <div className="flex-1 mt-6 modal-filed">
                 {getDoctorSchedule.isLoading && (
-                  <div className="grid h-full grid-cols-3 gap-3 overflow-y-auto">
+                  <div className="grid h-full grid-cols-4 gap-3 overflow-y-auto">
                     {Array(20)
                       .fill(0)
                       .map((_, index) => (

@@ -31,7 +31,140 @@ const initialData: Slot = {
   startTime: "",
   isBooking: false
 }
-
+const quickTime = [
+  {
+    slotID: "00000000-0000-0000-0000-000000000000",
+    startTime: "07:00",
+    endTime: "07:30",
+    isBooking: false
+  },
+  {
+    slotID: "00000000-0000-0000-0000-000000000000",
+    startTime: "07:30",
+    endTime: "08:00",
+    isBooking: false
+  },
+  {
+    slotID: "00000000-0000-0000-0000-000000000000",
+    startTime: "08:00",
+    endTime: "08:30",
+    isBooking: false
+  },
+  {
+    slotID: "00000000-0000-0000-0000-000000000000",
+    startTime: "08:30",
+    endTime: "09:00",
+    isBooking: false
+  },
+  {
+    slotID: "00000000-0000-0000-0000-000000000000",
+    startTime: "09:00",
+    endTime: "09:30",
+    isBooking: false
+  },
+  {
+    slotID: "00000000-0000-0000-0000-000000000000",
+    startTime: "09:30",
+    endTime: "10:00",
+    isBooking: false
+  },
+  {
+    slotID: "00000000-0000-0000-0000-000000000000",
+    startTime: "10:00",
+    endTime: "10:30",
+    isBooking: false
+  },
+  {
+    slotID: "00000000-0000-0000-0000-000000000000",
+    startTime: "10:30",
+    endTime: "11:00",
+    isBooking: false
+  },
+  {
+    slotID: "00000000-0000-0000-0000-000000000000",
+    startTime: "11:00",
+    endTime: "11:30",
+    isBooking: false
+  },
+  {
+    slotID: "00000000-0000-0000-0000-000000000000",
+    startTime: "11:30",
+    endTime: "12:00",
+    isBooking: false
+  },
+  {
+    slotID: "00000000-0000-0000-0000-000000000000",
+    startTime: "12:00",
+    endTime: "12:30",
+    isBooking: false
+  },
+  {
+    slotID: "00000000-0000-0000-0000-000000000000",
+    startTime: "12:30",
+    endTime: "13:00",
+    isBooking: false
+  },
+  {
+    slotID: "00000000-0000-0000-0000-000000000000",
+    startTime: "13:00",
+    endTime: "13:30",
+    isBooking: false
+  },
+  {
+    slotID: "00000000-0000-0000-0000-000000000000",
+    startTime: "13:30",
+    endTime: "14:00",
+    isBooking: false
+  },
+  {
+    slotID: "00000000-0000-0000-0000-000000000000",
+    startTime: "14:00",
+    endTime: "14:30",
+    isBooking: false
+  },
+  {
+    slotID: "00000000-0000-0000-0000-000000000000",
+    startTime: "14:30",
+    endTime: "15:00",
+    isBooking: false
+  },
+  {
+    slotID: "00000000-0000-0000-0000-000000000000",
+    startTime: "15:00",
+    endTime: "15:30",
+    isBooking: false
+  },
+  {
+    slotID: "00000000-0000-0000-0000-000000000000",
+    startTime: "15:30",
+    endTime: "16:00",
+    isBooking: false
+  },
+  {
+    slotID: "00000000-0000-0000-0000-000000000000",
+    startTime: "16:00",
+    endTime: "16:30",
+    isBooking: false
+  },
+  {
+    slotID: "00000000-0000-0000-0000-000000000000",
+    startTime: "16:30",
+    endTime: "17:00",
+    isBooking: false
+  },
+  {
+    slotID: "00000000-0000-0000-0000-000000000000",
+    startTime: "17:00",
+    endTime: "17:30",
+    isBooking: false
+  },
+  {
+    slotID: "00000000-0000-0000-0000-000000000000",
+    startTime: "17:30",
+    endTime: "18:00",
+    isBooking: false
+  }
+]
 const ModelSchedule = ({ show, onChangeModel, doctorID }: Props) => {
   const createSchedule = useCreateDoctorScheduleMutation()
   const updateSchedule = useUpdateDoctorScheduleMutation()
@@ -92,6 +225,7 @@ const ModelSchedule = ({ show, onChangeModel, doctorID }: Props) => {
   }
 
   const onSubmit = () => {
+    console.log("onSubmit ~ slots:", JSON.stringify(slots))
     if (type === "create") {
       createSchedule.mutate(
         {
@@ -184,6 +318,14 @@ const ModelSchedule = ({ show, onChangeModel, doctorID }: Props) => {
             <h4 className="mb-4 text-xl text-h1 max-w-[340px]">
               What hours are you available?
             </h4>
+            {slots.length === 0 && (
+              <button
+                className="flex items-center justify-center px-6 py-2 mt-4 mb-3 text-sm transition-all bg-transparent border border-gray-400 border-solid outline-none cursor-pointer rounded-3xl w-fit focus-within:bg-gray-300"
+                onClick={() => setSlots(quickTime)}
+              >
+                Quick create
+              </button>
+            )}
             {slots.length === 0 && (
               <div className="flex items-center justify-between">
                 <span className="font-light text-disable">Unavailable</span>
