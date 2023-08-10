@@ -1,7 +1,6 @@
-import { TextField } from "@mui/material"
+import { Skeleton } from "@mui/material"
 import { CalendarPicker, LocalizationProvider } from "@mui/x-date-pickers"
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs"
-import classNames from "classnames"
 import ModalPrimary from "components/Common/Modal/ModalPrimary"
 import TooltipIcon from "components/Common/ToolTipIcon"
 import CustomButton from "components/User/Button"
@@ -15,9 +14,10 @@ import { OverlayScrollbarsComponent } from "overlayscrollbars-react"
 import { queryClient } from "pages/_app"
 import { useEffect, useState } from "react"
 import { toast } from "react-hot-toast"
-import { HiOutlineTrash, HiPlus } from "react-icons/hi2"
+import { HiPlus } from "react-icons/hi2"
 import { QUERY_KEYS } from "shared/constant/constant"
 import { Slot } from "types/Booking"
+import { SlotForm } from "./SlotForm"
 
 interface Props {
   show: boolean
@@ -31,12 +31,14 @@ const initialData: Slot = {
   startTime: "",
   isBooking: false
 }
+
 const ModelSchedule = ({ show, onChangeModel, doctorID }: Props) => {
   const createSchedule = useCreateDoctorScheduleMutation()
   const updateSchedule = useUpdateDoctorScheduleMutation()
   const [type, setType] = useState<"create" | "update">("create")
   const [date, setDate] = useState(dayjs())
   const [slots, setSlots] = useState<Slot[]>([])
+  const [errors, setErrors] = useState<number[]>([])
   const doctorSchedule = useGetDoctorScheduleForUser(
     date.format("YYYY-MM-DD").toString(),
     doctorID || ""
@@ -53,7 +55,13 @@ const ModelSchedule = ({ show, onChangeModel, doctorID }: Props) => {
       setType("update")
       setSlots(doctorSchedule.data?.data.slots || [])
     }
+    if (doctorSchedule.isLoading) {
+      setSlots([])
+    }
   }, [doctorSchedule.status, show])
+  useEffect(() => {
+    handleValidate()
+  }, [slots])
   const handleSchedule = (
     kind: "startTime" | "endTime",
     time: string,
@@ -121,6 +129,29 @@ const ModelSchedule = ({ show, onChangeModel, doctorID }: Props) => {
       )
     }
   }
+  const formatDate = (date: string) => {
+    return dayjs(date, "HH:mm")
+  }
+  const handleValidate = () => {
+    if (slots.length > 1) {
+      const newErrors: number[] = []
+      for (let i = 1; i < slots.length; i++) {
+        const prevEndTime = formatDate(slots[i - 1]?.endTime)
+        const endTime = formatDate(slots[i].endTime)
+        const startTime = formatDate(slots[i].startTime)
+        if (
+          endTime.isBefore(startTime) ||
+          startTime.isSame(endTime) ||
+          startTime.isBefore(prevEndTime)
+        ) {
+          newErrors.push(i)
+        }
+      }
+      setErrors(newErrors)
+    } else {
+      setErrors([])
+    }
+  }
   return (
     <>
       <ModalPrimary
@@ -149,11 +180,11 @@ const ModelSchedule = ({ show, onChangeModel, doctorID }: Props) => {
             </div>
           </div>
           <div className="w-[1px] h-full bg-gray-300"></div>
-          <div className="p-6 ">
+          <div className="p-6 w-[410px]">
             <h4 className="mb-4 text-xl text-h1 max-w-[340px]">
               What hours are you available?
             </h4>
-            {slots.length < 1 && (
+            {slots.length === 0 && (
               <div className="flex items-center justify-between">
                 <span className="font-light text-disable">Unavailable</span>
                 <TooltipIcon
@@ -167,16 +198,42 @@ const ModelSchedule = ({ show, onChangeModel, doctorID }: Props) => {
             )}
             <OverlayScrollbarsComponent>
               <div className="flex flex-col w-full h-[380px] py-2 gap-y-6">
+                {doctorSchedule.isLoading &&
+                  Array(4)
+                    .fill(0)
+                    .map((_, index) => (
+                      <div
+                        key={index}
+                        className="flex items-center w-full gap-x-5"
+                      >
+                        <Skeleton width={120} height={40} variant="rounded" />
+                        <Skeleton width={120} height={40} variant="rounded" />
+                        <Skeleton width={40} height={40} variant="rounded" />
+                      </div>
+                    ))}
                 {slots.map((item, index) => (
-                  <SlotForm
-                    slot={item}
-                    key={index}
-                    onChangeSlot={(type, time) =>
-                      handleSchedule(type, time, index)
-                    }
-                    onRemove={() => handleRemoveSlot(index)}
-                    onCreate={handleAddSlot}
-                  />
+                  <div className="flex flex-col space-y-2" key={index}>
+                    <SlotForm
+                      slot={item}
+                      onChangeSlot={(type, time) =>
+                        handleSchedule(type, time, index)
+                      }
+                      onRemove={() => handleRemoveSlot(index)}
+                      onCreate={
+                        index === slots.length - 1 && errors.length === 0
+                          ? handleAddSlot
+                          : undefined
+                      }
+                    />
+                    {errors.map(
+                      (error) =>
+                        error === index && (
+                          <p className="text-red-500" key={error}>
+                            Times overlap with another set of times.
+                          </p>
+                        )
+                    )}
+                  </div>
                 ))}
               </div>
             </OverlayScrollbarsComponent>
@@ -187,7 +244,16 @@ const ModelSchedule = ({ show, onChangeModel, doctorID }: Props) => {
             <CustomButton kind="tertiary" onClick={() => onChangeModel(false)}>
               Cancel
             </CustomButton>
-            <CustomButton kind="primary" onClick={onSubmit}>
+            <CustomButton
+              kind="primary"
+              isLoading={createSchedule.isLoading || updateSchedule.isLoading}
+              onClick={onSubmit}
+              disabled={
+                errors.length > 0 ||
+                createSchedule.isLoading ||
+                updateSchedule.isLoading
+              }
+            >
               Apply
             </CustomButton>
           </div>
@@ -197,59 +263,4 @@ const ModelSchedule = ({ show, onChangeModel, doctorID }: Props) => {
   )
 }
 
-interface PropsSlotForm {
-  slot?: Slot
-  // eslint-disable-next-line no-unused-vars
-  onChangeSlot: (type: "startTime" | "endTime", time: string) => void
-  className?: string
-  onCreate: () => void
-  onRemove: () => void
-}
-const SlotForm = ({
-  slot,
-  onChangeSlot,
-  className,
-  onCreate,
-  onRemove
-}: PropsSlotForm) => {
-  return (
-    <div className={classNames("flex items-center", className)}>
-      <div className="max-w-[120px] w-full">
-        <TextField
-          size="small"
-          value={slot?.startTime}
-          label="Start"
-          type="time"
-          InputLabelProps={{
-            shrink: true
-          }}
-          onChange={(e) => onChangeSlot("startTime", e.target.value)}
-        />
-      </div>
-      <span className="px-2">-</span>
-      <div className="max-w-[120px] w-full">
-        <TextField
-          onChange={(e) => onChangeSlot("endTime", e.target.value)}
-          size="small"
-          value={slot?.endTime}
-          label="End"
-          type="time"
-          InputLabelProps={{
-            shrink: true
-          }}
-        />
-      </div>
-      <TooltipIcon title="Remove" className="ml-2" onClick={() => onRemove()}>
-        <HiOutlineTrash />
-      </TooltipIcon>
-      <TooltipIcon
-        title="Add new interval"
-        className="ml-2"
-        onClick={() => onCreate()}
-      >
-        <HiPlus />
-      </TooltipIcon>
-    </div>
-  )
-}
 export default ModelSchedule
