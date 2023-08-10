@@ -104,12 +104,9 @@ const Footer = () => {
       </div>
       <div className="p-6 text-center bg-gray-200">
         <span>© 2023 Copyright:</span>
-        <a
-          className="font-semibold text-gray-600"
-          href="https://tailwind-elements.com/"
-        >
-          Eclinic
-        </a>
+        <Link className="font-semibold text-gray-600" href="/">
+          EClinic
+        </Link>
       </div>
     </footer>
   )

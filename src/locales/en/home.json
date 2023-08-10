@@ -12,7 +12,7 @@
     "description": "A platform for booking health services and products for you and your family",
     "search": {
       "keyword": "Most searched",
-      "placeholder": "Find disease, doctor, question and answer,...."
+      "placeholder": "Find forum post, doctor, and blog,...."
     },
     "button": {
       "signup": "Sign Up",

@@ -1,27 +1,16 @@
 import { IconButton, InputAdornment, OutlinedInput } from "@mui/material"
-import ChipCustom from "components/Common/Chip/Chip"
-import { useGetBlogTagSortByCountQuery } from "hooks/query/blog/useBlog"
-import { useGetHashtagBySortQuery } from "hooks/query/forum/useForum"
 import { useRouter } from "next/router"
-import { useEffect, useState } from "react"
+import { useState } from "react"
 import { useTranslation } from "react-i18next"
 import { SearchWrapper } from "./Search.styles"
 
 const Search = () => {
   const { t } = useTranslation("home")
   const [searchValue, setSearchValue] = useState("")
-  const [searchTag, setSearchTag] = useState("")
   const router = useRouter()
-  const getBlogTagSortByCount = useGetBlogTagSortByCountQuery(1, 5)
-  const getTagSortByCount = useGetHashtagBySortQuery(1, 5)
   const handleSubmit = () => {
-    router.push(`/search?keyword=${searchValue}&searchTag=${searchTag}`)
+    router.push(`/search?keyword=${searchValue}`)
   }
-  useEffect(() => {
-    if (searchTag) {
-      handleSubmit()
-    }
-  }, [searchTag])
   return (
     <SearchWrapper className="absolute bottom-0 translate-y-2/4 w-full p-4  mx-auto bg-white rounded-xl md:p-8 shadow-[0px_1px_4px_rgba(0,_0,_0,_0.15)]">
       <div className="flex items-center justify-between space-x-2 md:space-x-4 h-11 md:h-[72px]">
@@ -43,29 +32,6 @@ const Search = () => {
         >
           <IconSearch />
         </IconButton>
-      </div>
-      <div className="flex flex-col w-full mt-4 space-y-2">
-        <h4 className="text-h1 text-base md:text-[20px]">
-          {t("banner.search.keyword")}
-        </h4>
-        <ul className="flex items-center w-full space-x-4 overflow-auto list-none">
-          {getBlogTagSortByCount.data?.data.data.map((item) => (
-            <li key={item.id}>
-              <ChipCustom
-                label={item.hashtagName}
-                onClick={() => setSearchTag(item.id)}
-              />
-            </li>
-          ))}
-          {getTagSortByCount.data?.data.data.map((item) => (
-            <li key={item.hashtagID}>
-              <ChipCustom
-                label={item.hashtagName}
-                onClick={() => setSearchTag(item.hashtagID)}
-              />
-            </li>
-          ))}
-        </ul>
       </div>
     </SearchWrapper>
   )

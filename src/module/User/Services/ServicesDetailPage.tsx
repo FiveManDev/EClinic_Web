@@ -16,12 +16,14 @@ import BookingModel from "./components/BookingModel"
 import ModalSuccess from "components/Common/Modal/ModalSuccess"
 import { RootState } from "store/store"
 import { toast } from "react-hot-toast"
+import classNames from "classnames"
 
 interface Props {
   servicePackages?: ServicePackage[]
 }
 const ServicesDetailPage = ({ servicePackages }: Props) => {
   const isLogin = useSelector((state: RootState) => state.auth.isLoggedIn)
+  const [status, setStatus] = useState("")
 
   const { t } = useTranslation(["base", "ser"])
   const dispatch = useDispatch()
@@ -33,12 +35,14 @@ const ServicesDetailPage = ({ servicePackages }: Props) => {
   )
   const servicePackage: ServicePackage = data?.data as ServicePackage
   useEffect(() => {
-    if (router.query.bookingId) {
+    if (router.query.bookingId && router.query.status) {
       setTimeout(() => {
         setIsActive(true)
+        console.log("setTimeout ~ router.query.status:", router.query.status)
+        setStatus(router.query.status as string)
       }, 1500)
     }
-  }, [router.query.bookingId])
+  }, [router.query.bookingId, router.query.status])
   if (isLoading) {
     return <p>Loading Service Package Detail!</p>
   }
@@ -152,21 +156,46 @@ const ServicesDetailPage = ({ servicePackages }: Props) => {
         <ModalSuccess
           isSuccess={isActive}
           setIsSuccess={() => setIsActive(false)}
+          imageUrl={
+            status === "success"
+              ? "/images/success-image.png"
+              : "/images/fail.png"
+          }
         >
-          <h1 className="text-4xl font-bold text-center text-black1">
-            Congratulations
+          <h1
+            className={classNames(
+              "text-4xl font-bold text-center ",
+              status === "success" ? "text-black1" : " text-error"
+            )}
+          >
+            {status === "success" ? "Congratulations" : "Payment failed"}
           </h1>
           <p className="mt-5 text-sm font-light text-center text-black2">
-            Your Appointment Request is Successfully!
+            {status === "success"
+              ? "Your Appointment Request has been Successful!"
+              : "Your appointment request has failed!"}
           </p>
-          <CustomButton
-            className="mt-3"
-            onClick={() =>
-              router.push(process.env.NEXT_PUBLIC_APP_URL + "/services")
-            }
-          >
-            Make a New Appointment
-          </CustomButton>
+          {status === "success" ? (
+            <CustomButton
+              className="mt-3"
+              onClick={() => router.push("/doctors")}
+            >
+              Make a New Appointment
+            </CustomButton>
+          ) : (
+            <CustomButton
+              className="mt-3"
+              onClick={() => {
+                router.replace(`/doctors/${router.query.id}`, undefined, {
+                  shallow: true
+                })
+                setIsActive(false)
+                setStatus("")
+              }}
+            >
+              Booking again
+            </CustomButton>
+          )}
         </ModalSuccess>
       </UserSecondaryLayout>
     </>

@@ -48,10 +48,6 @@ export const StepOne = ({ onCancel, onContinue }: PropsStep) => {
               <span className="text-red-500">{t("base:booking.red")}</span>{" "}
               {t("base:booking.selected")}
             </li>
-            <li>
-              <span className="text-primary">{t("base:booking.blue")}</span>{" "}
-              {t("base:booking.you_selected")}
-            </li>
           </ul>
         </div>
       </div>

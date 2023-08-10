@@ -192,7 +192,7 @@ const DetailDoctor = () => {
         </h1>
         <p className="mt-5 text-sm font-light text-center text-black2">
           {status === "success"
-            ? "Your appointment request is Successfully!"
+            ? "Your Appointment Request has been Successful!"
             : "Your appointment request has failed!"}
         </p>
         {status === "success" ? (
