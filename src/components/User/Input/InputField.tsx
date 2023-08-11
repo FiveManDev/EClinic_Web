@@ -26,7 +26,7 @@ const InputField = ({
           helperText={error ? error.message : null}
           error={!!error}
           onChange={(value) => onChange(value.target.value)}
-          value={value}
+          value={value || ""}
           className={className}
           label={label}
           fullWidth={fullWidth}

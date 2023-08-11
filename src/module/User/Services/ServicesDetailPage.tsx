@@ -178,7 +178,7 @@ const ServicesDetailPage = ({ servicePackages }: Props) => {
           {status === "success" ? (
             <CustomButton
               className="mt-3"
-              onClick={() => router.push("/doctors")}
+              onClick={() => router.push("/services")}
             >
               Make a New Appointment
             </CustomButton>
@@ -186,7 +186,7 @@ const ServicesDetailPage = ({ servicePackages }: Props) => {
             <CustomButton
               className="mt-3"
               onClick={() => {
-                router.replace(`/doctors/${router.query.id}`, undefined, {
+                router.replace(`/services/${router.query.id}`, undefined, {
                   shallow: true
                 })
                 setIsActive(false)

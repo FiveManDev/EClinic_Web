@@ -17,11 +17,7 @@ const ModalSuccess: React.FC<ModalSuccessProps> = ({
   imageUrl = "/images/success-image.png"
 }) => {
   return (
-    <ModalPrimary
-      show={isSuccess}
-      onClose={() => setIsSuccess(false)}
-      closeButton={false}
-    >
+    <ModalPrimary show={isSuccess} onClose={() => setIsSuccess(false)}>
       <OverlayScrollbarsComponent
         defer
         options={{ scrollbars: { autoHide: "scroll" } }}

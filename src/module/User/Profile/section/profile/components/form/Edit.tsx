@@ -23,7 +23,7 @@ import {
 import { useImageFile } from "hooks/useImageFile"
 import Image from "next/image"
 import { ChangeEvent, useEffect } from "react"
-import { FieldValues, useForm } from "react-hook-form"
+import { Controller, FieldValues, useForm } from "react-hook-form"
 import { toast } from "react-hot-toast"
 import { useTranslation } from "react-i18next"
 import { RELATIONSHIPS } from "shared/constant/constant"
@@ -97,9 +97,7 @@ const Edit = ({
     defaultValues: profile
   })
   watch("avatar", null)
-  const watchBlood = watch("bloodType", profile ? profile?.bloodType : "A+")
-  const watchGender = watch("gender", profile ? profile?.gender : true)
-  const watchRelationship = watch("relationshipID", profile?.relationshipID)
+
   const onFileChange = (file: File) => {
     setValue("avatar", file)
   }
@@ -115,6 +113,7 @@ const Edit = ({
     }
   }
   const handleOnSubmit = (value: FieldValues) => {
+    console.log("handleOnSubmit ~ value:", value)
     if (getValues("avatar") === undefined) {
       toast.error("Please choose your avatar")
     } else {
@@ -122,20 +121,25 @@ const Edit = ({
     }
   }
   useEffect(() => {
-    if (profile === undefined) {
+    if (
+      profile === undefined &&
+      relationShipQuery.isSuccess &&
+      getBloodTypes.isSuccess
+    ) {
       reset({
         firstName: "",
         lastName: "",
         email: "",
         address: "",
         phone: "",
-        bloodType: "A+",
+        bloodType: getBloodTypes.data?.data[0],
         weight: 0,
-        height: 0
+        height: 0,
+        gender: true,
+        relationshipID: relationShipQuery.data?.data[0].relationshipID
       })
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [profile])
+  }, [profile, relationShipQuery.isSuccess, getBloodTypes.isSuccess])
   return (
     <>
       <h3 className="pb-4 text-lg font-medium">{labelForm}</h3>
@@ -202,25 +206,43 @@ const Edit = ({
               }}
               errorMessage={errors.dateOfBirth?.message?.toString()}
             />
-            <FormControl fullWidth size="small">
-              <InputLabel>
-                {t("base:pages.profileUser.form.blood_type")}
-              </InputLabel>
-              <Select
-                size="medium"
-                value={watchBlood || getBloodTypes.data?.data[0]}
-                label={t("base:pages.profileUser.form.blood_type")}
-                onChange={(value) => {
-                  setValue("bloodType", value.target.value)
-                }}
-              >
-                {getBloodTypes?.data?.data.map((item, index) => (
-                  <MenuItem value={item} key={index}>
-                    {item}
-                  </MenuItem>
-                ))}
-              </Select>
-            </FormControl>
+            {getBloodTypes.isLoading ? (
+              <Skeleton
+                variant="rounded"
+                className="rounded-xl"
+                width={380}
+                height={54}
+              />
+            ) : (
+              getBloodTypes.data?.data && (
+                <Controller
+                  name="bloodType"
+                  control={control}
+                  render={(field) => {
+                    return (
+                      <FormControl fullWidth>
+                        <InputLabel>
+                          {t("base:pages.profileUser.form.blood_type")}
+                        </InputLabel>
+                        <Select
+                          onChange={field.field.onChange}
+                          value={
+                            field.field.value || getBloodTypes.data?.data[0]
+                          }
+                          label={t("base:pages.profileUser.form.blood_type")}
+                        >
+                          {getBloodTypes?.data?.data.map((item, index) => (
+                            <MenuItem value={item} key={index}>
+                              {item}
+                            </MenuItem>
+                          ))}
+                        </Select>
+                      </FormControl>
+                    )
+                  }}
+                />
+              )
+            )}
           </div>
           <InputField
             size="medium"
@@ -228,28 +250,39 @@ const Edit = ({
             name="phone"
             label={t("base:pages.profileUser.form.phone_number")}
           />
-          <FormControl>
-            <FormLabel>{t("base:pages.profileUser.form.gender")}</FormLabel>
-            <RadioGroup
-              row
-              value={watchGender}
-              onChange={(e) =>
-                setValue("gender", e.target.value === "true" ? true : false)
-              }
-              name="radio-buttons-group"
-            >
-              <FormControlLabel
-                value={true}
-                control={<Radio size="small" />}
-                label={t("base:pages.profileUser.form.feMale")}
-              />
-              <FormControlLabel
-                value={false}
-                control={<Radio size="small" />}
-                label={t("base:pages.profileUser.form.male")}
-              />
-            </RadioGroup>
-          </FormControl>
+          <Controller
+            name="gender"
+            control={control}
+            render={(field) => {
+              return (
+                <FormControl>
+                  <FormLabel>
+                    {t("base:pages.profileUser.form.gender")}
+                  </FormLabel>
+                  <RadioGroup
+                    defaultValue={true}
+                    value={field.field.value}
+                    row
+                    onChange={(e) => {
+                      field.field.onChange(e.target.value)
+                    }}
+                  >
+                    <FormControlLabel
+                      value={true}
+                      control={<Radio size="small" />}
+                      label={t("base:pages.profileUser.form.feMale")}
+                    />
+                    <FormControlLabel
+                      value={false}
+                      control={<Radio size="small" />}
+                      label={t("base:pages.profileUser.form.male")}
+                    />
+                  </RadioGroup>
+                </FormControl>
+              )
+            }}
+          />
+
           <div className="flex items-start space-x-3">
             <InputField
               size="medium"
@@ -274,51 +307,59 @@ const Edit = ({
               }}
             />
           </div>
-          {relationShipQuery.data?.data &&
-            relationShipQuery.data?.data.length > 0 &&
-            profile?.relationshipName !== RELATIONSHIPS.ME && (
-              <FormControl>
-                <FormLabel>
-                  {t("base:pages.profileUser.form.relationship")}
-                </FormLabel>
-                <RadioGroup
-                  row
-                  value={
-                    watchRelationship ||
-                    relationShipQuery.data?.data[0].relationshipID
-                  }
-                  onChange={(e) => setValue("relationshipID", e.target.value)}
-                  name="radio-buttons-group"
-                  className="gap-3 mt-2 ml-3"
-                >
-                  {relationShipQuery.isLoading &&
-                    Array(6)
-                      .fill(0)
-                      .map((_, index) => (
-                        <Skeleton
-                          key={index}
-                          variant="rounded"
-                          width={70}
-                          height={30}
-                        />
-                      ))}
-                  {relationShipQuery.isSuccess &&
-                    relationShipQuery.data.data.map((item, index) => {
-                      if (item.relationshipName !== RELATIONSHIPS.ME) {
-                        return (
-                          <FormControlLabel
-                            className="px-3 border border-gray-200 border-solid rounded-md shadow-sm"
-                            key={index}
-                            value={item.relationshipID}
-                            control={<Radio size="small" />}
-                            label={item.relationshipName}
-                          />
-                        )
-                      }
-                    })}
-                </RadioGroup>
-              </FormControl>
-            )}
+          {profile?.relationshipName !== RELATIONSHIPS.ME &&
+            (relationShipQuery.isLoading ? (
+              <div className="flex flex-wrap gap-5 mt-2">
+                {Array(10)
+                  .fill(0)
+                  .map((_, index) => (
+                    <Skeleton
+                      key={index}
+                      variant="rounded"
+                      height={40}
+                      width={80 + (Math.floor(Math.random() * 10) + 1) * 10}
+                    />
+                  ))}
+              </div>
+            ) : (
+              <Controller
+                name="relationshipID"
+                control={control}
+                render={(field) => {
+                  return (
+                    <FormControl>
+                      <FormLabel>
+                        {t("base:pages.profileUser.form.relationship")}
+                      </FormLabel>
+                      <RadioGroup
+                        value={
+                          field.field.value ||
+                          relationShipQuery.data?.data[0].relationshipID
+                        }
+                        row
+                        onChange={field.field.onChange}
+                        className="gap-3 mt-2 ml-3"
+                      >
+                        {relationShipQuery.isSuccess &&
+                          relationShipQuery.data.data.map((item, index) => {
+                            if (item.relationshipName !== RELATIONSHIPS.ME) {
+                              return (
+                                <FormControlLabel
+                                  className="px-3 border border-gray-200 border-solid rounded-md shadow-sm"
+                                  key={index}
+                                  value={item.relationshipID}
+                                  control={<Radio size="small" />}
+                                  label={item.relationshipName}
+                                />
+                              )
+                            }
+                          })}
+                      </RadioGroup>
+                    </FormControl>
+                  )
+                }}
+              />
+            ))}
 
           <div className="flex justify-end space-x-4">
             {profile !== undefined &&
