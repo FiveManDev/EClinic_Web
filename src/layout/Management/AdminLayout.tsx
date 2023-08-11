@@ -10,8 +10,7 @@ const AdminLayout = ({ children }: PropsWithChildren) => {
   const dispatch = useAppDispatch()
   const router = useRouter()
   const logout = () => {
-    router.push(routers.signIn)
-    dispatch(logoutUser())
+    router.push(routers.signIn).then(() => dispatch(logoutUser()))
   }
   const sidebars: ItemSidebar[] = useMemo(
     () => [

@@ -10,8 +10,7 @@ const ExpertLayout = ({ children }: PropsWithChildren) => {
   const dispatch = useAppDispatch()
   const router = useRouter()
   const logout = () => {
-    dispatch(logoutUser())
-    router.push(routers.signIn)
+    router.push(routers.signIn).then(() => dispatch(logoutUser()))
   }
   const sidebars: ItemSidebar[] = useMemo(
     () => [
