@@ -20,19 +20,15 @@ const DoctorPage = () => {
   const marks = [
     {
       value: 0,
-      label: "0"
+      label: "0₫"
     },
     {
       value: 2500000,
-      label: "2.500K"
+      label: "2.500.000₫"
     },
     {
       value: 5000000,
-      label: "5.000k"
-    },
-    {
-      value: 10000000,
-      label: "10.000k"
+      label: "5.000.000₫"
     }
   ]
 
@@ -158,7 +154,7 @@ const DoctorPage = () => {
                 {specializations.data?.data.data.length &&
                   loadIndex < specializations.data?.data.data.length && (
                     <button
-                      className="border border-gray-400 border-solid shadow-sm outline-none cursor-pointer"
+                      className="py-1 text-white border-none rounded shadow-sm outline-none cursor-pointer bg-primary"
                       onClick={() => setLoadIndex(loadIndex + 5)}
                     >
                       {t("ser:loadMore")}
@@ -171,7 +167,7 @@ const DoctorPage = () => {
               <div className="w-[95%]">
                 <Slider
                   getAriaValueText={formatValueToVND}
-                  max={10000000}
+                  max={5000000}
                   marks={marks}
                   step={10000}
                   size="medium"

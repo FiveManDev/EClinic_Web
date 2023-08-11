@@ -227,7 +227,7 @@ const MessageBox = ({ toggleInfo, otherUserId: userId, isClose }: IProps) => {
         scrollContainer.removeEventListener("scroll", handleOverflow)
       }
     }
-  }, [])
+  }, [roomData.data?.pages.length])
   const myProfile = roomData.data?.pages[0]?.data.data.myProfile
   return (
     <div className="flex flex-col w-full border border-gray-200 border-solid border-y-0 ">
