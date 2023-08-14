@@ -136,7 +136,8 @@ const Edit = ({
         weight: 0,
         height: 0,
         gender: true,
-        relationshipID: relationShipQuery.data?.data[0].relationshipID
+        relationshipID: relationShipQuery.data?.data[0].relationshipID,
+        avatar: ""
       })
     }
   }, [profile, relationShipQuery.isSuccess, getBloodTypes.isSuccess])
@@ -397,11 +398,16 @@ interface IFileProps {
   onFileChange: (file: File) => void
 }
 export const Uploadfile = ({ imageUrl, onFileChange }: IFileProps) => {
-  const { image, handleImageChange } = useImageFile(imageUrl)
+  const { image, handleImageChange, setImage } = useImageFile(imageUrl)
   const onImageChange = (e: ChangeEvent<HTMLInputElement>) => {
     const file = handleImageChange(e)
     onFileChange(file!)
   }
+  useEffect(() => {
+    if (typeof imageUrl === "string" || !imageUrl) {
+      setImage(imageUrl)
+    }
+  }, [imageUrl])
   return (
     <>
       <div className="flex justify-center mt-8">

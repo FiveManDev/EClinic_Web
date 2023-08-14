@@ -87,7 +87,8 @@ const CreateAccount = ({ labelForm, profile, mode = "create" }: Props) => {
     pageNumber: 1,
     pageSize: 100
   })
-  watch("avatar", null)
+  const avatar = watch("avatar", null)
+
   const watchSpecId = watch(
     "specializationID",
     profile?.specialization.specializationID
@@ -189,10 +190,7 @@ const CreateAccount = ({ labelForm, profile, mode = "create" }: Props) => {
       onSubmit={handleSubmit(onSubmit)}
     >
       <div className="relative background-primary w-full md:max-w-[360px] flex flex-col items-center h-fit py-16">
-        <Uploadfile
-          imageUrl={profile?.avatar as string | null}
-          onFileChange={onFileChange}
-        />
+        <Uploadfile imageUrl={avatar || null} onFileChange={onFileChange} />
         <p className="text-xs text-disable max-w-[200px] text-center leading-relaxed mt-3">
           Allowed *.jpeg, *.jpg, *.png, *.gif
         </p>

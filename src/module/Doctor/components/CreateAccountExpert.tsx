@@ -73,7 +73,8 @@ const CreateAccountExpert = ({
     resolver: yupResolver(schema),
     defaultValues: profile
   })
-  watch("avatar", null)
+  const avatar = watch("avatar", null)
+
   const watchGender = watch("gender", profile ? profile?.gender : true)
   const watchEndable = watch(
     "enabledAccount",
@@ -172,10 +173,7 @@ const CreateAccountExpert = ({
           {watchEndable ? "Active" : "Banned"}
         </Tag>
 
-        <Uploadfile
-          imageUrl={profile?.avatar as string | null}
-          onFileChange={onFileChange}
-        />
+        <Uploadfile imageUrl={avatar || null} onFileChange={onFileChange} />
         <p className="text-xs text-disable max-w-[200px] text-center leading-relaxed mt-3">
           Allowed *.jpeg, *.jpg, *.png, *.gif
         </p>
