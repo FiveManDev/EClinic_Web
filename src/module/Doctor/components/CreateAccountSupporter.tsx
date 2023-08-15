@@ -93,7 +93,7 @@ const CreateAccountSupporter = ({
     resolver: yupResolver(schema),
     defaultValues: profile
   })
-  const avatar = watch("avatar", null)
+  const avatar = watch("avatar", profile?.avatar)
   const watchGender = watch("gender", profile ? profile?.gender : true)
   const watchEndable = watch(
     "enabledAccount",

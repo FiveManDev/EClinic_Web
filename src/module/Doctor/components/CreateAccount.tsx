@@ -87,7 +87,7 @@ const CreateAccount = ({ labelForm, profile, mode = "create" }: Props) => {
     pageNumber: 1,
     pageSize: 100
   })
-  const avatar = watch("avatar", null)
+  const avatar = watch("avatar", profile?.avatar)
 
   const watchSpecId = watch(
     "specializationID",
