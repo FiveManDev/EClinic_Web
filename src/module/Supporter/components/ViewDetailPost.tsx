@@ -25,7 +25,7 @@ const ViewDetailPost = ({ post, onClose, open }: Props) => {
     <>
       <Dialog open={open} onClose={onClose} fullWidth scroll="paper">
         <DialogTitle className="border border-t-0 border-gray-200 border-solid border-x-0">
-          {"Anwers the question here"}
+          {"Answer the question here"}
         </DialogTitle>
         <OverlayScrollbarsComponent
           defer
@@ -72,7 +72,7 @@ const ViewDetailPost = ({ post, onClose, open }: Props) => {
                 <Field>
                   <Label htmlFor="content">
                     <div className="flex items-center space-x-1">
-                      <span> Anwer of doctor</span>
+                      <span> Answer of doctor</span>
                     </div>
                   </Label>
                   <article className="entry-content ">

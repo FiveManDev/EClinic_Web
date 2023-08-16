@@ -131,7 +131,7 @@ const UpdateQuestion = ({ post }: Props) => {
             <Field>
               <Label htmlFor="content">
                 <div className="flex items-center space-x-1">
-                  <span> Fill your anwers here</span>
+                  <span> Fill your answer here</span>
                   <span>
                     <Tooltip
                       title="The answer must be clear and precise with specific evidence"
