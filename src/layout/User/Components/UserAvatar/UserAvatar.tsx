@@ -128,7 +128,7 @@ const UserAvatar = ({ menu }: Props) => {
                   {menu.map((item, index) => (
                     <Link
                       key={index}
-                      href={process.env.NEXT_PUBLIC_APP_URL + item.href}
+                      href={item.href}
                       className="w-full py-2 transition-all cursor-pointer hover:bg-gray-100"
                     >
                       <span className="px-5 text-sm font-normal">
